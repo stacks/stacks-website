@@ -38,3 +38,11 @@ h2 {
 	text-decoration: none;
 	color: #000000;
 }
+
+pre {
+  margin-left: 10px;
+}
+
+span.comment-date {
+  float: right;
+}
