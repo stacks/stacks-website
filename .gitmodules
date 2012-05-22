@@ -1,0 +1,3 @@
+[submodule "tex"]
+	path = tex
+	url = git://paard.math.columbia.edu/var/git/stacks
