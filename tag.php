@@ -52,13 +52,13 @@
     print("    <ul>\n");
     print("      <li><a href='#'>Lemma 9.6 on page 8</a> of Chapter 5: Topology\n");
     print("      <li><a href='#'>Lemma 5.9.6 on page 140</a> of the entire book\n");
-    print("    </ul>\n");
+    print("    </ul>\n\n");
   }
 ?>
 <html>
   <head>
     <title>Stacks Project -- Tag lookup</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="/style.css">
 
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">
@@ -72,7 +72,7 @@
 
     <h2>Look for a tag</h2>
 
-    <form action="tag.php" method="get">
+    <form action="/search.php" method="post">
       <label>Tag: <input type="text" name="tag"></label>
       <input type="submit" value="locate">
     </form>
@@ -80,9 +80,15 @@
     For more information we refer to the <a href="#">tags explained</a> page.
 
 <?php
-  if (!empty($_GET['tag']) && is_valid_tag($_GET['tag'])) {
-    print_tag($_GET['tag']);
-    print_comments($_GET['tag']);
+  if (!empty($_GET['tag'])) {
+    if (is_valid_tag($_GET['tag'])) {
+      print_tag($_GET['tag']);
+      print_comments($_GET['tag']);
+    }
+    else {
+      print("    <h2>Error</h2>\n");
+      print("    The tag you provided is not in the correct format.\n");
+    }
   }
 ?>
   </body>

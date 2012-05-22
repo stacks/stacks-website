@@ -1,0 +1,3 @@
+RewriteEngine on
+RewriteRule ^tag$ tag.php [L]
+RewriteRule ^tag/(.+)$ tag.php?tag=$1 [L]
