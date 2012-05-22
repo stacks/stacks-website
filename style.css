@@ -4,8 +4,10 @@ body {
 	border: solid #d9d8d1;
 	border-width: 1px;
 	margin: 10px;
+  padding: 10px;
 	background-color: #ffffff;
 	color: #000000;
+  max-width: 800px;
 }
 
 a {
@@ -16,13 +18,9 @@ a:hover, a:visited, a:active {
 	color: #880000;
 }
 
-p {
-  margin-left: 12px;
-}
-
 h1 {
 	height: 25px;
-  margin: 0;
+  margin: -10px -10px 0 -10px;
 	padding: 8px;
 	font-size: 150%;
 	font-weight: bold;
@@ -31,7 +29,7 @@ h1 {
 
 h2 {
   font-size: medium;
-  margin: 0;
+  margin: 0 -10px 10px -10px;
 	border-top: 1px solid #d9d8d1;
 	display: block;
 	padding: 6px 8px;
