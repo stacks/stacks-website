@@ -1,3 +1,6 @@
 [submodule "tex"]
 	path = tex
 	url = git://paard.math.columbia.edu/var/git/stacks
+[submodule "showdown"]
+	path = showdown
+	url = https://github.com/coreyti/showdown.git
