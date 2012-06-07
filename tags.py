@@ -1,4 +1,5 @@
 import os
+import sqlite3
 from functions import *
 
 def parse_contentsline(contentsline):
@@ -73,8 +74,19 @@ def parse_legacy_tags(filename):
 
   return tags
 
+
+def insert_tag(connection, tag, value):
+  try:
+    query = 'INSERT INTO tags (tag, label, file, chapter_page, book_page, book_id) VALUES (?, ?, ?, ?, ?, ?)'
+    connection.execute(query, (tag, value[0], value[1], value[2], value[3], value[4]))
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+
 path = 'tex/tags/tmp/'
 titles = get_titles(path)
+
+connection = sqlite3.connect('stacks.sqlite')
 
 # we'll do book.aux first, getting a complete overview of all labels
 aux_files = list_aux_files(path)
@@ -89,15 +101,21 @@ for aux_file in aux_files:
   for label, information in local.iteritems():
     # we prepend the current filename to get the full label
     full_label = aux_file[0:-4] + '-' + label
+
     if full_label in labels:
-      # nifty way to flatten tuple of tuples
-      labels[full_label] = sum((labels[full_label], local[label]), ())
+      labels[full_label] = [aux_file[0:-4], labels[full_label], local[label]]
     else:
       print 'ERROR: the label \'{0}\' was found in {1} but not in {2}'.format(
           full_label, path + aux_file, path + 'book.aux')
 
+tags = parse_legacy_tags('tex/tags/tags')
+for tag, label in tags.iteritems():
+  info = labels[label]
+
+  insert_tag(connection, tag, (label, info[0], info[2][1], info[1][1], info[1][0]))
 
 #for label, information in labels.iteritems():
 #  print label, '\n\t', information
 
-#parse_legacy_tags('tex/tags/tags')
+connection.commit()
+connection.close()
