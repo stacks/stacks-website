@@ -59,6 +59,20 @@ def parse_aux(filename):
   return labels
 
 
+def parse_legacy_tags(filename):
+  tags_file = open(filename, 'r')
+
+  tags = {}
+
+  for line in tags_file:
+    if not line.startswith('#'):
+      (tag, label) = line.strip().split(',')
+      tags[tag] = label
+
+  tags_file.close()
+
+  return tags
+
 path = 'tex/tags/tmp/'
 titles = get_titles(path)
 
@@ -82,5 +96,8 @@ for aux_file in aux_files:
       print 'ERROR: the label \'{0}\' was found in {1} but not in {2}'.format(
           full_label, path + aux_file, path + 'book.aux')
 
-for label, information in labels.iteritems():
-  print label, '\n\t', information
+
+#for label, information in labels.iteritems():
+#  print label, '\n\t', information
+
+#parse_legacy_tags('tex/tags/tags')
