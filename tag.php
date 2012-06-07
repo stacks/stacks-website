@@ -29,6 +29,22 @@
     return $comments;
   }
 
+  function get_tag($tag) {
+    assert(is_valid_tag($tag));
+
+    global $db;
+    try {
+      $sql = 'SELECT tag, label, file, chapter_page, book_page, book_id, value FROM tags WHERE tag = "' . $tag . '"';
+      // TODO first check whether there is something there
+      foreach ($db->query($sql) as $row) {
+        return $row;
+      }
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
+
   function print_comments($tag) {
     print("    <h2>Comments</h2>\n");
 
@@ -47,12 +63,15 @@
   }
 
   function print_tag($tag) {
+    $results = get_tag($tag);
     print("    <h2>Tag: " . $tag . "</h2>\n");
-    print("    The tag " . $tag . " references\n");
+    print("    This tag has label <tt>" . $results['label'] . "</tt> and it references\n");
     print("    <ul>\n");
-    print("      <li><a href='#'>Lemma 9.6 on page 8</a> of Chapter 5: Topology\n");
-    print("      <li><a href='#'>Lemma 5.9.6 on page 140</a> of the entire book\n");
+    print("      <li><a href='#'>Lemma " . implode('.', array_slice(explode('.', $results['book_id']), 1)) . " on page " . $results['book_page'] . "</a> of TODO\n");
+    print("      <li><a href='#'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the entire book\n");
     print("    </ul>\n\n");
+    print("    The LaTeX code of the corresponding environment is:\n");
+    print("    <pre>\n" . $results['value'] . "\n    </pre>\n");
   }
 ?>
 <html>
