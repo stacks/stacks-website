@@ -5,6 +5,10 @@ def list_files(path, extension):
   return filter(lambda filename: filename.endswith(extension), os.listdir(path))
 
 # return all TeX files in a directory
+def list_aux_files(path):
+  return list_files(path, '.aux')
+
+# return all TeX files in a directory
 def list_tex_files(path):
   return list_files(path, '.tex')
 
@@ -25,6 +29,6 @@ def get_titles(path):
   titles = {}
 
   for tex_file in list_tex_files(path):
-    titles[tex_file] = get_title(path + tex_file)
+    titles[tex_file[0:-4]] = get_title(path + tex_file)
 
   return titles
