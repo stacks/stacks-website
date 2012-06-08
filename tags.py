@@ -60,6 +60,33 @@ def parse_aux(filename):
   return labels
 
 
+# read all .aux files and generate a dictionary containing all labels and
+# their whereabouts
+def get_labels_from_source(path):
+  # we'll do book.aux first, getting a complete overview of all labels
+  aux_files = list_aux_files(path)
+  aux_files.remove('book.aux')
+  labels = parse_aux(path + 'book.aux')
+  
+  # now merge every other .aux file against the current dictionary
+  for aux_file in aux_files:
+    print 'parsing {0}'.format(aux_file)
+  
+    local = parse_aux(path + aux_file)
+    for label, information in local.iteritems():
+      # we prepend the current filename to get the full label
+      full_label = aux_file[0:-4] + '-' + label
+  
+      if full_label in labels:
+        labels[full_label] = [aux_file[0:-4], labels[full_label], local[label]]
+      else:
+        print 'ERROR: the label \'{0}\' was found in {1} but not in {2}'.format(
+            full_label, path + aux_file, path + 'book.aux')
+
+  return labels
+
+
+# read all tags from the current tags/tags file
 def parse_legacy_tags(filename):
   tags_file = open(filename, 'r')
 
@@ -75,6 +102,15 @@ def parse_legacy_tags(filename):
   return tags
 
 
+# create the tags database from scratch using the current tags/tags file
+def import_legacy_tags(filename, labels):
+  tags = parse_legacy_tags(filename)
+  for tag, label in tags.iteritems():
+    info = labels[label]
+  
+    insert_tag(connection, tag, (label, info[0], info[2][1], info[1][1], info[1][0]))
+
+
 def insert_tag(connection, tag, value):
   try:
     query = 'INSERT INTO tags (tag, label, file, chapter_page, book_page, book_id) VALUES (?, ?, ?, ?, ?, ?)'
@@ -88,34 +124,7 @@ titles = get_titles(path)
 
 connection = sqlite3.connect('stacks.sqlite')
 
-# we'll do book.aux first, getting a complete overview of all labels
-aux_files = list_aux_files(path)
-aux_files.remove('book.aux')
-labels = parse_aux(path + 'book.aux')
-
-# now merge every other .aux file against the current dictionary
-for aux_file in aux_files:
-  print 'parsing {0}'.format(aux_file)
-
-  local = parse_aux(path + aux_file)
-  for label, information in local.iteritems():
-    # we prepend the current filename to get the full label
-    full_label = aux_file[0:-4] + '-' + label
-
-    if full_label in labels:
-      labels[full_label] = [aux_file[0:-4], labels[full_label], local[label]]
-    else:
-      print 'ERROR: the label \'{0}\' was found in {1} but not in {2}'.format(
-          full_label, path + aux_file, path + 'book.aux')
-
-tags = parse_legacy_tags('tex/tags/tags')
-for tag, label in tags.iteritems():
-  info = labels[label]
-
-  insert_tag(connection, tag, (label, info[0], info[2][1], info[1][1], info[1][0]))
-
-#for label, information in labels.iteritems():
-#  print label, '\n\t', information
+import_legacy_tags('tex/tags/tags', get_labels_from_source(path))
 
 connection.commit()
 connection.close()
