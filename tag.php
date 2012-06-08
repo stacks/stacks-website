@@ -35,10 +35,14 @@
     global $db;
     try {
       $sql = 'SELECT tag, label, file, chapter_page, book_page, book_id, value FROM tags WHERE tag = "' . $tag . '"';
-      // TODO first check whether there is something there
-      foreach ($db->query($sql) as $row) {
+      $result = $db->query($sql);
+
+      // return first (= only) row of the result
+      foreach ($result as $row) {
         return $row;
       }
+      // no rows found
+      return null;
     }
     catch(PDOException $e) {
       echo $e->getMessage();
@@ -64,14 +68,20 @@
 
   function print_tag($tag) {
     $results = get_tag($tag);
-    print("    <h2>Tag: " . $tag . "</h2>\n");
-    print("    This tag has label <tt>" . $results['label'] . "</tt> and it references\n");
-    print("    <ul>\n");
-    print("      <li><a href='#'>Lemma " . implode('.', array_slice(explode('.', $results['book_id']), 1)) . " on page " . $results['book_page'] . "</a> of TODO\n");
-    print("      <li><a href='#'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the entire book\n");
-    print("    </ul>\n\n");
-    print("    The LaTeX code of the corresponding environment is:\n");
-    print("    <pre>\n" . $results['value'] . "\n    </pre>\n");
+    
+    print("    <h2>Tag: <tt>" . $tag . "</tt></h2>\n");
+    if (is_null($results)) {
+      print("    <p>This tag has not been found in the Stacks Project.\n");
+    }
+    else {
+      print("    <p>This tag has label <tt>" . $results['label'] . "</tt> and it references\n");
+      print("    <ul>\n");
+      print("      <li><a href='#'>Lemma " . implode('.', array_slice(explode('.', $results['book_id']), 1)) . " on page " . $results['book_page'] . "</a> of TODO\n");
+      print("      <li><a href='#'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the entire book\n");
+      print("    </ul>\n\n");
+      print("    The LaTeX code of the corresponding environment is:\n");
+      print("    <pre>\n" . $results['value'] . "\n    </pre>\n");
+    }
   }
 ?>
 <html>
@@ -96,7 +106,7 @@
       <input type="submit" value="locate">
     </form>
 
-    For more information we refer to the <a href="#">tags explained</a> page.
+    <p>For more information we refer to the <a href="#">tags explained</a> page.
 
 <?php
   if (!empty($_GET['tag'])) {
@@ -106,7 +116,7 @@
     }
     else {
       print("    <h2>Error</h2>\n");
-      print("    The tag you provided is not in the correct format.\n");
+      print("    The tag you provided (i.e. <tt>" . $_GET['tag'] . "</tt>) is not in the correct format.\n");
     }
   }
 ?>
