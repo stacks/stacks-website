@@ -19,7 +19,7 @@ def get_title(path):
   title = ''
   for line in tex_file:
     if line.startswith('\\title'):
-      title = line[7:-2]
+      title = line[7:line.find('}')]
       break
 
   return title
