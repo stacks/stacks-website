@@ -15,16 +15,10 @@ def parse_contentsline(contentsline):
 
 def parse_book_toc(filename):
   toc = open(filename, 'r')
-
-  for line in toc:
-    parts = parse_contentsline(line)
-
-    print 'type:   {0}'.format(parts[0])
-    print 'number: {0}'.format(parts[1])
-    print 'title:  {0}'.format(parts[2])
-    print 'page:   {0}\n'.format(parts[3])
-  
+  sections = [parse_contentsline(line)[0:4] for line in toc]
   toc.close()
+
+  return sections
 
 
 def parse_newlabel(newlabel):
@@ -111,7 +105,30 @@ def import_legacy_tags(filename, labels):
     insert_tag(connection, tag, (label, info[0], info[2][1], info[1][1], info[1][0]))
 
 
-def insert_tag(connection, tag, value):
+def import_titles(path):
+  titles = get_titles(path)
+  sections = parse_book_toc(path + 'book.toc')
+
+  print invert_dict(titles)
+  for section in sections:
+    if len(section[1].split('.')) == 1:
+      print section
+      print invert_dict(titles)[section[2]]
+
+  #for section in sections:
+  #  insert_title(section[1], section[2], '')
+  
+
+
+def insert_title(number, title, filename):
+  try:
+    query = 'INSERT INTO sections (number, title, filename) VALUES (?, ?, ?)'
+    connection.execute(query, (number, title, filename))
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+
+def insert_tag(tag, value):
   try:
     query = 'INSERT INTO tags (tag, label, file, chapter_page, book_page, book_id) VALUES (?, ?, ?, ?, ?, ?)'
     connection.execute(query, (tag, value[0], value[1], value[2], value[3], value[4]))
@@ -120,11 +137,12 @@ def insert_tag(connection, tag, value):
 
 
 path = 'tex/tags/tmp/'
-titles = get_titles(path)
 
 connection = sqlite3.connect('stacks.sqlite')
 
-import_legacy_tags('tex/tags/tags', get_labels_from_source(path))
+#import_legacy_tags('tex/tags/tags', get_labels_from_source(path))
+
+import_titles(path)
 
 connection.commit()
 connection.close()
