@@ -1,5 +1,9 @@
 import os
 
+# invert a dictionary mapping
+def invert_dict(dictionary):
+  return dict((v, k) for k, v in dictionary.iteritems()) 
+
 # return all files with a given extension
 def list_files(path, extension):
   return filter(lambda filename: filename.endswith(extension), os.listdir(path))
