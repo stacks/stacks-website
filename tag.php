@@ -29,6 +29,21 @@
     return $comments;
   }
 
+  function get_section($id) {
+    global $db;
+
+    try {
+      $sql = 'SELECT number, title, filename FROM sections WHERE number = "' . $id . '"';
+      foreach ($db->query($sql) as $row) {
+        return $row;
+      }
+      # TODO error handling
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
+
   function get_tag($tag) {
     assert(is_valid_tag($tag));
 
@@ -74,10 +89,21 @@
       print("    <p>This tag has not been found in the Stacks Project.\n");
     }
     else {
+      $parts = explode('.', $results['book_id']);
+      # the identification of the result relative to the local section
+      $relative_id = implode('.', array_slice($parts, 1));
+      # the identification of the (sub)section of the result
+      # TODO tags can be entire chapters, right? i.e. problem
+      $section_id = implode('.', array_slice($parts, 0, -1));
+      # the id of the chapter, the first part of the full identification
+      $chapter_id = $parts[0];
+      # all information about the current section TODO better naming might be appropriate
+      $information = get_section($section_id);
+
       print("    <p>This tag has label <tt>" . $results['label'] . "</tt> and it references\n");
       print("    <ul>\n");
-      print("      <li><a href='#'>Lemma " . implode('.', array_slice(explode('.', $results['book_id']), 1)) . " on page " . $results['book_page'] . "</a> of TODO\n");
-      print("      <li><a href='#'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the entire book\n");
+      print("      <li><a href='" . $information['filename'] . ".pdf#" . $tag . "'>Lemma " . $relative_id . " on page " . $results['book_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
+      print("      <li><a href='book.pdf#" . $tag . "'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
       print("    </ul>\n\n");
       print("    The LaTeX code of the corresponding environment is:\n");
       print("    <pre>\n" . $results['value'] . "\n    </pre>\n");
