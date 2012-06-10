@@ -8,7 +8,7 @@ def parse_contentsline(contentsline):
   # sanitize first element to determine type
   parts[0] = parts[0][15:]
   # remove clutter
-  parts = map(lambda part: part.strip('\{\}'), parts)
+  parts = map(lambda part: part.strip('{}'), parts)
 
   return [parts[0], parts[2], parts[3], parts[4]]
 
@@ -27,7 +27,7 @@ def parse_newlabel(newlabel):
   # get the actual label
   parts[0] = parts[0][10:]
   # remove clutter
-  parts = map(lambda part: part.strip('\{\}'), parts)
+  parts = map(lambda part: part.strip('{}'), parts)
 
   return parts
 
@@ -142,7 +142,7 @@ connection = sqlite3.connect('stacks.sqlite')
 
 #import_legacy_tags('tex/tags/tags', get_labels_from_source(path))
 
-import_titles(path)
+#import_titles(path)
 
 connection.commit()
 connection.close()
