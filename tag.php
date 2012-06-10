@@ -64,6 +64,13 @@
     }
   }
 
+  function print_comment_input() {
+    print("    <div id='epiceditor'></div>\n");
+    print("    <script type='text/javascript'>\n");
+    print("      var editor = new EpicEditor(options).load();\n");
+    print("    </script>\n");
+  }
+
   function print_comments($tag) {
     print("    <h2>Comments</h2>\n");
 
@@ -84,7 +91,7 @@
   function print_tag($tag) {
     $results = get_tag($tag);
     
-    print("    <h2>Tag: <tt>" . $tag . "</tt></h2>\n");
+    print("    <h2>Tag: <var>" . $tag . "</var></h2>\n");
     if (is_null($results)) {
       print("    <p>This tag has not been found in the Stacks Project.\n");
     }
@@ -100,7 +107,7 @@
       # all information about the current section TODO better naming might be appropriate
       $information = get_section($section_id);
 
-      print("    <p>This tag has label <tt>" . $results['label'] . "</tt> and it references\n");
+      print("    <p>This tag has label <var>" . $results['label'] . "</var> and it references\n");
       print("    <ul>\n");
       print("      <li><a href='" . $information['filename'] . ".pdf#" . $tag . "'>Lemma " . $relative_id . " on page " . $results['book_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
       print("      <li><a href='book.pdf#" . $tag . "'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
@@ -121,6 +128,14 @@
         tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       });
     </script>
+
+    <!-- TODO fix relative URL -->
+    <script type="text/javascript" src="/EpicEditor/epiceditor/js/epiceditor.js"></script>
+    <script type="text/javascript">
+      var options = {
+        basePath: '/EpicEditor/epiceditor',
+      }
+    </script>
   </head>
   <body>
     <h1>The Stacks Project</h1>
@@ -139,10 +154,12 @@
     if (is_valid_tag($_GET['tag'])) {
       print_tag($_GET['tag']);
       print_comments($_GET['tag']);
+
+      print_comment_input();
     }
     else {
       print("    <h2>Error</h2>\n");
-      print("    The tag you provided (i.e. <tt>" . $_GET['tag'] . "</tt>) is not in the correct format.\n");
+      print("    The tag you provided (i.e. <var>" . $_GET['tag'] . "</var>) is not in the correct format.\n");
     }
   }
 ?>
