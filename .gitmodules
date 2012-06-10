@@ -4,3 +4,6 @@
 [submodule "showdown"]
 	path = showdown
 	url = https://github.com/coreyti/showdown.git
+[submodule "EpicEditor"]
+	path = EpicEditor
+	url = git@github.com:OscarGodson/EpicEditor
