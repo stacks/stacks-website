@@ -109,7 +109,7 @@
 
       print("    <p>This tag has label <var>" . $results['label'] . "</var> and it references\n");
       print("    <ul>\n");
-      print("      <li><a href='" . $information['filename'] . ".pdf#" . $tag . "'>Lemma " . $relative_id . " on page " . $results['book_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
+      print("      <li><a href='" . $information['filename'] . ".pdf#" . $tag . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
       print("      <li><a href='book.pdf#" . $tag . "'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
       print("    </ul>\n\n");
       print("    The LaTeX code of the corresponding environment is:\n");
