@@ -76,7 +76,7 @@
 
     $comments = get_comments($tag);
     if (count($comments) == 0) {
-      print("    There are no comments yet for this tag.\n");
+      print("    <p>There are no comments yet for this tag.</p>\n");
     }
     else {
       foreach ($comments as $comment) {
