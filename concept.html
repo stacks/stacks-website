@@ -26,8 +26,6 @@
       function preview(iframe) {
         var mathjax = iframe.contentWindow.MathJax;
 
-        if (mathjax == null) { alert("fuck"); }
-
         mathjax.Hub.Config({
           tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         });
