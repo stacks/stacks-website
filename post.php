@@ -2,7 +2,6 @@
   error_reporting(E_ALL);
 
   print("<pre>\n");
-  print_r($_POST);
 
   # TODO database should be located outside of the web directory
   try {
@@ -12,17 +11,23 @@
     echo $e->getMessage();
   }
 
-  $tag = '005E';
-  $author = 'Pieter Belmans';
-  $comment = 'Inserting a comment, testing math: $\mathfrak{p}\in\operatorname{Spec}(A)$';
-  $site = 'http://pbelmans.wordpress.com';
+  // TODO all kinds of validation and escaping
+
+  // from here on it's safe to ignore the fact that it's user input
+  $tag = $_POST['tag'];
+  $author = $_POST['name'];
+  $email = $_POST['email'];
+  $comment = $_POST['comment'];
+  $website = $_POST['website']; // TODO either call it website or site but now it's inconsistent
 
   try {
-    $sql = 'INSERT INTO comments (tag, author, comment, site) VALUES ("' . $tag . '", "' . $author . '", "' . $comment . '", "' . $site . '")';
-    # $db->exec($sql) or die(print_r($db->errorInfo(), true));
+    $sql = 'INSERT INTO comments (tag, author, comment, site) VALUES ("' . $tag . '", "' . $author . '", "' . $comment . '", "' . $website . '")';
+    print($sql);
+    $db->exec($sql) or die(print_r($db->errorInfo(), true));
   }
   catch(PDOException $e) {
     echo $e->getMessage();
   }
-
+  
+  header('Location: /tag/' . $_POST['tag']);
 ?>

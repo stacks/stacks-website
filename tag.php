@@ -155,7 +155,9 @@
     else {
       foreach ($comments as $comment) {
         print("    <cite class='comment-author'>" . $comment['author'] . "</cite>");
-        print(" (<a href='" . $comment['site'] . "'>website</a>)\n");
+        if (!empty($comment['site'])) {
+          print(" (<a href='" . $comment['site'] . "'>website</a>)\n");
+        }
         print("    <span class='comment-date'>" . $comment['date'] . "</span>\n");
         print("    <blockquote>" . $comment['comment'] . "</blockquote>\n\n");
       }
@@ -196,15 +198,12 @@
     <title>Stacks Project -- Tag lookup</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
 
-    <!--
-    TODO remove the comment
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       });
     </script>
-    -->
 
     <!-- TODO fix relative URL -->
     <script type="text/javascript" src="/EpicEditor/epiceditor/js/epiceditor.js"></script>
@@ -227,9 +226,11 @@
     <p>For more information we refer to the <a href="#">tags explained</a> page.
 
 <?php
-  $tag = $_GET['tag'];
-  if (!empty($tag)) {
-    if (is_valid_tag($tag)) {
+  if (!empty($_GET['tag'])) {
+    if (is_valid_tag($_GET['tag'])) {
+      // from here on it's safe to ignore the fact it is user input
+      $tag = $_GET['tag'];
+
       print_tag($tag);
       print_comments($tag);
 
@@ -237,7 +238,7 @@
     }
     else {
       print("    <h2>Error</h2>\n");
-      print("    The tag you provided (i.e. <var>" . $tag . "</var>) is not in the correct format.\n");
+      print("    The tag you provided (i.e. <var>" . $_GET['tag'] . "</var>) is not in the correct format.\n");
     }
   }
 ?>
