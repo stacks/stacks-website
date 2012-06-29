@@ -65,10 +65,42 @@
   }
 
   function print_comment_input() {
-    print("    <div id='epiceditor'></div>\n");
-    print("    <script type='text/javascript'>\n");
-    print("      var editor = new EpicEditor(options).load();\n");
-    print("    </script>\n");
+?>
+    <div id="epiceditor"></div>
+    <script type='text/javascript'>
+      var editor = new EpicEditor(options).load();
+
+      function preview(iframe) {
+        var mathjax = iframe.contentWindow.MathJax;
+
+        mathjax.Hub.Config({
+          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+
+        var preview = iframe.contentDocument.getElementById('epiceditor-preview');
+        setTimeout(function() { mathjax.Hub.Typeset(preview); }, 500);
+      }
+
+      editor.on('preview', function() {
+          var iframe = document.getElementById('epiceditor').children[0].contentDocument.getElementById('epiceditor-previewer-frame');
+
+          if (iframe.contentDocument.getElementById('previewer-mathjax') == null) {
+            var script = iframe.contentDocument.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML';
+            script.setAttribute('id', 'previewer-mathjax');
+            iframe.contentDocument.head.appendChild(script);
+          }
+
+          if (iframe.contentWindow.MathJax == null) {
+            setTimeout(function() { preview(iframe) }, 500);
+          }
+          else {
+            preview(iframe);
+          };
+      });
+    </script>
+<?php
   }
 
   function print_comments($tag) {
