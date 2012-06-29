@@ -72,7 +72,7 @@
   <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
 
   <!-- TODO nice mod_rewrite and better URI management (no root assumption) -->
-  <form name="comment" method="post" action="/post.php" id="comment">
+  <form name="comment" method="post" action="/post.php" id="comment-form">
     <label for="name">Name<sup>*</sup>:</label>
     <input type="text" name="name" id="name"><br>
 
@@ -90,10 +90,18 @@
       - add action on submit to transfer EpicEditor's content to textarea
       this seems good: if EE loads the transfer will be no problem, without JS you get the plain textarea
     -->
-    <textarea name="comment"></textarea>
+    <textarea name="comment" id="comment-textarea"></textarea>
     <div id="epiceditor"></div>
     <script type='text/javascript'>
-      var editor = new EpicEditor(options).load();
+      var editor = new EpicEditor(options).load(function() {
+          // TODO find out why this must be a callback in the loader, editor.on('load', ...) doesn't seem to be working?!
+          // hide textarea, EpicEditor will take over
+          document.getElementById('comment-textarea').style.display = 'none';
+          // when the form is submitted copy the contents from EpicEditor to textarea
+          document.getElementById('comment-form').onsubmit = function() {
+            document.getElementById('comment-textarea').value = editor.exportFile();
+          };
+      });
 
       function preview(iframe) {
         var mathjax = iframe.contentWindow.MathJax;
@@ -108,8 +116,7 @@
       }
 
       editor.on('preview', function() {
-          // TODO apparently there is an editor.getElement('previewerIframe') option available... start using this some time
-          var iframe = document.getElementById('epiceditor').children[0].contentDocument.getElementById('epiceditor-previewer-frame');
+          var iframe = editor.getElement('previewerIframe');
 
           if (iframe.contentDocument.getElementById('previewer-mathjax') == null) {
             var script = iframe.contentDocument.createElement('script');
@@ -189,12 +196,15 @@
     <title>Stacks Project -- Tag lookup</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
 
+    <!--
+    TODO remove the comment
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       });
     </script>
+    -->
 
     <!-- TODO fix relative URL -->
     <script type="text/javascript" src="/EpicEditor/epiceditor/js/epiceditor.js"></script>
