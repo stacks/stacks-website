@@ -64,8 +64,33 @@
     }
   }
 
-  function print_comment_input() {
+  function print_comment_input($tag) {
 ?>
+  <h2>Add a comment</h2>
+  <p>Your email address will not be published. Required fields are marked.
+
+  <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
+
+  <!-- TODO nice mod_rewrite and better URI management (no root assumption) -->
+  <form name="comment" method="post" action="/post.php" id="comment">
+    <label for="name">Name<sup>*</sup>:</label>
+    <input type="text" name="name" id="name"><br>
+
+    <label for="mail">E-mail<sup>*</sup>:</label>
+    <input type="text" name="email" id="mail"><br>
+
+    <label for="website">Website:</label>
+    <input type="text" name="website" id="website"><br>
+
+    <label>Comment:</label>
+    <!--
+      TODO
+      - textarea should be visible by default (fix styling etc.)
+      - fire up EpicEditor, if this works: hide textarea
+      - add action on submit to transfer EpicEditor's content to textarea
+      this seems good: if EE loads the transfer will be no problem, without JS you get the plain textarea
+    -->
+    <textarea name="comment"></textarea>
     <div id="epiceditor"></div>
     <script type='text/javascript'>
       var editor = new EpicEditor(options).load();
@@ -78,10 +103,12 @@
         });
 
         var preview = iframe.contentDocument.getElementById('epiceditor-preview');
+        // TODO might it be better to queue this?
         setTimeout(function() { mathjax.Hub.Typeset(preview); }, 500);
       }
 
       editor.on('preview', function() {
+          // TODO apparently there is an editor.getElement('previewerIframe') option available... start using this some time
           var iframe = document.getElementById('epiceditor').children[0].contentDocument.getElementById('epiceditor-previewer-frame');
 
           if (iframe.contentDocument.getElementById('previewer-mathjax') == null) {
@@ -92,6 +119,8 @@
             iframe.contentDocument.head.appendChild(script);
           }
 
+          // wait a little for MathJax to initialize
+          // TODO might this be possible through a callback?
           if (iframe.contentWindow.MathJax == null) {
             setTimeout(function() { preview(iframe) }, 500);
           }
@@ -100,6 +129,12 @@
           };
       });
     </script>
+
+    <!-- TODO this is not safe, find a better solution -->
+    <input type="hidden" name="tag" value="<?php print($tag); ?>">
+
+    <input type="submit" value="Post comment">
+  </form>
 <?php
   }
 
@@ -182,16 +217,17 @@
     <p>For more information we refer to the <a href="#">tags explained</a> page.
 
 <?php
-  if (!empty($_GET['tag'])) {
-    if (is_valid_tag($_GET['tag'])) {
-      print_tag($_GET['tag']);
-      print_comments($_GET['tag']);
+  $tag = $_GET['tag'];
+  if (!empty($tag)) {
+    if (is_valid_tag($tag)) {
+      print_tag($tag);
+      print_comments($tag);
 
-      print_comment_input();
+      print_comment_input($tag);
     }
     else {
       print("    <h2>Error</h2>\n");
-      print("    The tag you provided (i.e. <var>" . $_GET['tag'] . "</var>) is not in the correct format.\n");
+      print("    The tag you provided (i.e. <var>" . $tag . "</var>) is not in the correct format.\n");
     }
   }
 ?>

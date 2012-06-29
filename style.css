@@ -46,3 +46,16 @@ pre {
 span.comment-date {
   float: right;
 }
+
+form#comment {
+}
+
+form#comment label {
+  width: 5em;
+  display: inline-block;
+  text-align: right;
+}
+
+form#comment input {
+  margin-bottom: 10px;
+}
