@@ -207,10 +207,10 @@
     </script>
 
     <!-- TODO fix relative URL -->
-    <script type="text/javascript" src="/EpicEditor/epiceditor/js/epiceditor.js"></script>
+    <script type="text/javascript" src="<?php print($directory . 'EpicEditor/epiceditor/js/epiceditor.js'); ?>"></script>
     <script type="text/javascript">
       var options = {
-        basePath: '/EpicEditor/epiceditor',
+        basePath: '<?php print($directory . 'EpicEditor/epiceditor'); ?>',
       }
     </script>
   </head>
