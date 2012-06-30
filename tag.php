@@ -93,7 +93,7 @@
   <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
 
   <!-- TODO nice mod_rewrite and better URI management (no root assumption) -->
-  <form name="comment" id="comment-form" action="<?php print($directory . 'post.php'); ?>" method="post">
+  <form name="comment" id="comment-form" action="<?php print(full_url('post.php')); ?>" method="post">
     <label for="name">Name<sup>*</sup>:</label>
     <input type="text" name="name" id="name"><br>
 
