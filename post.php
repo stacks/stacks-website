@@ -1,5 +1,5 @@
 <?php
-  error_reporting(E_ALL);
+  include('config.php');
 
   print("<pre>\n");
 
@@ -29,5 +29,5 @@
     echo $e->getMessage();
   }
   
-  header('Location: /tag/' . $_POST['tag']);
+  header('Location: ' . $directory . 'tag/' . $_POST['tag']);
 ?>

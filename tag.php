@@ -197,7 +197,7 @@
 <html>
   <head>
     <title>Stacks Project -- Tag lookup</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="stylesheet" type="text/css" href="<?php print($directory . 'style.css'); ?>">
 
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">
