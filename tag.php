@@ -1,5 +1,6 @@
 <!doctype html>
 <?php
+  include('config.php');
   include('functions.php');
 
   try {
@@ -72,7 +73,7 @@
   <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
 
   <!-- TODO nice mod_rewrite and better URI management (no root assumption) -->
-  <form name="comment" method="post" action="/post.php" id="comment-form">
+  <form name="comment" id="comment-form" action="<?php print($directory . 'post.php'); ?>" method="post">
     <label for="name">Name<sup>*</sup>:</label>
     <input type="text" name="name" id="name"><br>
 
@@ -218,7 +219,7 @@
 
     <h2>Look for a tag</h2>
 
-    <form action="/search.php" method="post">
+    <form action="<?php print($directory . 'search.php'); ?>" method="post">
       <label>Tag: <input type="text" name="tag"></label>
       <input type="submit" value="locate">
     </form>

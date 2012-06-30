@@ -1,3 +1,6 @@
 <?php
-header('Location: /tag/' . $_POST['tag']);
+include('config.php');
+
+// TODO fix mod_rewrite
+header('Location: ' . $directory . 'tag.php?tag=' . $_POST['tag']);
 ?>
