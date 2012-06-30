@@ -1,3 +1,4 @@
-RewriteEngine on
-RewriteRule ^tag$ tag.php [L]
-RewriteRule ^tag/(.+)$ tag.php?tag=$1 [L]
+RewriteEngine On
+RewriteBase /~pieter/algebraic_geometry/stacks-website/
+RewriteRule ^algebraic_geometry/stacks-website/tag$ tag.php [L]
+RewriteRule ^algebraic_geometry/stacks-website/tag/(.+)$ tag.php?tag=$1 [L]
