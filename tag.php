@@ -225,6 +225,9 @@
     <script type="text/javascript">
       var options = {
         basePath: '/EpicEditor/epiceditor',
+        file: {
+          autoSave: false,
+        },
       }
     </script>
   </head>
