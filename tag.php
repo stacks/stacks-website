@@ -45,6 +45,26 @@
     }
   }
 
+  function tag_exists($tag) {
+    assert(is_valid_tag($tag));
+
+    // TODO there must be better ways, COUNT in SQL, or at least not using foreach (also applies to get_tag)
+    global $db;
+    try {
+      $sql = 'SELECT tag FROM tags WHERE tag = "' . $tag . '"';
+      $result = $db->query($sql);
+
+      // if a row (hence unique) exists the tag exists
+      foreach ($result as $row) return true;
+      return false;
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+
+    return false;
+  }
+
   function get_tag($tag) {
     assert(is_valid_tag($tag));
 
@@ -162,29 +182,30 @@
     $results = get_tag($tag);
     
     print("    <h2>Tag: <var>" . $tag . "</var></h2>\n");
-    if (is_null($results)) {
-      print("    <p>This tag has not been found in the Stacks Project.\n");
-    }
-    else {
-      $parts = explode('.', $results['book_id']);
-      # the identification of the result relative to the local section
-      $relative_id = implode('.', array_slice($parts, 1));
-      # the identification of the (sub)section of the result
-      # TODO tags can be entire chapters, right? i.e. problem
-      $section_id = implode('.', array_slice($parts, 0, -1));
-      # the id of the chapter, the first part of the full identification
-      $chapter_id = $parts[0];
-      # all information about the current section TODO better naming might be appropriate
-      $information = get_section($section_id);
 
-      print("    <p>This tag has label <var>" . $results['label'] . "</var> and it references\n");
-      print("    <ul>\n");
-      print("      <li><a href='" . $information['filename'] . ".pdf#" . $tag . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
-      print("      <li><a href='book.pdf#" . $tag . "'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
-      print("    </ul>\n\n");
-      print("    The LaTeX code of the corresponding environment is:\n");
-      print("    <pre>\n" . $results['value'] . "\n    </pre>\n");
-    }
+    $parts = explode('.', $results['book_id']);
+    # the identification of the result relative to the local section
+    $relative_id = implode('.', array_slice($parts, 1));
+    # the identification of the (sub)section of the result
+    # TODO tags can be entire chapters, right? i.e. problem
+    $section_id = implode('.', array_slice($parts, 0, -1));
+    # the id of the chapter, the first part of the full identification
+    $chapter_id = $parts[0];
+    # all information about the current section TODO better naming might be appropriate
+    $information = get_section($section_id);
+
+    print("    <p>This tag has label <var>" . $results['label'] . "</var> and it references\n");
+    print("    <ul>\n");
+    print("      <li><a href='" . $information['filename'] . ".pdf#" . $tag . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
+    print("      <li><a href='book.pdf#" . $tag . "'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
+    print("    </ul>\n\n");
+    print("    The LaTeX code of the corresponding environment is:\n");
+    print("    <pre>\n" . $results['value'] . "\n    </pre>\n");
+  }
+
+  function print_missing_tag($tag) {
+    print("    <h2>Missing tag: <var>" . $tag . "</var></h2>\n");
+    print("    <p>The tag you requested does not exist.\n");
   }
 ?>
 <html>
@@ -225,10 +246,15 @@
       // from here on it's safe to ignore the fact it is user input
       $tag = $_GET['tag'];
 
-      print_tag($tag);
-      print_comments($tag);
+      if (tag_exists($tag)) {
+        print_tag($tag);
+        print_comments($tag);
 
-      print_comment_input($tag);
+        print_comment_input($tag);
+      }
+      else {
+        print_missing_tag($tag);
+      }
     }
     else {
       print("    <h2>Error</h2>\n");
@@ -236,5 +262,6 @@
     }
   }
 ?>
+    <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
   </body>
 </html>
