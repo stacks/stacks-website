@@ -245,6 +245,8 @@
 
 <?php
   if (!empty($_GET['tag'])) {
+    $_GET['tag'] = strtoupper($_GET['tag']);
+
     if (is_valid_tag($_GET['tag'])) {
       // from here on it's safe to ignore the fact it is user input
       $tag = $_GET['tag'];
