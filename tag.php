@@ -84,13 +84,6 @@
     <input type="text" name="website" id="website"><br>
 
     <label>Comment:</label>
-    <!--
-      TODO
-      - textarea should be visible by default (fix styling etc.)
-      - fire up EpicEditor, if this works: hide textarea
-      - add action on submit to transfer EpicEditor's content to textarea
-      this seems good: if EE loads the transfer will be no problem, without JS you get the plain textarea
-    -->
     <textarea name="comment" id="comment-textarea"></textarea>
     <div id="epiceditor"></div>
     <script type='text/javascript'>
@@ -141,7 +134,7 @@
     <!-- TODO this is not safe, find a better solution -->
     <input type="hidden" name="tag" value="<?php print($tag); ?>">
 
-    <input type="submit" value="Post comment">
+    <input type="submit" id="comment-submit" value="Post comment">
   </form>
 <?php
   }
