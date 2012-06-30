@@ -47,15 +47,19 @@ span.comment-date {
   float: right;
 }
 
-form#comment {
+form#comment-form {
 }
 
-form#comment label {
+form#comment-form label {
   width: 5em;
   display: inline-block;
   text-align: right;
 }
 
-form#comment input {
+form#comment-form input {
   margin-bottom: 10px;
+}
+
+form#comment-form input#comment-submit {
+  text-align: right;
 }
