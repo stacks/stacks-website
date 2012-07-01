@@ -31,8 +31,7 @@
   AUTHOR = "The {Stacks Project Authors}", 
   TITLE = "{\itshape Stacks Project}", 
   HOWPUBLISHED = "\url{http://math.columbia.edu/algebraic_geometry/stacks-git}", 
-}
-    </code></pre>
+}</code></pre>
     <p>Then you can use a construction such as
     <pre><code>\cite[Definition 0123]{stacks-project}</code></pre>
     to reference the tag. If you feel couragous you can go ahead and make 0123 a link to the stable url by the following construction
