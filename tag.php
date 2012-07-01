@@ -82,8 +82,8 @@
       <label for="mail">E-mail<sup>*</sup>:</label>
       <input type="text" name="email" id="mail"><br>
   
-      <label for="website">Website:</label>
-      <input type="text" name="website" id="website"><br>
+      <label for="site">Site:</label>
+      <input type="text" name="site" id="site"><br>
   
       <label>Comment:</label>
       <textarea name="comment" id="comment-textarea"></textarea>
@@ -151,7 +151,7 @@
       foreach ($comments as $comment) {
         print("    <cite class='comment-author'>" . $comment['author'] . "</cite>");
         if (!empty($comment['site'])) {
-          print(" (<a href='" . $comment['site'] . "'>website</a>)\n");
+          print(" (<a href='" . $comment['site'] . "'>Site</a>)\n");
         }
         print("    <span class='comment-date'>" . $comment['date'] . "</span>\n");
         print("    <blockquote>" . $comment['comment'] . "</blockquote>\n\n");

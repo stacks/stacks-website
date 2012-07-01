@@ -36,16 +36,16 @@
     print('You must supply a correctly formatted email address. Your current input is ' . $_POST['email']);
     exit();
   }
-  // first a little cleanup of the website field
-  if (!empty($_POST['website'])) {
+  // first a little cleanup of the site field
+  if (!empty($_POST['site'])) {
     // incorrect url, missing http: we prepend it and try again
-    if (!filter_var($_POST['website'], FILTER_VALIDATE_URL) and strpos('http', $_POST['website']) !== 0) {
-      $_POST['website'] = 'http://' . $_POST['website'];
+    if (!filter_var($_POST['site'], FILTER_VALIDATE_URL) and strpos('http', $_POST['site']) !== 0) {
+      $_POST['site'] = 'http://' . $_POST['site'];
     }
   }
-  // nonempty website, but the format is wrong
-  if (!empty($_POST['website']) and !filter_var($_POST['website'], FILTER_VALIDATE_URL)) {
-    print('You must supply a correctly formatted website. Your current input is ' . $_POST['website']);
+  // nonempty site, but the format is wrong
+  if (!empty($_POST['site']) and !filter_var($_POST['site'], FILTER_VALIDATE_URL)) {
+    print('You must supply a correctly formatted site. Your current input is ' . $_POST['site']);
   }
 
   // from here on it's safe to ignore the fact that it's user input
@@ -53,14 +53,14 @@
   $author = $_POST['name'];
   $email = $_POST['email'];
   $comment = $_POST['comment'];
-  $website = $_POST['website']; // TODO either call it website or site but now it's inconsistent
+  $site = $_POST['site'];
 
   try {
     $sql = $db->prepare('INSERT INTO comments (tag, author, comment, site) VALUES (:tag, :author, :comment, :site)');
     $sql->bindParam(':tag', $tag);
     $sql->bindParam(':author', $author);
     $sql->bindParam(':comment', $comment);
-    $sql->bindParam(':site', $website);
+    $sql->bindParam(':site', $site);
 
     $sql->execute();
   }
