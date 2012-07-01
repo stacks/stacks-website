@@ -1,12 +1,23 @@
 RewriteEngine On
 # current test version on paard.math.columbia.edu
-#RewriteBase /~pieter/algebraic_geometry/stacks-website/
-#RewriteRule ^algebraic_geometry/stacks-website/tag$ tag.php [L]
-#RewriteRule ^algebraic_geometry/stacks-website/tag/(.+)$ tag.php?tag=$1 [L]
+RewriteBase /~pieter/algebraic_geometry/stacks-website/
+RewriteRule ^algebraic_geometry/stacks-website$ index.php [L]
+RewriteRule ^algebraic_geometry/stacks-website/$ index.php [L]
+RewriteRule ^algebraic_geometry/stacks-website/about$ about.php [L]
+RewriteRule ^algebraic_geometry/stacks-website/contribute$ contribute.php [L]
+RewriteRule ^algebraic_geometry/stacks-website/tags$ tags.php [L]
+RewriteRule ^algebraic_geometry/stacks-website/tag$ tag.php [L]
+RewriteRule ^algebraic_geometry/stacks-website/tag/(.+)$ tag.php?tag=$1 [L]
 
 # local version
-RewriteRule ^about$ about.php [L]
-RewriteRule ^contribute$ contribute.php [L]
-RewriteRule ^tags$ tags.php [L]
-RewriteRule ^tag$ tag.php [L]
-RewriteRule ^tag/(.+)$ tag.php?tag=$1 [L]
+#RewriteRule ^about$ about.php [L]
+#RewriteRule ^contribute$ contribute.php [L]
+#RewriteRule ^tags$ tags.php [L]
+#RewriteRule ^tag$ tag.php [L]
+#RewriteRule ^tag/(.+)$ tag.php?tag=$1 [L]
+
+# Protect the current online version
+AuthUserFile /home/pieter/.htpasswd 
+AuthName "Test version of the new website for the Stacks project"
+AuthType Basic
+Require valid-user
