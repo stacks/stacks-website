@@ -8,6 +8,7 @@ body {
 	background-color: #ffffff;
 	color: #000000;
   max-width: 800px;
+  font-size: 16px;
 }
 
 a {
@@ -39,8 +40,41 @@ h2 {
 	color: #000000;
 }
 
+p#backlink {
+  background-color: #eee;
+  padding: 6px 8px;
+  margin: 10px -10px -10px -10px;
+}
+
+var {
+  font-style: normal;
+  font-family: monospace;
+}
+
+h2 var {
+  font-size: 1.2em;
+}
+
+ol li {
+  margin-bottom: .3em;
+  padding: .4em;
+}
+
+ol.shaded li:nth-child(odd) { 
+  background-color: #ddd;
+}
+
+ol.shaded li:nth-child(odd):hover { 
+  background-color: #bbb;
+}
+
+ol.shaded li:nth-child(even):hover { 
+  background-color: #bbb;
+}
+
 pre {
   margin-left: 10px;
+  font-size: .9em;
 }
 
 span.comment-date {

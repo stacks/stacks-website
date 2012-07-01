@@ -1,4 +1,12 @@
 RewriteEngine On
-RewriteBase /~pieter/algebraic_geometry/stacks-website/
-RewriteRule ^algebraic_geometry/stacks-website/tag$ tag.php [L]
-RewriteRule ^algebraic_geometry/stacks-website/tag/(.+)$ tag.php?tag=$1 [L]
+# current test version on paard.math.columbia.edu
+#RewriteBase /~pieter/algebraic_geometry/stacks-website/
+#RewriteRule ^algebraic_geometry/stacks-website/tag$ tag.php [L]
+#RewriteRule ^algebraic_geometry/stacks-website/tag/(.+)$ tag.php?tag=$1 [L]
+
+# local version
+RewriteRule ^about$ about.php [L]
+RewriteRule ^contribute$ contribute.php [L]
+RewriteRule ^tags$ tags.php [L]
+RewriteRule ^tag$ tag.php [L]
+RewriteRule ^tag/(.+)$ tag.php?tag=$1 [L]
