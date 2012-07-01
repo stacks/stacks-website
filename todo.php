@@ -60,7 +60,7 @@ of transcendence degree 1 over $k$.
     <!-- TODO parse the project -->
 
     <h2>Maintenance</h2>
-    <p><em>Contact the maintainer at the email address above before attempting these!</em>
+    <p><strong>Contact the maintainer at the email address above before attempting these!</strong>
     <ol>
       <li>Split algebra chapter in two (this is hard to do without messing up the tags system).
       <li>Improve the Makefile.

@@ -44,14 +44,14 @@
     <h2>Keeping in sync with <var>paard.math.columbia.edu</var></h2>
     <p>If you are worried about keeping in sync with the repository at <var>paard.math.columbia.edu</var> you can do the following steps
     <pre><code>git checkout master
-    git pull
-    git checkout newbranch
-    git rebase master</code></pre>
+git pull
+git checkout newbranch
+git rebase master</code></pre>
     
     <p>The result of these steps is that the <var>master</var> branch is synced with the <var>master</var> branch at <var>paard.math.columbia.edu</var> and that your branch <var>newbranch</var> is rebased on this synced version of the <var>master</var> branch. Actually the last step may lead to <em>conflicts</em>. This means that you have edited some lines that have also been changed in the origin repository (but in a different way). Whenever this
     happens you have to <em>resolve</em> the conflicts. This is done by editing the affected files <var>A</var>, <var>B</var>, ... (you can find them by grepping for <code>&lt;&lt;&lt;&lt;</code> and <code>&gt;&gt;&gt;&gt;</code>), editing the troublesome spots in <var>A</var>, <var>B</var>, ..., marking the file done by
     <pre><code>git add A
-    git add B</code></pre>
+git add B</code></pre>
     and then continuing with the rebase procedure typing
     <pre><code>git rebase --continue</code></pre>
     until done. Create and email patches using <code>git format-patch</code> as explained above. (In fact this is the reason for using <code>git rebase</code> instead of <code>git merge</code>.)</p>
