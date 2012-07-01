@@ -54,6 +54,21 @@ h2 {
 	color: #000000;
 }
 
+h2:hover {
+	background-color: #c9c8c1;
+}
+
+h2 a {
+  color: black;
+  text-decoration: none;
+  display: block;
+}
+
+h2 a:visited {
+  color: black;
+}
+
+
 p#backlink {
   background-color: #eee;
   padding: 6px 8px;
