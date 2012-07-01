@@ -230,7 +230,7 @@
     </script>
   </head>
   <body>
-    <h1>The Stacks Project</h1>
+    <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
 
     <h2>Look for a tag</h2>
 

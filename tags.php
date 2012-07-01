@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <h1>The Stacks Project</h1>
+    <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
 
     <h2>The tag system</h2>
     <p>Each tag refers to a unique lemma, theorem, etc. in order for this project to be referenceable. These tags don't change even if the lemma (or theorem, etc.) moves within the text.
