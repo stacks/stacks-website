@@ -24,6 +24,8 @@
     exit();
   }
 
+  print_r($_POST);
+
   // from here on it's safe to ignore the fact that it's user input
   $tag = $_POST['tag'];
   $author = $_POST['name'];
@@ -32,9 +34,13 @@
   $website = $_POST['website']; // TODO either call it website or site but now it's inconsistent
 
   try {
-    $sql = 'INSERT INTO comments (tag, author, comment, site) VALUES ("' . $tag . '", "' . $author . '", "' . $comment . '", "' . $website . '")';
-    print($sql);
-    $db->exec($sql) or die(print_r($db->errorInfo(), true));
+    $sql = $db->prepare('INSERT INTO comments (tag, author, comment, site) VALUES (:tag, :author, :comment, :site)');
+    $sql->bindParam(':tag', $tag);
+    $sql->bindParam(':author', $author);
+    $sql->bindParam(':comment', $comment);
+    $sql->bindParam(':site', $website);
+
+    $sql->execute();
   }
   catch(PDOException $e) {
     echo $e->getMessage();
