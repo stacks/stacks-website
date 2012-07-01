@@ -87,75 +87,74 @@
 
   function print_comment_input($tag) {
 ?>
-  <h2>Add a comment</h2>
-  <p>Your email address will not be published. Required fields are marked.
-
-  <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
-
-  <!-- TODO nice mod_rewrite and better URI management (no root assumption) -->
-  <form name="comment" id="comment-form" action="<?php print(full_url('post.php')); ?>" method="post">
-    <label for="name">Name<sup>*</sup>:</label>
-    <input type="text" name="name" id="name"><br>
-
-    <label for="mail">E-mail<sup>*</sup>:</label>
-    <input type="text" name="email" id="mail"><br>
-
-    <label for="website">Website:</label>
-    <input type="text" name="website" id="website"><br>
-
-    <label>Comment:</label>
-    <textarea name="comment" id="comment-textarea"></textarea>
-    <div id="epiceditor"></div>
-    <script type='text/javascript'>
-      var editor = new EpicEditor(options).load(function() {
-          // TODO find out why this must be a callback in the loader, editor.on('load', ...) doesn't seem to be working?!
-          // hide textarea, EpicEditor will take over
-          document.getElementById('comment-textarea').style.display = 'none';
-          // when the form is submitted copy the contents from EpicEditor to textarea
-          document.getElementById('comment-form').onsubmit = function() {
-            document.getElementById('comment-textarea').value = editor.exportFile();
-          };
-      });
-
-      function preview(iframe) {
-        var mathjax = iframe.contentWindow.MathJax;
-
-        mathjax.Hub.Config({
-          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    <h2>Add a comment</h2>
+    <p>Your email address will not be published. Required fields are marked.
+  
+    <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
+  
+    <form name="comment" id="comment-form" action="<?php print(full_url('post.php')); ?>" method="post">
+      <label for="name">Name<sup>*</sup>:</label>
+      <input type="text" name="name" id="name"><br>
+  
+      <label for="mail">E-mail<sup>*</sup>:</label>
+      <input type="text" name="email" id="mail"><br>
+  
+      <label for="website">Website:</label>
+      <input type="text" name="website" id="website"><br>
+  
+      <label>Comment:</label>
+      <textarea name="comment" id="comment-textarea"></textarea>
+      <div id="epiceditor"></div>
+      <script type='text/javascript'>
+        var editor = new EpicEditor(options).load(function() {
+            // TODO find out why this must be a callback in the loader, editor.on('load', ...) doesn't seem to be working?!
+            // hide textarea, EpicEditor will take over
+            document.getElementById('comment-textarea').style.display = 'none';
+            // when the form is submitted copy the contents from EpicEditor to textarea
+            document.getElementById('comment-form').onsubmit = function() {
+              document.getElementById('comment-textarea').value = editor.exportFile();
+            };
         });
-
-        var preview = iframe.contentDocument.getElementById('epiceditor-preview');
-        // TODO might it be better to queue this?
-        setTimeout(function() { mathjax.Hub.Typeset(preview); }, 500);
-      }
-
-      editor.on('preview', function() {
-          var iframe = editor.getElement('previewerIframe');
-
-          if (iframe.contentDocument.getElementById('previewer-mathjax') == null) {
-            var script = iframe.contentDocument.createElement('script');
-            script.type = 'text/javascript';
-            script.src = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML';
-            script.setAttribute('id', 'previewer-mathjax');
-            iframe.contentDocument.head.appendChild(script);
-          }
-
-          // wait a little for MathJax to initialize
-          // TODO might this be possible through a callback?
-          if (iframe.contentWindow.MathJax == null) {
-            setTimeout(function() { preview(iframe) }, 500);
-          }
-          else {
-            preview(iframe);
-          };
-      });
-    </script>
-
-    <!-- TODO this is not safe, find a better solution -->
-    <input type="hidden" name="tag" value="<?php print($tag); ?>">
-
-    <input type="submit" id="comment-submit" value="Post comment">
-  </form>
+  
+        function preview(iframe) {
+          var mathjax = iframe.contentWindow.MathJax;
+  
+          mathjax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+          });
+  
+          var preview = iframe.contentDocument.getElementById('epiceditor-preview');
+          // TODO might it be better to queue this?
+          setTimeout(function() { mathjax.Hub.Typeset(preview); }, 500);
+        }
+  
+        editor.on('preview', function() {
+            var iframe = editor.getElement('previewerIframe');
+  
+            if (iframe.contentDocument.getElementById('previewer-mathjax') == null) {
+              var script = iframe.contentDocument.createElement('script');
+              script.type = 'text/javascript';
+              script.src = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML';
+              script.setAttribute('id', 'previewer-mathjax');
+              iframe.contentDocument.head.appendChild(script);
+            }
+  
+            // wait a little for MathJax to initialize
+            // TODO might this be possible through a callback?
+            if (iframe.contentWindow.MathJax == null) {
+              setTimeout(function() { preview(iframe) }, 500);
+            }
+            else {
+              preview(iframe);
+            };
+        });
+      </script>
+  
+      <!-- TODO this is not safe, find a better solution -->
+      <input type="hidden" name="tag" value="<?php print($tag); ?>">
+  
+      <input type="submit" id="comment-submit" value="Post comment">
+    </form>
 <?php
   }
 
@@ -164,7 +163,7 @@
 
     $comments = get_comments($tag);
     if (count($comments) == 0) {
-      print("    <p>There are no comments yet for this tag.</p>\n");
+      print("    <p>There are no comments yet for this tag.</p>\n\n");
     }
     else {
       foreach ($comments as $comment) {
@@ -220,13 +219,12 @@
       });
     </script>
 
-    <!-- TODO fix relative URL -->
-    <script type="text/javascript" src="/EpicEditor/epiceditor/js/epiceditor.js"></script>
+    <script type="text/javascript" src="<?php print(full_url('EpicEditor/epiceditor/js/epiceditor.js')); ?>"></script>
     <script type="text/javascript">
       var options = {
-        basePath: '/EpicEditor/epiceditor',
+        basePath: '<?php print(full_url('EpicEditor/epiceditor')); ?>',
         file: {
-          autoSave: false,
+          name: '<?php print(htmlspecialchars($_GET['tag'])); ?>',
         },
       }
     </script>
@@ -236,7 +234,7 @@
 
     <h2>Look for a tag</h2>
 
-    <form action="<?php print($directory . 'search.php'); ?>" method="post">
+    <form action="<?php print(full_url('search.php')); ?>" method="post">
       <label>Tag: <input type="text" name="tag"></label>
       <input type="submit" value="locate">
     </form>
