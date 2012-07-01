@@ -1,8 +1,6 @@
 <?php
   include('config.php');
 
-  print("<pre>\n");
-
   # TODO database should be located outside of the web directory
   try {
     $db = new PDO('sqlite:stacks.sqlite');
@@ -23,8 +21,6 @@
     print('You should supply your email address.');
     exit();
   }
-
-  print_r($_POST);
 
   // from here on it's safe to ignore the fact that it's user input
   $tag = $_POST['tag'];
