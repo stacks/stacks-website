@@ -2,5 +2,5 @@
   include('config.php');
   
   // TODO fix mod_rewrite
-  header('Location: ' . $directory . 'tag/' . $_POST['tag']);
+  header('Location: ' . full_url('tag/') . $_POST['tag']);
 ?>

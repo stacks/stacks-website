@@ -16,9 +16,11 @@
     global $db;
     $comments = array();
     try {
-      $sql = 'SELECT id, tag, author, date, comment, site FROM comments WHERE tag = "' . $tag . '"';
-      foreach ($db->query($sql) as $row) {
-        array_push($comments, $row);
+      $sql = $db->prepare('SELECT id, tag, author, date, comment, site FROM comments WHERE tag = :tag');
+      $sql->bindParam(':tag', $tag);
+
+      if ($sql->execute()) {
+        while ($row = $sql->fetch()) array_push($comments, $row);
       }
     }
     catch(PDOException $e) {
@@ -34,9 +36,11 @@
     global $db;
 
     try {
-      $sql = 'SELECT number, title, filename FROM sections WHERE number = "' . $id . '"';
-      foreach ($db->query($sql) as $row) {
-        return $row;
+      $sql = $db->prepare('SELECT number, title, filename FROM sections WHERE number = :id');
+      $sql->bindParam(':id', $id);
+
+      if ($sql->execute()) {
+        while ($row = $sql->fetch()) return $row;
       }
       # TODO error handling
     }
@@ -51,11 +55,12 @@
     // TODO there must be better ways, COUNT in SQL, or at least not using foreach (also applies to get_tag)
     global $db;
     try {
-      $sql = 'SELECT tag FROM tags WHERE tag = "' . $tag . '"';
-      $result = $db->query($sql);
+      $sql = $db->prepare('SELECT tag FROM tags WHERE tag = :tag');
+      $sql->bindParam(':tag', $tag);
 
-      // if a row (hence unique) exists the tag exists
-      foreach ($result as $row) return true;
+      if ($sql->execute()) {
+        while ($row = $sql->fetch()) return true;
+      }
       return false;
     }
     catch(PDOException $e) {
@@ -70,14 +75,13 @@
 
     global $db;
     try {
-      $sql = 'SELECT tag, label, file, chapter_page, book_page, book_id, value FROM tags WHERE tag = "' . $tag . '"';
-      $result = $db->query($sql);
+      $sql = $db->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value FROM tags WHERE tag = :tag');
+      $sql->bindParam(':tag', $tag);
 
-      // return first (= only) row of the result
-      foreach ($result as $row) {
-        return $row;
+      if ($sql->execute()) {
+        // return first (= only) row of the result
+        while ($row = $sql->fetch()) return $row;
       }
-      // no rows found
       return null;
     }
     catch(PDOException $e) {
