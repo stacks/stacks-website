@@ -23,16 +23,30 @@
   }
   // empty author
   if (empty($_POST['name'])) {
-    print('You should supply your name.');
+    print('You must supply your name.');
     exit();
   }
   // empty email
   if (empty($_POST['email'])) {
-    print('You should supply your email address.');
+    print('You must supply your email address. Remark that it will not be posted.');
     exit();
   }
-  // TODO validate email
-  // TODO validate url
+  // nonempty email, but the format is wrong
+  if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    print('You must supply a correctly formatted email address. Your current input is ' . $_POST['email']);
+    exit();
+  }
+  // first a little cleanup of the website field
+  if (!empty($_POST['website'])) {
+    // incorrect url, missing http: we prepend it and try again
+    if (!filter_var($_POST['website'], FILTER_VALIDATE_URL) and strpos('http', $_POST['website']) !== 0) {
+      $_POST['website'] = 'http://' . $_POST['website'];
+    }
+  }
+  // nonempty website, but the format is wrong
+  if (!empty($_POST['website']) and !filter_var($_POST['website'], FILTER_VALIDATE_URL)) {
+    print('You must supply a correctly formatted website. Your current input is ' . $_POST['website']);
+  }
 
   // from here on it's safe to ignore the fact that it's user input
   $tag = $_POST['tag'];
@@ -54,5 +68,5 @@
     echo $e->getMessage();
   }
   
-  header('Location: ' . $directory . 'tag/' . $_POST['tag']);
+  header('Location: ' . full_url('tag/' . $_POST['tag']));
 ?>
