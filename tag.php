@@ -215,6 +215,7 @@
   <head>
     <title>Stacks Project -- Tag lookup</title>
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
 
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">
