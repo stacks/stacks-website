@@ -49,27 +49,6 @@
     }
   }
 
-  function tag_exists($tag) {
-    assert(is_valid_tag($tag));
-
-    // TODO there must be better ways, COUNT in SQL, or at least not using foreach (also applies to get_tag)
-    global $db;
-    try {
-      $sql = $db->prepare('SELECT tag FROM tags WHERE tag = :tag');
-      $sql->bindParam(':tag', $tag);
-
-      if ($sql->execute()) {
-        while ($row = $sql->fetch()) return true;
-      }
-      return false;
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
-
-    return false;
-  }
-
   function get_tag($tag) {
     assert(is_valid_tag($tag));
 
@@ -154,7 +133,6 @@
         });
       </script>
   
-      <!-- TODO this is not safe, find a better solution -->
       <input type="hidden" name="tag" value="<?php print($tag); ?>">
   
       <input type="submit" id="comment-submit" value="Post comment">

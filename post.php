@@ -1,5 +1,6 @@
 <?php
   include('config.php');
+  include('functions.php');
 
   # TODO database should be located outside of the web directory
   try {
@@ -10,7 +11,16 @@
   }
 
   // TODO all kinds of validation and escaping
-
+  // if this triggers the user is messing with the POST request
+  if (!is_valid_tag($_POST['tag'])) {
+    print('The tag your browser supplied in the request is not in a valid format.');
+    exit();
+  }
+  // the tag is not present in the database, when we start handling removed tags this will have to change
+  if (!tag_exists($_POST['tag'])) {
+    print('The tag you are trying to post a comment on does not exist.');
+    exit();
+  }
   // empty author
   if (empty($_POST['name'])) {
     print('You should supply your name.');
@@ -21,6 +31,8 @@
     print('You should supply your email address.');
     exit();
   }
+  // TODO validate email
+  // TODO validate url
 
   // from here on it's safe to ignore the fact that it's user input
   $tag = $_POST['tag'];
