@@ -1,4 +1,5 @@
 import sqlite3
+import config
 from functions import *
 
 # read all .aux files and generate a dictionary containing all labels and
@@ -84,10 +85,10 @@ def import_tags(filename, labels):
   
     insert_tag(tag, (label, info[0], info[2][1], info[1][1], info[1][0]))
 
-# TODO move this to a config file
-path = 'tex/tags/tmp/'
-database = 'stacks.sqlite'
 
-connection = sqlite3.connect(database)
+connection = sqlite3.connect(config.database)
 
-import_tags('tex/tags/tags', get_labels_from_source(path))
+import_tags(config.tags_file, get_labels_from_source(config.tmp_folder))
+
+connection.commit()
+connection.close()

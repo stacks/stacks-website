@@ -64,7 +64,7 @@ def assign_label_text(label, text):
 		exit(1)
 	label_texts[label] = text
 
-path = 'tex/'
+path = '../tex/'
 
 # Get all tags
 tags = get_tags(path)
@@ -296,21 +296,9 @@ for name in lijstje:
 	tex_file.close()
 
 
-# Prepare directory for latex code snippets
-code_dir = path + '/tags/tmp/code'
-import os
-if not os.path.exists(code_dir):
-	os.mkdir(code_dir)
-else:
-	print "Warning: tags/tmp/code not empty!"
-
 # ZZZZ is a special case
 text = 'Tag ZZZZ. If a result has been labeled with tag ZZZZ<br>\n'
 text = text + 'this means the result has not been given a stable tag yet.'
-filename = code_dir + '/ZZZZ'
-code_file = open(filename, 'w')
-code_file.write(text)
-code_file.close()
 
 
 def update_text(tag, text):
@@ -322,7 +310,7 @@ def update_text(tag, text):
     print "An error occurred:", e.args[0]
 
 
-connection = sqlite3.connect('stacks.sqlite')
+connection = sqlite3.connect(config.database)
 
 # Print link to location in chapter
 n = 0

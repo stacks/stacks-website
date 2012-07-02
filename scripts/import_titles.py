@@ -42,12 +42,9 @@ def import_titles(path):
     insert_title(section[1], section[2], find_file_for_section(titles, sections, section[1]))
   
 
-path = 'tex/tags/tmp/'
-database = 'stacks.sqlite'
+connection = sqlite3.connect(config.database)
 
-connection = sqlite3.connect(database)
-
-import_titles(path)
+import_titles(config.tmp_folder)
 
 connection.commit()
 connection.close()
