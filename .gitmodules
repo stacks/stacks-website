@@ -4,3 +4,6 @@
 [submodule "EpicEditor"]
 	path = EpicEditor
 	url = git@github.com:OscarGodson/EpicEditor
+[submodule "php-markdown"]
+	path = php-markdown
+	url = https://github.com/michelf/php-markdown.git
