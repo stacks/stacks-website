@@ -4,7 +4,7 @@
 
   include('config.php');
   include('functions.php');
-  include('php-markdown/markdown.php');
+  include('php-markdown-extra-math/markdown.php');
 
   try {
     $db = new PDO('sqlite:stacks.sqlite');
