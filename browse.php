@@ -18,7 +18,7 @@
         <td><?php print($chapter); ?></td> 
 <?php
     if ($chapter == 'Auto generated index')
-      print('        <td></td>\n');
+      print("        <td></td>\n");
     else
       print("        <td><a href=\"" . full_url('tex/' . $filename . '.pdf') . "\"><code>pdf</code></a></td>\n");
 ?>
@@ -65,6 +65,8 @@
           print_part($parts[$row['title']]);
         }
 
+        // change LaTeX escaping to HTML escaping
+        $row['title'] = str_replace("\'E", "&Eacute;", $row['title']);
         print_chapter($row['title'], $row['filename']);
       }
     }

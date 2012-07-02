@@ -4,6 +4,7 @@ RewriteEngine On
 #RewriteRule ^algebraic_geometry/stacks-website$ index.php [L]
 #RewriteRule ^algebraic_geometry/stacks-website/$ index.php [L]
 #RewriteRule ^algebraic_geometry/stacks-website/about$ about.php [L]
+#RewriteRule ^algebraic_geometry/stacks-website/browse$ browse.php [L]
 #RewriteRule ^algebraic_geometry/stacks-website/contribute$ contribute.php [L]
 #RewriteRule ^algebraic_geometry/stacks-website/git-howto$ git-howto.php [L]
 #RewriteRule ^algebraic_geometry/stacks-website/tags$ tags.php [L]
@@ -13,6 +14,7 @@ RewriteEngine On
 
 # local version
 RewriteRule ^about$ about.php [L]
+RewriteRule ^browse$ browse.php [L]
 RewriteRule ^contribute$ contribute.php [L]
 RewriteRule ^git-howto$ git-howto.php [L]
 RewriteRule ^tags$ tags.php [L]
