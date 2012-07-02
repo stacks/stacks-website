@@ -20,7 +20,7 @@
     if ($chapter == 'Auto generated index')
       print("        <td></td>\n");
     else
-      print("        <td><a href=\"" . full_url('tex/' . $filename . '.pdf') . "\"><code>pdf</code></a></td>\n");
+      print("        <td><a href=\"" . full_url('tex/' . $filename . '.pdf') . "\"><code>tex</code></a></td>\n");
 ?>
         <td><a href="<?php print(full_url('tex/' . $filename . '.pdf')); ?>"><code>pdf</code></a></td> 
         <td><a href="<?php print(full_url('tex/' . $filename . '.dvi')); ?>"><code>dvi</code></a></td> 
@@ -57,18 +57,23 @@
     // mapping the first chapter of each part to the title of the part
     $parts = array('Introduction' => 'Preliminaries', 'Schemes' => 'Schemes', 'Algebraic Spaces' => 'Algebraic Spaces', 'Stacks' => 'Algebraic Stacks', 'Coding Style' => 'Miscellany');
 
-    $sql = $db->prepare('SELECT number, title, filename FROM sections WHERE number NOT LIKE "%.%" ORDER BY CAST(number AS INTEGER)');
-    if ($sql->execute()) {
-      while ($row = $sql->fetch()) {
-        // check wheter it's the first chapter, insert row with part if necessary
-        if (array_key_exists($row['title'], $parts)) {
-          print_part($parts[$row['title']]);
-        }
+    try {
+      $sql = $db->prepare('SELECT number, title, filename FROM sections WHERE number NOT LIKE "%.%" ORDER BY CAST(number AS INTEGER)');
+      if ($sql->execute()) {
+        while ($row = $sql->fetch()) {
+          // check wheter it's the first chapter, insert row with part if necessary
+          if (array_key_exists($row['title'], $parts)) {
+            print_part($parts[$row['title']]);
+          }
 
-        // change LaTeX escaping to HTML escaping
-        $row['title'] = str_replace("\'E", "&Eacute;", $row['title']);
-        print_chapter($row['title'], $row['filename']);
+          // change LaTeX escaping to HTML escaping
+          $row['title'] = str_replace("\'E", "&Eacute;", $row['title']);
+          print_chapter($row['title'], $row['filename']);
+        }
       }
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
     }
 ?>
     </table>
