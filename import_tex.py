@@ -1,6 +1,7 @@
 from sys import exit
 import sqlite3
 from legacy_functions import *
+import config
 
 """
 This is a modification of the original make_locate.py. It just (ab)uses the
@@ -73,8 +74,6 @@ titles = all_titles(path)
 
 lijstje = list_text_files(path)
 
-print titles
-
 # Get locations in chapters
 list_dict = {}
 for name in lijstje:
@@ -98,7 +97,7 @@ def make_links(line, name):
 		else:
 			label = ref
 		if label in label_tags:
-			new_line = new_line + '<a href=\"locate.php?tag=' + label_tags[label] + '\">' + ref + '</a>'
+			new_line = new_line + '<a href="' + config.full_url('tag/' + label_tags[label]) + '\">' + ref + '</a>'
 		else:
 			new_line = new_line + ref
 		n = line.find("\\ref{", m)
@@ -331,8 +330,8 @@ while n < len(tags):
   tag = tags[n][0]
   label = tags[n][1]
   if not label in label_loc:
-    print "Warning: missing location for tag " + tag
-    print "and label " + label
+    print "Warning: missing location for tag" + tag
+    print "and label" + label
     n = n + 1
     continue
   split = split_label(label)
@@ -344,9 +343,9 @@ while n < len(tags):
     text = text + label_texts[label]
 
     if label in proof_texts:
-      text = text + proof_texts[label]
+      text = text + '\n' + proof_texts[label]
 
-  print "Inserting text for tag ", tag
+  print "Inserting text for tag", tag
   update_text(tag, text)
 
   n = n + 1
