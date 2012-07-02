@@ -107,13 +107,21 @@ pre {
 }
 
 div.comment {
-  border-bottom: 1px solid #eee;
-  margin-bottom: 2em;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 1em;
 }
 
 div.comment span.comment-date {
   float: right;
   font-size: 80%;
+}
+
+div.comment span.comment-date a {
+  text-decoration: none;
+}
+
+div.comment span.comment-date a:hover {
+  text-decoration: underline;
 }
 
 form#comment-form {

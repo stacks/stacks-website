@@ -153,13 +153,14 @@
     else {
       foreach ($comments as $comment) {
         print("    <div class='comment'>\n");
+        print("      <a name='comment-" . $comment['id'] . "'></a>\n");
         // TODO htmlentities
-        print("      <cite class='comment-author'>" . $comment['author'] . "</cite>");
+        print("      Comment by <cite class='comment-author'>" . $comment['author'] . "</cite>");
         if (!empty($comment['site'])) {
           print(" (<a href='" . $comment['site'] . "'>site</a>)\n");
         }
         $date = date_create($comment['date'], timezone_open('GMT'));
-        print("      <span class='comment-date'>" . date_format($date, 'F j, Y \a\t g:i a e') . "</span>\n");
+        print("      <span class='comment-date'><a href='#comment-" . $comment['id'] . "'>" . date_format($date, 'F j, Y \a\t g:i a e') . "</a></span>\n");
         print("      <blockquote>" . Markdown($comment['comment']) . "</blockquote>\n");
         print("    </div>\n\n");
       }
