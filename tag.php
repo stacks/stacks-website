@@ -1,5 +1,7 @@
 <!doctype html>
 <?php
+  error_reporting(E_ALL);
+
   include('config.php');
   include('functions.php');
   include('php-markdown/markdown.php');
@@ -150,12 +152,16 @@
     }
     else {
       foreach ($comments as $comment) {
-        print("    <cite class='comment-author'>" . $comment['author'] . "</cite>");
+        print("    <div class='comment'>\n");
+        // TODO htmlentities
+        print("      <cite class='comment-author'>" . $comment['author'] . "</cite>");
         if (!empty($comment['site'])) {
-          print(" (<a href='" . $comment['site'] . "'>Site</a>)\n");
+          print(" (<a href='" . $comment['site'] . "'>site</a>)\n");
         }
-        print("    <span class='comment-date'>" . $comment['date'] . "</span>\n");
-        print("    <blockquote>" . Markdown($comment['comment']) . "</blockquote>\n\n");
+        $date = date_create($comment['date'], timezone_open('GMT'));
+        print("      <span class='comment-date'>" . date_format($date, 'F j, Y \a\t g:i a e') . "</span>\n");
+        print("      <blockquote>" . Markdown($comment['comment']) . "</blockquote>\n");
+        print("    </div>\n\n");
       }
     }
   }

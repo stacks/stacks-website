@@ -106,8 +106,14 @@ pre {
   font-size: .9em;
 }
 
-span.comment-date {
+div.comment {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 2em;
+}
+
+div.comment span.comment-date {
   float: right;
+  font-size: 80%;
 }
 
 form#comment-form {
