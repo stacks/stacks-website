@@ -36,3 +36,58 @@ def get_titles(path):
     titles[tex_file[0:-4]] = get_title(path + tex_file)
 
   return titles
+
+# get the information from a \contentsline macro in a .toc file
+def parse_contentsline(contentsline):
+  parts = contentsline.split('}{')
+
+  # sanitize first element to determine type
+  parts[0] = parts[0][15:]
+  # remove clutter
+  parts = map(lambda part: part.strip('{}'), parts)
+
+  # TODO document results
+  return [parts[0], parts[2], parts[3], parts[4]]
+
+# read and extract all information from a .toc file
+def parse_book_toc(filename):
+  toc = open(filename, 'r')
+  sections = [parse_contentsline(line)[0:4] for line in toc]
+  toc.close()
+
+  return sections
+
+# get the information from a \newlabel macro in a .aux file
+def parse_newlabel(newlabel):
+  parts = newlabel.split('}{')
+
+  # get the actual label
+  parts[0] = parts[0][10:]
+  # remove clutter
+  parts = map(lambda part: part.strip('{}'), parts)
+
+  # TODO document results
+  return parts
+
+# read and extract all information from a .aux file
+def parse_aux(filename):
+  aux = open(filename)
+
+  labels = {}
+
+  for line in aux:
+    # not interesting, go to next line
+    if not line.startswith("\\newlabel{"):
+      continue
+
+    parts = parse_newlabel(line)
+
+    # not an actual label, just LaTeX layout bookkeeping, go to next line
+    if len(parts) == 2:
+      continue
+    # it is a label, add it with what we already know about it
+    else:
+      labels[parts[0]] = (parts[1], parts[2])
+
+  return labels
+
