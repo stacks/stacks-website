@@ -2,6 +2,7 @@
 <?php
   include('config.php');
   include('functions.php');
+  include('php-markdown/markdown.php');
 
   try {
     $db = new PDO('sqlite:stacks.sqlite');
@@ -154,7 +155,7 @@
           print(" (<a href='" . $comment['site'] . "'>Site</a>)\n");
         }
         print("    <span class='comment-date'>" . $comment['date'] . "</span>\n");
-        print("    <blockquote>" . $comment['comment'] . "</blockquote>\n\n");
+        print("    <blockquote>" . Markdown($comment['comment']) . "</blockquote>\n\n");
       }
     }
   }
