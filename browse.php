@@ -20,7 +20,7 @@
     if ($chapter == 'Auto generated index')
       print("        <td></td>\n");
     else
-      print("        <td><a href=\"" . full_url('tex/' . $filename . '.pdf') . "\"><code>tex</code></a></td>\n");
+      print("        <td><a href=\"" . full_url('tex/' . $filename . '.tex') . "\"><code>tex</code></a></td>\n");
 ?>
         <td><a href="<?php print(full_url('tex/' . $filename . '.pdf')); ?>"><code>pdf</code></a></td> 
         <td><a href="<?php print(full_url('tex/' . $filename . '.dvi')); ?>"><code>dvi</code></a></td> 

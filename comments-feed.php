@@ -1,6 +1,5 @@
 <?php
-  error_reporting(E_ALL);
-  
+  header('Content-type: application/rss+xml');
   include('config.php');
   include('php-markdown/markdown.php');
 

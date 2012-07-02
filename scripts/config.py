@@ -8,10 +8,10 @@ directory = '/'
 database = '../stacks.sqlite'
 
 # location of the tags file
-tags_file = '../tex/tags/tag'
+tags_file = '../tex/tags/tags'
 
 # location of the temporary folder
-tmp_folder = '../tex/tags/tmp'
+tmp_folder = '../tex/tags/tmp/'
 
 def full_url(path):
   return directory + path

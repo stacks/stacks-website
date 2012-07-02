@@ -1,4 +1,5 @@
 import sqlite3
+import config
 from functions import *
 
 # check whether a (sub)section number exists in the database
