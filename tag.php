@@ -161,7 +161,7 @@
         }
         $date = date_create($comment['date'], timezone_open('GMT'));
         print("      <span class='comment-date'><a href='#comment-" . $comment['id'] . "'>" . date_format($date, 'F j, Y \a\t g:i a e') . "</a></span>\n");
-        print("      <blockquote>" . Markdown($comment['comment']) . "</blockquote>\n");
+        print("      <blockquote>" . str_replace("\xA0", ' ', Markdown($comment['comment'])) . "</blockquote>\n");
         print("    </div>\n\n");
       }
     }
