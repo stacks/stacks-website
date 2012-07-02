@@ -37,6 +37,18 @@ def get_titles(path):
 
   return titles
 
+# recursively find the filename of a section
+def find_file_for_section(titles, sections, number):
+  for section in sections:
+    # found the correct section
+    if section[1] == number:
+      # it is a chapter, we can look it up
+      if len(number.split('.')) == 1:
+        return invert_dict(titles)[section[2]]
+      # recurse
+      else:
+        return find_file_for_section(titles, sections, '.'.join(number.split('.')[0:-1]))
+
 # get the information from a \contentsline macro in a .toc file
 def parse_contentsline(contentsline):
   parts = contentsline.split('}{')

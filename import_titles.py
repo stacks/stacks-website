@@ -4,14 +4,15 @@ from functions import *
 # check whether a (sub)section number exists in the database
 def title_exists(number):
   try:
-    # TODO prepared statement
-    query = 'SELECT COUNT(*) FROM sections WHERE number = "' + number + '"'
-    cursor = connection.execute(query)
+    query = 'SELECT COUNT(*) FROM sections WHERE number = ?'
+    cursor = connection.execute(query, [number])
 
     return cursor.fetchone()[0] == 1
 
   except sqlite3.Error, e:
     print "An error occurred:", e.args[0]
+
+  return False
 
 def insert_title(number, title, filename):
   try:
@@ -26,11 +27,19 @@ def insert_title(number, title, filename):
     print "An error occurred:", e.args[0]
 
 def import_titles(path):
+  print 'Creating a database version of the table of contents'
+  print 'Parsing the files, linking chapters to file names'
   titles = get_titles(path)
+  print 'Parsing the big table of contents'
   sections = parse_book_toc(path + 'book.toc')
 
+  print 'Inserting the information into the database'
   for section in sections:
-    insert_title(section[1], section[2], '')
+    # the bibliography doesn't correspond to a file, we can safely ignore it
+    if section[2] == 'Bibliography':
+      continue
+
+    insert_title(section[1], section[2], find_file_for_section(titles, sections, section[1]))
   
 
 path = 'tex/tags/tmp/'
