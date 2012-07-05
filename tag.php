@@ -97,7 +97,7 @@
   }
 
   function print_captcha() {
-    print("<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by filling in the name of the current tag <em>twice</em> in the following box. So in case this is tag <var>0321</var> you just have to write <var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>\n");
+    print("<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag <var>0321</var> you just have to write <var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>\n");
 ?>
       <label for="check">Tag:</label>
       <input type="text" name="check" id="check"><br>
@@ -106,7 +106,7 @@
 
   function print_comment_input($tag) {
 ?>
-    <h2>Add a comment</h2>
+    <h2>Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></h2>
     <p>Your email address will not be published. Required fields are marked.
   
     <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
@@ -302,7 +302,7 @@
     }
     else {
       print("    <h2>Error</h2>\n");
-      print("    The tag you provided (i.e. <var>" . $_GET['tag'] . "</var>) is not in the correct format.\n");
+      print("    The tag you provided (i.e. <var>" . htmlspecialchars($_GET['tag']) . "</var>) is not in the correct format.\n");
     }
   }
 ?>

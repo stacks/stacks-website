@@ -74,6 +74,7 @@
     if(!$sql->execute()) {
       print("Something went wrong with your comment.\n");
       print_r($sql->errorInfo());
+      exit();
     }
   }
   catch(PDOException $e) {
