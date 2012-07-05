@@ -3,7 +3,7 @@
 	url = git://paard.math.columbia.edu/var/git/stacks
 [submodule "EpicEditor"]
 	path = EpicEditor
-	url = git@github.com:OscarGodson/EpicEditor
+  url = git://github.com/OscarGodson/EpicEditor.git
 [submodule "php-markdown-extra-math"]
 	path = php-markdown-extra-math
 	url = git://github.com/drdrang/php-markdown-extra-math.git
