@@ -173,7 +173,6 @@
       foreach ($comments as $comment) {
         print("    <div class='comment'>\n");
         print("      <a name='comment-" . $comment['id'] . "'></a>\n");
-        // TODO htmlentities
         print("      Comment by <cite class='comment-author'>" . htmlentities($comment['author']) . "</cite>");
         if (!empty($comment['site'])) {
           print(" (<a href='" . $comment['site'] . "'>site</a>)\n");
