@@ -2,7 +2,6 @@
   include('config.php');
   include('functions.php');
 
-  # TODO database should be located outside of the web directory
   try {
     $db = new PDO(get_database_location());
   }
@@ -10,7 +9,6 @@
     echo $e->getMessage();
   }
 
-  // TODO all kinds of validation and escaping
   // if this triggers the user is messing with the POST request
   if (!is_valid_tag($_POST['tag'])) {
     print('The tag your browser supplied in the request is not in a valid format.');
