@@ -200,17 +200,24 @@
     $section_id = implode('.', array_slice($parts, 0, -1));
     # the id of the chapter, the first part of the full identification
     $chapter_id = $parts[0];
-    # all information about the current section
-    if (!section_exists($section_id)) {
+
+    # get all information about the current section and chapter
+    if (!section_exists($section_id) or !section_exists($chapter_id)) {
       print("    <p>This tag has label <var>" . $results['label'] . "</var> but there is something wrong in the database because it doesn't belong to a correct section of the project.\n");
       return;
     }
-    $information = get_section($section_id);
+    $section_information = get_section($section_id);
+    $chapter_information = get_section($chapter_id);
 
     print("    <p>This tag has label <var>" . $results['label'] . "</var> and it references\n");
     print("    <ul>\n");
-    print("      <li><a href='" . $information['filename'] . ".pdf#" . $tag . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
-    print("      <li><a href='book.pdf#" . $tag . "'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
+    if ($section_id == $chapter_id) {
+      print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
+    }
+    else {
+      print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Section " . implode('.', array_slice(explode('.', $section_id), 1)) . ": " . $section_information['title'] . ", in Chapter " . $chapter_id . ": " . $chapter_information['title'] . "\n");
+    }
+    print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>Lemma " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
     print("    </ul>\n\n");
     print("    The LaTeX code of the corresponding environment is:\n");
     print("    <pre>\n" . $results['value'] . "\n    </pre>\n");
