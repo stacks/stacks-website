@@ -15,21 +15,14 @@
     $tag_information = get_tag($comment['tag']);
     $date = date_create($comment['date'], timezone_open('GMT'));
 ?>
-  <li>On <?php print(date_format($date, 'F j, Y \a\t g:i a e')); ?> 
-<?php 
- if (empty($comment['site']))
-   print($comment['author']); 
- else
-   print("<a href='" . htmlspecialchars($comment['site']) . "'>" . $comment['author'] . "</a>");
-?> 
-  left <a href="<?php print(full_url('tag/' . $comment['tag'] . "#comment-" . $comment['id'])) ?>">a comment </a> on <a href="<?php print(full_url('tag/' . $comment['tag'])); ?>"><var title="<?php print($tag_information['label']); ?>">tag <?php print($comment['tag']); ?></var></a>
+      <li>On <?php print(date_format($date, 'F j, Y \a\t g:i a e')); ?> <?php (empty($comment['site'])) ? print($comment['author']) : print("<a href='" . htmlspecialchars($comment['site']) . "'>" . $comment['author'] . "</a>"); ?> left <a href="<?php print(full_url('tag/' . $comment['tag'] . "#comment-" . $comment['id'])) ?>">a comment </a> on <a href="<?php print(full_url('tag/' . $comment['tag'])); ?>"><var title="<?php print($tag_information['label']); ?>">tag <?php print($comment['tag']); ?></var></a>
 <?php
   }
 
   function print_recent_comments($limit) {
     global $db;
 
-    print("      <ol>\n");
+    print("    <ol>\n");
     
     try {
       $sql = $db->prepare('SELECT id, tag, author, site, date, comment FROM comments ORDER BY date DESC LIMIT 0, :limit');
@@ -45,7 +38,7 @@
       echo $e->getMessage();
     }
 
-    print("      </ol>\n");
+    print("    </ol>\n");
   }
 ?>
 <html>
