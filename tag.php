@@ -7,7 +7,7 @@
   include('php-markdown-extra-math/markdown.php');
 
   try {
-    $db = new PDO('sqlite:stacks.sqlite');
+    $db = new PDO(get_database_location());
   }
   catch(PDOException $e) {
     echo $e->getMessage();

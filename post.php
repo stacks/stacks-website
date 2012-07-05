@@ -4,7 +4,7 @@
 
   # TODO database should be located outside of the web directory
   try {
-    $db = new PDO('sqlite:stacks.sqlite');
+    $db = new PDO(get_database_location());
   }
   catch(PDOException $e) {
     echo $e->getMessage();

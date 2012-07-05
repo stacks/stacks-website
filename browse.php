@@ -4,7 +4,7 @@
   include('functions.php');
 
   try {
-    $db = new PDO('sqlite:stacks.sqlite');
+    $db = new PDO(get_database_location());
   }
   catch(PDOException $e) {
     echo $e->getMessage();
