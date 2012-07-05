@@ -15,7 +15,6 @@
     <h2>How to contribute</h2>
     <p>Any improvements are welcome. If you are reading the material and you find an error you can simply email a small note to the address below. This includes typos, spelling errors, improvements to the web pages, etc. If at all possible edit the relevant TeX file directly and email the result.
 
-    <!-- TODO it might be a good idea to have a real web page with the todos, maybe extracting it from the project's git repository-->
     <p>Here is a list of tasks you can try: <a href="<?php print(full_url('todo')); ?>">todo list</a>.
 
     <h2>Where to submit</h2>
@@ -41,7 +40,6 @@
     <h2>Instructions on using a version control system (for major geeks)</h2>
     <p>We are using the <a href="http://git-scm.com">git</a> version control system. To clone the project type
     <pre><code>git clone git://paard.math.columbia.edu/var/git/stacks</code></pre>
-    <!-- TODO see above, create HTML version? -->
     on the command line. This assumes that you have git installed. See this file for a <a href="<?php print(full_url('git-howto')); ?>">git howto</a>. And it is possible to inspect the <a href="http://paard.math.columbia.edu:8888/stacks.git">development history of the project</a>.
 
     <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
