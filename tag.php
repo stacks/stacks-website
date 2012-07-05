@@ -35,7 +35,27 @@
     return $comments;
   }
 
+  function section_exists($id) {
+    global $db;
+
+    try {
+      $sql = $db->prepare('SELECT COUNT(*) FROM sections WHERE number = :id');
+      $sql->bindParam(':id', $id);
+
+      if ($sql->execute()) {
+        return intval($sql->fetchColumn()) > 0;
+      }
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+  
+    return false;
+  }
+
   function get_section($id) {
+    assert(section_exists($id));
+
     global $db;
 
     try {
@@ -180,7 +200,11 @@
     $section_id = implode('.', array_slice($parts, 0, -1));
     # the id of the chapter, the first part of the full identification
     $chapter_id = $parts[0];
-    # all information about the current section TODO better naming might be appropriate
+    # all information about the current section
+    if (!section_exists($section_id)) {
+      print("    <p>This tag has label <var>" . $results['label'] . "</var> but there is something wrong in the database because it doesn't belong to a correct section of the project.\n");
+      return;
+    }
     $information = get_section($section_id);
 
     print("    <p>This tag has label <var>" . $results['label'] . "</var> and it references\n");
