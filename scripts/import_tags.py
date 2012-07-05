@@ -50,6 +50,7 @@ def tag_exists(tag):
   count = 0
 
   try:
+    # TODO COUNT(*)
     query = 'SELECT tag FROM tags where tag = "' + tag + '"'
     cursor = connection.execute(query)
 
@@ -59,6 +60,34 @@ def tag_exists(tag):
     print "An error occurred:", e.args[0]
 
   return count > 0
+
+def get_tags():
+  try:
+    query = 'SELECT tag, active FROM tags'
+    cursor = connection.execute(query)
+
+    return cursor.fetchall()
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+  return []
+
+def set_inactive(tag):
+  try:
+    query = 'UPDATE tags SET active = "FALSE" WHERE tag = ?'
+    connection.execute(query, [tag])
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+def set_active(tag):
+  try:
+    query = 'UPDATE tags SET active = "TRUE" WHERE tag = ?'
+    connection.execute(query, [tag])
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
 
 # insert (or update) a tag
 # TODO document the values, or create a Tag class
@@ -85,10 +114,32 @@ def import_tags(filename, labels):
   
     insert_tag(tag, (label, info[0], info[2][1], info[1][1], info[1][0]))
 
+# loop over all tags and check whether they are still present in the project
+def check_tags(filename):
+  print 'Parsing the tags file'
+  active_tags = parse_tags(filename).keys()
+
+  tags = get_tags()
+
+  for tag in tags:
+    # check whether the tag is no longer used in the project
+    if tag[0] not in active_tags:
+      print '   ', tag[0], 'has become inactive'
+      set_inactive(tag[0])
+
+    # probably not necessary, but check whether a tag is again used in the project
+    if tag[1] == 'FALSE' and tag[0] in active_tags:
+      print '   ', tag[0], 'has become active again'
+      set_active(tag[0])
+
 
 connection = sqlite3.connect(config.database)
 
-import_tags(config.tags_file, get_labels_from_source(config.tmp_folder))
+print 'Importing tags'
+#import_tags(config.tags_file, get_labels_from_source(config.tmp_folder))
+
+print '\nCleaning removed tags'
+check_tags(config.tags_file)
 
 connection.commit()
 connection.close()

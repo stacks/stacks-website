@@ -4,8 +4,7 @@
 directory = '/'
 
 # location of the database, relative to the scripts/ directory
-# TODO must be moved one level up
-database = '../stacks.sqlite'
+database = '../../stacks.sqlite'
 
 # location of the tags file
 tags_file = '../tex/tags/tags'
