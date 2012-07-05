@@ -61,6 +61,18 @@ def tag_exists(tag):
 
   return count > 0
 
+def is_active(tag):
+  try:
+    query = 'SELECT active FROM tags WHERE tag = ?'
+    cursor= connection.execute(query, [tag])
+    return cursor.fetchone()[0] == 'TRUE'
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+  return False
+    
+
 def get_tags():
   try:
     query = 'SELECT tag, active FROM tags'
@@ -140,7 +152,7 @@ def check_tags(filename):
 
   for tag in tags:
     # check whether the tag is no longer used in the project
-    if tag[0] not in active_tags:
+    if tag[0] not in active_tags and is_active(tag[0]):
       print '   ', tag[0], 'has become inactive'
       set_inactive(tag[0])
 
