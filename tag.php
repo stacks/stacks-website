@@ -96,6 +96,14 @@
     }
   }
 
+  function print_captcha() {
+    print("<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by filling in the name of the current tag <em>twice</em> in the following box. So in case this is tag <var>0321</var> you just have to write <var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>\n");
+?>
+      <label for="check">Tag:</label>
+      <input type="text" name="check" id="check"><br>
+<?php
+  }
+
   function print_comment_input($tag) {
 ?>
     <h2>Add a comment</h2>
@@ -160,6 +168,8 @@
             };
         });
       </script>
+
+      <?php print_captcha(); ?>
   
       <input type="hidden" name="tag" value="<?php print($tag); ?>">
   
