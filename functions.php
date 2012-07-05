@@ -15,7 +15,6 @@ function tag_exists($tag) {
     if ($sql->execute()) {
       return intval($sql->fetchColumn()) > 0;
     }
-    return false;
   }
   catch(PDOException $e) {
     echo $e->getMessage();
