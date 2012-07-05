@@ -16,8 +16,7 @@
   }
 
   function get_directory() {
-    implode('/', array_slice(explode('/', $_SERVER['SCRIPT_NAME']), -1));
-    return $directory;
+    return implode('/', array_slice(explode('/', $_SERVER['SCRIPT_NAME']), 0, -1));
   }
   
   function full_url($path) {
