@@ -136,7 +136,7 @@ def check_tags(filename):
 connection = sqlite3.connect(config.database)
 
 print 'Importing tags'
-#import_tags(config.tags_file, get_labels_from_source(config.tmp_folder))
+import_tags(config.tags_file, get_labels_from_source(config.tmp_folder))
 
 print '\nCleaning removed tags'
 check_tags(config.tags_file)
