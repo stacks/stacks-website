@@ -37,7 +37,6 @@
 02C0,coding-lemma-bar
 03AE,sites-modules-section-quasi-coherent
 03AF,sites-modules-definition-quasi-coherent
-03B7,guide-section-papers-topics
 03JZ,spaces-properties-remark-properties-almost-reasonable
 03O0,etale-cohomology-definition-fpqc-site
 04BW,more-morphisms-equation-define-action-affine
