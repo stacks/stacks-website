@@ -22,7 +22,7 @@
     <h2><a href="<?php print(full_url('downloads')); ?>">Downloads</a></h2>
     <p>You can download the entire project in one file: <a href="<?php print(full_url('tex/book.pdf')); ?>">pdf version</a> | <a href="<?php print(full_url('tex/book.dvi')); ?>">dvi version</a>. It is also possible to <a href="<?php print(full_url('browse')); ?>">browse the project one chapter at a time</a>. For other downloads (e.g. TeX files) we have a <a href="<?php print(full_url('downloads')); ?>">dedicated downloads page</a>.
 
-    <h2>Looking up and referencing results</h2>
+    <h2><a href="<?php print(full_url('tag')); ?>">Looking up and referencing results</a></h2>
     <p>We have a page about <a href="<?php print(full_url('tags')); ?>">referencing results</a> in the Stacks project. And it is possible to <a href="<?php print($directory . 'tag'); ?>">search for tags</a> in the project, which gives the location, corresponding LaTeX code and the possibility to comment on it. In case you know the deal, you can search directly:
 
     <form action="<?php print(full_url('search.php')); ?>" method="post">
@@ -31,10 +31,10 @@
     </form>
     <br>
 
-    <h2>Recent changes</h2>
+    <h2><a href="http://paard.math.columbia.edu:8888/stacks.git">Recent changes</a></h2>
     <p>You can either see the <a href="<?php print(full_url('tex/log.log')); ?>">last 50 log entries in plaintext</a> or <a href="http://paard.math.columbia.edu:8888/stacks.git">browse the complete history</a>.
 
-    <h2>License</h2>
+    <h2><a href="<?php print(full_url('tex/COPYING')); ?>">License</a></h2>
     <p>This project is licensed under the <a href="<?php print(full_url('tex/COPYING')); ?>">GNU Free Documentation License</a>.
   </body>
 </html>
