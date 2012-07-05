@@ -58,7 +58,19 @@ of transcendence degree 1 over $k$.
     </ol>
 
     <h2>More difficult tasks</h2>
-    <!-- TODO parse the project -->
+<?php
+  $todolist = 'tex/todo-list';
+?>
+    <p>What you see here is the current status of the file <a href="<?php print(full_url($todolist)); ?>"><var>todo-list</var> in the project</a>.
+    <ol>
+<?php
+  $file = file_get_contents($todolist);
+  $items = explode("\n\n\n", $file);
+  foreach ($items as $item) {
+    print("      <li>" . $item . "\n");
+  }
+?>
+    </ol>
 
     <h2>Maintenance</h2>
     <p><strong>Contact the maintainer at the email address above before attempting these!</strong>
