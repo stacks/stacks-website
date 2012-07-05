@@ -39,6 +39,7 @@
   foreach ($output as $line) {
     if (substr($line, 0, 9) == 'Entering ') {
       $tex_project = ($line == 'Entering \'tex\'');
+      continue;
     }
 
     if ($tex_project) {
