@@ -7,14 +7,13 @@ function is_valid_tag($tag) {
 function tag_exists($tag) {
   assert(is_valid_tag($tag));
 
-  // TODO there must be better ways, COUNT in SQL, or at least not using foreach (also applies to get_tag)
   global $db;
   try {
-    $sql = $db->prepare('SELECT tag FROM tags WHERE tag = :tag');
+    $sql = $db->prepare('SELECT COUNT(*) FROM tags WHERE tag = :tag');
     $sql->bindParam(':tag', $tag);
 
     if ($sql->execute()) {
-      while ($row = $sql->fetch()) return true;
+      return intval($sql->fetchColumn()) > 0;
     }
     return false;
   }
