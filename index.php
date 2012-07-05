@@ -7,6 +7,7 @@
     <title>Stacks Project</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
+    <meta charset="utf-8">
   </head>
 
   <body>
