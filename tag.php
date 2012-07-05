@@ -212,7 +212,7 @@
     print("    <p>This tag has label <var>" . $results['label'] . "</var> and it references\n");
     print("    <ul>\n");
     if ($section_id == $chapter_id) {
-      print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $information['title'] . "\n");
+      print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $chapter_information['title'] . "\n");
     }
     else {
       print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>Lemma " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Section " . implode('.', array_slice(explode('.', $section_id), 1)) . ": " . $section_information['title'] . ", in Chapter " . $chapter_id . ": " . $chapter_information['title'] . "\n");
