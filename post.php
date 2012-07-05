@@ -38,11 +38,11 @@
   if (!empty($_POST['site'])) {
     // incorrect url, missing http: we prepend it and try again
     if (!filter_var($_POST['site'], FILTER_VALIDATE_URL) and strpos('http', $_POST['site']) !== 0) {
-      $_POST['site'] = 'http://' . $_POST['site'];
+      $site = 'http://' . $_POST['site'];
     }
   }
   // nonempty site, but the format is wrong
-  if (!empty($_POST['site']) and !filter_var($_POST['site'], FILTER_VALIDATE_URL)) {
+  if (!empty($site) and !filter_var($_POST['site'], FILTER_VALIDATE_URL)) {
     print('You must supply a correctly formatted site. Your current input is ' . $_POST['site']);
   }
 
@@ -51,7 +51,7 @@
   $author = $_POST['name'];
   $email = $_POST['email'];
   $comment = $_POST['comment'];
-  $site = $_POST['site'];
+  // $site is already handled
 
   try {
     $sql = $db->prepare('INSERT INTO comments (tag, author, comment, site) VALUES (:tag, :author, :comment, :site)');
@@ -60,7 +60,10 @@
     $sql->bindParam(':comment', $comment);
     $sql->bindParam(':site', $site);
 
-    $sql->execute();
+    if(!$sql->execute()) {
+      print("Something went wrong with your comment.\n");
+      print_r($sql->errorInfo());
+    }
   }
   catch(PDOException $e) {
     echo $e->getMessage();
