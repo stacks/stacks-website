@@ -23,6 +23,25 @@ function tag_exists($tag) {
   return false;
 }
 
+function tag_is_active($tag) {
+  assert(is_valid_tag($tag));
+
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT active FROM tags WHERE tag = :tag');
+    $sql->bindParam(':tag', $tag);
+
+    if ($sql->execute()) {
+      return $sql->fetchColumn() == 'TRUE';
+    }
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return false;
+}
+
 function get_tag($tag) {
   assert(is_valid_tag($tag));
 

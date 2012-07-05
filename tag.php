@@ -222,8 +222,13 @@
     }
     else {
       print("    <p>The LaTeX code of the corresponding environment is:\n");
-      print("    <pre>\n" . $results['value'] . "\n    </pre>\n");
+      print("    <pre>\n" . trim($results['value']) . "\n    </pre>\n");
     }
+  }
+
+  function print_inactive_tag($tag) {
+    print("    <h2>Inactive tag: <var>" . $tag . "</var></h2>\n");
+    print("    <p>The tag you requested did at some point in time belong to the Stacks project, but it was removed.\n");
   }
 
   function print_missing_tag($tag) {
@@ -233,7 +238,12 @@
 ?>
 <html>
   <head>
-    <title>Stacks Project -- Tag lookup</title>
+<?php
+  if (isset($_GET['tag']) and is_valid_tag($_GET['tag']))
+    print("    <title>Stacks Project -- Tag " . $_GET['tag'] . "</title>\n");
+  else
+    print("    <title>Stacks Project -- Tag lookup</title>\n");
+?>
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
@@ -276,10 +286,15 @@
       $tag = $_GET['tag'];
 
       if (tag_exists($tag)) {
-        print_tag($tag);
-        print_comments($tag);
+        if (tag_is_active($tag)) {
+          print_tag($tag);
+          print_comments($tag);
 
-        print_comment_input($tag);
+          print_comment_input($tag);
+        }
+        else {
+          print_inactive_tag($tag);
+        }
       }
       else {
         print_missing_tag($tag);
