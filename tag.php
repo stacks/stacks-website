@@ -77,25 +77,6 @@
     }
   }
 
-  function get_tag($tag) {
-    assert(is_valid_tag($tag));
-
-    global $db;
-    try {
-      $sql = $db->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value FROM tags WHERE tag = :tag');
-      $sql->bindParam(':tag', $tag);
-
-      if ($sql->execute()) {
-        // return first (= only) row of the result
-        while ($row = $sql->fetch()) return $row;
-      }
-      return null;
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
-  }
-
   function print_captcha() {
     print("<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag <var>0321</var> you just have to write <var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>\n");
 ?>
@@ -178,6 +159,18 @@
 <?php
   }
 
+  function print_comment($comment) {
+    print("    <div class='comment' id='comment-" . $comment['id'] . "'>\n");
+    $date = date_create($comment['date'], timezone_open('GMT'));
+    print("      Comment by <cite class='comment-author'>" . htmlspecialchars($comment['author']) . "</cite> ");
+    if (!empty($comment['site'])) {
+      print(" (<a href='" . htmlspecialchars($comment['site']) . "'>site</a>)\n");
+    }
+    print("on <a href='#comment-" . $comment['id'] . "'>" . date_format($date, 'F j, Y \a\t g:i a e') . "</a>\n");
+    print("      <blockquote>" . str_replace("\xA0", ' ', Markdown(htmlspecialchars($comment['comment']))) . "</blockquote>\n");
+    print("    </div>\n\n");
+  }
+
   function print_comments($tag) {
     print("    <h2>Comments</h2>\n");
 
@@ -187,15 +180,7 @@
     }
     else {
       foreach ($comments as $comment) {
-        print("    <div class='comment' id='comment-" . $comment['id'] . "'>\n");
-        $date = date_create($comment['date'], timezone_open('GMT'));
-        print("      Comment by <cite class='comment-author'>" . htmlspecialchars($comment['author']) . "</cite> ");
-        if (!empty($comment['site'])) {
-          print(" (<a href='" . $comment['site'] . "'>site</a>)\n");
-        }
-        print("on <a href='#comment-" . $comment['id'] . "'>" . date_format($date, 'F j, Y \a\t g:i a e') . "</a>\n");
-        print("      <blockquote>" . str_replace("\xA0", ' ', Markdown(htmlspecialchars($comment['comment']))) . "</blockquote>\n");
-        print("    </div>\n\n");
+        print_comment($comment);
       }
     }
   }

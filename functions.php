@@ -23,5 +23,22 @@ function tag_exists($tag) {
   return false;
 }
 
+function get_tag($tag) {
+  assert(is_valid_tag($tag));
 
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value FROM tags WHERE tag = :tag');
+    $sql->bindParam(':tag', $tag);
+
+    if ($sql->execute()) {
+      // return first (= only) row of the result
+      while ($row = $sql->fetch()) return $row;
+    }
+    return null;
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
 ?>

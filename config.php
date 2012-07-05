@@ -1,4 +1,9 @@
 <?php
+  // actual domain in use (cannot be deduced from $_SERVER)
+  //$domain = 'http://paard.math.columbia.edu:8080';
+  $domain = 'localhost';
+
+
   // place the database in a directory that is not visible from outside
   $database_directory = '';
   $database_name = 'stacks.sqlite';
@@ -13,6 +18,6 @@
   }
   
   function full_url($path) {
-    return get_directory() . '/' . $path;
+    return get_directory() . '/' . $path; 
   }
 ?>
