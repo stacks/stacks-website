@@ -230,7 +230,7 @@
       <input type="submit" value="locate">
     </form>
 
-    <p>For more information we refer to the <a href="#">tags explained</a> page.
+    <p>For more information we refer to the <a href="<?php print(full_url('tags')); ?>">tags explained</a> page.
 
 <?php
   if (!empty($_GET['tag'])) {

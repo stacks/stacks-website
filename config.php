@@ -15,12 +15,13 @@
     return 'sqlite:' . $database_directory . $database_name;
   }
 
-  
-  function full_url($path) {
+  function get_directory() {
     $directory = $_SERVER['SCRIPT_NAME'];
     explode('/', $directory);
     $directory = implode('/', array_splice($directory, -1));
-
-    return $directory . '/' . $path;
+  }
+  
+  function full_url($path) {
+    return get_directory() . '/' . $path;
   }
 ?>
