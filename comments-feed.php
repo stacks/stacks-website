@@ -18,7 +18,7 @@
       <title>Comment on tag <?php print($tag); ?></title>
       <link><?php print($domain . full_url('tag/' . $tag . '#comment-' . $id)); ?></link>
       <description>A new comment by <?php print(htmlentities($author)); ?> on tag <?php print($tag); ?>.</description>
-      <content:encoded><![CDATA[<?php print(str_replace("\xA0", " ", Markdown($comment))); ?>]]></content:encoded>
+      <content:encoded><![CDATA[<?php print(str_replace("\xA0", " ", Markdown(htmlspecialchars($comment)))); ?>]]></content:encoded>
       <dc:creator><?php print($author); ?></dc:creator>
       <pubDate><?php print(date_format(date_create($date, timezone_open('GMT')), DATE_RFC2822));?></pubDate>
     </item>
