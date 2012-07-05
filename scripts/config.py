@@ -9,6 +9,9 @@ database = '../../stacks.sqlite'
 # location of the tags file
 tags_file = '../tex/tags/tags'
 
+# location of the bootstrap file
+bootstrap_file = 'bootstrap.txt'
+
 # location of the temporary folder
 tmp_folder = '../tex/tags/tmp/'
 

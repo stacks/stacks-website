@@ -103,6 +103,23 @@ def insert_tag(tag, value):
   except sqlite3.Error, e:
     print "An error occurred:", e.args[0]
 
+def import_bootstrap(filename): 
+  bootstrap_file = open(filename, 'r')
+
+  for line in bootstrap_file:
+    tag, label = line.strip().split(',')
+    if not tag_exists(tag):
+      try:
+        query = 'INSERT INTO tags (tag, label, active) VALUES (?, ?, "FALSE")'
+        connection.execute(query, (tag, label))
+
+      except sqlite3.Error, e:
+        print tag, label
+        print "An error occurred:", e.args[0]
+
+    else:
+      set_inactive(tag)
+
 # create the tags database from scratch using the current tags/tags file
 def import_tags(filename, labels):
   print 'Parsing the tags file'
@@ -135,6 +152,8 @@ def check_tags(filename):
 
 connection = sqlite3.connect(config.database)
 
+print 'Taking care of the bootstrap'
+import_bootstrap(config.bootstrap_file)
 print 'Importing tags'
 import_tags(config.tags_file, get_labels_from_source(config.tmp_folder))
 
