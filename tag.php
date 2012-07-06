@@ -1,3 +1,6 @@
+<?php
+  header('Content-Type: text/html; charset=utf-8');
+?>
 <!doctype html>
 <?php
   error_reporting(E_ALL);
@@ -108,7 +111,7 @@
 
   function print_comment_input($tag) {
 ?>
-    <h2>Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></h2>
+    <h2>Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
     <p>Your email address will not be published. Required fields are marked.
   
     <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
@@ -266,6 +269,7 @@
     print("    <title>Stacks Project -- Tag lookup</title>\n");
 ?>
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
 
