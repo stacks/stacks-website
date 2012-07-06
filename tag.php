@@ -300,7 +300,6 @@
 
 <?php
   if (!empty($_GET['tag'])) {
-    print("\n\n\n" . integer_to_tag(tag_to_integer($_GET['tag'])) . "\n\n\n");
     $_GET['tag'] = strtoupper($_GET['tag']);
 
     if (is_valid_tag($_GET['tag'])) {
