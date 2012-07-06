@@ -43,8 +43,9 @@
     <pre><code>01MB,constructions-lemma-proj-scheme</code></pre>
     Here the tag is <var>01MB</var> and the identifier is <var>constructions-lemma-proj-scheme</var>. This means that the tag points to a lemma from the file <var>constructions.tex</var>. It currently has the label <var>lemma-proj-scheme</var>. If we ever change the lemma's  label, or move the lemma to a different file, then we will change the corresponding line in the file tags by changing the identifier correspondingly. But we will <strong>never change the tag</strong>. 
 
-    <!-- TODO remark that 0 and O are handled in a special way, do the math -->
-    <p>New tags are assigned by the maintainer of the project every once in a while using a script. A tag is a four character string made up out of digits and capital letters. They are ordered lexicographically between 0000 and ZZZZ giving 1679616 possible tags. That should be enough for a while!
+    <p>New tags are assigned by the maintainer of the project every once in a while using a script. A tag is a four character string made up out of digits and capital letters. They are ordered lexicographically between 0000 and ZZZZ giving 1679616 possible tags.
+
+    <p>But as there might arise confusion from the similarities between <var>0</var> and <var>O</var> the letter <var>O</var> is no longer in use. This means that from <a href="<?php print(full_url('tag/04E6')); ?>">tag <var>04E6</var></a> on there are only 35 values per position. The 298 tags assigned before this new guideline will remain, as tags are constant. A little exercise for the reader: how many possible tags are there really?
 
     <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
   </body>
