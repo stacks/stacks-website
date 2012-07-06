@@ -1,6 +1,7 @@
 <!doctype html>
 <?php
   include('config.php');
+  include('php-markdown-extra-math/markdown.php');
 ?>
 <html>
   <head>
@@ -67,6 +68,12 @@ of transcendence degree 1 over $k$.
   $file = file_get_contents($todolist);
   $items = explode("\n\n\n", $file);
   foreach ($items as $item) {
+    // PHP Markdown isn't perfect on the current content of the file
+    $item = str_replace('<em>', '_', Markdown($item));
+    $item = str_replace('</em>', '_', $item);
+    // remove superfluous paragraphs (could do this in CSS too)
+    $item = str_replace('<p>', '', $item);
+    $item = str_replace('</p>', '', $item);
     print("      <li>" . $item . "\n");
   }
 ?>
