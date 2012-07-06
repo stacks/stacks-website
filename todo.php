@@ -60,7 +60,7 @@ of transcendence degree 1 over $k$.
 
     <h2>More difficult tasks</h2>
 <?php
-  $todolist = 'tex/todo-list';
+  $todolist = 'tex/documentation/todo-list';
 ?>
     <p>What you see here is the current status of the file <a href="<?php print(full_url($todolist)); ?>"><var>todo-list</var> in the project</a>.
     <ol>
