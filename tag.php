@@ -186,11 +186,11 @@
   function print_comment($comment) {
     print("    <div class='comment' id='comment-" . $comment['id'] . "'>\n");
     $date = date_create($comment['date'], timezone_open('GMT'));
-    print("      Comment by <cite class='comment-author'>" . htmlspecialchars($comment['author']) . "</cite> ");
+    print("      <a href='#comment-" . $comment['id'] . "'>Comment #" . $comment['id'] . "</a> by <cite class='comment-author'>" . htmlspecialchars($comment['author']) . "</cite> ");
     if (!empty($comment['site'])) {
       print(" (<a href='" . htmlspecialchars($comment['site']) . "'>site</a>)\n");
     }
-    print("on <a href='#comment-" . $comment['id'] . "'>" . date_format($date, 'F j, Y \a\t g:i a e') . "</a>\n");
+    print("on " . date_format($date, 'F j, Y \a\t g:i a e') . "\n");
     print("      <blockquote>" . str_replace("\xA0", ' ', Markdown(htmlspecialchars($comment['comment']))) . "</blockquote>\n");
     print("    </div>\n\n");
   }
