@@ -23,7 +23,7 @@
     <p>You can download the entire project in one file: <a href="<?php print(full_url('tex/book.pdf')); ?>">pdf version</a> | <a href="<?php print(full_url('tex/book.dvi')); ?>">dvi version</a>. It is also possible to <a href="<?php print(full_url('browse')); ?>">browse the project one chapter at a time</a>. For other downloads (e.g. TeX files) we have a <a href="<?php print(full_url('downloads')); ?>">dedicated downloads page</a>.
 
     <h2><a href="<?php print(full_url('tag')); ?>">Looking up and referencing results</a></h2>
-    <p>We have a page about <a href="<?php print(full_url('tags')); ?>">referencing results</a> in the Stacks project. And it is possible to <a href="<?php print($directory . 'tag'); ?>">search for tags</a> in the project, which gives the location, corresponding LaTeX code and the possibility to comment on it. In case you know the deal, you can immediately start searching:
+    <p>We have a page about <a href="<?php print(full_url('tags')); ?>">referencing results</a> in the Stacks project. And it is possible to <a href="<?php print(full_url('tag')); ?>">search for tags</a> in the project, which gives the location, corresponding LaTeX code and the possibility to comment on it. In case you know the deal, you can immediately start searching:
 
     <form action="<?php print(full_url('search.php')); ?>" method="post">
       <label>Tag: <input type="text" name="tag"></label>
