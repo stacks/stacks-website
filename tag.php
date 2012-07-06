@@ -59,6 +59,27 @@
     return false;
   }
 
+  function tag_to_integer($tag) {
+    assert(is_valid_tag($tag));
+
+    $result = 0;
+    for ($i = 0; $i < strlen($tag); $i++)
+      $result += ((ord($tag[$i]) < 58) ? ord($tag[$i]) - 48 : ord($tag[$i]) - 55) * pow(36, 3 - $i);
+
+    return $result;
+  }
+
+  function integer_to_tag($value) {
+    $tag = '';
+
+    for ($i = 0; $i < 4; $i++) {
+      $tag .= ($value % 36 < 10) ? chr(($value % 36) + 48) : chr(($value % 36) + 55);
+      $value = (int) ($value / 36);
+    }
+
+    return strrev($tag);
+  }
+
   function get_section($id) {
     assert(section_exists($id));
 
@@ -279,6 +300,7 @@
 
 <?php
   if (!empty($_GET['tag'])) {
+    print("\n\n\n" . integer_to_tag(tag_to_integer($_GET['tag'])) . "\n\n\n");
     $_GET['tag'] = strtoupper($_GET['tag']);
 
     if (is_valid_tag($_GET['tag'])) {
