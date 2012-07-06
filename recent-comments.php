@@ -15,7 +15,10 @@
     $tag_information = get_tag($comment['tag']);
     $date = date_create($comment['date'], timezone_open('GMT'));
 ?>
-      <li>On <?php print(date_format($date, 'F j, Y \a\t g:i a e')); ?> <?php (empty($comment['site'])) ? print(htmlspecialchars($comment['author'])) : print("<a href='" . htmlspecialchars($comment['site']) . "'>" . htmlspecialchars($comment['author']) . "</a>"); ?> left <a href="<?php print(full_url('tag/' . $comment['tag'] . "#comment-" . $comment['id'])) ?>">a comment </a> on <a href="<?php print(full_url('tag/' . $comment['tag'])); ?>"><var title="<?php print($tag_information['label']); ?>">tag <?php print($comment['tag']); ?></var></a>
+      <li value="<?php print($comment['id']); ?>">On <?php print(date_format($date, 'F j')); ?> <?php (empty($comment['site'])) ? print(htmlspecialchars($comment['author'])) : print("<a href='" . htmlspecialchars($comment['site']) . "'>" . htmlspecialchars($comment['author']) . "</a>"); ?> left <a href="<?php print(full_url('tag/' . $comment['tag'] . "#comment-" . $comment['id'])) ?>">a comment </a> on <a href="<?php print(full_url('tag/' . $comment['tag'])); ?>"><var title="<?php print($tag_information['label']); ?>">tag <?php print($comment['tag']); ?></var></a>
+        <blockquote>
+          <?php print(htmlentities(substr($comment['comment'], 0, 100)) . '...'); ?>
+        </blockquote>
 <?php
   }
 
@@ -47,6 +50,12 @@
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
+
+    <style type="text/css">
+      blockquote {
+        margin: .4em 0 0 3em;
+      }
+    </style>
     
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php print($domain . full_url('recent-comments.rss')); ?>">
   </head>
@@ -58,7 +67,7 @@
 
     <h2>Recent comments</h2>
 <?php
-  print_recent_comments(10);
+  print_recent_comments(20);
 ?>
 
     <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
