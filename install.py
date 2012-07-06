@@ -1,6 +1,6 @@
 import sqlite3
 
-connection = sqlite3.connect("database.sqlite")
+connection = sqlite3.connect("stacks.sqlite")
 queries = open('database.sql')
 for query in queries:
     connection.execute(query);
