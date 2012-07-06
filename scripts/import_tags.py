@@ -15,7 +15,7 @@ def get_labels_from_source(path):
   print 'Parsing the other auxiliary files'
   # now merge every other .aux file against the current dictionary
   for aux_file in aux_files:
-    print '  parsing {0}'.format(aux_file)
+    print '  parsing %s' % aux_file
   
     local = parse_aux(path + aux_file)
     for label, information in local.iteritems():
@@ -25,8 +25,7 @@ def get_labels_from_source(path):
       if full_label in labels:
         labels[full_label] = [aux_file[0:-4], labels[full_label], local[label]]
       else:
-        print 'ERROR: the label \'{0}\' was found in {1} but not in {2}'.format(
-            full_label, path + aux_file, path + 'book.aux')
+        print 'ERROR: the label \'%s\' was found in %s but not in %s' % (full_label, path + aux_file, path + 'book.aux')
 
   return labels
 
