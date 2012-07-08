@@ -2,6 +2,7 @@
   header('Content-type: application/rss+xml');
   include('config.php');
   include('php-markdown-extra-math/markdown.php');
+  print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 
   try {
     $db = new PDO(get_database_location());
