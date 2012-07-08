@@ -68,6 +68,9 @@ h2 a:visited {
   color: black;
 }
 
+h2 var {
+  font-size: 1.2em;
+}
 
 p#backlink {
   background-color: #eee;
@@ -80,8 +83,8 @@ var {
   font-family: monospace;
 }
 
-h2 var {
-  font-size: 1.2em;
+ul p, ol p {
+  margin: 0;
 }
 
 ol li {
@@ -111,17 +114,9 @@ div.comment {
   margin-bottom: 1em;
 }
 
-div.comment span.comment-date {
-  float: right;
-  font-size: 80%;
-}
-
-div.comment span.comment-date a {
-  text-decoration: none;
-}
-
-div.comment span.comment-date a:hover {
-  text-decoration: underline;
+div.comment h1, div.comment h2 {
+  border: none;
+  background-color: white;
 }
 
 form#comment-form {

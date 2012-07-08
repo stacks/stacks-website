@@ -114,7 +114,7 @@
     <h2>Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
     <p>Your email address will not be published. Required fields are marked.
   
-    <p>In your comment you can use Markdown and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
+    <p>In your comment you can use <a href="http://daringfireball.net/projects/markdown/">Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
   
     <form name="comment" id="comment-form" action="<?php print(full_url('post.php')); ?>" method="post">
       <label for="name">Name<sup>*</sup>:</label>
@@ -131,7 +131,7 @@
       <div id="epiceditor"></div>
       <script type='text/javascript'>
         // Chromium (and Chrome too I presume) adds a bogus character when a space follows after a line break (or something like that)
-        // remove this by hand for now
+        // remove this by hand for now TODO fix EpicEditor
         function sanitize(s) {
           var output = '';
           for (c in s) {
