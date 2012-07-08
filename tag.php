@@ -130,13 +130,24 @@
       <textarea name="comment" id="comment-textarea"></textarea>
       <div id="epiceditor"></div>
       <script type='text/javascript'>
+        // Chromium (and Chrome too I presume) adds a bogus character when a space follows after a line break (or something like that)
+        // remove this by hand for now
+        function sanitize(s) {
+          var output = '';
+          for (c in s) {
+            if (s.charCodeAt(c) != 160) output += s[c];
+          }
+         
+          return output;
+        }
+
         var editor = new EpicEditor(options).load(function() {
             // TODO find out why this must be a callback in the loader, editor.on('load', ...) doesn't seem to be working?!
             // hide textarea, EpicEditor will take over
             document.getElementById('comment-textarea').style.display = 'none';
             // when the form is submitted copy the contents from EpicEditor to textarea
             document.getElementById('comment-form').onsubmit = function() {
-              document.getElementById('comment-textarea').value = editor.exportFile();
+              document.getElementById('comment-textarea').value = sanitize(editor.exportFile());
             };
         });
   
