@@ -32,7 +32,7 @@
     <br>
 
     <h2><a href="<?php print(full_url('recent-comments')); ?>">Leaving comments</a></h2>
-    <p>You can leave comments on each and every tag. If you wish to stay updated on the comments, there is both a <a href="<?php print(full_url('recent-comments')); ?>">page containing recent comments</a> and <a href="<?php print(full_url('recent-comments.rss')); ?>">an <abbr title="Really Simple Syndication">RSS</abbr> feed</a>.
+    <p>You can leave comments on each and every tag. If you wish to stay updated on the comments, there is both a <a href="<?php print(full_url('recent-comments')); ?>">page containing recent comments</a> and <a href="<?php print(full_url('recent-comments.rss')); ?>">an <abbr title="Really Simple Syndication">RSS</abbr> feed <img src="<?php print(full_url('rss-icon.png')); ?>"></a> available.
 
     <h2><a href="http://paard.math.columbia.edu:8888/stacks.git">Recent changes</a></h2>
     <p>You can either see the <a href="<?php print(full_url('tex/log.log')); ?>">last 50 log entries in plaintext</a> or <a href="http://paard.math.columbia.edu:8888/stacks.git">browse the complete history</a>.

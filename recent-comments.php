@@ -63,7 +63,7 @@
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
 
-    <p>There is also an <a href="<?php print(full_url('recent-comments.rss')); ?>"><abbr title="Really Simple Syndication">RSS</abbr> feed</a> if you wish to follow the recent comments from your newsreader.</p>
+    <p>There is also an <a href="<?php print(full_url('recent-comments.rss')); ?>"><abbr title="Really Simple Syndication">RSS</abbr> feed <img src="<?php print(full_url('rss-icon.png')); ?>"></a> if you wish to follow the recent comments from your newsreader.</p>
 
     <h2>Recent comments</h2>
 <?php
