@@ -15,7 +15,7 @@
     $tag_information = get_tag($comment['tag']);
     $date = date_create($comment['date'], timezone_open('GMT'));
 ?>
-      <li value="<?php print($comment['id']); ?>">On <?php print(date_format($date, 'F j')); ?> <?php (empty($comment['site'])) ? print(htmlspecialchars($comment['author'])) : print("<a href='" . htmlspecialchars($comment['site']) . "'>" . htmlspecialchars($comment['author']) . "</a>"); ?> left <a href="<?php print(full_url('tag/' . $comment['tag'] . "#comment-" . $comment['id'])) ?>">a comment </a> on <a href="<?php print(full_url('tag/' . $comment['tag'])); ?>"><var title="<?php print($tag_information['label']); ?>">tag <?php print($comment['tag']); ?></var></a>
+      <li value="<?php print($comment['id']); ?>">On <?php print(date_format($date, 'F j')); ?> <?php (empty($comment['site'])) ? print(htmlspecialchars($comment['author'])) : print("<a href='" . htmlspecialchars($comment['site']) . "'>" . htmlspecialchars($comment['author']) . "</a>"); ?> left <a href="<?php print(full_url('tag/' . $comment['tag'] . "#comment-" . $comment['id'])) ?>">a comment </a> on <a href="<?php print(full_url('tag/' . $comment['tag'])); ?>">tag <var title="<?php print($tag_information['label']); ?>"><?php print($comment['tag']); ?></var></a>
         <blockquote>
           <?php print(htmlentities(substr($comment['comment'], 0, 100)) . '...'); ?>
         </blockquote>
