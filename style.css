@@ -136,6 +136,10 @@ form#comment-form input#comment-submit {
   text-align: right;
 }
 
+form#comment-form textarea {
+  display: block;
+}
+
 table#browse {
   padding: 8px 4px;
   border-spacing: 0;
