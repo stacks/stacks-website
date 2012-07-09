@@ -338,7 +338,7 @@
     }
     else {
       print("    <h2>Error</h2>\n");
-      print("    The tag you provided (i.e. <var>" . htmlspecialchars($_GET['tag']) . "</var>) is not in the correct format.\n");
+      print("    The tag you provided (i.e. <var>" . htmlspecialchars($_GET['tag']) . "</var>) is not in the correct format. See <a href=\"" . full_url('tags') . "\">tags explained</a> for an overview of the tag system and a description of the format. A summary: four characters, either digits or capital letters, e.g. <var>03DF</var>.\n");
     }
   }
 ?>
