@@ -128,7 +128,7 @@
   
       <label>Comment:</label>
       <textarea name="comment" id="comment-textarea"></textarea>
-      <div id="epiceditor"></div>
+      <div id="epiceditor" style="height: 240px;"></div>
       <script type='text/javascript'>
         // Chromium (and Chrome too I presume) adds a bogus character when a space follows after a line break (or something like that)
         // remove this by hand for now TODO fix EpicEditor
