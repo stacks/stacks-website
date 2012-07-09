@@ -150,7 +150,7 @@
               document.getElementById('comment-textarea').value = sanitize(editor.exportFile());
             };
         });
-  
+
         function preview(iframe) {
           var mathjax = iframe.contentWindow.MathJax;
   
@@ -158,9 +158,8 @@
             tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
           });
   
-          var preview = iframe.contentDocument.getElementById('epiceditor-preview');
-          // TODO might it be better to queue this?
-          setTimeout(function() { mathjax.Hub.Typeset(preview); }, 500);
+          var previewer = iframe.contentDocument.getElementById('epiceditor-preview');
+          mathjax.Hub.Queue(mathjax.Hub.Typeset(previewer));
         }
   
         editor.on('preview', function() {
