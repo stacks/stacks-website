@@ -141,6 +141,8 @@
           return output;
         }
 
+        var fullscreenNotice = false;
+
         var editor = new EpicEditor(options).load(function() {
             // TODO find out why this must be a callback in the loader, editor.on('load', ...) doesn't seem to be working?!
             // hide textarea, EpicEditor will take over
@@ -149,6 +151,16 @@
             document.getElementById('comment-form').onsubmit = function() {
               document.getElementById('comment-textarea').value = sanitize(editor.exportFile());
             };
+
+            // add a notice on how to get out the fullscreen mode
+            var wrapper = this.getElement('wrapper');
+            var button = wrapper.getElementsByClassName('epiceditor-fullscreen-btn')[0];
+            button.onclick = function() {
+              if (!fullscreenNotice) {
+                alert('To get out the fullscreen mode, press Escape.');
+                fullscreenNotice = true;
+              }
+            }
         });
 
         function preview(iframe) {
@@ -182,6 +194,7 @@
               preview(iframe);
             };
         });
+
       </script>
 
       <?php print_captcha(); ?>
