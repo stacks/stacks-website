@@ -322,8 +322,8 @@
           name: '<?php print(htmlspecialchars($_GET['tag'])); ?>',
         },
         theme: {
-          editor: '<?php print(full_url('themes/editor/epic-light.css')); ?>',
-          preview: '<?php print(full_url('themes/preview/github.css')); ?>',
+          editor: '/themes/editor/epic-light.css',
+          preview: '/themes/preview/github.css',
         },
       }
     </script>
