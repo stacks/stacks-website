@@ -7,3 +7,6 @@
 [submodule "php-markdown-extra-math"]
 	path = php-markdown-extra-math
 	url = git://github.com/drdrang/php-markdown-extra-math.git
+[submodule "jstree"]
+	path = jstree
+	url = git://github.com/vakata/jstree.git
