@@ -87,6 +87,9 @@ def parse_aux(filename):
 
   labels = {}
 
+  # counting the lines (useful for ordering the data)
+  i = 0
+
   for line in aux:
     # not interesting, go to next line
     if not line.startswith("\\newlabel{"):
@@ -99,6 +102,7 @@ def parse_aux(filename):
       continue
     # it is a label, add it with what we already know about it
     else:
-      labels[parts[0]] = (parts[1], parts[2], parts[3][0:-len("\\relax ")], parts[0].partition('-')[0])
+      labels[parts[0]] = (parts[1], parts[2], parts[3][0:-len("\\relax ")], parts[0].partition('-')[0], i)
+      i = i + 1
 
   return labels
