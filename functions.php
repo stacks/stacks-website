@@ -47,7 +47,7 @@ function get_tag($tag) {
 
   global $db;
   try {
-    $sql = $db->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value FROM tags WHERE tag = :tag');
+    $sql = $db->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type FROM tags WHERE tag = :tag');
     $sql->bindParam(':tag', $tag);
 
     if ($sql->execute()) {
