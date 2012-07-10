@@ -114,7 +114,7 @@
     <h2>Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
     <p>Your email address will not be published. Required fields are marked.
   
-    <p>In your comment you can use <a href="http://daringfireball.net/projects/markdown/">Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out.
+    <p>In your comment you can use <a href="http://daringfireball.net/projects/markdown/">Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).
   
     <form name="comment" id="comment-form" action="<?php print(full_url('post.php')); ?>" method="post">
       <label for="name">Name<sup>*</sup>:</label>
