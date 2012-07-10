@@ -126,9 +126,9 @@
       <label for="site">Site:</label>
       <input type="text" name="site" id="site"><br>
   
-      <label>Comment:</label>
+      <label>Comment:</label> <span id="epiceditor-status"></span>
       <textarea name="comment" id="comment-textarea" cols="80" rows="10"></textarea>
-      <div id="epiceditor"></div>
+      <div id="epiceditor" style="border: 1px solid black;"></div>
       <script type='text/javascript'>
         // Chromium (and Chrome too I presume) adds a bogus character when a space follows after a line break (or something like that)
         // remove this by hand for now TODO fix EpicEditor
@@ -161,6 +161,9 @@
                 fullscreenNotice = true;
               }
             }
+
+            // inform the user he is in preview mode
+            document.getElementById('epiceditor-status').innerHTML = '(editing)';
         });
 
         function preview(iframe) {
@@ -184,7 +187,10 @@
               script.setAttribute('id', 'previewer-mathjax');
               iframe.contentDocument.head.appendChild(script);
             }
-  
+
+            // inform the user he is in preview mode
+            document.getElementById('epiceditor-status').innerHTML = '(previewing)';
+
             // wait a little for MathJax to initialize
             // TODO might this be possible through a callback?
             if (iframe.contentWindow.MathJax == null) {
@@ -195,6 +201,11 @@
             };
         });
 
+        editor.on('edit', function() {
+            // inform the user he is in preview mode
+            document.getElementById('epiceditor-status').innerHTML = '(editing)';
+        });
+        
       </script>
 
       <?php print_captcha(); ?>
@@ -309,6 +320,10 @@
         basePath: '<?php print(full_url('EpicEditor/epiceditor')); ?>',
         file: {
           name: '<?php print(htmlspecialchars($_GET['tag'])); ?>',
+        },
+        theme: {
+          editor: '<?php print(full_url('themes/editor/epic-light.css')); ?>',
+          preview: '<?php print(full_url('themes/preview/github.css')); ?>',
         },
       }
     </script>
