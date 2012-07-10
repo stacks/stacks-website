@@ -144,7 +144,7 @@
   
       <label>Comment:</label> <span id="epiceditor-status"></span>
       <textarea name="comment" id="comment-textarea" cols="80" rows="10"></textarea>
-      <div id="epiceditor" style="border: 1px solid black;"></div>
+      <div id="epiceditor"></div>
       <script type='text/javascript'>
         // Chromium (and Chrome too I presume) adds a bogus character when a space follows after a line break (or something like that)
         // remove this by hand for now TODO fix EpicEditor
@@ -357,10 +357,11 @@
         basePath: '<?php print(full_url('EpicEditor/epiceditor')); ?>',
         file: {
           name: '<?php print(htmlspecialchars($_GET['tag'])); ?>',
+          defaultContent: 'You can type your comment here, use the preview option to see what it will look like.',
         },
         theme: {
           editor: '/themes/editor/epic-light.css',
-          preview: '/themes/preview/github.css',
+          preview: '/themes/preview/preview-dark.css',
         },
       }
     </script>
