@@ -105,11 +105,11 @@ def set_active(tag):
 def insert_tag(tag, value):
   try:
     if tag_exists(tag):
-      query = 'UPDATE tags SET label = ?, file = ?, chapter_page = ?, book_page = ?, book_id = ?, name = ? WHERE tag = ?'
-      connection.execute(query, (value[0], value[1], value[2], value[3], value[4], value[5], tag))
+      query = 'UPDATE tags SET label = ?, file = ?, chapter_page = ?, book_page = ?, book_id = ?, name = ?, type = ? WHERE tag = ?'
+      connection.execute(query, (value[0], value[1], value[2], value[3], value[4], value[5], value[6], tag))
     else:
-      query = 'INSERT INTO tags (tag, label, file, chapter_page, book_page, book_id, name) VALUES (?, ?, ?, ?, ?, ?, ?)'
-      connection.execute(query, (tag, value[0], value[1], value[2], value[3], value[4], value[5]))
+      query = 'INSERT INTO tags (tag, label, file, chapter_page, book_page, book_id, name, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+      connection.execute(query, (tag, value[0], value[1], value[2], value[3], value[4], value[5], value[6]))
 
   except sqlite3.Error, e:
     print "An error occurred:", e.args[0]
@@ -140,7 +140,7 @@ def import_tags(filename, labels):
   for tag, label in tags.iteritems():
     info = labels[label]
   
-    insert_tag(tag, (label, info[0], info[2][1], info[1][1], info[1][0], info[1][2]))
+    insert_tag(tag, (label, info[0], info[2][1], info[1][1], info[1][0], info[1][2], info[2][3]))
 
 # loop over all tags and check whether they are still present in the project
 def check_tags(filename):
