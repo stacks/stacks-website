@@ -11,11 +11,12 @@
   }
 
   // print a row of the table containing a chapter
-  function print_chapter($chapter, $filename) {
+  function print_chapter($chapter, $filename, $number) {
 ?>
       <tr> 
         <td></td> 
         <td><?php print($chapter); ?></td> 
+        <td><a href="<?php print(full_url('chapter/' . $number)); ?>"><code>online</code></a></td> 
 <?php
     if ($chapter == 'Auto generated index')
       print("        <td></td>\n");
@@ -37,6 +38,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
       </tr>
 <?php
   }
@@ -47,6 +49,7 @@
       <tr> 
         <th>Part</th> 
         <th>Chapter</th> 
+        <th>online</th>
         <th>TeX</th> 
         <th>pdf</th> 
         <th>dvi</th> 
@@ -68,7 +71,7 @@
 
           // change LaTeX escaping to HTML escaping
           $row['title'] = str_replace("\'E", "&Eacute;", $row['title']);
-          print_chapter($row['title'], $row['filename']);
+          print_chapter($row['title'], $row['filename'], $row['number']);
         }
       }
     }
