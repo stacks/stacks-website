@@ -102,4 +102,3 @@ def parse_aux(filename):
       labels[parts[0]] = (parts[1], parts[2])
 
   return labels
-
