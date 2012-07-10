@@ -150,6 +150,17 @@
     <script type="text/javascript" src="<?php print(full_url('jquery-treeview/jquery.treeview.js')); ?>"></script>
 
     <link rel="stylesheet" href="<?php print(full_url('jquery-treeview/jquery.treeview.css')); ?>" />
+
+    <style type="text/css">
+      p#chapter-back,
+      p#chapter-forward {
+        margin: 0;
+      }
+
+      p#chapter-forward {
+        text-align: right;
+      }
+    </style>
   </head>
 
   <body>
@@ -160,6 +171,11 @@
   if (isset($_GET['number']) and is_numeric($_GET['number'])) {
     if (section_exists($_GET['number'])) {
       print("<h2>Tree view for Chapter " . $_GET['number'] . ": " . get_chapter($_GET['number']) . "</h2>");
+      if (section_exists(intval($_GET['number']) - 1))
+        print("<p id='chapter-back'><a href='" . full_url('chapter/' . (intval($_GET['number']) - 1)) . "'>&lt;&lt; Chapter " . (intval($_GET['number']) - 1) . ": " . get_chapter(intval($_GET['number']) - 1) . "</a>");
+      if (section_exists(intval($_GET['number']) + 1))
+        print("<p id='chapter-forward'><a href='" . full_url('chapter/' . (intval($_GET['number']) + 1)) . "'>Chapter " . (intval($_GET['number']) + 1) . ": " . get_chapter(intval($_GET['number']) + 1) . " &gt;&gt;</a>");
+
       print_tags($_GET['number']);
     }
     else {
