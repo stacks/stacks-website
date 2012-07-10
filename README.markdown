@@ -21,7 +21,7 @@ The following configuration is to remind me of what I have to do to get an insta
 
 6. put the file `stacks.sqlite` (the newly created database) in a directory that is not accessible from outside, apply `chmod 777 stacks.sqlite` and `chmod 777 ../` from the location of the database (PHP requires that both the database and the directory containing it have these...)
 
-7. make the required modifications to `stacks-website/config.php`, mostly concerning the location of the website and the database on the server
+7. make the required modifications to `stacks-website/config.php` and `stacks-website/scripts/config.py`, mostly concerning the location of the website and the database on the server
 
 8. run `python scripts/import_tags.py`, `python scripts/import_titles.py` and `python scripts/import_tex.py`, preferably (but not necessarily I guess) in that order
 
