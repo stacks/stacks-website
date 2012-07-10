@@ -68,7 +68,7 @@
   }
 
   function print_tag($tag) {
-    print("<li><a href='" . full_url('tag/' . $tag['tag']) . "'>Tag <var>" . $tag['tag'] . "</var></a> references " . ucfirst($tag['type']) . " " . $tag['book_id']);
+    print("<li><a title='" . $tag['label'] . "' href='" . full_url('tag/' . $tag['tag']) . "'>Tag <var>" . $tag['tag'] . "</var></a> references " . ucfirst($tag['type']) . " " . $tag['book_id']);
     // in these cases we can print a name
     if (($tag['type'] == 'section' or $tag['type'] == 'subsection') or (!in_array($tag['type'], array('item', 'equation')) and !empty($tag['name'])))
       print(": " . $tag['name']);
@@ -102,7 +102,7 @@
       switch ($tag['type']) {
         case 'section':
           // do not close the container <ul>
-          print(str_repeat("</ul>\n", $depth - 1));
+          print(str_repeat("</ul>\n", max($depth - 1, 0)));
           $depth = 2;
           print_tag($tag);
           print("<ul>");
