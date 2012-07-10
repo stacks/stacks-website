@@ -29,7 +29,7 @@
   }
   
   function get_chapter($chapter_id) {
-    assert(section_exists($number));
+    assert(section_exists($chapter_id));
 
     global $db;
     try {
