@@ -10,6 +10,42 @@
     echo $e->getMessage();
   }
 
+  function section_exists($number) {
+    assert(is_numeric($number));
+
+    global $db;
+    try {
+      $sql = $db->prepare('SELECT COUNT(*) FROM sections WHERE number = :number');
+      $sql->bindParam(':number', $number);
+  
+      if ($sql->execute())
+        return intval($sql->fetchColumn()) > 0;
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+  
+    return false;
+  }
+  
+  function get_chapter($chapter_id) {
+    assert(section_exists($number));
+
+    global $db;
+    try {
+      $sql = $db->prepare('SELECT title FROM sections WHERE number = :number');
+      $sql->bindParam(':number', $chapter_id);
+  
+      if ($sql->execute())
+        return $sql->fetchColumn();
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+  
+    return '';
+  }
+
   // get all active tags from a given chapter
   function get_tags($chapter_id) {
     global $db;
@@ -33,7 +69,7 @@
 
   function print_tag($tag) {
     print("<li><a href='" . full_url('tag/' . $tag['tag']) . "'>Tag <var>" . $tag['tag'] . "</var></a> references " . ucfirst($tag['type']) . " " . $tag['book_id']);
-    // in these cases (the if 
+    // in these cases we can print a name
     if (($tag['type'] == 'section' or $tag['type'] == 'subsection') or (!in_array($tag['type'], array('item', 'equation')) and !empty($tag['name'])))
       print(": " . $tag['name']);
   }
@@ -119,10 +155,22 @@
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
 
-    <h2>Tree view for Chapter TODO</h2>
     <div id="treeview">    
 <?php
-  print_r(print_tags('7'));
+  if (isset($_GET['number']) and is_numeric($_GET['number'])) {
+    if (section_exists($_GET['number'])) {
+      print("<h2>Tree view for Chapter " . $_GET['number'] . ": " . get_chapter($_GET['number']) . "</h2>");
+      print_tags($_GET['number']);
+    }
+    else {
+      print("<h2>Tree view for a non-existing chapter</h2>");
+      print("<p>This chapter does not exist.</p>");
+    }
+  }
+  else {
+    print("<h2>Error</h2>");
+    print("<p>The input that was provided (i.e. <code>" . htmlentities($_GET['number']) . "</code>) is not correct, it should be a positive integer.</p>");
+  }
 ?>
     </div>
     
