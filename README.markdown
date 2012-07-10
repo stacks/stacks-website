@@ -26,3 +26,9 @@ The following configuration is to remind me of what I have to do to get an insta
 8. run `python scripts/import_tags.py`, `python scripts/import_titles.py` and `python scripts/import_tex.py`, preferably (but not necessarily I guess) in that order
 
 9. combine all of the above in one single install script
+
+Modifications to the EpicEditor styles
+--------------------------------------
+These are the modifications I have made to the style files. At this point it is too much of a hassle to do this better (write own style files, and/or add them to the EpicEditor project).
+
+* in `EpicEditor/epiceditor/themes/preview/github.css` the `margin` of `#epiceditor-preview li` (and others) should be `margin: 5px 0;` (or some other more sensible value)
