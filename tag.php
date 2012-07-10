@@ -100,6 +100,23 @@
     }
   }
 
+  function get_title_from_filename($filename) {
+    global $db;
+
+    try {
+      $sql = $db->prepare('SELECT number, title FROM sections WHERE filename = :filename AND number NOT LIKE "%.%"');
+      $sql->bindParam(':filename', $filename);
+
+      if ($sql->execute()) {
+        // return first result
+        while ($row = $sql->fetch()) return $row;
+      }
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
+
   function print_captcha() {
     print("<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag <var>0321</var> you just have to write <var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>\n");
 ?>
@@ -263,22 +280,38 @@
     $section_information = get_section($section_id);
     $chapter_information = get_section($chapter_id);
 
-    if (empty($results['name'])) {
+    // general information
+    // if the type of a tag is 'item' it will have a name, but we're not interested in it
+    if (empty($results['name']) or $results['type'] == 'item') {
       print("    <p>This tag has label <var>" . $results['label'] . "</var> and it references\n");
     }
     else {
       print("    <p>This tag has label <var>" . $results['label'] . "</var>, it is called <strong>" . $results['name'] . "</strong> in the Stacks project and it references\n");
     }
+
+    // information about the location of the tag in the Stacks project
     print("    <ul>\n");
-    // the tag refers to a result in a chapter, not contained in a (sub)section, i.e. don't display that information
-    if ($section_id == $chapter_id) {
-      print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $chapter_information['title'] . "\n");
+    // all types except 'item' can be handled in the same vein
+    if ($results['type'] != 'item') {
+      // the tag refers to a result in a chapter, not contained in a (sub)section, i.e. don't display that information
+      if ($section_id == $chapter_id) {
+        print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Chapter " . $chapter_id . ": " . $chapter_information['title'] . "\n");
+      }
+      else {
+        print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Section " . implode('.', array_slice(explode('.', $section_id), 1)) . ": " . $section_information['title'] . ", in Chapter " . $chapter_id . ": " . $chapter_information['title'] . "\n");
+      }
+
+      print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>". ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
     }
+    // if the type is 'item' there is no specific information about the location
     else {
-      print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Section " . implode('.', array_slice(explode('.', $section_id), 1)) . ": " . $section_information['title'] . ", in Chapter " . $chapter_id . ": " . $chapter_information['title'] . "\n");
+      $title = get_title_from_filename($results['file']);
+      print("      <li><a href='" . full_url('tex/' . $results['file'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['chapter_page'] . "</a> of Chapter " . $title['number'] . ": " . $title['title'] . "\n");
+      print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of of the book version\n");
     }
-    print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>". ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
     print("    </ul>\n\n");
+
+    // output LaTeX code
     if(empty($results['value'])) {
       print("    <p>There is no LaTeX code associated to this tag.\n");
     }
