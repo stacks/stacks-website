@@ -16,8 +16,10 @@
     <h2>The tag system</h2>
     <p>Each tag refers to a unique lemma, theorem, etc. in order for this project to be referenceable. These tags don't change even if the lemma (or theorem, etc.) moves within the text.
     
-    <h2>How to use it</h2>
+    <h2>How to use it?</h2>
     <p>To look up a lemma, theorem etc. using a tag, just go to the <a href="<?php print(full_url('tag')); ?>">search page</a> and input the tag in the box.
+
+    <p>If you wish to browse the Stacks project you can use the <a href="<?php print(full_url('browse')); ?>">browse page</a>, especially the online version. To get started in the beginning of the project, navigate to <a href="<?php print(full_url('chapter/1')); ?>">Chapter 1: Introduction</a>.
 
     <p>To reference a result in the stacks project find its corresponding tag by hovering/clicking on the lemma, theorem, etc. in the online pdf file. See below for LaTeX instructions.
 
