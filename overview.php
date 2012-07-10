@@ -16,7 +16,7 @@
     $tags = array();
 
     try {
-      $sql = $db->prepare("SELECT tag, label, book_id, type, book_page, file FROM tags WHERE active = 'TRUE' AND book_id LIKE '" . $chapter_id . ".%' ORDER BY position");
+      $sql = $db->prepare("SELECT tag, label, book_id, type, book_page, file, name FROM tags WHERE active = 'TRUE' AND book_id LIKE '" . $chapter_id . ".%' ORDER BY position");
       
       if ($sql->execute()) {
         // add all rows to an array
@@ -32,7 +32,10 @@
   }
 
   function print_tag($tag) {
-    print("<li><a href='" . full_url('tag/' . $tag['tag']) . "'>Tag <var>" . $tag['tag'] . "</var></a> references <a title='" . $tag['label'] . "' href='" . full_url('tex/' . $tag['file'] . '.pdf#' . $tag['tag']) . "'>" . ucfirst($tag['type']) . " " . $tag['book_id'] . "</a>\n");
+    print("<li><a href='" . full_url('tag/' . $tag['tag']) . "'>Tag <var>" . $tag['tag'] . "</var></a> references " . ucfirst($tag['type']) . " " . $tag['book_id']);
+    // in these cases (the if 
+    if (($tag['type'] == 'section' or $tag['type'] == 'subsection') or (!in_array($tag['type'], array('item', 'equation')) and !empty($tag['name'])))
+      print(": " . $tag['name']);
   }
 
   function print_tags($chapter_id) {
@@ -106,13 +109,38 @@
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="<?php print(full_url('jquery-treeview/jquery.treeview.js')); ?>"></script>
+
+    <link rel="stylesheet" href="<?php print(full_url('jquery-treeview/jquery.treeview.css')); ?>" />
   </head>
 
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
+
+    <h2>Tree view for Chapter TODO</h2>
+    <div id="treeview">    
 <?php
-  print_r(print_tags('56'));
+  print_r(print_tags('7'));
 ?>
+    </div>
+    
+    <script type="text/javascript">
+      $(document).ready(function() {
+          // remove all empty lists
+         $("#treeview ul").each(
+            function() {
+              var element = $(this);
+              if (element.children().length == 0) {
+                element.remove();
+              }
+            }
+          ); 
+          // initialize treeview
+          $("#treeview").treeview( { collapsed: true, } )
+      });
+    </script>
 
     <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
   </body>
