@@ -18,10 +18,10 @@
 
     <h2 name="most-used">Most used links</h2>
     <ul>
-      <li>the entire project in one file: <a href="<?php print(full_url('tex/book.pdf')); ?>"><code>pdf</code></a> | <a href="<?php print(full_url('tex/book.pdf')); ?>"><code>dvi</code></a>;
+      <li>the entire project in one file: <a href="<?php print(full_url('download/book.pdf')); ?>"><code>pdf</code></a> | <a href="<?php print(full_url('download/book.pdf')); ?>"><code>dvi</code></a>;
       <li>the links to <code>tex</code>, <code>pdf</code> and <code>dvi</code> files of all the chapters are on the <a href="<?php print(full_url('browse')); ?>">browse page</a>;
-      <li>all chapters at once (tarred up): <a href="<?php print(full_url('tex/stacks-pdfs.tar')); ?>"><code>pdf</code></a> |  <a href="<?php print(full_url('tex/stacks-dvis.tar')); ?>"><code>dvi</code></a>;
-      <li>the whole project as an <a href="<?php print(full_url('tex/stacks-git.tar.bz2')); ?>">archive</a>.
+      <li>all chapters at once (tarred up): <a href="<?php print(full_url('archives/stacks-pdfs.tar')); ?>"><code>pdf</code></a> |  <a href="<?php print(full_url('archives/stacks-dvis.tar')); ?>"><code>dvi</code></a>;
+      <li>the whole project as an <a href="<?php print(full_url('archives/stacks-project.tar.bz2')); ?>">archive</a>.
     </ul>    
 
     <h2 name="listing">Links to all files of the project</h2>
