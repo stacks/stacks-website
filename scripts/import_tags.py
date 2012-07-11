@@ -86,7 +86,7 @@ def get_tags():
 
 def set_inactive(tag):
   try:
-    query = 'UPDATE tags SET active = "FALSE" WHERE tag = ?'
+    query = 'UPDATE tags SET active = "FALSE", position = NULL WHERE tag = ?'
     connection.execute(query, [tag])
 
   except sqlite3.Error, e:
