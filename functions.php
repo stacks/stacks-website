@@ -80,11 +80,11 @@ function get_tag_at($position) {
 
   global $db;
   try {
-    $sql = $db->prepare('SELECT tag FROM tags WHERE position = :position AND active = "TRUE"');
+    $sql = $db->prepare('SELECT tag, label FROM tags WHERE position = :position AND active = "TRUE"');
     $sql->bindParam(':position', $position);
 
     if ($sql->execute())
-      return $sql->fetchColumn();
+      return $sql->fetch();
   }
   catch(PDOException $e) {
     echo $e->getMessage();

@@ -315,11 +315,11 @@
     $results['position'] = intval($results['position']);
     if (position_exists($results['position'] - 1)) {
       $previous_tag = get_tag_at($results['position'] - 1);
-      print "<p id='navigate-back'><a href='" . full_url('tag/' . $previous_tag) . "'>&lt;&lt; Previous tag <var>" . $previous_tag . "</var></a>";
+      print "<p id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag/' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
     }
     if (position_exists($results['position'] + 1)) {
       $next_tag = get_tag_at($results['position'] + 1);
-      print "<p id='navigate-forward'><a href='" . full_url('tag/' . $next_tag) . "'>Next tag <var>" . $next_tag . " &gt;&gt;</var></a>";
+      print "<p id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
     }
 
     // output LaTeX code
