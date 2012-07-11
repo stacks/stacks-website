@@ -241,7 +241,7 @@
       print(" (<a href='" . htmlspecialchars($comment['site']) . "'>site</a>)\n");
     }
     print("on " . date_format($date, 'F j, Y \a\t g:i a e') . "\n");
-    print("      <blockquote>" . str_replace("\xA0", ' ', Markdown(htmlspecialchars($comment['comment']))) . "</blockquote>\n");
+    print("      <blockquote>" . str_replace("&nbsp;", " ", str_replace("\xA0", ' ', Markdown(htmlspecialchars($comment['comment'])))) . "</blockquote>\n");
     print("    </div>\n\n");
   }
 
