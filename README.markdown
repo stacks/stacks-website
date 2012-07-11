@@ -31,4 +31,4 @@ Modifications to the EpicEditor styles
 --------------------------------------
 These are the modifications I have made to the style files. At this point it is too much of a hassle to do this better (write own style files, and/or add them to the EpicEditor project).
 
-* in `EpicEditor/epiceditor/themes/preview/github.css` the `margin` of `#epiceditor-preview li` (and others) should be `margin: 5px 0;` (or some other more sensible value)
+* in `EpicEditor/epiceditor/themes/editor/input-light.css` the `border:0;` of `body`should be `border: 2px #eee inset;`
