@@ -62,6 +62,8 @@
   $author = $_POST['name'];
   $email = $_POST['email'];
   $comment = $_POST['comment'];
+  // for some reason Firefox is inserting &nbsp;'s in the input when you have two consecutive spaces, it seems correct to just remove these
+  $comment = str_replace('&nbsp;', '', $comment);
   // $site is already handled
 
   try {
@@ -80,6 +82,6 @@
   catch(PDOException $e) {
     echo $e->getMessage();
   }
-  
+
   header('Location: ' . full_url('tag/' . $_POST['tag']));
 ?>
