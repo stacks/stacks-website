@@ -1,4 +1,5 @@
 import sqlite3
+import sys
 import config
 from functions import *
 
@@ -138,6 +139,9 @@ def import_tags(filename, labels):
 
   print 'Inserting (or updating) the tags'
   for tag, label in tags.iteritems():
+    if label not in labels:
+      print 'ERROR, label', label, 'not found in auxiliary files. Have you ran `make tags`?'
+      sys.exit()
     info = labels[label]
   
     insert_tag(tag, (label, info[0], info[2][1], info[1][1], info[1][0], info[1][2], info[2][3], info[1][4]))
