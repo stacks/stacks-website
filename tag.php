@@ -372,7 +372,7 @@
         },
         theme: {
           editor: '/themes/editor/epic-light.css',
-          preview: '/themes/preview/preview-dark.css',
+          preview: '/themes/preview/github.css',
         },
       }
     </script>
