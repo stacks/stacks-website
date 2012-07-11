@@ -291,8 +291,20 @@
 
     // information about the location of the tag in the Stacks project
     print("    <ul>\n");
-    // all types except 'item' can be handled in the same vein
-    if ($results['type'] != 'item') {
+    // all types except 'item' and section-phantom labels can be handled in the same vein
+    if ($results['type'] == 'item') {
+      // if the type is 'item' there is no specific information about the location
+      $title = get_title_from_filename($results['file']);
+      print("      <li><a href='" . full_url('tex/' . $results['file'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['chapter_page'] . "</a> of Chapter " . $title['number'] . ": " . $title['title'] . "\n");
+      print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of of the book version\n");
+    }
+    elseif (substr($results['label'], -15) == 'section-phantom') {
+      // section-phantom labels contain no relevant information unfortunately and just refer to the chapter
+      $title = get_title_from_filename($results['file']);
+      print("      <li><a href='" . full_url('tex/' . $results['file'] . ".pdf#" . $tag) . "'>The start of the chapter</a> in  <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . $chapter_information['title'] . "</a>");
+      print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of of the book version\n");
+    }
+    else {
       // the tag refers to a result in a chapter, not contained in a (sub)section, i.e. don't display that information
       if ($section_id == $chapter_id) {
         print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . $chapter_information['title'] . "</a>\n");
@@ -303,24 +315,7 @@
 
       print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>". ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
     }
-    // if the type is 'item' there is no specific information about the location
-    else {
-      $title = get_title_from_filename($results['file']);
-      print("      <li><a href='" . full_url('tex/' . $results['file'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['chapter_page'] . "</a> of Chapter " . $title['number'] . ": " . $title['title'] . "\n");
-      print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of of the book version\n");
-    }
     print("    </ul>\n\n");
-
-    // navigational code
-    $results['position'] = intval($results['position']);
-    if (position_exists($results['position'] - 1)) {
-      $previous_tag = get_tag_at($results['position'] - 1);
-      print "<p id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag/' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
-    }
-    if (position_exists($results['position'] + 1)) {
-      $next_tag = get_tag_at($results['position'] + 1);
-      print "<p id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
-    }
 
     // output LaTeX code
     if(empty($results['value'])) {
@@ -329,6 +324,17 @@
     else {
       print("    <p>The LaTeX code of the corresponding environment is:\n");
       print("    <pre>\n" . trim($results['value']) . "\n    </pre>\n");
+    }
+
+    // navigational code
+    $results['position'] = intval($results['position']);
+    if (position_exists($results['position'] - 1)) {
+      $previous_tag = get_tag_at($results['position'] - 1);
+      print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag/' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
+    }
+    if (position_exists($results['position'] + 1)) {
+      $next_tag = get_tag_at($results['position'] + 1);
+      print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
     }
   }
 
