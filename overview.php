@@ -166,7 +166,6 @@
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
 
-    <div id="treeview">    
 <?php
   if (isset($_GET['number']) and is_numeric($_GET['number'])) {
     if (section_exists($_GET['number'])) {
@@ -176,20 +175,14 @@
       if (section_exists(intval($_GET['number']) + 1))
         print("<p id='chapter-forward'><a href='" . full_url('chapter/' . (intval($_GET['number']) + 1)) . "'>Chapter " . (intval($_GET['number']) + 1) . ": " . get_chapter(intval($_GET['number']) + 1) . " &gt;&gt;</a>");
 
-      print_tags($_GET['number']);
-    }
-    else {
-      print("<h2>Tree view for a non-existing chapter</h2>");
-      print("<p>This chapter does not exist.</p>");
-    }
-  }
-  else {
-    print("<h2>Error</h2>");
-    print("<p>The input that was provided (i.e. <code>" . htmlentities($_GET['number']) . "</code>) is not correct, it should be a positive integer.</p>");
-  }
-?>
+?> 
+    <div id="control">
+      <a href="#"><img src="<?php print(full_url('jquery-treeview/images/minus.gif')); ?>"> Collapse all</a>
+      <a href="#"><img src="<?php print(full_url('jquery-treeview/images/plus.gif')); ?>"> Expand all</a>
     </div>
-    
+    <div id="treeview">
+<?php print_tags($_GET['number']); ?>
+    </div>
     <script type="text/javascript">
       $(document).ready(function() {
           // remove all empty lists
@@ -202,9 +195,21 @@
             }
           ); 
           // initialize treeview
-          $("#treeview").treeview( { collapsed: true, } )
+          $("#treeview").treeview( { control: "#control", collapsed: true, } )
       });
     </script>
+<?php
+    }
+    else {
+      print("<h2>Tree view for a non-existing chapter</h2>");
+      print("<p>This chapter does not exist.</p>");
+    }
+  }
+  else {
+    print("<h2>Error</h2>");
+    print("<p>The input that was provided (i.e. <code>" . htmlentities($_GET['number']) . "</code>) is not correct, it should be a positive integer.</p>");
+  }
+?>
 
     <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
   </body>
