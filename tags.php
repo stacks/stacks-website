@@ -19,9 +19,7 @@
     <h2>How to use it?</h2>
     <p>To look up a lemma, theorem etc. using a tag, just go to the <a href="<?php print(full_url('tag')); ?>">search page</a> and input the tag in the box.
 
-    <p>If you wish to browse the Stacks project you can use the <a href="<?php print(full_url('browse')); ?>">browse page</a>, especially the online version. To get started in the beginning of the project, navigate to <a href="<?php print(full_url('chapter/1')); ?>">Chapter 1: Introduction</a>.
-
-    <p>To reference a result in the stacks project find its corresponding tag by hovering/clicking on the lemma, theorem, etc. in the online pdf file. See below for LaTeX instructions.
+    <p>To reference a result in the stacks project find its corresponding tag by hovering/clicking on the lemma, theorem, etc. in the online pdf file. An alternative is to look for the result in the tree view starting at <a href="<?php print(full_url('chapter/1')); ?>">Chapter 1</a>. See below for LaTeX instructions.
 
     <h2>More information</h2>
     <p>The tag system provides stable references to definitions, lemmas, propositions, theorems, remarks, examples, exercises, situations and even equations, sections and items. As the project grows, each of these gets a tag which will always point to the same mathematical result. The place of the lemma in the document may change, the lemma may be moved to a different chapter, but its tag always keeps pointing to it.
@@ -41,7 +39,7 @@
     <pre><code>\href<?php print('{http://' . $_SERVER['HTTP_HOST'] . '/' . get_directory() . 'tag/0123}{0123}'); ?></code></pre>
 
     <h2>Technical information</h2>
-    <p>There is a file called <a href="<?php print(full_url('tex/tags/tags')); ?>">tags</a> (in the <a href="<?php print(full_url('tex/tags')); ?>">tags subdirectory</a>) which has on each line the tag followed by an identifier. Example: 
+    <p>There is a file called <a href="<?php print(full_url('tex/tags/tags')); ?>">tags</a> (in the <a href="http://paard.math.columbia.edu:8888/?p=stacks.git;a=tree;f=tags">tags subdirectory</a> of the actual Stacks project) which has on each line the tag followed by an identifier. Example: 
     <pre><code>01MB,constructions-lemma-proj-scheme</code></pre>
     Here the tag is <var>01MB</var> and the identifier is <var>constructions-lemma-proj-scheme</var>. This means that the tag points to a lemma from the file <var>constructions.tex</var>. It currently has the label <var>lemma-proj-scheme</var>. If we ever change the lemma's  label, or move the lemma to a different file, then we will change the corresponding line in the file tags by changing the identifier correspondingly. But we will <strong>never change the tag</strong>. 
 
