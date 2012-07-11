@@ -12,9 +12,24 @@ function tag_exists($tag) {
     $sql = $db->prepare('SELECT COUNT(*) FROM tags WHERE tag = :tag');
     $sql->bindParam(':tag', $tag);
 
-    if ($sql->execute()) {
+    if ($sql->execute())
       return intval($sql->fetchColumn()) > 0;
-    }
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return false;
+}
+
+function position_exists($position) {
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT COUNT(*) FROM tags WHERE position = :position AND active = "TRUE"');
+    $sql->bindParam(':position', $position);
+
+    if ($sql->execute())
+      return intval($sql->fetchColumn()) > 0;
   }
   catch(PDOException $e) {
     echo $e->getMessage();
@@ -31,9 +46,8 @@ function tag_is_active($tag) {
     $sql = $db->prepare('SELECT active FROM tags WHERE tag = :tag');
     $sql->bindParam(':tag', $tag);
 
-    if ($sql->execute()) {
+    if ($sql->execute())
       return $sql->fetchColumn() == 'TRUE';
-    }
   }
   catch(PDOException $e) {
     echo $e->getMessage();
@@ -47,7 +61,7 @@ function get_tag($tag) {
 
   global $db;
   try {
-    $sql = $db->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type FROM tags WHERE tag = :tag');
+    $sql = $db->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position FROM tags WHERE tag = :tag');
     $sql->bindParam(':tag', $tag);
 
     if ($sql->execute()) {
@@ -59,5 +73,23 @@ function get_tag($tag) {
   catch(PDOException $e) {
     echo $e->getMessage();
   }
+}
+
+function get_tag_at($position) {
+  assert(position_exists($position));
+
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT tag FROM tags WHERE position = :position AND active = "TRUE"');
+    $sql->bindParam(':position', $position);
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return "ZZZZ";
 }
 ?>

@@ -169,3 +169,17 @@ table#browse tr:nth-child(odd):hover {
 table#browse tr:nth-child(even):hover {
   background-color: #edece6;
 }
+
+p#navigate-back,
+p#navigate-forward {
+  margin: 0;
+  margin-bottom: 1em;
+}
+
+p#navigate-back {
+  float: left;
+}
+
+p#navigate-forward {
+  text-align: right;
+}
