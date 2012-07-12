@@ -112,6 +112,7 @@ pre {
 div.comment {
   border-bottom: 1px solid #ccc;
   margin-bottom: 1em;
+  overflow: auto;
 }
 
 div.comment h1, div.comment h2 {
