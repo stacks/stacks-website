@@ -22,6 +22,22 @@ function tag_exists($tag) {
   return false;
 }
 
+function label_exists($label) {
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT COUNT(*) FROM tags WHERE label = :label');
+    $sql->bindParam(':label', $label);
+
+    if ($sql->execute())
+      return intval($sql->fetchColumn()) > 0;
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return false;
+}
+
 function position_exists($position) {
   global $db;
   try {
@@ -85,6 +101,24 @@ function get_tag_at($position) {
 
     if ($sql->execute())
       return $sql->fetch();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return "ZZZZ";
+}
+
+function get_tag_referring_to($label) {
+  assert(label_exists($label));
+
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT tag FROM tags WHERE label = :label AND active = "TRUE"');
+    $sql->bindParam(':label', $label);
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
   }
   catch(PDOException $e) {
     echo $e->getMessage();
