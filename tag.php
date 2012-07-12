@@ -130,7 +130,7 @@
     <h2>Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
     <p>Your email address will not be published. Required fields are marked.
   
-    <p>In your comment you can use <a href="http://daringfireball.net/projects/markdown/">Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).
+    <p>In your comment you can use <a href="<?php print(full_url('markdown')); ?>">Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).
   
     <form name="comment" id="comment-form" action="<?php print(full_url('post.php')); ?>" method="post">
       <label for="name">Name<sup>*</sup>:</label>
@@ -245,17 +245,24 @@
       // we're referring to a tag
       if (is_valid_tag($target)) {
         // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
-        $comment = str_replace($reference, '[' . $target . '](' . full_url('tag/' . $target) . ')', $comment);
+        $comment = str_replace($reference, '[`' . $target . '`](' . full_url('tag/' . $target) . ')', $comment);
       }
       // the user might be referring to a label
-      elseif (label_exists($target)) {
-        // the label exists in the database (and it is active), so the user is probably referring to it
-        // if he declared a \label{} in his comment with this particular label value he's out of luck
-        $tag = get_tag_referring_to($target);
-        $comment = str_replace($reference, '[' . $tag . '](' . full_url('tag/' . $tag) . ')', $comment);
-      }
-      // it might be a reference to a label in the comment, but we don't care
       else {
+        // might it be that he is referring to a "local" label, i.e. in the same chapter as the tag?
+        if (!label_exists($target)) {
+          $label = get_label(strtoupper($_GET['tag']));
+          $parts = explode('-', $label);
+          // let's try it with the current chapter in front of the label
+          $target = $parts[0] . '-' . $target;
+        }
+
+        // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
+        // if he declared a \label{} in his comment with this particular label value he's out of luck
+        if (label_exists($target)) {
+          $tag = get_tag_referring_to($target);
+          $comment = str_replace($reference, '[`' . $tag . '`](' . full_url('tag/' . $tag) . ')', $comment);
+        }
       }
     }
 

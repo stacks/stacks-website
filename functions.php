@@ -72,6 +72,24 @@ function tag_is_active($tag) {
   return false;
 }
 
+function get_label($tag) {
+  assert(is_valid_tag($tag));
+
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT label FROM tags WHERE tag = :tag');
+    $sql->bindParam(':tag', $tag);
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return "";
+}
+
 function get_tag($tag) {
   assert(is_valid_tag($tag));
 
