@@ -233,6 +233,44 @@
 <?php
   }
 
+  // do all necessary parsing of comments
+  function parse_comment($comment) {
+    // look for \ref before MathJax can and see if they point to existing tags
+    $references = array();
+    preg_match_all('/\\\ref{[\w-]*}/', $comment, $references);
+    foreach ($references[0] as $reference) {
+      // get the label or tag we're referring to, nothing more
+      $target = substr($reference, 5, -1);
+
+      // we're referring to a tag
+      if (is_valid_tag($target)) {
+        // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
+        $comment = str_replace($reference, '[' . $target . '](' . full_url('tag/' . $target) . ')', $comment);
+      }
+      // the user might be referring to a label
+      elseif (label_exists($target)) {
+        // the label exists in the database (and it is active), so the user is probably referring to it
+        // if he declared a \label{} in his comment with this particular label value he's out of luck
+        $tag = get_tag_referring_to($target);
+        $comment = str_replace($reference, '[' . $tag . '](' . full_url('tag/' . $tag) . ')', $comment);
+      }
+      // it might be a reference to a label in the comment, but we don't care
+      else {
+      }
+    }
+
+    // remove <>&"'
+    $comment = htmlspecialchars($comment);
+    // apply Markdown (i.e. we get an almost finished HTML string)
+    $comment = Markdown($comment);
+    // Google Chrome somehow adds this character so let's remove it
+    $comment = str_replace("\xA0", ' ', $comment);
+    // Firefox liked to throw in some &nbsp;'s, but I believe this particular fix is redundant now
+    $comment = str_replace("&nbsp;", ' ', $comment);
+
+    return $comment;
+  }
+
   function print_comment($comment) {
     print("    <div class='comment' id='comment-" . $comment['id'] . "'>\n");
     $date = date_create($comment['date'], timezone_open('GMT'));
@@ -241,7 +279,7 @@
       print(" (<a href='" . htmlspecialchars($comment['site']) . "'>site</a>)\n");
     }
     print("on " . date_format($date, 'F j, Y \a\t g:i a e') . "\n");
-    print("      <blockquote>" . str_replace("&nbsp;", " ", str_replace("\xA0", ' ', Markdown(htmlspecialchars($comment['comment'])))) . "</blockquote>\n");
+    print("      <blockquote>" . parse_comment($comment['comment']) . "</blockquote>\n");
     print("    </div>\n\n");
   }
 
