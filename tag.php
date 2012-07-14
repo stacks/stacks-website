@@ -445,7 +445,8 @@
       function sfm(text) {
         // all double backslashed should be doubled to quadruple backslashes to ensure proper LaTeX results
         text = text.replace(/\\/g, "\\\\");
-        // TODO interpret \ref{}
+        // \ref{0000} can point to the correct URL (all others have to be (ab)used by MathJax)
+        text = text.replace(/\\ref\{(\w{4})\}/, "[$1](<?php print(full_url('tag/$1')); ?>)");
 
         return marked(text);
       }
