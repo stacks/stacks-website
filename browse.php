@@ -70,8 +70,7 @@
           }
 
           // change LaTeX escaping to HTML escaping
-          $row['title'] = str_replace("\'E", "&Eacute;", $row['title']);
-          print_chapter($row['title'], $row['filename'], $row['number']);
+          print_chapter(latex_to_html($row['title']), $row['filename'], $row['number']);
         }
       }
     }

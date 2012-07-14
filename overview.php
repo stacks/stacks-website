@@ -71,7 +71,7 @@
     print("<li><a title='" . $tag['label'] . "' href='" . full_url('tag/' . $tag['tag']) . "'>Tag <var>" . $tag['tag'] . "</var></a> points to " . ucfirst($tag['type']) . " " . $tag['book_id']);
     // in these cases we can print a name
     if (($tag['type'] == 'section' or $tag['type'] == 'subsection') or (!in_array($tag['type'], array('item', 'equation')) and !empty($tag['name'])))
-      print(": " . $tag['name']);
+      print(": " . latex_to_html($tag['name']));
   }
 
   function print_tags($chapter_id) {
@@ -158,11 +158,11 @@
 <?php
   if (isset($_GET['number']) and is_numeric($_GET['number'])) {
     if (section_exists($_GET['number'])) {
-      print("<h2>Tree view for Chapter " . $_GET['number'] . ": " . get_chapter($_GET['number']) . "</h2>");
+      print("<h2>Tree view for Chapter " . $_GET['number'] . ": " . latex_to_html(get_chapter($_GET['number'])) . "</h2>");
       if (section_exists(intval($_GET['number']) - 1))
-        print("<p id='navigate-back'><a href='" . full_url('chapter/' . (intval($_GET['number']) - 1)) . "'>&lt;&lt; Chapter " . (intval($_GET['number']) - 1) . ": " . get_chapter(intval($_GET['number']) - 1) . "</a>");
+        print("<p id='navigate-back'><a href='" . full_url('chapter/' . (intval($_GET['number']) - 1)) . "'>&lt;&lt; Chapter " . (intval($_GET['number']) - 1) . ": " . latex_to_html(get_chapter(intval($_GET['number']) - 1)) . "</a>");
       if (section_exists(intval($_GET['number']) + 1))
-        print("<p id='navigate-forward'><a href='" . full_url('chapter/' . (intval($_GET['number']) + 1)) . "'>Chapter " . (intval($_GET['number']) + 1) . ": " . get_chapter(intval($_GET['number']) + 1) . " &gt;&gt;</a>");
+        print("<p id='navigate-forward'><a href='" . full_url('chapter/' . (intval($_GET['number']) + 1)) . "'>Chapter " . (intval($_GET['number']) + 1) . ": " . latex_to_html(get_chapter(intval($_GET['number']) + 1)) . " &gt;&gt;</a>");
 
 ?> 
     <div id="control">

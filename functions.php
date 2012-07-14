@@ -144,4 +144,13 @@ function get_tag_referring_to($label) {
 
   return "ZZZZ";
 }
+
+function latex_to_html($text) {
+ $text = str_replace("\'E", "&Eacute;", $text);
+ $text = str_replace("{\\v C}", "&#268;", $text);
+ // this is to remedy a bug in import_titles
+ $text = str_replace("\\v C}", "&#268;", $text);
+
+ return $text;
+}
 ?>
