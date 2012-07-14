@@ -353,7 +353,7 @@
       print("    <p>This tag has label <var>" . $results['label'] . "</var> and it points to\n");
     }
     else {
-      print("    <p>This tag has label <var>" . $results['label'] . "</var>, it is called <strong>" . $results['name'] . "</strong> in the Stacks project and it points to\n");
+      print("    <p>This tag has label <var>" . $results['label'] . "</var>, it is called <strong>" . latex_to_html($results['name']) . "</strong> in the Stacks project and it points to\n");
     }
 
     // information about the location of the tag in the Stacks project
@@ -362,19 +362,19 @@
     if ($results['type'] == 'item') {
       // if the type is 'item' there is no specific information about the location
       $title = get_title_from_filename($results['file']);
-      print("      <li><a href='" . full_url('tex/' . $results['file'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['chapter_page'] . "</a> of Chapter " . $title['number'] . ": " . $title['title'] . "\n");
+      print("      <li><a href='" . full_url('tex/' . $results['file'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['chapter_page'] . "</a> of Chapter " . $title['number'] . ": " . latex_to_html($title['title']) . "\n");
       print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of of the book version\n");
     }
     elseif (substr($results['label'], -15) == 'section-phantom') {
       // section-phantom labels contain no relevant information unfortunately and just refer to the chapter
       $title = get_title_from_filename($results['file']);
-      print("      <li><a href='" . full_url('tex/' . $results['file'] . ".pdf#" . $tag) . "'>The start of the chapter</a> in  <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . $chapter_information['title'] . "</a>");
+      print("      <li><a href='" . full_url('tex/' . $results['file'] . ".pdf#" . $tag) . "'>The start of the chapter</a> in  <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . latex_to_html($chapter_information['title']) . "</a>");
       print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>" . ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of of the book version\n");
     }
     else {
       // the tag refers to a result in a chapter, not contained in a (sub)section, i.e. don't display that information
       if ($section_id == $chapter_id) {
-        print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . $chapter_information['title'] . "</a>\n");
+        print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . latex_to_html($chapter_information['title']) . "</a>\n");
       }
       else {
         print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Section " . implode('.', array_slice(explode('.', $section_id), 1)) . ": " . $section_information['title'] . ", in <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . $chapter_information['title'] . "</a>\n");
