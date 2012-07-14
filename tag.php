@@ -447,7 +447,6 @@
         text = text.replace(/\\\\/g, "\\\\\\\\");
         // \ref{0000} can point to the correct URL (all others have to be (ab)used by MathJax)
         text = text.replace(/\\ref\{(\w{4})\}/g, "[$1](http://math.columbia.edu<?php print(full_url('tag/$1')); ?>)");
-        console.log(text);
 
         return marked(text);
       }
