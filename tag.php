@@ -415,6 +415,18 @@
 
     <script type="text/javascript" src="<?php print(full_url('EpicEditor/epiceditor/js/epiceditor.js')); ?>"></script>
     <script type="text/javascript">
+      /** Stacks Flavored Markdown
+       * In order to accomodate some of the specifics of the Stacks project we preprocess text. This entails
+       * 1) double backslashes are converted to quadruple backslashes to ensure proper LaTeX parsing
+       * 2) interpreting \ref{}
+       */
+      function sfm(text) {
+        // all double backslashed should be doubled to quadruple backslashes to ensure proper LaTeX results
+        text = text.replace(/\\/g, "\\\\");
+        // TODO interpret \ref{}
+
+        return marked(text);
+      }
       var options = {
         basePath: '<?php print(full_url('EpicEditor/epiceditor')); ?>',
         file: {
@@ -425,6 +437,7 @@
           editor: '/themes/editor/epic-light.css',
           preview: '/themes/preview/github.css',
         },
+        parser : sfm,
       }
     </script>
   </head>
