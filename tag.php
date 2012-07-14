@@ -286,9 +286,10 @@
         }
       }
     }
-
     // remove <>&"'
     $comment = htmlspecialchars($comment);
+    // duplicate double backslashes
+    $comment = str_replace("\\\\", "\\\\\\\\", $comment);
     // apply Markdown (i.e. we get an almost finished HTML string)
     $comment = Markdown($comment);
     // Google Chrome somehow adds this character so let's remove it
