@@ -1,6 +1,7 @@
 <!doctype html>
 <?php
   include('config.php');
+  include('functions.php');
 ?>
 <html>
   <head>
@@ -12,6 +13,7 @@
 
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
+    <?php print_navigation(); ?>
 
     <h2>About</h2>
     <p>The Stacks project started in 2005. The initial idea was for it to be a collaborative web-based project with the aim of writing an introductory text about algebraic stacks. Temporarily there was a mailing list and some discussion as to how to proceed. For example, there are issues with referencing such a document, how to distribute credit, who does what, and many more. Although we have definite ideas about most of these points we would like to take 

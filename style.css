@@ -42,6 +42,21 @@ h1 a:visited {
   color: black;
 }
 
+ul#navigation {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul#navigation li {
+  float: left;
+  padding: .5em 1em .3em 1em;
+}
+
+ul#navigation li:hover {
+  background-color: #edece6;
+}
+
 h2 {
   font-size: medium;
   margin: 0 -10px 10px -10px;
