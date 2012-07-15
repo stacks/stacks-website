@@ -164,6 +164,7 @@ function print_navigation() {
       <li><a href="<?php print(full_url('tags')); ?>">tags explained</a>
       <li><a href="<?php print(full_url('tag')); ?>">tag lookup</a>
       <li><a href="<?php print(full_url('browse')); ?>">browse</a>
+      <li><a href="<?php print(full_url('recent-comments')); ?>">recent comments</a>
     </ul>
     <br style="clear: both;">
 <?php
