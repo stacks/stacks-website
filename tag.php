@@ -172,7 +172,8 @@
         function sanitize(s) {
           var output = '';
           for (c in s) {
-            if (s.charCodeAt(c) != 160) output += s[c];
+            if (s.charCodeAt(c) != 160) output += s[c]
+            else output += " ";
           }
          
           return output;
@@ -212,6 +213,7 @@
   
           var previewer = iframe.contentDocument.getElementById('epiceditor-preview');
           mathjax.Hub.Queue(mathjax.Hub.Typeset(previewer));
+
         }
   
         editor.on('preview', function() {
@@ -236,6 +238,9 @@
             else {
               preview(iframe);
             };
+
+          console.log(editor.exportFile());
+          console.log(sanitize(editor.exportFile()));
         });
 
         editor.on('edit', function() {
