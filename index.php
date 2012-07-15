@@ -43,12 +43,6 @@
 
     <h2><a href="<?php print(full_url('tex/COPYING')); ?>">License</a></h2>
     <p>This project is licensed under the <a href="<?php print(full_url('tex/COPYING')); ?>">GNU Free Documentation License</a>.
-
-    <h2><a href="<?php print(full_url('acknowledgements')); ?>">Acknowledgements</a></h2>
-    <p>We have a page <a href="<?php print(full_url('acknowledgements')); ?>">acknowledging support</a>
-
-    <h2><a href="https://github.com/pbelmans/stacks-website">Stacks project website</a></h2>
-    <p>This website is maintained and developed as a <a href="https://github.com/pbelmans/stacks-website">separate project</a>.
   </body>
 
 </html>
