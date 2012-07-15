@@ -54,7 +54,7 @@ ul#navigation {
 
 ul#navigation li {
   float: left;
-  padding: .5em 1em .3em 1em;
+  padding: .5em 1em;
 }
 
 ul#navigation li:hover {
