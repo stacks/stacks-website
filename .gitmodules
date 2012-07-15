@@ -1,6 +1,6 @@
 [submodule "tex"]
 	path = tex
-	url = git://paard.math.columbia.edu/var/git/stacks
+	url = git://github.com/stacks/stacks-project.git
 [submodule "EpicEditor"]
 	path = EpicEditor
   url = git://github.com/OscarGodson/EpicEditor.git
