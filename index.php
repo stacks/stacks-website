@@ -1,6 +1,7 @@
 <!doctype html>
 <?php
   include('config.php');
+  include('functions.php');
 ?>
 <html>
   <head>
@@ -12,6 +13,7 @@
 
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
+    <?php print_navigation(); ?>
 
     <h2><a href="<?php print(full_url('about')); ?>">About</a></h2>
     <p>This is the home page of the Stacks project. It is an open source textbook and reference work on algebraic stacks and the algebraic geometry needed to define them. For more general information click we have an <a href="<?php print(full_url('about')); ?>">extensive about page</a>.
@@ -41,12 +43,6 @@
 
     <h2><a href="<?php print(full_url('tex/COPYING')); ?>">License</a></h2>
     <p>This project is licensed under the <a href="<?php print(full_url('tex/COPYING')); ?>">GNU Free Documentation License</a>.
-
-    <h2><a href="<?php print(full_url('acknowledgements')); ?>">Acknowledgements</a></h2>
-    <p>We have a page <a href="<?php print(full_url('acknowledgements')); ?>">acknowledging support</a>
-
-    <h2><a href="https://github.com/pbelmans/stacks-website">Stacks project website</a></h2>
-    <p>This website is maintained and developed as a <a href="https://github.com/pbelmans/stacks-website">separate project</a>.
   </body>
 
 </html>

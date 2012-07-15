@@ -1,6 +1,7 @@
 <!doctype html>
 <?php
   include('config.php');
+  include('functions.php');
 ?>
 <html>
   <head>
@@ -12,6 +13,7 @@
 
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
+    <?php print_navigation(); ?>
 
     <h2>How to contribute</h2>
     <p>Any improvements are welcome. If you are reading the material and you find an error you can simply email a small note to the address below. This includes typos, spelling errors, improvements to the web pages, etc. If at all possible edit the relevant TeX file directly and email the result.

@@ -154,6 +154,7 @@
 
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
+    <?php print_navigation(); ?>
 
 <?php
   if (isset($_GET['number']) and is_numeric($_GET['number'])) {

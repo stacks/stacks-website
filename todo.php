@@ -1,6 +1,7 @@
 <!doctype html>
 <?php
   include('config.php');
+  include('functions.php');
   include('php-markdown-extra-math/markdown.php');
 ?>
 <html>
@@ -20,6 +21,7 @@
 
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
+    <?php print_navigation(); ?>
 
     <h2>Important</h2>
     <p>Before hacking away and spending enormous amounts of time on a project for the Stacks project, choose a smaller task, say something you can do in 5 minutes up to an hour. Email the result (usually the modified TeX file) to <a href="mailto:stacks.project@gmail.com">stacks.project@gmail.com</a> and see what it feels like to donate some of your own work to a publicly maintained project. Having done this successfully you can try your hand at some more ambitious projects.

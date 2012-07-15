@@ -147,10 +147,25 @@ function get_tag_referring_to($label) {
 
 function latex_to_html($text) {
  $text = str_replace("\'E", "&Eacute;", $text);
+ $text = str_replace("\'e", "&eacute;", $text);
+ $text = str_replace("\`e", "&egrave;", $text);
  $text = str_replace("{\\v C}", "&#268;", $text);
  // this is to remedy a bug in import_titles
  $text = str_replace("\\v C}", "&#268;", $text);
 
  return $text;
+}
+
+function print_navigation() {
+?>
+    <ul id="navigation">
+      <li><a href="<?php print(full_url('')); ?>">index</a>
+      <li><a href="<?php print(full_url('about')); ?>">about</a>
+      <li><a href="<?php print(full_url('tags')); ?>">tags explained</a>
+      <li><a href="<?php print(full_url('tag')); ?>">tag lookup</a>
+      <li><a href="<?php print(full_url('browse')); ?>">browse</a>
+    </ul>
+    <br style="clear: both;">
+<?php
 }
 ?>

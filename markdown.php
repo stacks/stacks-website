@@ -1,6 +1,7 @@
 <!doctype html>
 <?php
   include('config.php');
+  include('functions.php');
 ?>
 <html>
   <head>
@@ -12,6 +13,7 @@
 
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
+    <?php print_navigation(); ?>
 
     <h2>Introduction</h2>
     <p><a href="http://daringfireball.net/projects/markdown/">Markdown</a> is a markup language designed to be intuitive. In a way it tries to mimick what you do if you are writing an email and you're adding emphasis, titles, lists, etc. An example:
