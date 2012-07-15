@@ -14,12 +14,12 @@
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
 
     <h2>The tag system</h2>
-    <p>Each tag refers to a unique lemma, theorem, etc. in order for this project to be referenceable. These tags don't change even if the lemma (or theorem, etc.) moves within the text.
+    <p>Each tag refers to a unique item (section, lemma, theorem, etc.) in order for this project to be referenceable. These tags don't change even if the item moves within the text.
     
     <h2>How to use it?</h2>
-    <p>To look up a lemma, theorem etc. using a tag, just go to the <a href="<?php print(full_url('tag')); ?>">search page</a> and input the tag in the box.
+    <p>To find the tag for an item, hover/click on the item in the online pdf file or find the item in the tree view starting at <a href="<?php print(full_url('chapter/1')); ?>">Chapter 1</a>. See below for LaTeX instructions on how to reference a tag.
 
-    <p>To reference a result in the stacks project find its corresponding tag by hovering/clicking on the lemma, theorem, etc. in the online pdf file. An alternative is to look for the result in the tree view starting at <a href="<?php print(full_url('chapter/1')); ?>">Chapter 1</a>. See below for LaTeX instructions.
+    <p>To find an item using a tag, <a href="<?php print(full_url('tag')); ?>">search for the tag's page</a>. The tag's page contains the location for the item referenced by the tag. It also contains its LaTeX code and a section for leaving comments.
 
     <h2>More information</h2>
     <p>The tag system provides stable references to definitions, lemmas, propositions, theorems, remarks, examples, exercises, situations and even equations, sections and items. As the project grows, each of these gets a tag which will always point to the same mathematical result. The place of the lemma in the document may change, the lemma may be moved to a different chapter, but its tag always keeps pointing to it.
