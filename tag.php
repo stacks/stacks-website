@@ -290,6 +290,24 @@
         }
       }
     }
+    // fix underscores (all underscores in math mode will be escaped
+    $result = '';
+    $mathmode = false;
+    foreach (str_split($comment) as $position => $character) {
+      // match math mode (\begin{equation}\end{equation} goes fine mysteriously)
+      if ($character == "$") {
+        // handle $$ correctly
+        if ($position + 1 < strlen($comment) && $comment[$position + 1] != "$")
+          $mathmode = !$mathmode;
+      }
+
+      // replace unescaped underscores in math mode, the accessed position always exists because we had to enter math mode first
+      if ($mathmode && $character == "_" && $comment[$position - 1] != "\\")
+        $result .= "\\_";
+      else
+        $result .= $character;
+    }
+    $comment = $result;
     // remove <>&"'
     $comment = htmlspecialchars($comment);
     // duplicate double backslashes
@@ -451,10 +469,26 @@
         text = text.replace(/\\\\/g, "\\\\\\\\");
         // \ref{0000} can point to the correct URL (all others have to be (ab)used by MathJax)
         text = text.replace(/\\ref\{(\w{4})\}/g, "[$1](http://math.columbia.edu<?php print(full_url('tag/$1')); ?>)");
-        // escape all underscores
-        text = text.replace(/_/g, "\\_");
 
-        return marked(text);
+        // fix underscores (all underscores in math mode will be escaped
+        var result = '';
+        var mathmode = false;
+        for (c in text) {
+          // match math mode (\begin{equation}\end{equation} goes fine mysteriously)
+          if (text[c] == "$") {
+            // handle $$ correctly
+            if (window.parseInt(c) + 1 < text.length && text[window.parseInt(c) + 1] != "$")
+              mathmode = !mathmode;
+          }
+
+          // replace unescaped underscores in math mode, the accessed position always exists because we had to enter math mode first
+          if (mathmode && text[c] == "_" && text[window.parseInt(c) - 1] != "\\")
+            result += "\\_";
+          else
+            result += text[c];
+        }
+
+        return marked(result);
       }
       var options = {
         basePath: '<?php print(full_url('EpicEditor/epiceditor')); ?>',
