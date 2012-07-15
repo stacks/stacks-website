@@ -19,7 +19,7 @@
 <?php
   $acknowledgements = 'tex/documentation/support';
 ?>
-    <p>What you see here is the current status of the file <a href="<?php print(full_url($acknowledgements)); ?>"><var>support</var> in the project</a>.
+    <p>What you see here is the current status of the file <a href="<?php print(full_url($acknowledgements)); ?>"><var>support</var> in the project</a>. If you have participated in the Stacks project under a grant you can contact <a href="mailto:stacks.project@gmail.com">stacks.project@gmail.com</a> and it will be added to this file.
     <ol>
 <?php
   $file = file_get_contents($acknowledgements);
