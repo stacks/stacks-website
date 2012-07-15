@@ -42,6 +42,10 @@ h1 a:visited {
   color: black;
 }
 
+a img {
+  border: 0;
+}
+
 ul#navigation {
   list-style-type: none;
   padding: 0;
