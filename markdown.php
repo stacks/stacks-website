@@ -19,7 +19,7 @@
     <p><a href="http://daringfireball.net/projects/markdown/">Markdown</a> is a markup language designed to be intuitive. In a way it tries to mimick what you do if you are writing an email and you're adding emphasis, titles, lists, etc. An example:
     <pre><code>This is a title
 ===============
-This is a [link](http://stacks.columbia.edu). A _little emphasis_, a *lot*.
+This is a [link](http://stacks.columbia.edu). A *little emphasis*, a **lot**.
 
 * list
 * list
@@ -39,6 +39,8 @@ Some math: $\varphi\colon X\to Y$, see Tag \ref{04FW}.
 \end{equation}
 </code></pre>
     just works. This is done using <a href="http://mathjax.org">MathJax</a> (so you need to enable Javascript).
+
+    <p>Remark that underscores are <strong>automatically escaped</strong>, so adding emphasis <code>_like this_</code> <strong>does not work</strong>. This in order to let MathJax and Markdown cooperate nicely. You can use the functionally equivalent asterisks <code>*like this*</code>.
 
     <p>MathJax also supports equation numbering through <code>\label{}</code> and <code>\ref{}</code> or <code>\eqref{}</code>, so you can number your equations and refer to them. This brings us to the next subject: Stacks Flavored Markdown.
 

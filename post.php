@@ -64,6 +64,8 @@
   $comment = $_POST['comment'];
   // for some reason Firefox is inserting &nbsp;'s in the input when you have two consecutive spaces, we don't like that
   $comment = str_replace('&nbsp;', ' ', $comment);
+  // escape all underscores for correct math parsing
+  $comment = str_replace("_", "\\_", $comment);
   // $site is already handled
 
   try {

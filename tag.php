@@ -213,7 +213,6 @@
   
           var previewer = iframe.contentDocument.getElementById('epiceditor-preview');
           mathjax.Hub.Queue(mathjax.Hub.Typeset(previewer));
-
         }
   
         editor.on('preview', function() {
@@ -452,6 +451,8 @@
         text = text.replace(/\\\\/g, "\\\\\\\\");
         // \ref{0000} can point to the correct URL (all others have to be (ab)used by MathJax)
         text = text.replace(/\\ref\{(\w{4})\}/g, "[$1](http://math.columbia.edu<?php print(full_url('tag/$1')); ?>)");
+        // escape all underscores
+        text = text.replace(/_/g, "\\_");
 
         return marked(text);
       }
