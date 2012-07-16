@@ -15,7 +15,7 @@
 ?>
       <tr> 
         <td></td> 
-        <td><?php print($chapter); ?></td> 
+        <td><?php print($number . ".&nbsp;&nbsp;&nbsp;" . $chapter); ?></td> 
         <td><a href="<?php print(full_url('chapter/' . $number)); ?>"><code>online</code></a></td> 
 <?php
     if ($chapter == 'Auto generated index')
