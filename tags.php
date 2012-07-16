@@ -33,7 +33,7 @@
     <pre><code>@MISC{stacks-project, 
   AUTHOR = "The {Stacks Project Authors}", 
   TITLE = "{\itshape Stacks Project}", 
-  HOWPUBLISHED = "\url{http://math.columbia.edu/algebraic_geometry/stacks-git}", 
+  HOWPUBLISHED = "\url{http://stacks.math.columbia.edu}", 
 }</code></pre>
     <p>Then you can use a construction such as
     <pre><code>\cite[Definition 0123]{stacks-project}</code></pre>

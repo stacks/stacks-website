@@ -16,7 +16,7 @@
     <?php print_navigation(); ?>
 
     <h2>How to use git with the Stacks project</h2>
-    <p>I assume you have cloned the official git repository at github using the command
+    <p>I assume you have cloned the official git repository at GitHub using the command
     <pre><code>git clone git://github.com/stacks/stacks-project.git</code></pre>
     Then you will have a directory called stacks-project. In the rest of this howto we assume that you have changed directory into stacks-project.</p>
     
@@ -26,7 +26,7 @@
     <h2>Pulling updates</h2>
     <p>From time to time type
     <pre><code>git pull</code></pre>
-    to automatically pull new updates from github.</p>
+    to automatically pull new updates from GitHub.</p>
     
     <h2>Working on the project (simplest version)</h2>
     <p>Create a new branch that you will use to make changes to the project.
@@ -44,14 +44,14 @@
     <pre><code>git format-patch -n master..newbranch --stdout > my.patch</code></pre>
     This creates the file <var>my.patch</var> which you can email to <a href="mailto:stacks.project@gmail.com">stacks.project@gmail.com</a> for inclusion in the project.</p>
     
-    <h2>Keeping in sync with the repository at github</h2>
-    <p>To keep in sync with the repository at github you can do the following steps
+    <h2>Keeping in sync with the repository at GitHub</h2>
+    <p>To keep in sync with the repository at GitHub you can do the following steps
     <pre><code>git checkout master
 git pull
 git checkout newbranch
 git rebase master</code></pre>
     
-    <p>The result of these steps is that the <var>master</var> branch is synced with the <var>master</var> branch at github and that your branch <var>newbranch</var> is rebased on this synced version of the <var>master</var> branch. Actually the last step may lead to <em>conflicts</em>. This means that you have edited some lines that have also been changed in the origin repository (but in a different way). Whenever this
+    <p>The result of these steps is that the <var>master</var> branch is synced with the <var>master</var> branch at GitHub and that your branch <var>newbranch</var> is rebased on this synced version of the <var>master</var> branch. Actually the last step may lead to <em>conflicts</em>. This means that you have edited some lines that have also been changed in the origin repository (but in a different way). Whenever this
     happens you have to <em>resolve</em> the conflicts. This is done by editing the affected files <var>A</var>, <var>B</var>, ... (you can find them by grepping for <code>&lt;&lt;&lt;&lt;</code> and <code>&gt;&gt;&gt;&gt;</code>), editing the troublesome spots in <var>A</var>, <var>B</var>, ..., marking the file done by
     <pre><code>git add A
 git add B</code></pre>
