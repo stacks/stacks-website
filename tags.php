@@ -38,7 +38,7 @@
     <p>Then you can use a construction such as
     <pre><code>\cite[Definition 0123]{stacks-project}</code></pre>
     to reference the tag. If you feel couragous you can go ahead and make 0123 a link to the stable url by the following construction
-    <pre><code>\href<?php print('{http://' . $_SERVER['HTTP_HOST'] . '/' . get_directory() . 'tag/0123}{0123}'); ?></code></pre>
+    <pre><code>\href<?php print('{http://stacks.math.columbia.edu/tag/0123}{0123}'); ?></code></pre>
 
     <h2>Technical information</h2>
     <p>There is a file called <a href="<?php print(full_url('tex/tags/tags')); ?>">tags</a> (in the <a href="https://github.com/stacks/stacks-project/tree/master/tags">tags subdirectory</a> of the actual Stacks project) which has on each line the tag followed by an identifier. Example:
