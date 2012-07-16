@@ -16,7 +16,7 @@
 
 ?>
     <item>
-      <title>Comment on tag <?php print($tag); ?></title>
+      <title>Comment #<?php print($id); ?> on tag <?php print($tag); ?></title>
       <link><?php print($domain . full_url('tag/' . $tag . '#comment-' . $id)); ?></link>
       <description>A new comment by <?php print(htmlentities($author)); ?> on tag <?php print($tag); ?>.</description>
       <content:encoded><![CDATA[<?php print(str_replace("\xA0", " ", Markdown(htmlspecialchars($comment)))); ?>]]></content:encoded>
