@@ -17,7 +17,10 @@
 ?>
       <li value="<?php print($comment['id']); ?>">On <?php print(date_format($date, 'F j')); ?> <?php (empty($comment['site'])) ? print(htmlspecialchars($comment['author'])) : print("<a href='" . htmlspecialchars($comment['site']) . "'>" . htmlspecialchars($comment['author']) . "</a>"); ?> left <a href="<?php print(full_url('tag/' . $comment['tag'] . "#comment-" . $comment['id'])) ?>">comment <?php print($comment['id']); ?></a> on <a href="<?php print(full_url('tag/' . $comment['tag'])); ?>">tag <var title="<?php print($tag_information['label']); ?>"><?php print($comment['tag']); ?></var></a>
         <blockquote>
-          <?php print(htmlentities(substr($comment['comment'], 0, 100)) . '...'); ?>
+<?php
+  $cutoff = 100;
+  print(htmlentities(substr($comment['comment'], 0, $cutoff)) . (strlen($comment['comment']) > 100 ? '...' : ''));
+?>
         </blockquote>
 <?php
   }
