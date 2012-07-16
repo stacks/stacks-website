@@ -1,10 +1,10 @@
 <?php
   // actual domain in use (cannot be deduced from $_SERVER)
-  $domain = 'localhost';
+  $domain = 'http://math.columbia.edu';
 
 
   // place the database in a directory that is not visible from outside
-  $database_directory = '';
+  $database_directory = '/home/belmans/stacks/';
   $database_name = 'stacks.sqlite';
 
   function get_database_location() {
@@ -13,7 +13,7 @@
   }
 
   function get_directory() {
-    return implode('/', array_slice(explode('/', $_SERVER['SCRIPT_NAME']), 0, -1));
+    return implode('/', array_slice(explode('/', $_SERVER['REDIRECT_URL']), 0, -1));
   }
   
   function full_url($path) {
