@@ -33,11 +33,11 @@
 
     global $db;
     try {
-      $sql = $db->prepare('SELECT title FROM sections WHERE number = :number');
+      $sql = $db->prepare('SELECT title, filename FROM sections WHERE number = :number');
       $sql->bindParam(':number', $chapter_id);
   
       if ($sql->execute())
-        return $sql->fetchColumn();
+        return $sql->fetch();
     }
     catch(PDOException $e) {
       echo $e->getMessage();
@@ -159,13 +159,18 @@
 <?php
   if (isset($_GET['number']) and is_numeric($_GET['number'])) {
     if (section_exists($_GET['number'])) {
-      print("<h2>Tree view for Chapter " . $_GET['number'] . ": " . latex_to_html(get_chapter($_GET['number'])) . "</h2>");
-      if (section_exists(intval($_GET['number']) - 1))
-        print("<p id='navigate-back'><a href='" . full_url('chapter/' . (intval($_GET['number']) - 1)) . "'>&lt;&lt; Chapter " . (intval($_GET['number']) - 1) . ": " . latex_to_html(get_chapter(intval($_GET['number']) - 1)) . "</a>");
-      if (section_exists(intval($_GET['number']) + 1))
-        print("<p id='navigate-forward'><a href='" . full_url('chapter/' . (intval($_GET['number']) + 1)) . "'>Chapter " . (intval($_GET['number']) + 1) . ": " . latex_to_html(get_chapter(intval($_GET['number']) + 1)) . " &gt;&gt;</a>"); 
+      $chapter_information = get_chapter($_GET['number']);
+      print("<h2>Tree view for Chapter " . $_GET['number'] . ": " . latex_to_html($chapter_information['title']) . "</h2>");
+      if (section_exists(intval($_GET['number']) - 1)) {
+        $previous_chapter_information = get_chapter(intval($_GET['number']) - 1);
+        print("<p id='navigate-back'><a href='" . full_url('chapter/' . (intval($_GET['number']) - 1)) . "'>&lt;&lt; Chapter " . (intval($_GET['number']) - 1) . ": " . latex_to_html($previous_chapter_information['title']) . "</a>");
+      }
+      if (section_exists(intval($_GET['number']) + 1)) {
+        $next_chapter_information = get_chapter(intval($_GET['number']) + 1);
+        print("<p id='navigate-forward'><a href='" . full_url('chapter/' . (intval($_GET['number']) + 1)) . "'>Chapter " . (intval($_GET['number']) + 1) . ": " . latex_to_html($next_chapter_information['title']) . " &gt;&gt;</a>"); 
+      }
 
-      print("<p><a href='" . full_url('browse') . "'>All chapters</a></p>");
+      print("<p>Back to <a href='" . full_url('browse') . "'>all chapters</a>, or download this chapter as <a href='" . full_url('download/' . $chapter_information['filename'] . ".pdf") . "'><code>pdf</code></a> or <a href='" . full_url('download/' . $chapter_information['filename'] . ".dvi") . "'><code>dvi</code></a></p>");
 ?> 
     <div id="control">
       <a href="#"><img src="<?php print(full_url('jquery-treeview/images/minus.gif')); ?>"> Collapse all</a>
