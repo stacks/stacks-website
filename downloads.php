@@ -24,7 +24,7 @@
       <li>the whole project as an <a href="<?php print(full_url('archives/stacks-project.tar.bz2')); ?>">archive</a>.
     </ul>    
 
-    <h2 name="listing">Links to all files of the project</h2>
+    <h2 id="listing">Links to all files of the project</h2>
     <table id="browse">
       <tr>
         <th>name</th>
