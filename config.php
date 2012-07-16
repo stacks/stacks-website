@@ -13,7 +13,9 @@
   }
 
   function get_directory() {
-    return implode('/', array_slice(explode('/', $_SERVER['REDIRECT_URL']), 0, -1));
+    return '/~belmans/algebraic_geometry/stacks_website';
+    // I had this working once but I have overwritten it
+    //return implode('/', array_slice(explode('/', $_SERVER['REDIRECT_URL']), 0, -1));
   }
   
   function full_url($path) {
