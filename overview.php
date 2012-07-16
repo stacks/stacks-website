@@ -163,8 +163,9 @@
       if (section_exists(intval($_GET['number']) - 1))
         print("<p id='navigate-back'><a href='" . full_url('chapter/' . (intval($_GET['number']) - 1)) . "'>&lt;&lt; Chapter " . (intval($_GET['number']) - 1) . ": " . latex_to_html(get_chapter(intval($_GET['number']) - 1)) . "</a>");
       if (section_exists(intval($_GET['number']) + 1))
-        print("<p id='navigate-forward'><a href='" . full_url('chapter/' . (intval($_GET['number']) + 1)) . "'>Chapter " . (intval($_GET['number']) + 1) . ": " . latex_to_html(get_chapter(intval($_GET['number']) + 1)) . " &gt;&gt;</a>");
+        print("<p id='navigate-forward'><a href='" . full_url('chapter/' . (intval($_GET['number']) + 1)) . "'>Chapter " . (intval($_GET['number']) + 1) . ": " . latex_to_html(get_chapter(intval($_GET['number']) + 1)) . " &gt;&gt;</a>"); 
 
+      print("<p><a href='" . full_url('browse') . "'>All chapters</a></p>");
 ?> 
     <div id="control">
       <a href="#"><img src="<?php print(full_url('jquery-treeview/images/minus.gif')); ?>"> Collapse all</a>
@@ -193,6 +194,7 @@
     else {
       print("<h2>Tree view for a non-existing chapter</h2>");
       print("<p>This chapter does not exist.</p>");
+      print("<p><a href='" . full_url('browse') . "'>All chapters</a></p>");
     }
   }
   else {
