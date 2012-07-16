@@ -42,8 +42,8 @@
 
     <h2>Instructions on using a version control system (for major geeks)</h2>
     <p>We are using the <a href="http://git-scm.com">git</a> version control system. To clone the project type
-    <pre><code>git clone git://paard.math.columbia.edu/var/git/stacks</code></pre>
-    on the command line. This assumes that you have git installed. See this file for a <a href="<?php print(full_url('git-howto')); ?>">git howto</a>. And it is possible to inspect the <a href="http://paard.math.columbia.edu:8888/stacks.git">development history of the project</a>.
+    <pre><code>git clone git://github.com/stacks/stacks-project.git</code></pre>
+    on the command line. This assumes that you have git installed. See this file for a <a href="<?php print(full_url('git-howto')); ?>">git howto</a>. And it is possible to inspect the <a href="https://github.com/stacks/stacks-project/commits/master">development history of the project</a>.
 
     <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
   </body>

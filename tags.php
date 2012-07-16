@@ -41,7 +41,7 @@
     <pre><code>\href<?php print('{http://' . $_SERVER['HTTP_HOST'] . '/' . get_directory() . 'tag/0123}{0123}'); ?></code></pre>
 
     <h2>Technical information</h2>
-    <p>There is a file called <a href="<?php print(full_url('tex/tags/tags')); ?>">tags</a> (in the <a href="http://paard.math.columbia.edu:8888/?p=stacks.git;a=tree;f=tags">tags subdirectory</a> of the actual Stacks project) which has on each line the tag followed by an identifier. Example: 
+    <p>There is a file called <a href="<?php print(full_url('tex/tags/tags')); ?>">tags</a> (in the <a href="https://github.com/stacks/stacks-project/tree/master/tags">tags subdirectory</a> of the actual Stacks project) which has on each line the tag followed by an identifier. Example:
     <pre><code>01MB,constructions-lemma-proj-scheme</code></pre>
     Here the tag is <var>01MB</var> and the identifier is <var>constructions-lemma-proj-scheme</var>. This means that the tag points to a lemma from the file <var>constructions.tex</var>. It currently has the label <var>lemma-proj-scheme</var>. If we ever change the lemma's  label, or move the lemma to a different file, then we will change the corresponding line in the file tags by changing the identifier correspondingly. But we will <strong>never change the tag</strong>. 
 

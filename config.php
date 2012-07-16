@@ -1,6 +1,5 @@
 <?php
   // actual domain in use (cannot be deduced from $_SERVER)
-  //$domain = 'http://paard.math.columbia.edu:8080';
   $domain = 'localhost';
 
 
