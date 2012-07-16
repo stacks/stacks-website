@@ -19,7 +19,7 @@
         <blockquote>
 <?php
   $cutoff = 100;
-  print(htmlentities(substr($comment['comment'], 0, $cutoff)) . (strlen($comment['comment']) > 100 ? '...' : ''));
+  print(htmlentities(substr($comment['comment'], 0, $cutoff)) . (strlen($comment['comment']) > $cutoff ? '...' : ''));
 ?>
         </blockquote>
 <?php
