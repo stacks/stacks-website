@@ -300,8 +300,25 @@ for name in lijstje:
 text = 'Tag ZZZZ. If a result has been labeled with tag ZZZZ<br>\n'
 text = text + 'this means the result has not been given a stable tag yet.'
 
+# remove all proofs from a chunk of TeX code
+def remove_proofs(text):
+  result = ''
+
+  in_proof = False
+  for line in text.splitlines():
+    if line == "\\begin{proof}":
+      in_proof = True
+
+    if not in_proof:
+      result += "\n" + line
+
+    if line == "\\end{proof}":
+      in_proof = False
+
+  return result
 
 def update_text(tag, text):
+  # insert the text of the tag in the real table
   try:
     query = 'UPDATE tags SET value = ? WHERE tag = ?'
     connection.execute(query, (text, tag))
@@ -309,8 +326,24 @@ def update_text(tag, text):
   except sqlite3.Error, e:
     print "An error occurred:", e.args[0]
 
+  # insert the text of the tag in the fulltext search table
+  try:
+    query = 'INSERT INTO tags_search (tag, text, text_without_proofs) VALUES(?, ?, ?)'
+    connection.execute(query, (tag, text, remove_proofs(text)))
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
 
 connection = sqlite3.connect(config.database)
+
+print 'Importing the TeX code'
+
+print 'Clearing the search table'
+query = 'DELETE FROM tags_search'
+connection.execute(query)
+
+print 'Adding the TeX code to both tables'
 
 # Print link to location in chapter
 n = 0
@@ -333,7 +366,7 @@ while n < len(tags):
     if label in proof_texts:
       text = text + '\n' + proof_texts[label]
 
-  print "Inserting text for tag", tag
+  print "  Inserting text for tag", tag
   update_text(tag, text)
 
   n = n + 1

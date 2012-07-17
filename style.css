@@ -140,11 +140,14 @@ div.comment h1, div.comment h2 {
   background-color: white;
 }
 
-form#comment-form {
-}
-
 form#comment-form label {
   width: 5em;
+  display: inline-block;
+  text-align: right;
+}
+
+form#search label {
+  width: 8em;
   display: inline-block;
   text-align: right;
 }
@@ -194,7 +197,6 @@ table#browse tr:nth-child(even):hover {
 p#navigate-back,
 p#navigate-forward {
   margin: 0;
-  margin-bottom: 1em;
 }
 
 p#navigate-back {
