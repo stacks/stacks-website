@@ -29,7 +29,7 @@
 
     <h2><a href="<?php print(full_url('tag')); ?>">Looking up references</a></h2>
     <p>If you have a tag for an item (section, lemma, theorem, etc.) in the Stacks project, you can <a href="<?php print(full_url('tag')); ?>">search for the tag's page</a>. Each tag's page contains the location and LaTeX code for the item referenced by the tag, and a section for leaving comments. Start searching now:
-    <form action="<?php print(full_url('search.php')); ?>" method="post">
+    <form action="<?php print(full_url('tag_search.php')); ?>" method="post">
       <label>Tag: <input type="text" name="tag"></label>
       <input type="submit" value="locate">
     </form>

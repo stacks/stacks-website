@@ -510,7 +510,7 @@
 
     <h2>Look for a tag</h2>
 
-    <form action="<?php print(full_url('search.php')); ?>" method="post">
+    <form action="<?php print(full_url('tag_search.php')); ?>" method="post">
       <label>Tag: <input type="text" name="tag"></label>
       <input type="submit" value="locate">
     </form>
