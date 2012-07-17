@@ -82,7 +82,7 @@
     <h2>Search</h2>
     <form id="search" action="<?php print(full_url('search')); ?>" method="get">
       <label for="keywords">Keywords:</label>
-      <input type="text" id="keywords" name="keywords" value="<?php if(isset($_GET['keywords'])) print(htmlentities($_GET['keywords'])); ?>"><br>
+      <input type="text" id="keywords" size="35" name="keywords" value="<?php if(isset($_GET['keywords'])) print(htmlentities($_GET['keywords'])); ?>"><br>
 
       <label for="include-sections">Include sections:</label>
       <input type="checkbox" <?php if(isset($_GET['include-sections']) && $_GET['include-sections'] == 'on') print('checked="true"'); ?> id="include-sections" name="include-sections"><br>
@@ -93,6 +93,7 @@
       <label></label>
       <input type="submit" id="submit" value="Search">
     </form>
+
     <p>The easy version: you can search just like you would in Google, a search query like <var>divisor "separated scheme"</var> matches all tags containing <em>both</em> the word <var>divisor</var> and the string <var>separated scheme</var>. Some remarks:
     <ul>
       <li>strings like <var>quasi-compact</var> <em>should be enclosed by quotes</em>, otherwise you are looking for tags that contain the string <var>quasi</var> but not <var>compact</var>
