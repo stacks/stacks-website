@@ -1,6 +1,7 @@
 <!doctype html>
 <?php
   include('config.php');
+  include('functions.php');
 ?>
 <html>
   <head>
@@ -12,6 +13,7 @@
 
   <body>
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
+    <?php print_navigation(); ?>
 
     <h2>Downloads</h2>
     <p>Let us know if there is some type of download you would like to see here. At this moment we provide both the <a href="#most-used">obvious candidates</a> such as the entire project in a <code>pdf</code> and a <a href="#listing">listing of <em>all</em> files in the project</a>.
