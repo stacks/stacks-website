@@ -412,7 +412,7 @@
     }
     else {
       print("    <p>The LaTeX code of the corresponding environment is:\n");
-      print("    <pre>\n" . trim($results['value']) . "\n    </pre>\n");
+      print("    <pre>\n" . htmlentities(trim($results['value'])) . "\n    </pre>\n");
     }
 
     // navigational code
