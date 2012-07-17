@@ -96,7 +96,7 @@
 
     <p>The easy version: you can search just like you would in Google, a search query like <var>divisor "separated scheme"</var> matches all tags containing <em>both</em> the word <var>divisor</var> and the string <var>separated scheme</var>. Some remarks:
     <ul>
-      <li>strings like <var>quasi-compact</var> <em>should be enclosed by quotes</em>, otherwise you are looking for tags that contain the string <var>quasi</var> but not <var>compact</var>
+      <li>strings like <var>quasi-compact</var> <em>should be enclosed by double quotes</em>, otherwise you are looking for tags that contain the string <var>quasi</var> but not <var>compact</var>
       <li>tags can also refer to complete sections, you can choose whether to include these: including them will duplicate some results, but might give the information you need
       <li>it's also possible to include proofs in your search, by default these are excluded, and depending on your choice the proofs will be shown in the preview or not
     </ul>
