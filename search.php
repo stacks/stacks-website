@@ -66,7 +66,7 @@
     pre = $("#results pre");
     for (var i = 0; i < pre.length; i++) {
       el = $(pre[i]);
-      el.before('<p class="preview"><a href="javascript:void(0)" onclick="$(\'#' + pre[i].id + '\').toggle();">preview tag</a></p>');
+      el.before('<p class="preview"><a href="javascript:void(0)" onclick="$(\'#' + pre[i].id + '\').toggle();">preview this tag</a></p>');
     }
 
     // hide all results by default
