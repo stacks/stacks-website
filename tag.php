@@ -399,7 +399,7 @@
         print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . latex_to_html($chapter_information['title']) . "</a>\n");
       }
       else {
-        print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Section " . implode('.', array_slice(explode('.', $section_id), 1)) . ": " . $section_information['title'] . ", in <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . $chapter_information['title'] . "</a>\n");
+        print("      <li><a href='" . full_url('tex/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of Section " . implode('.', array_slice(explode('.', $section_id), 1)) . ": " . latex_to_html($section_information['title']) . ", in <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . latex_to_html($chapter_information['title']) . "</a>\n");
       }
 
       print("      <li><a href='" . full_url('tex/book.pdf#' . $tag) . "'>". ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
