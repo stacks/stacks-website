@@ -57,21 +57,21 @@
     </style>
 
     <script type="text/javascript">
-  $(document).ready(function() {
-    // insert collapse / expand all links
-    $("#results").before('<a href="javascript:void(0)" onclick="$(\'#results pre\').hide();"> <img src="<?php print(full_url('jquery-treeview/images/minus.gif')); ?>"> Collapse all</a>');
-    $("#results").before(' <a href="javascript:void(0)" onclick="$(\'#results pre\').show();"><img src="<?php print(full_url('jquery-treeview/images/plus.gif')); ?>"> Expand all</a>');
+      $(document).ready(function() {
+        // insert collapse / expand all links
+        $("#results").before('<a href="javascript:void(0)" onclick="$(\'#results pre\').hide();"> <img src="<?php print(full_url('jquery-treeview/images/minus.gif')); ?>"> Collapse all</a>');
+        $("#results").before(' <a href="javascript:void(0)" onclick="$(\'#results pre\').show();"><img src="<?php print(full_url('jquery-treeview/images/plus.gif')); ?>"> Expand all</a>');
 
-    // insert toggle links for each result
-    pre = $("#results pre");
-    for (var i = 0; i < pre.length; i++) {
-      el = $(pre[i]);
-      el.before('<p class="preview"><a href="javascript:void(0)" onclick="$(\'#' + pre[i].id + '\').toggle();">preview this tag</a></p>');
-    }
+        // insert toggle links for each result
+        pre = $("#results pre");
+        for (var i = 0; i < pre.length; i++) {
+          el = $(pre[i]);
+          el.before('<p class="preview"><a href="javascript:void(0)" onclick="$(\'#' + pre[i].id + '\').toggle();">preview this tag</a></p>');
+        }
 
-    // hide all results by default
-    pre.hide();
-  });
+        // hide all results by default
+        pre.hide();
+      });
     </script>
   </head>
 
