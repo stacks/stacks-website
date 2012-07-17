@@ -450,6 +450,13 @@
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
 
+    <style type="text/css">
+      p#navigate-forward,
+      p#navigate-back {
+        margin-bottom: 1em;
+      }
+    </style>
+
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
