@@ -17,7 +17,7 @@
 
     try {
       // FTS queries don't work with PDO (or maybe: a) I didn't try hard enough, b) did something stupid)
-      $query = 'SELECT tags.tag, tags.label, tags.type, tags.book_id, tags_search.text, tags_search.text_without_proofs FROM tags_search, tags WHERE tags_search.tag = tags.tag AND tags.active = "TRUE"';
+      $query = 'SELECT tags.tag, tags.label, tags.type, tags.book_id, tags_search.text, tags_search.text_without_proofs, tags.book_page FROM tags_search, tags WHERE tags_search.tag = tags.tag AND tags.active = "TRUE"';
       // the user doesn't want tags of the type section or subsection (which contain all the tags from that section)
       if ($exclude_sections) 
         $query .= ' AND tags.type NOT IN ("section", "subsection")';
@@ -115,7 +115,11 @@
     if (count($results) > 0) {
       print("<ul id='results'>");
       foreach ($results as $result) {
-        print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . " matched your query.\n");
+        if ($result['type'] == 'item')
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . " matched your query.\n");
+        else
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . " matched your query.\n");
+
         if ($include_proofs)
           print("<pre id='text-" . $result['tag'] . "'>" . $result['text'] . "</pre>");
         else
