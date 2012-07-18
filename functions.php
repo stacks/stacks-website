@@ -156,6 +156,17 @@ function latex_to_html($text) {
  return $text;
 }
 
+function parse_preview($preview) {
+  // remove irrelevant new lines at the end
+  $preview = trim($preview);
+  // escape stuff
+  $preview = htmlentities($preview);
+  // but links should work
+  $preview = preg_replace('/&lt;a href=&quot;(.+)&quot;&gt;(.+)&lt;\/a&gt;/', '<a href="$1">$2</a>', $preview);
+
+  return $preview;
+}
+
 function print_navigation() {
 ?>
     <ul id="navigation">

@@ -122,9 +122,9 @@
           print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . (!empty($result['name']) ? ": <strong>" . $result['name'] . "</strong>" : '') . " matched your query.\n");
 
         if ($include_proofs)
-          print("<pre id='text-" . $result['tag'] . "'>" . $result['text'] . "</pre>");
+          print("<pre id='text-" . $result['tag'] . "'>" . parse_preview($result['text']) . "</pre>");
         else
-          print("<pre id='text-" . $result['tag'] . "'>" . $result['text_without_proofs'] . "</pre>");
+          print("<pre id='text-" . $result['tag'] . "'>" . parse_preview($result['text_without_proofs']) . "</pre>");
       }
       print("</ul>");
     }
