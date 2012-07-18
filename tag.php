@@ -237,9 +237,6 @@
             else {
               preview(iframe);
             };
-
-          console.log(editor.exportFile());
-          console.log(sanitize(editor.exportFile()));
         });
 
         editor.on('edit', function() {
@@ -258,11 +255,11 @@
 <?php
   }
 
-  // do all necessary parsing of comments
-  function parse_comment($comment) {
+  function parse_references($string) {
     // look for \ref before MathJax can and see if they point to existing tags
     $references = array();
-    preg_match_all('/\\\ref{[\w-]*}/', $comment, $references);
+
+    preg_match_all('/\\\ref{[\w-]*}/', $string, $references);
     foreach ($references[0] as $reference) {
       // get the label or tag we're referring to, nothing more
       $target = substr($reference, 5, -1);
@@ -270,7 +267,7 @@
       // we're referring to a tag
       if (is_valid_tag($target)) {
         // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
-        $comment = str_replace($reference, '[`' . $target . '`](' . full_url('tag/' . $target) . ')', $comment);
+        $string = str_replace($reference, '[`' . $target . '`](' . full_url('tag/' . $target) . ')', $string);
       }
       // the user might be referring to a label
       else {
@@ -283,13 +280,28 @@
         }
 
         // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
-        // if he declared a \label{} in his comment with this particular label value he's out of luck
+        // if he declared a \label{} in his string with this particular label value he's out of luck
         if (label_exists($target)) {
           $tag = get_tag_referring_to($target);
-          $comment = str_replace($reference, '[`' . $tag . '`](' . full_url('tag/' . $tag) . ')', $comment);
+          $string = str_replace($reference, '[`' . $tag . '`](' . full_url('tag/' . $tag) . ')', $string);
         }
       }
     }
+
+    return $string;
+  }
+
+  // do all necessary parsing of comments
+  function parse_comment($comment) {
+    // parse \ref{}, but only when the line is not inside a code fragment
+    $lines = explode("\n", $comment);
+    foreach ($lines as &$line) {
+      // check whether the line is a code fragment or not
+      if (substr($line, 0, 4) != '    ')
+        $line = parse_references($line);
+    }
+    $comment = implode($lines, "\n");
+
     // fix underscores (all underscores in math mode will be escaped
     $result = '';
     $mathmode = false;
@@ -475,7 +487,12 @@
         // all double backslashed should be doubled to quadruple backslashes to ensure proper LaTeX results
         text = text.replace(/\\\\/g, "\\\\\\\\");
         // \ref{0000} can point to the correct URL (all others have to be (ab)used by MathJax)
-        text = text.replace(/\\ref\{(\w{4})\}/g, "[$1](http://math.columbia.edu<?php print(full_url('tag/$1')); ?>)");
+        var lines = text.split(/\r?\n/);
+        for (var i = 0; i < lines.length; i++) {
+          if (lines[i].substring(0, 4) != '    ')
+            lines[i] = lines[i].replace(/\\ref\{(\w{4})\}/g, "[$1](http://math.columbia.edu<?php print(full_url('tag/$1')); ?>)");
+        }
+        text = lines.join("\n");
 
         // fix underscores (all underscores in math mode will be escaped
         var result = '';
