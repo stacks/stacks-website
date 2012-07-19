@@ -13,7 +13,7 @@ The following configuration is to remind me of what I have to do to get an insta
 
 2. change directories to `stacks-website/`and initialize the submodules using `git submodule init` and `git submodule update`
 
-3. create all necessary information about tags in the project by running `make tags` in `stacks-website/tex/`
+3. create all necessary information about tags in the project by running `make tags` in `stacks-website/tex/`, make sure that the URLs in `tex/scripts/tag_up.py` are correct
 
 4. create the database by calling `python scripts/create_database.py` in `stacks-website/`
 
