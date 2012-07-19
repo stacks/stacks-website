@@ -369,7 +369,7 @@
     # the identification of the result relative to the local section
     $relative_id = implode('.', array_slice($parts, 1));
     # the identification of the (sub)section of the result
-    $section_id = implode('.', array_slice($parts, 0, -1));
+    $section_id = implode('.', array_slice($parts, 0, 2));
     # the id of the chapter, the first part of the full identification
     $chapter_id = $parts[0];
 
@@ -382,8 +382,8 @@
     $chapter_information = get_section($chapter_id);
 
     // general information
-    // if the type of a tag is 'item' it will have a name, but we're not interested in it
-    if (empty($results['name']) or $results['type'] == 'item') {
+    // if the type of a tag is 'item' or 'equation' it will have a name, but we're not interested in it
+    if (empty($results['name']) or $results['type'] == 'item' or $results['type'] == 'equation') {
       print("    <p>This tag has label <var>" . $results['label'] . "</var> and it points to\n");
     }
     else {
@@ -566,7 +566,8 @@
     }
     else {
       print("    <h2>Error</h2>\n");
-      print("    The tag you provided (i.e. <var>" . htmlspecialchars($_GET['tag']) . "</var>) is not in the correct format. See <a href=\"" . full_url('tags') . "\">tags explained</a> for an overview of the tag system and a description of the format. A summary: four characters, either digits or capital letters, e.g. <var>03DF</var>.\n");
+      print("    <p>The tag you provided (i.e. <var>" . htmlspecialchars($_GET['tag']) . "</var>) is not in the correct format. See <a href=\"" . full_url('tags') . "\">tags explained</a> for an overview of the tag system and a description of the format. A summary: four characters, either digits or capital letters, e.g. <var>03DF</var>.\n");
+      print("    <p>Perhaps you intended to search for the text <var>" . htmlspecialchars($_GET['tag']) . "</var> in the project? In case you did: <a href='" . full_url('search?keywords=' . $_GET['tag']) . "'>perform this search</a>.\n");
     }
   }
 ?>
