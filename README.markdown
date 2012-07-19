@@ -23,7 +23,7 @@ The following configuration is to remind me of what I have to do to get an insta
 
 7. run `python scripts/update.py`
 
-8. get the correct styling in EpicEditor by executing `ln -s ../../../../css/stacks-editor.css EpicEditor/epiceditor/themes/editor/stacks-editor.css` and `ln -s ../../../../css/stacks-editor.css EpicEditor/epiceditor/themes/preview/stacks-preview.css` from the `stacks-website` directory
+8. get the correct styling in EpicEditor by executing `ln -s ../../../../css/stacks-editor.css EpicEditor/epiceditor/themes/editor/stacks-editor.css` and `ln -s ../../../../css/stacks-preview.css EpicEditor/epiceditor/themes/preview/stacks-preview.css` from the `stacks-website` directory
 
 
 Updating the website
