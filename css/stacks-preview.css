@@ -1,0 +1,68 @@
+#epiceditor-wrapper {
+	background: white;
+}
+
+#epiceditor-preview {
+  padding: 0 .5em 0 0;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+div.comment {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 1em;
+  overflow: auto;
+}
+
+#epiceditor-preview h1, #epiceditor-preview h2,
+div.comment h1, div.comment h2 {
+  border: none;
+  background-color: white;
+	margin: 20px 0 10px;
+	padding: 0;
+	font-weight: bold;
+}
+
+#epiceditor-preview h1,
+div.comment h1 {
+  font-size: 1.6em;
+}
+
+#epiceditor-preview h2,
+div.comment h2 {
+  font-size: 1.4em;
+	border-bottom:1px solid #ccc;
+}
+
+#epiceditor-preview pre,
+div.comment pre {
+  margin-left: 10px;
+	padding: 6px 10px;
+	background-color: #f8f8f8;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+}
+
+#epiceditor-preview pre > code,
+div.comment pre > code {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+#epiceditor-preview code,
+div.comment code {
+  font-size: .9em;
+	border:1px solid #eaeaea;
+	background-color:#f8f8f8;
+	border-radius:3px;
+}
+
+/* because \ref parsing necessarily inputs <code> instead of the more appropriate <var> this is necessary */
+#epiceditor-preview a code,
+div.comment a code {
+  background: transparent;
+  border: 0;
+}
+

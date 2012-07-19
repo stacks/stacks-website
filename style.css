@@ -56,6 +56,7 @@ ul#navigation {
 ul#navigation li {
   float: left;
   padding: .5em 1em;
+  margin: 0;
 }
 
 ul#navigation li:hover {
@@ -103,13 +104,21 @@ var {
   font-family: monospace;
 }
 
-ul p, ol p {
-  margin: 0;
+ul li *:first-child, ol li *:first-child {
+  margin-top: 0;
 }
 
-ol li {
-  margin-bottom: .3em;
-  padding: .4em;
+ul li *:last-child, ol li *:last-child {
+  margin-bottom: 0;
+}
+
+ul li, ol li {
+  margin-bottom: .1em;
+  padding: .1em;
+}
+
+ul p, ol p {
+  margin: .3em 0;
 }
 
 ol.shaded li:nth-child(odd) { 
@@ -122,22 +131,6 @@ ol.shaded li:nth-child(odd):hover {
 
 ol.shaded li:nth-child(even):hover { 
   background-color: #bbb;
-}
-
-pre {
-  margin-left: 10px;
-  font-size: .9em;
-}
-
-div.comment {
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 1em;
-  overflow: auto;
-}
-
-div.comment h1, div.comment h2 {
-  border: none;
-  background-color: white;
 }
 
 form#comment-form label {
@@ -205,4 +198,9 @@ p#navigate-back {
 
 p#navigate-forward {
   text-align: right;
+}
+
+pre.preview {
+  font-size: .9em;
+  margin-left: 1em;
 }

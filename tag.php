@@ -424,7 +424,7 @@
     }
     else {
       print("    <p>The LaTeX code of the corresponding environment is:\n");
-      print("    <pre>\n" . parse_preview($results['value']) . "\n    </pre>\n");
+      print("    <pre class='preview'>\n" . parse_preview($results['value']) . "\n    </pre>\n");
     }
 
     // navigational code
@@ -458,6 +458,7 @@
     print("    <title>Stacks Project -- Tag lookup</title>\n");
 ?>
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php print(full_url('css/stacks-preview.css')); ?>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
@@ -522,8 +523,8 @@
           defaultContent: 'You can type your comment here, use the preview option to see what it will look like.',
         },
         theme: {
-          editor: '/themes/editor/epic-light.css',
-          preview: '/themes/preview/github.css',
+          editor: '/themes/editor/stacks-editor.css',
+          preview: '/themes/preview/stacks-preview.css',
         },
         parser : sfm,
       }

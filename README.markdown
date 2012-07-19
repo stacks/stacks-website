@@ -23,16 +23,11 @@ The following configuration is to remind me of what I have to do to get an insta
 
 7. run `python scripts/update.py`
 
+8. get the correct styling in EpicEditor by executing `ln -s css/stacks-editor.css EpicEditor/epiceditor/themes/editor/stacks-editor.css` and `ln -s css/stacks-editor.css EpicEditor/epiceditor/themes/editor/stacks-editor.css` from the `stacks-website` directory
+
 
 Updating the website
 --------------------
 1. Update the `tex/` folder using `git pull` in `tex/`
 
 2. Run steps 3 and 7 of the above
-
-
-Modifications to the EpicEditor styles
---------------------------------------
-These are the modifications I have made to the style files. At this point it is too much of a hassle to do this better (write own style files, and/or add them to the EpicEditor project).
-
-* in `EpicEditor/epiceditor/themes/editor/input-light.css` the `border:0;` of `body`should be `border: 2px #eee inset;`
