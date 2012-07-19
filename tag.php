@@ -369,7 +369,7 @@
     # the identification of the result relative to the local section
     $relative_id = implode('.', array_slice($parts, 1));
     # the identification of the (sub)section of the result
-    $section_id = implode('.', array_slice($parts, 0, -1));
+    $section_id = implode('.', array_slice($parts, 0, 2));
     # the id of the chapter, the first part of the full identification
     $chapter_id = $parts[0];
 
@@ -382,8 +382,8 @@
     $chapter_information = get_section($chapter_id);
 
     // general information
-    // if the type of a tag is 'item' it will have a name, but we're not interested in it
-    if (empty($results['name']) or $results['type'] == 'item') {
+    // if the type of a tag is 'item' or 'equation' it will have a name, but we're not interested in it
+    if (empty($results['name']) or $results['type'] == 'item' or $results['type'] == 'equation') {
       print("    <p>This tag has label <var>" . $results['label'] . "</var> and it points to\n");
     }
     else {
