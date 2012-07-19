@@ -37,7 +37,7 @@
     <p>Items (sections, lemmas, theorems, etc.) in the Stacks project are referenced by their tag. See the <a href="<?php print(full_url('tags')); ?>">tags page</a> to learn more about tags and how to reference them in a LaTeX document.
 
     <h2><a href="<?php print(full_url('recent-comments')); ?>">Leaving comments</a></h2>
-    <p>You can leave comments on each and every tag's page. If you wish to stay updated on the comments, there is both a <a href="<?php print(full_url('recent-comments')); ?>">page containing recent comments</a> and <a href="<?php print(full_url('recent-comments.rss')); ?>">an <abbr title="Really Simple Syndication">RSS</abbr> feed <img src="<?php print(full_url('rss-icon.png')); ?>"></a> available.
+    <p>You can leave comments on each and every tag's page. If you wish to stay updated on the comments, there is both a <a href="<?php print(full_url('recent-comments')); ?>">page containing recent comments</a> and <a href="<?php print(full_url('recent-comments.xml')); ?>">an <abbr title="Really Simple Syndication">RSS</abbr> feed <img src="<?php print(full_url('rss-icon.png')); ?>"></a> available.
 
     <h2><a href="https://github.com/stacks/stacks-project/commits/master">Recent changes to the Stacks project</a></h2>
     <p>You can either see the <a href="<?php print(full_url('log.log')); ?>">last 50 log entries in plaintext</a> or <a href="https://github.com/stacks/stacks-project/commits/master">browse the complete history</a>.

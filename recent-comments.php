@@ -78,7 +78,7 @@
       }
     </style>
     
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php print($domain . full_url('recent-comments.rss')); ?>">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php print($domain . full_url('recent-comments.xml')); ?>">
   </head>
 
   <body>
@@ -86,7 +86,7 @@
     <?php print_navigation(); ?>
 
     <h2>Recent comments</h2>
-    <p>There is also an <a href="<?php print(full_url('recent-comments.rss')); ?>"><abbr title="Really Simple Syndication">RSS</abbr> feed <img src="<?php print(full_url('rss-icon.png')); ?>"></a> if you wish to follow the recent comments from your newsreader.
+    <p>There is also an <a href="<?php print(full_url('recent-comments.xml')); ?>"><abbr title="Really Simple Syndication">RSS</abbr> feed <img src="<?php print(full_url('rss-icon.png')); ?>"></a> if you wish to follow the recent comments from your newsreader.
 
 <?php
   $comments_per_page = 20;

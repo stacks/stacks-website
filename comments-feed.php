@@ -48,13 +48,13 @@
   <channel>
     <title>Stacks project -- Comments</title>
     <link><?php print($domain . full_url('comments-feed.rss')); ?></link>
-    <description>Stacks project, see http://math.columbia.edu/algebraic_geometry/stacks-git</description>
+    <description>Stacks project, see http://stacks.math.columbia.edu</description>
 
     <language>en</language>
     <managingEditor>stacks.project@gmail.com (Stacks Project)</managingEditor>
     <webMaster>pieterbelmans@gmail.com (Pieter Belmans)</webMaster>
     <image>
-      <url><?php print($domain . full_url('stacks.ico')); ?></url>
+      <url><?php print($domain . full_url('stacks.png')); ?></url>
       <title>Stacks project -- Comments</title>
       <link><?php print($domain . full_url('comments-feed.rss')); ?></link>
     </image>
