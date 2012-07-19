@@ -8,6 +8,7 @@
     <title>Stacks Project -- Downloads</title>
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
   </head>
 

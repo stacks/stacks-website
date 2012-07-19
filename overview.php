@@ -144,6 +144,7 @@
     <title>Stacks Project -- Overview</title>
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>

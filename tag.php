@@ -460,6 +460,7 @@
     <link rel="stylesheet" type="text/css" href="<?php print(full_url('style.css')); ?>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
 
     <style type="text/css">

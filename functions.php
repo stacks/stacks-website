@@ -162,7 +162,7 @@ function parse_preview($preview) {
   // escape stuff
   $preview = htmlentities($preview);
   // but links should work: tag links are made up from alphanumeric characters, slashes, dashes and underscores, while the LaTeX label contains only alphanumeric characters and dashes
-  $preview = preg_replace('/&lt;a href=&quot;([A-Za-z0-9\/-_]+)&quot;&gt;([a-z\-]+)&lt;\/a&gt;/', '<a href="$1">$2</a>', $preview);
+$preview = preg_replace('/&lt;a href=&quot;([A-Za-z0-9\/-_]+)&quot;&gt;([a-z\-]+)&lt;\/a&gt;/', '<a href="' . full_url('') . '$1">$2</a>', $preview);
 
   return $preview;
 }
