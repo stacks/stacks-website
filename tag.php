@@ -566,7 +566,8 @@
     }
     else {
       print("    <h2>Error</h2>\n");
-      print("    The tag you provided (i.e. <var>" . htmlspecialchars($_GET['tag']) . "</var>) is not in the correct format. See <a href=\"" . full_url('tags') . "\">tags explained</a> for an overview of the tag system and a description of the format. A summary: four characters, either digits or capital letters, e.g. <var>03DF</var>.\n");
+      print("    <p>The tag you provided (i.e. <var>" . htmlspecialchars($_GET['tag']) . "</var>) is not in the correct format. See <a href=\"" . full_url('tags') . "\">tags explained</a> for an overview of the tag system and a description of the format. A summary: four characters, either digits or capital letters, e.g. <var>03DF</var>.\n");
+      print("    <p>Perhaps you intended to search for the text <var>" . htmlspecialchars($_GET['tag']) . "</var> in the project? In case you did: <a href='" . full_url('search?keywords=' . $_GET['tag']) . "'>perform this search</a>.\n");
     }
   }
 ?>
