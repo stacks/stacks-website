@@ -119,7 +119,7 @@
         if ($result['type'] == 'item')
           print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . " matched your query.\n");
         else
-          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . (!empty($result['name']) ? ": <strong>" . $result['name'] . "</strong>" : '') . " matched your query.\n");
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . (!empty($result['name']) or $result['type'] != 'equation' ? ": <strong>" . $result['name'] . "</strong>" : '') . " matched your query.\n");
 
         if ($include_proofs)
           print("<pre id='text-" . $result['tag'] . "'>" . parse_preview($result['text']) . "</pre>");
