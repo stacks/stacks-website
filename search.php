@@ -125,7 +125,7 @@
         if ($include_proofs)
           print("<pre class='preview' id='text-" . $result['tag'] . "'>" . parse_preview($result['text']) . "</pre>");
         else
-          print("<pre id='text-" . $result['tag'] . "'>" . parse_preview($result['text_without_proofs']) . "</pre>");
+          print("<pre class='preview' id='text-" . $result['tag'] . "'>" . parse_preview($result['text_without_proofs']) . "</pre>");
       }
       print("</ul>");
     }
