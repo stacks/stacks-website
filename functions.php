@@ -177,6 +177,7 @@ function print_navigation() {
       <li><a href="<?php print(full_url('browse')); ?>">browse</a>
       <li><a href="<?php print(full_url('search')); ?>">search</a>
       <li><a href="<?php print(full_url('recent-comments')); ?>">recent comments</a>
+      <li><a href="http://math.columbia.edu/~dejong/wordpress/">blog</a>
     </ul>
     <br style="clear: both;">
 <?php
