@@ -1,6 +1,6 @@
 Description
 -----------
-This is a new version of the website for the [Stacks project](http://math.columbia.edu/algebraic_geometry/stacks-git/), enabling a comment system and improved tag lookup.
+This is a new version of the website for the [Stacks project](http://stacks.math.columbia.edu), enabling a comment system and improved tag lookup.
 
 
 Configuration
