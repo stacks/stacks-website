@@ -26,7 +26,7 @@
 
     <h2>Instructions on dealing with TeX files</h2>
     <ol>
-      <li>Download all the TeX files. They are contained in <a href="<?php print(full_url('archives/stacks-git.tar.bz2')); ?>">this archive</a>.
+      <li>Download all the TeX files. They are contained in <a href="<?php print(full_url('archives/stacks-project.tar.bz2')); ?>">this archive</a>.
       <li>Unpack the the archive (on Windows and Mac this should be automatic).
       <li>Edit the TeX file of the chapter you are interested in. Say <code>algebra.tex</code>.
       <li>Run <code>latex algebra.tex</code>, then <code>bibtex algebra</code> and then <code>latex algebra.tex</code> twice.
