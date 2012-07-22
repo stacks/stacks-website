@@ -306,13 +306,13 @@ def remove_proofs(text):
 
   in_proof = False
   for line in text.splitlines():
-    if line == "\\begin{proof}":
+    if beginning_of_proof(line):
       in_proof = True
 
     if not in_proof:
       result += "\n" + line
 
-    if line == "\\end{proof}":
+    if end_of_proof(line):
       in_proof = False
 
   return result
