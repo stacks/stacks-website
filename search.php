@@ -17,7 +17,7 @@
 
     try {
       // FTS queries don't work with PDO (or maybe: a) I didn't try hard enough, b) did something stupid)
-      $query = 'SELECT tags.tag, tags.label, tags.type, tags.book_id, tags_search.text, tags_search.text_without_proofs, tags.book_page, tags.name FROM tags_search, tags WHERE tags_search.tag = tags.tag AND tags.active = "TRUE"';
+      $query = 'SELECT tags.tag, tags.label, tags.type, tags.book_id, tags_search.text, tags_search.text_without_proofs, tags.book_page, tags.name, tags.file FROM tags_search, tags WHERE tags_search.tag = tags.tag AND tags.active = "TRUE"';
       // the user doesn't want tags of the type section or subsection (which contain all the tags from that section)
       if ($exclude_sections) 
         $query .= ' AND tags.type NOT IN ("section", "subsection")';
@@ -118,9 +118,9 @@
       print("<ul id='results'>");
       foreach ($results as $result) {
         if ($result['type'] == 'item')
-          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . " matched your query.\n");
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('download/' . $result['file'] . ".pdf#" . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . "</a> matched your query.\n");
         else
-          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to " . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) or $result['type'] != 'equation') ? ": <strong>" . $result['name'] . "</strong>" : '') . " matched your query.\n");
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('download/' . $result['file'] . ".pdf#" . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": <strong>" . $result['name'] . "</strong></a>" : '</a>') . " matched your query.\n");
 
         if ($include_proofs)
           print("<pre class='preview' id='text-" . $result['tag'] . "'>" . parse_preview($result['text']) . "</pre>");
