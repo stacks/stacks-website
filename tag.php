@@ -527,6 +527,9 @@
           preview: '/themes/preview/stacks-preview.css',
         },
         parser : sfm,
+        shortcut : {
+          modifier : 0,
+        } 
       }
     </script>
   </head>
