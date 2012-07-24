@@ -88,13 +88,8 @@ of transcendence degree 1 over $k$.
       <li>Split algebra chapter in two (this is hard to do without messing up the tags system).
       <li>Improve the Makefile.
       <li>Clean up Python scripts.
-      <li>Prettify the website.
       <li>Improve consistency of notation. Example: "known" categories such as Sets, Groups, Sheaves, Abelian Sheaves etc are not named in a consistent manner.
-      <li>Setup and run a mailing list.
-      <li>Setup and run a bug system; mainly for feature requests.
-      <li>Setup and run a sign off system, where collaborators can sign off on results in the stacks project, i.e., saying <q>I declare this is true</q>, and where in addition we can put links to similar results in the literature.
-      <li>Find people willing to mirror the project online, preferably in a very different geographical location. If you are interested and a major geek please contact via the email address above. This is related to (2), (3) and (4) above.
-      <li>Instead of (6), (7), (8) have a system for visitors of the website to leave comments, which are archived and visible (as the comments left on a blog for example). Some of these can be labeled as bugs, some as feature requests, some as declarations of correctness, etc.
+      <li>Find people willing to mirror the project online, preferably in a very different geographical location. If you are interested and a major geek please contact via the email address above.
     </ol>
 
     <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
