@@ -82,28 +82,22 @@
 
     <h2>Search</h2>
     <form id="search" action="<?php print(full_url('search')); ?>" method="get">
-      <label for="keywords">Keywords:</label>
-      <input type="text" id="keywords" size="35" name="keywords" value="<?php if(isset($_GET['keywords'])) print(htmlentities($_GET['keywords'])); ?>"><br>
+      <label for="keywords">Keywords: <input type="text" id="keywords" size="35" name="keywords" value="<?php if(isset($_GET['keywords'])) print(htmlentities($_GET['keywords'])); ?>" \></label>
+ <label><input type="submit" id="submit" value="Search" /></label><br>
 
-      <label for="include-sections">Include sections:</label>
-      <input type="checkbox" <?php if(isset($_GET['include-sections']) && $_GET['include-sections'] == 'on') print('checked="true"'); ?> id="include-sections" name="include-sections"><br>
+      Widen search to include: <label for="include-sections">
+      <input type="checkbox" <?php if(isset($_GET['include-sections']) && $_GET['include-sections'] == 'on') print('checked="true"'); ?> id="include-sections" name="include-sections" /> sections</label> <label for="include-proofs"><input type="checkbox" <?php if(isset($_GET['include-proofs']) && $_GET['include-proofs'] == 'on') print('checked="true"'); ?> id="include-proofs" name="include-proofs"> proofs</label>
+         </form>
 
-      <label for="include-proofs">Include proofs:</label>
-      <input type="checkbox" <?php if(isset($_GET['include-proofs']) && $_GET['include-proofs'] == 'on') print('checked="true"'); ?> id="include-proofs" name="include-proofs"><br>
-
-      <label></label>
-      <input type="submit" id="submit" value="Search">
-    </form>
-
-    <p>The easy version: you can search just like you would in Google, a search query like <var>divisor "separated scheme"</var> matches all tags containing <em>both</em> the word <var>divisor</var> and the string <var>separated scheme</var>. Some remarks:
+    <p>Some tips:
     <ul>
+      <li>use wildcards, <var>ideal</var> doesn't match <var>ideals</var>, but <var>ideal*</var> matches both;
       <li>strings like <var>quasi-compact</var> <em>should be enclosed by double quotes</em>, otherwise you are looking for tags that contain the string <var>quasi</var> but not <var>compact</var>;
-      <li>it is important to use the proper wildcards, <var>ideal</var> doesn't match <var>ideals</var>, you have to use <var>ideal*</var>;
       <li>tags can also refer to complete sections, you can choose whether to include these: including them will duplicate some results, but might give the information you need;
       <li>it's also possible to include proofs in your search, by default these are excluded, and depending on your choice the proofs will be shown in the preview or not.
     </ul>
 
-    <p>The full version: the search functionality is provided by <a href="http://www.sqlite.org/fts3.html">SQLite's FTS extension</a>. You can use all the features described there.</p>
+    <p>More tips <a href="http://math.columbia.edu/~dejong/wordpress/?p=2676">here</a>. The search functionality is provided by <a href="http://www.sqlite.org/fts3.html">SQLite's FTS extension</a>.</p>
 
 <?php
   if (isset($_GET['keywords'])) {

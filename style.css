@@ -140,7 +140,6 @@ form#comment-form label {
 }
 
 form#search label {
-  width: 8em;
   display: inline-block;
   text-align: right;
 }
