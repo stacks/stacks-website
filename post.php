@@ -45,16 +45,17 @@
   }
 
   // first a little cleanup of the site field
-  if (!empty($_POST['site'])) {
-    // incorrect url, missing http: we prepend it and try again
-    if (!filter_var($_POST['site'], FILTER_VALIDATE_URL) and strpos('http', $_POST['site']) !== 0) {
-      $site = 'http://' . $_POST['site'];
+  $site = $_POST['site'];
+  if (!empty($site)) {
+    // incorrect url, probably missing http:// we prepend it and try again
+    if (!filter_var($site, FILTER_VALIDATE_URL)) {
+      $site = 'http://' . $site;
+    // nonempty site, but the format is wrong
+      if (!filter_var($site, FILTER_VALIDATE_URL)) {
+	print('You supplied a site but the format is wrong. Your current input is ' . $_POST['site']);
+        exit();
+      }
     }
-  }
-
-  // nonempty site, but the format is wrong
-  if (!empty($site) and !filter_var($_POST['site'], FILTER_VALIDATE_URL)) {
-    print('You must supply a correctly formatted site. Your current input is ' . $_POST['site']);
   }
 
   // from here on it's safe to ignore the fact that it's user input
@@ -67,11 +68,12 @@
   // $site is already handled
 
   try {
-    $sql = $db->prepare('INSERT INTO comments (tag, author, comment, site) VALUES (:tag, :author, :comment, :site)');
+    $sql = $db->prepare('INSERT INTO comments (tag, author, comment, site, email) VALUES (:tag, :author, :comment, :site, :email)');
     $sql->bindParam(':tag', $tag);
     $sql->bindParam(':author', $author);
     $sql->bindParam(':comment', $comment);
     $sql->bindParam(':site', $site);
+    $sql->bindParam(':email', $email);
 
     if(!$sql->execute()) {
       print("Something went wrong with your comment.\n");
