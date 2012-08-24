@@ -31,7 +31,7 @@ about this project:
     </ol>
 
     <h2><a href="<?php print(full_url('acknowledgements')); ?>">Acknowledgements</a></h2>
-    <p>We have a page <a href="<?php print(full_url('acknowledgements')); ?>">acknowledging support</a>. If you have participated in the Stacks project under a grant you can contact <a href="mailto:stacks.project@gmail.com">stacks.project@gmail.com</a> and it will be added to this file.
+    <p>We have a page <a href="<?php print(full_url('acknowledgements')); ?>">acknowledging support</a>.
 
     <h2><a href="https://github.com/pbelmans/stacks-website">Stacks project website</a></h2>
     <p>This website is maintained and developed as a <a href="https://github.com/pbelmans/stacks-website">separate project</a>. If you wish to start your own project, inspired by the Stacks project the combination of <a href="https://github.com/stacks/stacks-project"><code>stacks-project</code></a> and <a href="https://github.com/pbelmans/stacks-website"><code>stacks-website</code></a> can serve as a starting point. If you have any questions about this, send an email to <a href="mailto:stacks.project@gmail.com">stacks.project@gmail.com</a>.
