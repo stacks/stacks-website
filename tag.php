@@ -387,8 +387,8 @@
       print("    <p>There is no LaTeX code associated to this tag.\n");
     }
     else {
-      print("    <p>The LaTeX code of the corresponding environment is:\n");
-      print_tag_code_and_preview($results['value']);
+      print("    <p>The LaTeX code of the corresponding environment is:");
+      print_tag_code_and_preview($tag, $results['value']);
     }
 
     // navigational code
@@ -427,6 +427,8 @@
     <link rel="icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="<?php print(full_url('stacks.ico')); ?>"> 
     <meta charset="utf-8">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 
     <style type="text/css">
       p#navigate-forward,

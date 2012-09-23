@@ -274,8 +274,37 @@ function print_navigation() {
 <?php
 }
 
-function print_tag_code_and_preview($code) {
-  print("    <pre class='tag-preview-code'>\n" . parse_preview($code) . "\n    </pre>\n");
-  print("    <blockquote class='tag-preview-'>\n" . parse_latex($code) . "</blockquote>\n");
+function print_tag_code_and_preview($tag, $code) {
+  // TODO fix ugly margin hack
+  print("<p id='tag-preview-code-" . $tag . "-link' style='float: right; font-size: .9em; margin-top: 0;'><a href='#tag-preview-output-" . $tag . "'>preview</a></p>");
+  print("<pre class='tag-preview-code' id='tag-preview-code-" . $tag . "'>\n" . parse_preview($code) . "\n    </pre>\n");
+
+  print("<p id='tag-preview-output-" . $tag . "-link' style='float: right; font-size: .9em; margin-top: 0;'><a href='#tag-preview-code-" . $tag . "'>code</a></p>");
+  print("<blockquote class='tag-preview-output' id='tag-preview-output-" . $tag . "'>\n" . parse_latex($code) . "</blockquote>\n");
+
+?>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // hide preview
+      $("#tag-preview-output-<?php print($tag); ?>").toggle();
+      $("#tag-preview-output-<?php print($tag); ?>-link").toggle();
+      // remove #
+    });
+
+    function toggle_preview_output(e) {
+      // prevent movement
+      e.preventDefault();
+
+      $("#tag-preview-output-<?php print($tag); ?>").toggle();
+      $("#tag-preview-output-<?php print($tag); ?>-link").toggle();
+      $("#tag-preview-code-<?php print($tag); ?>").toggle();
+      $("#tag-preview-code-<?php print($tag); ?>-link").toggle();
+    }
+   
+    $("#tag-preview-code-<?php print($tag); ?>-link a").click(toggle_preview_output);
+    $("#tag-preview-output-<?php print($tag); ?>-link a").click(toggle_preview_output);
+
+  </script>
+<?php
 }
 ?>
