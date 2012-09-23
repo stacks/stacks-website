@@ -6,8 +6,7 @@
   error_reporting(E_ALL);
 
   include('config.php');
-  include('functions.php');
-  include('php-markdown-extra-math/markdown.php');
+  include('functions.php'); include('php-markdown-extra-math/markdown.php');
 
   // initialize the global database object
   try {
@@ -254,6 +253,43 @@
     </form>
 <?php
   }
+
+  function parse_references($string) {
+    // look for \ref before MathJax can and see if they point to existing tags
+    $references = array();
+  
+    preg_match_all('/\\\ref{[\w-]*}/', $string, $references);
+    foreach ($references[0] as $reference) {
+      // get the label or tag we're referring to, nothing more
+      $target = substr($reference, 5, -1);
+  
+      // we're referring to a tag
+      if (is_valid_tag($target)) {
+        // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
+        $string = str_replace($reference, '[`' . $target . '`](' . full_url('tag/' . $target) . ')', $string);
+      }
+      // the user might be referring to a label
+      else {
+        // might it be that he is referring to a "local" label, i.e. in the same chapter as the tag?
+        if (!label_exists($target)) {
+          $label = get_label(strtoupper($_GET['tag']));
+          $parts = explode('-', $label);
+          // let's try it with the current chapter in front of the label
+          $target = $parts[0] . '-' . $target;
+        }
+  
+        // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
+        // if he declared a \label{} in his string with this particular label value he's out of luck
+        if (label_exists($target)) {
+          $tag = get_tag_referring_to($target);
+          $string = str_replace($reference, '[`' . $tag . '`](' . full_url('tag/' . $tag) . ')', $string);
+        }
+      }
+    }
+  
+    return $string;
+  }
+
 
   // do all necessary parsing of comments
   function parse_comment($comment) {

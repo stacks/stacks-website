@@ -203,3 +203,7 @@ pre.tag-preview-code {
   font-size: .9em;
   margin-left: 1em;
 }
+
+blockquote.tag-preview-output {
+  margin-left: 1em;
+}

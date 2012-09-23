@@ -90,6 +90,24 @@ function get_label($tag) {
   return "";
 }
 
+function get_id($tag) {
+  assert(is_valid_tag($tag));
+
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT book_id FROM tags WHERE tag = :tag');
+    $sql->bindParam(':tag', $tag);
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return "";
+}
+
 function get_tag($tag) {
   assert(is_valid_tag($tag));
 
@@ -167,74 +185,74 @@ function parse_preview($preview) {
   return $preview;
 }
 
-function parse_references($string) {
-  // look for \ref before MathJax can and see if they point to existing tags
-  $references = array();
+function parse_latex($tag, $code) {
+  // get rid of things that should be HTML
+  $code = parse_preview($code);
 
-  preg_match_all('/\\\ref{[\w-]*}/', $string, $references);
-  foreach ($references[0] as $reference) {
-    // get the label or tag we're referring to, nothing more
-    $target = substr($reference, 5, -1);
-
-    // we're referring to a tag
-    if (is_valid_tag($target)) {
-      // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
-      $string = str_replace($reference, '[`' . $target . '`](' . full_url('tag/' . $target) . ')', $string);
-    }
-    // the user might be referring to a label
-    else {
-      // might it be that he is referring to a "local" label, i.e. in the same chapter as the tag?
-      if (!label_exists($target)) {
-        $label = get_label(strtoupper($_GET['tag']));
-        $parts = explode('-', $label);
-        // let's try it with the current chapter in front of the label
-        $target = $parts[0] . '-' . $target;
-      }
-
-      // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
-      // if he declared a \label{} in his string with this particular label value he's out of luck
-      if (label_exists($target)) {
-        $tag = get_tag_referring_to($target);
-        $string = str_replace($reference, '[`' . $tag . '`](' . full_url('tag/' . $tag) . ')', $string);
-      }
-    }
-  }
-
-  return $string;
-}
-
-function parse_latex($code) {
   // remove labels
   $code = preg_replace("/\\\label\{.*\}/", "", $code);
 
   // all big environments with their corresponding markup
   $code = str_replace("\\begin{lemma}\n", "<strong>Lemma</strong> <em>", $code);
   $code = str_replace("\\end{lemma}\n", "</em></p>", $code);
+  
+  $code = str_replace("\\begin{definition}\n", "<strong>Definition</strong> ", $code);
+  $code = str_replace("\\end{definition}\n", "</p>", $code);
+
+  $code = str_replace("\\begin{remark}\n", "<strong>Remark</strong> ", $code);
+  $code = str_replace("\\end{remark}\n", "</p>", $code);
+
+  $code = str_replace("\\begin{example}\n", "<strong>Example</strong> ", $code);
+  $code = str_replace("\\end{example}\n", "</p>", $code);
+
+  $code = str_replace("\\begin{theorem}\n", "<strong>Theorem</strong> ", $code);
+  $code = preg_replace("/\\\begin{theorem}\[(.*)\]/", "<strong>Theorem</strong> ($1)", $code);
+  $code = str_replace("\\end{theorem}\n", "</p>", $code);
 
   // proof environment
   $code = str_replace("\\begin{proof}\n", "<p><strong>Proof</strong> ", $code);
-  $code = str_replace("\\end{proof}\n", "$\square$</p>", $code);
+  $code = str_replace("\\end{proof}", "$\square$</p>", $code);
+
+  // sections etc.
+  $code = preg_replace("/\\\section\{([\w\s]*)\}/", "<h3>$1</h3>", $code);
+  $code = preg_replace("/\\\subsection\{([\w\s]*)\}/", "<h4>$1</h4>", $code);
+
+  // replace {\it ...} by <em>...</em>
+  $code = preg_replace("/\{\\\it ([\w\s]+)\}/", "<em>$1</em>", $code);
+
+  // handle citations
+  $code = preg_replace("/\\\cite\{([\w-]*)\}/", "[$1]", $code);
+
+  // filter \input{chapters}
+  $code = str_replace("\\input{chapters}", "", $code);
+
+  // fix < and >
 
   /**
    * TODO
-   * - {\it ...}
    * ``
-   * better reference parsing
-   * better environment parsing
-   * \section etc.
+   * mysterious title popping up
    * \square in right corner of proof
    */
 
   // enumerates etc.
   $code = str_replace("\\begin{enumerate}\n", "<ol>", $code);
   $code = str_replace("\\end{enumerate}\n", "</ol>", $code);
+  $code = str_replace("\\begin{itemize}\n", "<ol>", $code);
+  $code = str_replace("\\end{itemize}\n", "</ol>", $code);
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
   $code = str_replace("\n\n", "</p><p>", $code);
 
   // parse references
-  $code = preg_replace('/\\\ref\{(.*)\}/', "$1", $code);
+  //$code = preg_replace('/\\\ref\{(.*)\}/', "$1", $code);
+  $references = array();
+  
+  preg_match_all('/\\\ref{<a href=\"(.*)\">(.*)<\/a>}/', $code, $references);
+  for ($i = 0; $i < count($references[0]); ++$i) {
+    $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . get_id(substr($references[1][$i], -4, 4)) . "</a>", $code);
+  }
 
   // remove \medskip and \noindent
   $code = str_replace("\\medskip", "", $code);
@@ -252,7 +270,6 @@ function parse_latex($code) {
     "\\Mor" => "\mathop{\\rm Mor}\\nolimits",
     "\\Ob" => "\mathop{\\rm Ob}\\nolimits",
     "\\Sh" => "\mathop{\\textit{Sh}}\\nolimits");
-
   $code = str_replace(array_keys($macros), array_values($macros), $code);
 
   return $code;
@@ -275,12 +292,11 @@ function print_navigation() {
 }
 
 function print_tag_code_and_preview($tag, $code) {
-  // TODO fix ugly margin hack
   print("<p id='tag-preview-code-" . $tag . "-link' style='float: right; font-size: .9em; margin-top: 0;'><a href='#tag-preview-output-" . $tag . "'>preview</a></p>");
   print("<pre class='tag-preview-code' id='tag-preview-code-" . $tag . "'>\n" . parse_preview($code) . "\n    </pre>\n");
 
   print("<p id='tag-preview-output-" . $tag . "-link' style='float: right; font-size: .9em; margin-top: 0;'><a href='#tag-preview-code-" . $tag . "'>code</a></p>");
-  print("<blockquote class='tag-preview-output' id='tag-preview-output-" . $tag . "'>\n" . parse_latex($code) . "</blockquote>\n");
+  print("<blockquote class='tag-preview-output' id='tag-preview-output-" . $tag . "'>\n" . parse_latex($tag, $code) . "</blockquote>\n");
 
 ?>
   <script type="text/javascript">
@@ -288,17 +304,14 @@ function print_tag_code_and_preview($tag, $code) {
       // hide preview
       $("#tag-preview-output-<?php print($tag); ?>").toggle();
       $("#tag-preview-output-<?php print($tag); ?>-link").toggle();
-      // remove #
     });
 
     function toggle_preview_output(e) {
       // prevent movement
       e.preventDefault();
 
-      $("#tag-preview-output-<?php print($tag); ?>").toggle();
-      $("#tag-preview-output-<?php print($tag); ?>-link").toggle();
-      $("#tag-preview-code-<?php print($tag); ?>").toggle();
-      $("#tag-preview-code-<?php print($tag); ?>-link").toggle();
+      $("#tag-preview-output-<?php print($tag); ?>, #tag-preview-output-<?php print($tag); ?>-link").toggle();
+      $("#tag-preview-code-<?php print($tag); ?>, #tag-preview-code-<?php print($tag); ?>-link").toggle();
     }
    
     $("#tag-preview-code-<?php print($tag); ?>-link a").click(toggle_preview_output);
