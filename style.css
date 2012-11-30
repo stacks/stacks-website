@@ -206,4 +206,5 @@ pre.tag-preview-code {
 
 blockquote.tag-preview-output {
   margin-left: 1em;
+  line-height: 120%;
 }
