@@ -172,6 +172,7 @@ function latex_to_html($text) {
  $text = str_replace("{\\v C}", "&#268;", $text);
  $text = str_replace("``", "\"", $text);
  $text = str_replace("''", "\"", $text);
+ $text = str_replace("\\ ", " ", $text);
  // this is to remedy a bug in import_titles
  $text = str_replace("\\v C}", "&#268;", $text);
 
@@ -193,28 +194,29 @@ function parse_latex($tag, $code) {
   // get rid of things that should be HTML
   $code = parse_preview($code);
 
-  // TODO interpunction \w\s should be extended to cover this, no .*
+  // this is the regex for all (sufficiently nice) text that can occur in things like \emph
+  $regex = "[\w\s$,.:()'-\\\\$]+";
   // TODO footnote
 
   // remove labels
-  $code = preg_replace("/\\\label\{.*\}/", "", $code);
+  $code = preg_replace("/\\\label\{.*\}\n/", "", $code);
 
   // all big environments with their corresponding markup
   $environments = array(
-    "lemma" => "Lemma",
-    "definition" => "Definition",
-    "remark" => "Remark",
-    "remarks" => "Remarks",
-    "example" => "Example",
-    "theorem" => "Theorem",
-    "exercise" => "Exercise",
-    "situation" => "Situation",
-    "proposition" => "Proposition"
+    "lemma" => array("Lemma", true),
+    "definition" => array("Definition", false),
+    "remark" => array("Remark", false),
+    "remarks" => array("Remarks", false),
+    "example" => array("Example", false),
+    "theorem" => array("Theorem", true),
+    "exercise" => array("Exercise", false),
+    "situation" => array("Situation", false),
+    "proposition" => array("Proposition", true)
   );
-  foreach ($environments as $environment => $name) {
-    $code = str_replace("\\begin{" . $environment . "}\n", "<strong>" . $name . "</strong> <em>", $code);
-    $code = preg_replace("/\\\begin{" . $environment . "}\[(.*)\]/", "<strong>" . $name . "</strong> ($1)", $code);
-    $code = str_replace("\\end{" . $environment . "}", "</em></p>", $code);
+  foreach ($environments as $environment => $information) {
+    $code = str_replace("\\begin{" . $environment . "}\n", "<strong>" . $information[0] . "</strong> " . ($information[1] ? '<em>' : ''), $code);
+    $code = preg_replace("/\\\begin{" . $environment . "}\[(.*)\]/", "<strong>" . $information[0] . "</strong> ($1) " . ($information[1] ? '<em>' : ''), $code);
+    $code = str_replace("\\end{" . $environment . "}", ($information[1] ? '</em>' : '') . "</p>", $code);
   }
 
   // these do not fit into the system above
@@ -226,25 +228,27 @@ function parse_latex($tag, $code) {
 
   // proof environment
   $code = str_replace("\\begin{proof}\n", "<p><strong>Proof</strong> ", $code);
-  $code = preg_replace("/\\\begin\{proof\}\[([^\]]*)\]/", "<p><strong>$1</strong> ", $code);
+  $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/", "<p><strong>$1</strong> ", $code);
   $code = str_replace("\\end{proof}", "</p><p style='text-align: right;'>$\square$</p>", $code);
 
   // sections etc.
-  $code = preg_replace("/\\\section\{([\w\s,]*)\}/", "<h3>$1</h3>", $code);
-  $code = preg_replace("/\\\subsection\{([\w\s]*)\}/", "<h4>$1</h4>", $code);
+  $code = preg_replace("/\\\section\{(" . $regex . ")\}/", "<h3>$1</h3>", $code);
+  $code = preg_replace("/\\\subsection\{(" . $regex . ")\}/", "<h4>$1</h4>", $code);
 
   // hyperlinks
-  $code = preg_replace("/\\\href\{(.*)\}\{(.*)\}/", "<a href=\"$1\">$2</a>", $code);
-  $code = preg_replace("/\\\href\{(.*)\}\{(.*)\}/", "<a href=\"$1\">$2</a>", $code);
+  $code = preg_replace("/\\\href\{(.*)\}\{(" . $regex . ")\}/", "<a href=\"$1\">$2</a>", $code);
 
   // emphasis
-  $code = preg_replace("/\{\\\it ([\w\s]+)\}/", "<em>$1</em>", $code);
-  $code = preg_replace("/\{\\\em ([\w\s]+)\}/", "<em>$1</em>", $code);
-  $code = preg_replace("/\\\emph\{([\w\s]+)\}/", "<em>$1</em>", $code);
+  $code = preg_replace("/\{\\\it (" . $regex . ")\}/", "<em>$1</em>", $code);
+  $code = preg_replace("/\{\\\em (" . $regex . ")\}/", "<em>$1</em>", $code);
+  $code = preg_replace("/\\\emph\{(" . $regex . ")\}/", "<em>$1</em>", $code);
+
+  // footnotes
+  $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/", " ($1)", $code);
 
   // handle citations
   $code = preg_replace("/\\\cite\{([\w-]*)\}/", "[$1]", $code);
-  $code = preg_replace("/\\\cite\[([\w \d\.-]*)\]\{([\w-]*)\}/", "[$2, $1]", $code);
+  $code = preg_replace("/\\\cite\[(" . $regex . ")\]\{([\w-]*)\}/", "[$2, $1]", $code);
 
   // filter \input{chapters}
   $code = str_replace("\\input{chapters}", "", $code);
