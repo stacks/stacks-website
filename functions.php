@@ -194,51 +194,35 @@ function parse_latex($tag, $code) {
   $code = parse_preview($code);
 
   // TODO interpunction \w\s should be extended to cover this, no .*
+  // TODO footnote
 
   // remove labels
   $code = preg_replace("/\\\label\{.*\}/", "", $code);
 
   // all big environments with their corresponding markup
+  $environments = array(
+    "lemma" => "Lemma",
+    "definition" => "Definition",
+    "remark" => "Remark",
+    "remarks" => "Remarks",
+    "example" => "Example",
+    "theorem" => "Theorem",
+    "exercise" => "Exercise",
+    "situation" => "Situation",
+    "proposition" => "Proposition"
+  );
+  foreach ($environments as $environment => $name) {
+    $code = str_replace("\\begin{" . $environment . "}\n", "<strong>" . $name . "</strong> <em>", $code);
+    $code = preg_replace("/\\\begin{" . $environment . "}\[(.*)\]/", "<strong>" . $name . "</strong> ($1)", $code);
+    $code = str_replace("\\end{" . $environment . "}", "</em></p>", $code);
+  }
+
+  // these do not fit into the system above
   $code = str_replace("\\begin{center}\n", "<center>", $code);
   $code = str_replace("\\end{center}", "</center>", $code);
-
-  $code = str_replace("\\begin{lemma}\n", "<strong>Lemma</strong> <em>", $code);
-  $code = preg_replace("/\\\begin{lemma}\[(.*)\]/", "<strong>Lemma</strong> ($1)", $code);
-  $code = str_replace("\\end{lemma}", "</em></p>", $code);
   
-  $code = str_replace("\\begin{definition}\n", "<strong>Definition</strong> ", $code);
-  $code = preg_replace("/\\\begin{definition}\[(.*)\]/", "<strong>Definition</strong> ($1)", $code);
-  $code = str_replace("\\end{definition}", "</p>", $code);
-
-  $code = str_replace("\\begin{remark}\n", "<strong>Remark</strong> ", $code);
-  $code = preg_replace("/\\\begin{remark}\[(.*)\]/", "<strong>Remark</strong> ($1)", $code);
-  $code = str_replace("\\end{remark}", "</p>", $code);
-
-  $code = str_replace("\\begin{remarks}\n", "<strong>Remarks</strong> ", $code);
-  $code = str_replace("\\end{remarks}\n", "</p>", $code);
-
   $code = str_replace("\\begin{quote}", "<blockquote>", $code);
   $code = str_replace("\\end{quote}", "</blockquote>", $code);
-
-  $code = str_replace("\\begin{example}\n", "<strong>Example</strong> ", $code);
-  $code = preg_replace("/\\\begin{example}\[(.*)\]/", "<strong>Example</strong> ($1)", $code);
-  $code = str_replace("\\end{example}", "</p>", $code);
-
-  $code = str_replace("\\begin{theorem}\n", "<strong>Theorem</strong> ", $code);
-  $code = preg_replace("/\\\begin{theorem}\[(.*)\]/", "<strong>Theorem</strong> ($1)", $code);
-  $code = str_replace("\\end{theorem}", "</p>", $code);
-
-  $code = str_replace("\\begin{exercise}\n", "<strong>Exercise</strong> ", $code);
-  $code = preg_replace("/\\\begin{exercise}\[(.*)\]/", "<strong>Exercise</strong> ($1)", $code);
-  $code = str_replace("\\end{exercise}", "</p>", $code);
-
-  $code = str_replace("\\begin{proposition}\n", "<strong>Proposition</strong> ", $code);
-  $code = preg_replace("/\\\begin{proposition}\[(.*)\]/", "<strong>Proposition</strong> ($1)", $code);
-  $code = str_replace("\\end{proposition}", "</p>", $code);
-
-  $code = str_replace("\\begin{situation}\n", "<strong>Situation</strong> ", $code);
-  $code = preg_replace("/\\\begin{situation}\[(.*)\]/", "<strong>Situation</strong> ($1)", $code);
-  $code = str_replace("\\end{situation}", "</p>", $code);
 
   // proof environment
   $code = str_replace("\\begin{proof}\n", "<p><strong>Proof</strong> ", $code);
@@ -246,7 +230,7 @@ function parse_latex($tag, $code) {
   $code = str_replace("\\end{proof}", "</p><p style='text-align: right;'>$\square$</p>", $code);
 
   // sections etc.
-  $code = preg_replace("/\\\section\{([\w\s]*)\}/", "<h3>$1</h3>", $code);
+  $code = preg_replace("/\\\section\{([\w\s,]*)\}/", "<h3>$1</h3>", $code);
   $code = preg_replace("/\\\subsection\{([\w\s]*)\}/", "<h4>$1</h4>", $code);
 
   // hyperlinks
@@ -281,6 +265,8 @@ function parse_latex($tag, $code) {
   // let HTML be aware of paragraphs
   $code = str_replace("\n\n", "</p><p>", $code);
   $code = str_replace("\\smallskip", "", $code);
+  $code = str_replace("\\medskip", "", $code);
+  $code = str_replace("\\noindent", "", $code);
 
   // parse references
   //$code = preg_replace('/\\\ref\{(.*)\}/', "$1", $code);
@@ -290,10 +276,6 @@ function parse_latex($tag, $code) {
   for ($i = 0; $i < count($references[0]); ++$i) {
     $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . get_id(substr($references[1][$i], -4, 4)) . "</a>", $code);
   }
-
-  // remove \medskip and \noindent
-  $code = str_replace("\\medskip", "", $code);
-  $code = str_replace("\\noindent", "", $code);
 
   // fix macros
   $macros = array(
