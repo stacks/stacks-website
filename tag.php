@@ -431,14 +431,11 @@
     $results['position'] = intval($results['position']);
     if (position_exists($results['position'] - 1)) {
       $previous_tag = get_tag_at($results['position'] - 1);
-      // TODO undo this
-      //print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag/' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
-      print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag.php?tag=' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
+      print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag/' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
     }
     if (position_exists($results['position'] + 1)) {
       $next_tag = get_tag_at($results['position'] + 1);
-      // TODO undo this
-      print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag.php?tag=' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
+      print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
     }
   }
 
