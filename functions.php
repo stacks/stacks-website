@@ -236,6 +236,7 @@ function parse_latex($tag, $code) {
 
   // hyperlinks
   $code = preg_replace("/\\\href\{(.*)\}\{(" . $regex . ")\}/", "<a href=\"$1\">$2</a>", $code);
+  $code = preg_replace("/\\\url\{(.*)\}/", "<a href=\"$1\">$1</a>", $code);
 
   // emphasis
   $code = preg_replace("/\{\\\it (" . $regex . ")\}/", "<em>$1</em>", $code);
