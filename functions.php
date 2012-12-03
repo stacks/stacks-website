@@ -196,7 +196,6 @@ function parse_latex($tag, $code) {
 
   // this is the regex for all (sufficiently nice) text that can occur in things like \emph
   $regex = "[\w\s$,.:()'-\\\\$]+";
-  // TODO footnote
 
   // remove labels
   $code = preg_replace("/\\\label\{.*\}\n/", "", $code);
@@ -276,7 +275,7 @@ function parse_latex($tag, $code) {
   //$code = preg_replace('/\\\ref\{(.*)\}/', "$1", $code);
   $references = array();
   
-  preg_match_all('/\\\ref{<a href=\"(.*)\">(.*)<\/a>}/', $code, $references);
+  preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-]+)<\/a>}/', $code, $references);
   for ($i = 0; $i < count($references[0]); ++$i) {
     $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . get_id(substr($references[1][$i], -4, 4)) . "</a>", $code);
   }
