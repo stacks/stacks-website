@@ -185,7 +185,7 @@ function parse_preview($preview) {
   // escape stuff
   $preview = htmlentities($preview);
   // but links should work: tag links are made up from alphanumeric characters, slashes, dashes and underscores, while the LaTeX label contains only alphanumeric characters and dashes
-  $preview = preg_replace('/&lt;a href=&quot;([A-Za-z0-9\/-_]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . full_url('') . '$1">$2</a>', $preview);
+  $preview = preg_replace('/&lt;a href=&quot;\/([A-Za-z0-9\/-_]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . full_url('') . '$1">$2</a>', $preview);
 
   return $preview;
 }
@@ -315,10 +315,10 @@ function print_navigation() {
 }
 
 function print_tag_code_and_preview($tag, $code) {
-  print("<p id='tag-preview-code-" . $tag . "-link' style='float: right; font-size: .9em; margin-top: 0;'><a href='#tag-preview-output-" . $tag . "'>preview</a></p>");
+  print("<p id='tag-preview-code-" . $tag . "-link' style='float: right; font-size: 1em; margin-top: 0;'><a href='#tag-preview-output-" . $tag . "'>view</a></p>");
   print("<pre class='tag-preview-code' id='tag-preview-code-" . $tag . "'>\n" . parse_preview($code) . "\n    </pre>\n");
 
-  print("<p id='tag-preview-output-" . $tag . "-link' style='float: right; font-size: .9em; margin-top: 0;'><a href='#tag-preview-code-" . $tag . "'>code</a></p>");
+  print("<p id='tag-preview-output-" . $tag . "-link' style='float: right; font-size: 1em; margin-top: 0;'><a href='#tag-preview-code-" . $tag . "'>code</a></p>");
   print("<blockquote class='tag-preview-output' id='tag-preview-output-" . $tag . "'>\n" . parse_latex($tag, $code) . "</blockquote>\n");
 
 ?>
