@@ -315,10 +315,10 @@ function print_navigation() {
 }
 
 function print_tag_code_and_preview($tag, $code) {
-  print("<p id='tag-preview-code-" . $tag . "-link' style='float: right; font-size: 1em; margin-top: 0;'><a href='#tag-preview-output-" . $tag . "'>view</a></p>");
+  print("<p class='view-code-toggle' id='tag-preview-code-" . $tag . "-link'><a href='#tag-preview-output-" . $tag . "'>view</a></p>");
   print("<pre class='tag-preview-code' id='tag-preview-code-" . $tag . "'>\n" . parse_preview($code) . "\n    </pre>\n");
 
-  print("<p id='tag-preview-output-" . $tag . "-link' style='float: right; font-size: 1em; margin-top: 0;'><a href='#tag-preview-code-" . $tag . "'>code</a></p>");
+  print("<p class='view-code-toggle' id='tag-preview-output-" . $tag . "-link'><a href='#tag-preview-code-" . $tag . "'>code</a></p>");
   print("<blockquote class='tag-preview-output' id='tag-preview-output-" . $tag . "'>\n" . parse_latex($tag, $code) . "</blockquote>\n");
 
 ?>

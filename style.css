@@ -208,3 +208,22 @@ blockquote.tag-preview-output {
   margin-left: 1em;
   line-height: 120%;
 }
+
+p.view-code-toggle {
+  background-color: #edece6;
+  border: 1px solid #d9d8d1;
+  float: right;
+  font-size: 1em;
+  margin-top: 0;
+}
+
+p.view-code-toggle:hover {
+  background-color: #c9c8c1;
+}
+
+p.view-code-toggle a {
+  display: block;
+  width: 100%;
+  padding: 0.2em 1em;
+}
+  
