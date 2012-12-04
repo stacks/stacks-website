@@ -102,7 +102,9 @@ def parse_aux(filename):
       continue
     # it is a label, add it with what we already know about it
     else:
-      labels[parts[0]] = (parts[1], parts[2], parts[3][0:-len("\\relax ")], parts[0].partition('-')[0], i)
+      if parts[3].endswith("\\relax "):
+        parts[3] = parts[3][0:-7]
+      labels[parts[0]] = (parts[1], parts[2], parts[3], parts[0].partition('-')[0], i)
       i = i + 1
 
   return labels
