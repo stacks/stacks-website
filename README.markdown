@@ -1,6 +1,6 @@
 Description
 -----------
-This is a new version of the website for the [Stacks project](http://stacks.math.columbia.edu), enabling a comment system and improved tag lookup.
+This is a new version of the website for the [Stacks project](http://stacks.math.columbia.edu), enabling a comment system, improved tag lookup and a full-powered online view of its contents.
 
 
 Configuration
@@ -11,9 +11,9 @@ The following configuration is to remind me of what I have to do to get an insta
 1. clone the `stacks-website` project using
 `git clone https://github.com/pbelmans/stacks-website.git`
 
-2. change directories to `stacks-website/`and initialize the submodules using `git submodule init` and `git submodule update`
+2. change directories to `stacks-website/`and initialize the submodules using `git submodule init`, `git submodule update` and either `git submodule foreach git pull origin master` if you want to update all submodules (including EpicEditor, MathJax and XyJax) or just `cd tex/`, `git checkout master`,  `git pull` if you wish to play it safe
 
-3. create all necessary information about tags in the project by running `make tags` in `stacks-website/tex/`, make sure that the URLs in `tex/scripts/tag_up.py` are correct
+3. create all necessary information about tags in the project by running `make tags` in `stacks-website/tex/`, make sure that the URLs in `stacks-website/tex/scripts/tag_up.py` are correct
 
 4. create the database by calling `python scripts/create_database.py` in `stacks-website/`
 
