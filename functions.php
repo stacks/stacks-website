@@ -288,7 +288,7 @@ function parse_latex($tag, $code) {
     "\\colim" => "\mathop{\\rm colim}\\nolimits",
     "\\Spec" => "\mathop{\\rm Spec}",
     "\\Hom" => "\mathop{\\rm Hom}\\nolimits",
-    "\\SheafHom" => "\mathop{\mathcal{H}\!{\it om}}\nolimits",
+    "\\SheafHom" => "\mathop{\mathcal{H}\!{\it om}}\\nolimits",
     "\\Sch" => "\\textit{Sch}",
     "\\Mor" => "\mathop{\\rm Mor}\\nolimits",
     "\\Ob" => "\mathop{\\rm Ob}\\nolimits",
