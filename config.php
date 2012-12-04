@@ -13,9 +13,7 @@
   }
 
   function get_directory() {
-    return '/~belmans/algebraic_geometry/stacks_website';
-    // found out it never worked because of the stange - _ mess, so ignore this for now, if the site is running in the same directory it is accessed from this works
-    //return implode('/', array_slice(explode('/', $_SERVER['SCRIPT_NAME']), 0, -1));
+    return implode('/', array_slice(explode('/', $_SERVER['SCRIPT_NAME']), 0, -1));
   }
   
   function full_url($path) {
