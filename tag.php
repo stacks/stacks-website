@@ -360,6 +360,29 @@
     }
   }
 
+  function print_sectional_navigation($book_id) {
+    // print next/previous section navigation
+    global $db;
+
+    $sql = $db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE CAST(sections.number AS FLOAT) < CAST(:id AS FLOAT) AND tags.type == "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY CAST(number AS FLOAT) DESC LIMIT 1');
+    $sql->bindParam(':id', $book_id);
+
+    if ($sql->execute()) {
+      while ($row = $sql->fetch()) {
+        print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $row['title'] . "' href='" . full_url('tag/' . $row['tag']) . "'>&lt;&lt; Section <var>" . $row['number'] . "</var></a>";
+      }
+    }
+
+    $sql = $db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE CAST(sections.number AS FLOAT) > CAST(:id AS FLOAT) AND tags.type = "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY CAST(number AS FLOAT) LIMIT 1');
+    $sql->bindParam(':id', $book_id);
+
+    if ($sql->execute()) {
+      while ($row = $sql->fetch()) {
+        print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $row['title'] . "' href='" . full_url('tag/' . $row['tag']) . "'>Section <var>" . $row['number'] . " &gt;&gt;</var></a>";
+      }
+    }
+  }
+
   function print_tag($tag) {
     $results = get_tag($tag);
     
@@ -401,7 +424,8 @@
       print("    <p>This tag has label <var>" . $results['label'] . "</var>, it is called <strong>" . latex_to_html($results['name']) . "</strong> in the Stacks project and it points to\n");
     }
 
-
+    if ($results['type'] == 'section')
+      print_sectional_navigation($results['book_id']);
 
     // information about the location of the tag in the Stacks project
     print("    <ul>\n");
@@ -431,29 +455,6 @@
     }
     print("    </ul>\n\n");
 
-    // print next/previous section navigation
-    if ($results['type'] == 'section') {
-      global $db;
-
-      $sql = $db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE CAST(sections.number AS FLOAT) < CAST(:id AS FLOAT) AND tags.type == "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY CAST(number AS FLOAT) DESC LIMIT 1');
-      $sql->bindParam(':id', $results['book_id']);
-
-      if ($sql->execute()) {
-        while ($row = $sql->fetch()) {
-          print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $row['title'] . "' href='" . full_url('tag/' . $row['tag']) . "'>&lt;&lt; Section <var>" . $row['number'] . "</var></a>";
-        }
-      }
-
-      $sql = $db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE CAST(sections.number AS FLOAT) > CAST(:id AS FLOAT) AND tags.type = "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY CAST(number AS FLOAT) LIMIT 1');
-      $sql->bindParam(':id', $results['book_id']);
-
-      if ($sql->execute()) {
-        while ($row = $sql->fetch()) {
-          print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $row['title'] . "' href='" . full_url('tag/' . $row['tag']) . "'>Section <var>" . $row['number'] . " &gt;&gt;</var></a>";
-        }
-      }
-    }
-
     // output LaTeX code
     if(empty($results['value'])) {
       print("    <p>There is no LaTeX code associated to this tag.\n");
@@ -463,15 +464,19 @@
       print_tag_code_and_preview($tag, $results['value']);
     }
 
-    // navigational code
-    $results['position'] = intval($results['position']);
-    if (position_exists($results['position'] - 1)) {
-      $previous_tag = get_tag_at($results['position'] - 1);
-      print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag/' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
-    }
-    if (position_exists($results['position'] + 1)) {
-      $next_tag = get_tag_at($results['position'] + 1);
-      print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
+    if ($results['type'] == 'section')
+      print_sectional_navigation($results['book_id']);
+    else {
+      // navigational code
+      $results['position'] = intval($results['position']);
+      if (position_exists($results['position'] - 1)) {
+        $previous_tag = get_tag_at($results['position'] - 1);
+        print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag/' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
+      }
+      if (position_exists($results['position'] + 1)) {
+        $next_tag = get_tag_at($results['position'] + 1);
+        print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
+      }
     }
   }
 
