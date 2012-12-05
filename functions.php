@@ -145,6 +145,22 @@ function get_tag_at($position) {
   return "ZZZZ";
 }
 
+function get_tag_with_id($id) {
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT tag FROM tags WHERE book_id = :id AND active = "TRUE"');
+    $sql->bindParam(':id', $id);
+
+    if ($sql->execute())
+      return $sql->fetch();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return "ZZZZ";
+}
+
 function get_tag_referring_to($label) {
   assert(label_exists($label));
 
@@ -184,8 +200,21 @@ function parse_preview($preview) {
   $preview = trim($preview);
   // escape stuff
   $preview = htmlentities($preview);
+
+  // don't escape in $$ ... $$ because XyJax doesn't like that
+  $parts = explode('$$', $preview);
+  for ($i = 0; $i < sizeof($parts); $i++) {
+    if ($i % 2 == 1) {
+      $parts[$i] = str_replace('&gt;', '>', $parts[$i]);
+      $parts[$i] = str_replace('&lt;', '<', $parts[$i]);
+      $parts[$i] = str_replace('&amp;', '&', $parts[$i]);
+    }
+  }
+  $preview = implode('$$', $parts);
+
   // but links should work: tag links are made up from alphanumeric characters, slashes, dashes and underscores, while the LaTeX label contains only alphanumeric characters and dashes
   $preview = preg_replace('/&lt;a href=&quot;\/([A-Za-z0-9\/-_]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . full_url('') . '$1">$2</a>', $preview);
+
 
   return $preview;
 }
