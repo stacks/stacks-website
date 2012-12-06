@@ -344,18 +344,18 @@ function print_navigation() {
 }
 
 function print_tag_code_and_preview($tag, $code) {
-  print("<p class='view-code-toggle' id='tag-preview-code-" . $tag . "-link'><a href='#tag-preview-output-" . $tag . "'>view</a></p>");
-  print("<pre class='tag-preview-code' id='tag-preview-code-" . $tag . "'>\n" . parse_preview($code) . "\n    </pre>\n");
-
   print("<p class='view-code-toggle' id='tag-preview-output-" . $tag . "-link'><a href='#tag-preview-code-" . $tag . "'>code</a></p>");
   print("<blockquote class='tag-preview-output' id='tag-preview-output-" . $tag . "'>\n" . parse_latex($tag, $code) . "</blockquote>\n");
+
+  print("<p class='view-code-toggle' id='tag-preview-code-" . $tag . "-link'><a href='#tag-preview-output-" . $tag . "'>view</a></p>");
+  print("<pre class='tag-preview-code' id='tag-preview-code-" . $tag . "'>\n" . parse_preview($code) . "\n    </pre>\n");
 
 ?>
   <script type="text/javascript">
     $(document).ready(function() {
       // hide preview
-      $("#tag-preview-output-<?php print($tag); ?>").toggle();
-      $("#tag-preview-output-<?php print($tag); ?>-link").toggle();
+      $("#tag-preview-code-<?php print($tag); ?>").toggle();
+      $("#tag-preview-code-<?php print($tag); ?>-link").toggle();
     });
 
     function toggle_preview_output(e) {
