@@ -287,9 +287,9 @@ function parse_latex($tag, $code) {
 
   // enumerates etc.
   $code = str_replace("\\begin{enumerate}\n", "<ol>", $code);
-  $code = str_replace("\\end{enumerate}\n", "</ol>", $code);
+  $code = str_replace("\\end{enumerate}", "</ol>", $code);
   $code = str_replace("\\begin{itemize}\n", "<ul>", $code);
-  $code = str_replace("\\end{itemize}\n", "</ul>", $code);
+  $code = str_replace("\\end{itemize}", "</ul>", $code);
   $code = preg_replace("/\\\begin{list}(.*)\n/", "<ul>", $code); // unfortunately I have to ignore information in here
   $code = str_replace("\\end{list}", "</ul>", $code);
   $code = preg_replace("/\\\item\[(.*)\]/", "<li>", $code);
