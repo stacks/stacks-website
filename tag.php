@@ -406,6 +406,9 @@
       $next_tag = get_tag_at($results['position'] + 1);
       print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
     }
+    if ($results['type'] == 'section')
+      print_sectional_navigation($results['book_id']);
+
 
     # get all information about the current section and chapter
     if (!section_exists($section_id) or !section_exists($chapter_id)) {
@@ -424,9 +427,6 @@
       print("    <p>This tag has label <var>" . $results['label'] . "</var>, it is called <strong>" . latex_to_html($results['name']) . "</strong> in the Stacks project and it points to\n");
     }
 
-    if ($results['type'] == 'section')
-      print_sectional_navigation($results['book_id']);
-
     // information about the location of the tag in the Stacks project
     print("    <ul>\n");
     // all types except 'item' and section-phantom labels can be handled in the same vein
@@ -444,7 +444,7 @@
     }
     else {
       // the tag refers to a result in a chapter, not contained in a (sub)section, i.e. don't display that information
-      if ($section_id == $chapter_id) {
+      if ($section_id == $chapter_id or $results['type'] == 'section') {
         print("      <li><a href='" . full_url('download/' . $chapter_information['filename'] . ".pdf#" . $tag) . "'>" . ucfirst($results['type']) . " " . $relative_id . " on page " . $results['chapter_page'] . "</a> of <a href='" . full_url('chapter/' . $chapter_id) . "'>Chapter " . $chapter_id . ": " . latex_to_html($chapter_information['title']) . "</a>\n");
       }
       else {
