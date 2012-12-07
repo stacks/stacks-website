@@ -127,6 +127,24 @@ function get_tag($tag) {
   }
 }
 
+function get_position_with_id($id) {
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT position FROM tags WHERE book_id = :id AND active = "TRUE"');
+    $sql->bindParam(':id', $id);
+
+    if ($sql->execute()) {
+      $row = $sql->fetch();
+      return $row['position'];
+    }
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return "ZZZZ";
+}
+
 function get_tag_at($position) {
   assert(position_exists($position));
 

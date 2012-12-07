@@ -364,8 +364,10 @@
     // print next/previous section navigation
     global $db;
 
-    $sql = $db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE CAST(sections.number AS FLOAT) < CAST(:id AS FLOAT) AND tags.type == "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY CAST(number AS FLOAT) DESC LIMIT 1');
-    $sql->bindParam(':id', $book_id);
+    $position = get_position_with_id($book_id);
+
+    $sql = $db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE tags.position < :position AND tags.type = "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY tags.position DESC LIMIT 1');
+    $sql->bindParam(':position', $position);
 
     if ($sql->execute()) {
       while ($row = $sql->fetch()) {
@@ -373,8 +375,8 @@
       }
     }
 
-    $sql = $db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE CAST(sections.number AS FLOAT) > CAST(:id AS FLOAT) AND tags.type = "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY CAST(number AS FLOAT) LIMIT 1');
-    $sql->bindParam(':id', $book_id);
+    $sql = $db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE tags.position > :position AND tags.type = "section" AND tags.book_id = sections.number AND sections.number LIKE "%.%" ORDER BY tags.position LIMIT 1');
+    $sql->bindParam(':position', $position);
 
     if ($sql->execute()) {
       while ($row = $sql->fetch()) {
