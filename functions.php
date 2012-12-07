@@ -219,20 +219,8 @@ function parse_preview($preview) {
   // escape stuff
   $preview = htmlentities($preview);
 
-  // don't escape in $$ ... $$ because XyJax doesn't like that
-  $parts = explode('$$', $preview);
-  for ($i = 0; $i < sizeof($parts); $i++) {
-    if ($i % 2 == 1) {
-      $parts[$i] = str_replace('&gt;', '>', $parts[$i]);
-      $parts[$i] = str_replace('&lt;', '<', $parts[$i]);
-      $parts[$i] = str_replace('&amp;', '&', $parts[$i]);
-    }
-  }
-  $preview = implode('$$', $parts);
-
   // but links should work: tag links are made up from alphanumeric characters, slashes, dashes and underscores, while the LaTeX label contains only alphanumeric characters and dashes
   $preview = preg_replace('/&lt;a href=&quot;\/([A-Za-z0-9\/-_]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . full_url('') . '$1">$2</a>', $preview);
-
 
   return $preview;
 }
@@ -322,11 +310,28 @@ function parse_latex($tag, $code) {
   // parse references
   //$code = preg_replace('/\\\ref\{(.*)\}/', "$1", $code);
   $references = array();
+
+  // don't escape in $$ ... $$ because XyJax doesn't like that
+  $parts = explode('$$', $code);
+  for ($i = 0; $i < sizeof($parts); $i++) {
+    if ($i % 2 == 1) {
+      $parts[$i] = str_replace('&gt;', '>', $parts[$i]);
+      $parts[$i] = str_replace('&lt;', '<', $parts[$i]);
+      $parts[$i] = str_replace('&amp;', '&', $parts[$i]);
+      
+      preg_match_all('/\\\ref\{<a href=\"\/tag\/([^.]*)\">[^.]*<\/a>\}/', $parts[$i], $matches);
+      for ($j = 0; $j < count($matches[0]); $j++) {
+        $parts[$i] = str_replace($matches[0][$j], get_id($matches[1][$j]), $parts[$i]);
+      }
+    }
+  }
+  $code = implode('$$', $parts);
   
   preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-]+)<\/a>}/', $code, $references);
   for ($i = 0; $i < count($references[0]); ++$i) {
     $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . get_id(substr($references[1][$i], -4, 4)) . "</a>", $code);
   }
+
 
   // fix macros
   $macros = array(
