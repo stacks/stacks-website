@@ -269,24 +269,23 @@ function parse_latex($tag, $file, $code) {
     for ($i = 0; $i < count($matches[0]); $i++) {
       $label = $file . '-' . $matches[1][$i];
       
-      $code = str_replace($matches[0][$i], "<strong>" . $information[0] . " " . get_id_referring_to($label) . ".</strong>" . ($information[1] ? '<em>' : ''), $code);
+      $code = str_replace($matches[0][$i], "<strong><a class='environment-link' href='" . get_tag_referring_to($label) . "'>" . $information[0] . " " . get_id_referring_to($label) . ".</a></strong>" . ($information[1] ? '<em>' : ''), $code);
     }
 
     preg_match_all("/\\\begin\{" . $environment . "\}\[([^.]*)\]\n\\\label\{([^.]*)\}/", $code, $matches);
     for ($i = 0; $i < count($matches[0]); $i++) {
-      $label = $matches[2][$i];
-      if (!label_exists($label))
-        $label = $file . '-' . $label;
+      $label = $file . '-' . $matches[2][$i];
       
-      $code = str_replace($matches[0][$i], "<strong>" . $information[0] . " " . get_id_referring_to($label) . "</strong> (" . $matches[1][$i] . ")<strong>.</strong>" . ($information[1] ? '<em>' : ''), $code);
+      $code = str_replace($matches[0][$i], "<a class='environment-link' href='" . get_tag_referring_to($label) . "'><strong>" . $information[0] . " " . get_id_referring_to($label) . "</strong> (" . $matches[1][$i] . ")<strong>.</strong></a>" . ($information[1] ? '<em>' : ''), $code);
     }
 
     $code = str_replace("\\end{" . $environment . "}", ($information[1] ? '</em>' : '') . "</p>", $code);
   }
 
-  preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w-]*)\}\n/", $code, $matches);
+  preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w-]+)\}\n/", $code, $matches);
   for ($i = 0; $i < count($matches); $i++) {
-    $code = str_replace($matches[0][$i], "\\begin{equation}\n\\tag{" . get_id_referring_to($file . '-' . $matches[1][$i]) . "}\n", $code);
+    if (!empty($matches[1][$i]))
+      $code = str_replace($matches[0][$i], "\\begin{equation}\n\\tag{" . get_id_referring_to($file . '-' . $matches[1][$i]) . "}\n", $code);
   }
 
   // remove remaining labels

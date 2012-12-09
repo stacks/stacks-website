@@ -209,6 +209,15 @@ blockquote.tag-preview-output {
   line-height: 120%;
 }
 
+blockquote.tag-preview-output a.environment-link {
+  color: black;
+  text-decoration: none;
+}
+
+blockquote.tag-preview-output a.environment-link:hover {
+  text-decoration: underline;
+}
+
 p.view-code-toggle {
   background-color: #edece6;
   border: 1px solid #d9d8d1;
@@ -226,4 +235,4 @@ p.view-code-toggle a {
   width: 100%;
   padding: 0.2em 1em;
 }
-  
+ 
