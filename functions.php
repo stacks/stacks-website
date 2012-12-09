@@ -249,7 +249,7 @@ function parse_latex($tag, $file, $code) {
   $code = parse_preview($code);
 
   // this is the regex for all (sufficiently nice) text that can occur in things like \emph
-  $regex = "[\p{L}\p{Nd}\s$,.:()'&#;-\\\\$]+";
+  $regex = "[\p{L}\p{Nd}\s$,.:()'&#;\-\\\\$]+";
 
   // fix special characters
   $code = latex_to_html($code);
