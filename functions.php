@@ -197,6 +197,24 @@ function get_tag_referring_to($label) {
   return "ZZZZ";
 }
 
+function get_id_referring_to($label) {
+  assert(label_exists($label));
+
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT book_id FROM tags WHERE label = :label AND active = "TRUE"');
+    $sql->bindParam(':label', $label);
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return "ZZZZ";
+}
+
 function latex_to_html($text) {
  $text = str_replace("\'E", "&Eacute;", $text);
  $text = str_replace("\'e", "&eacute;", $text);
@@ -225,17 +243,15 @@ function parse_preview($preview) {
   return $preview;
 }
 
-function parse_latex($tag, $code) {
+function parse_latex($tag, $file, $code) {
   // get rid of things that should be HTML
   $code = parse_preview($code);
 
   // this is the regex for all (sufficiently nice) text that can occur in things like \emph
   $regex = "[\w\s$,.:()'-\\\\$]+";
 
-  // remove labels
-  $code = preg_replace("/\\\label\{.*\}\n/", "", $code);
-
   // all big environments with their corresponding markup
+  // TODO fix order of things
   $environments = array(
     "lemma" => array("Lemma", true),
     "definition" => array("Definition", false),
@@ -247,11 +263,32 @@ function parse_latex($tag, $code) {
     "situation" => array("Situation", false),
     "proposition" => array("Proposition", true)
   );
+
   foreach ($environments as $environment => $information) {
-    $code = str_replace("\\begin{" . $environment . "}\n", "<strong>" . $information[0] . "</strong> " . ($information[1] ? '<em>' : ''), $code);
-    $code = preg_replace("/\\\begin{" . $environment . "}\[(.*)\]/", "<strong>" . $information[0] . "</strong> ($1) " . ($information[1] ? '<em>' : ''), $code);
+    preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([^.]*)\}/", $code, $matches);
+    for ($i = 0; $i < count($matches[0]); $i++) {
+      $label = $matches[1][$i];
+      if (!label_exists($label))
+        $label = $file . '-' . $label;
+      
+      $code = str_replace($matches[0][$i], "<strong>" . $information[0] . " " . get_id_referring_to($label) . ".</strong>" . ($information[1] ? '<em>' : ''), $code);
+    }
+
+    preg_match_all("/\\\begin\{" . $environment . "\}\[([^.]*)\]\n\\\label\{([^.]*)\}/", $code, $matches);
+    for ($i = 0; $i < count($matches[0]); $i++) {
+      $label = $matches[2][$i];
+      if (!label_exists($label))
+        $label = $file . '-' . $label;
+      
+      $code = str_replace($matches[0][$i], "<strong>" . $information[0] . " " . get_id_referring_to($label) . "</strong> (" . $matches[1][$i] . ")<strong>.</strong>" . ($information[1] ? '<em>' : ''), $code);
+    }
+
     $code = str_replace("\\end{" . $environment . "}", ($information[1] ? '</em>' : '') . "</p>", $code);
   }
+
+  // remove labels
+  // TODO fix numbering in equations
+  $code = preg_replace("/\\\label\{.*\}\n/", "", $code);
 
   // these do not fit into the system above
   $code = str_replace("\\begin{center}\n", "<center>", $code);
@@ -366,9 +403,9 @@ function print_navigation() {
 <?php
 }
 
-function print_tag_code_and_preview($tag, $code) {
+function print_tag_code_and_preview($tag, $file, $code) {
   print("<p class='view-code-toggle' id='tag-preview-output-" . $tag . "-link'><a href='#tag-preview-code-" . $tag . "'>code</a></p>");
-  print("<blockquote class='tag-preview-output' id='tag-preview-output-" . $tag . "'>\n" . parse_latex($tag, $code) . "</blockquote>\n");
+  print("<blockquote class='tag-preview-output' id='tag-preview-output-" . $tag . "'>\n" . parse_latex($tag, $file, $code) . "</blockquote>\n");
 
   print("<p class='view-code-toggle' id='tag-preview-code-" . $tag . "-link'><a href='#tag-preview-output-" . $tag . "'>view</a></p>");
   print("<pre class='tag-preview-code' id='tag-preview-code-" . $tag . "'>\n" . parse_preview($code) . "\n    </pre>\n");

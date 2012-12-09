@@ -464,7 +464,7 @@
     }
     else {
       print("    <p>The LaTeX code of the corresponding environment is:");
-      print_tag_code_and_preview($tag, $results['value']);
+      print_tag_code_and_preview($tag, $results['file'], $results['value']);
     }
 
     if ($results['type'] == 'section')
