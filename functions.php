@@ -222,9 +222,10 @@ function latex_to_html($text) {
  $text = str_replace("\"o", "&ouml;", $text);
  $text = str_replace("\`e", "&egrave;", $text);
  $text = str_replace("{\\v C}", "&#268;", $text);
+ $text = str_replace("\\u C", "&#268;", $text);
  $text = str_replace("``", "\"", $text);
  $text = str_replace("''", "\"", $text);
- $text = str_replace("\\ ", " ", $text);
+ $text = str_replace("\\ ", "&nbsp;", $text);
  // this is to remedy a bug in import_titles
  $text = str_replace("\\v C}", "&#268;", $text);
 
@@ -251,7 +252,6 @@ function parse_latex($tag, $file, $code) {
   $regex = "[\w\s$,.:()'-\\\\$]+";
 
   // all big environments with their corresponding markup
-  // TODO fix order of things
   $environments = array(
     "lemma" => array("Lemma", true),
     "definition" => array("Definition", false),
@@ -265,11 +265,9 @@ function parse_latex($tag, $file, $code) {
   );
 
   foreach ($environments as $environment => $information) {
-    preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([^.]*)\}/", $code, $matches);
+    preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([\w-]*)\}/", $code, $matches);
     for ($i = 0; $i < count($matches[0]); $i++) {
-      $label = $matches[1][$i];
-      if (!label_exists($label))
-        $label = $file . '-' . $label;
+      $label = $file . '-' . $matches[1][$i];
       
       $code = str_replace($matches[0][$i], "<strong>" . $information[0] . " " . get_id_referring_to($label) . ".</strong>" . ($information[1] ? '<em>' : ''), $code);
     }
@@ -294,6 +292,9 @@ function parse_latex($tag, $file, $code) {
   // remove remaining labels
   $code = preg_replace("/\\\label\{.*\}\n/", "", $code);
 
+  // lines starting with % (tag 03NV for instance) should be removed
+  $code = preg_replace("/\%[\w.]+/", "", $code);
+
   // these do not fit into the system above
   $code = str_replace("\\begin{center}\n", "<center>", $code);
   $code = str_replace("\\end{center}", "</center>", $code);
@@ -302,7 +303,7 @@ function parse_latex($tag, $file, $code) {
   $code = str_replace("\\end{quote}", "</blockquote>", $code);
 
   // proof environment
-  $code = str_replace("\\begin{proof}\n", "<p><strong>Proof</strong> ", $code);
+  $code = str_replace("\\begin{proof}\n", "<p><strong>Proof.</strong> ", $code);
   $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/", "<p><strong>$1</strong> ", $code);
   $code = str_replace("\\end{proof}", "</p><p style='text-align: right;'>$\square$</p>", $code);
 
@@ -339,7 +340,7 @@ function parse_latex($tag, $file, $code) {
   $code = str_replace("\\end{itemize}", "</ul>", $code);
   $code = preg_replace("/\\\begin{list}(.*)\n/", "<ul>", $code); // unfortunately I have to ignore information in here
   $code = str_replace("\\end{list}", "</ul>", $code);
-  $code = preg_replace("/\\\item\[(.*)\]/", "<li>", $code);
+  $code = preg_replace("/\\\item\[(" . $regex . ")\]/", "<li>", $code);
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
