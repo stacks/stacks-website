@@ -314,7 +314,10 @@ function parse_latex($tag, $file, $code) {
   // proof environment
   $code = str_replace("\\begin{proof}\n", "<p><strong>Proof.</strong> ", $code);
   $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/", "<p><strong>$1</strong> ", $code);
-  $code = str_replace("\\end{proof}", "</p><p style='text-align: right;'>$\square$</p>", $code);
+  $code = str_replace("\\end{proof}", "<span style='float: right;'>$\square$</span></p>", $code);
+
+  $code = preg_replace("/\\\section\{(" . $regex . ")\}/", "<h3>$1</h3>", $code);
+  $code = preg_replace("/\\\subsection\{(" . $regex . ")\}/", "<h4>$1</h4>", $code);
 
   // hyperlinks
   $code = preg_replace("/\\\href\{(.*)\}\{(" . $regex . ")\}/", "<a href=\"$1\">$2</a>", $code);
