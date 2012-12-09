@@ -265,15 +265,15 @@ function parse_latex($tag, $file, $code) {
   );
 
   foreach ($environments as $environment => $information) {
-    preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([\w-]*)\}/", $code, $matches);
-    for ($i = 0; $i < count($matches[0]); $i++) {
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([\w-]*)\}/", $code, $matches);
+    for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[1][$i];
       
       $code = str_replace($matches[0][$i], "<strong><a class='environment-link' href='" . get_tag_referring_to($label) . "'>" . $information[0] . " " . get_id_referring_to($label) . ".</a></strong>" . ($information[1] ? '<em>' : ''), $code);
     }
 
-    preg_match_all("/\\\begin\{" . $environment . "\}\[([^.]*)\]\n\\\label\{([^.]*)\}/", $code, $matches);
-    for ($i = 0; $i < count($matches[0]); $i++) {
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[([^.]*)\]\n\\\label\{([^.]*)\}/", $code, $matches);
+    for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
       
       $code = str_replace($matches[0][$i], "<a class='environment-link' href='" . get_tag_referring_to($label) . "'><strong>" . $information[0] . " " . get_id_referring_to($label) . "</strong> (" . $matches[1][$i] . ")<strong>.</strong></a>" . ($information[1] ? '<em>' : ''), $code);
@@ -282,10 +282,20 @@ function parse_latex($tag, $file, $code) {
     $code = str_replace("\\end{" . $environment . "}", ($information[1] ? '</em>' : '') . "</p>", $code);
   }
 
-  preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w-]+)\}\n/", $code, $matches);
-  for ($i = 0; $i < count($matches); $i++) {
-    if (!empty($matches[1][$i]))
-      $code = str_replace($matches[0][$i], "\\begin{equation}\n\\tag{" . get_id_referring_to($file . '-' . $matches[1][$i]) . "}\n", $code);
+  $count = preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w-]+)\}\n/", $code, $matches);
+  for ($i = 0; $i < $count; $i++) {
+    $code = str_replace($matches[0][$i], "\\begin{equation}\n\\tag{" . get_id_referring_to($file . '-' . $matches[1][$i]) . "}\n", $code);
+  }
+
+  // sections etc.
+  $count = preg_match_all("/\\\section\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/", $code, $matches);
+  for ($i = 0; $i < $count; $i++) {
+    $code = str_replace($matches[0][$i], "<h3>" . get_id_referring_to($file . '-' . $matches[2][$i]) . ". " . $matches[1][$i] . "</h3>", $code);
+  }
+
+  $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/", $code, $matches);
+  for ($i = 0; $i < $count; $i++) {
+    $code = str_replace($matches[0][$i], "<h4>" . get_id_referring_to($file . '-' . $matches[2][$i]) . ". " . $matches[1][$i] . "</h4>", $code);
   }
 
   // remove remaining labels
@@ -305,10 +315,6 @@ function parse_latex($tag, $file, $code) {
   $code = str_replace("\\begin{proof}\n", "<p><strong>Proof.</strong> ", $code);
   $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/", "<p><strong>$1</strong> ", $code);
   $code = str_replace("\\end{proof}", "</p><p style='text-align: right;'>$\square$</p>", $code);
-
-  // sections etc.
-  $code = preg_replace("/\\\section\{(" . $regex . ")\}/", "<h3>$1</h3>", $code);
-  $code = preg_replace("/\\\subsection\{(" . $regex . ")\}/", "<h4>$1</h4>", $code);
 
   // hyperlinks
   $code = preg_replace("/\\\href\{(.*)\}\{(" . $regex . ")\}/", "<a href=\"$1\">$2</a>", $code);
@@ -360,16 +366,16 @@ function parse_latex($tag, $file, $code) {
       $parts[$i] = str_replace('&lt;', '<', $parts[$i]);
       $parts[$i] = str_replace('&amp;', '&', $parts[$i]);
       
-      preg_match_all('/\\\ref\{<a href=\"\/tag\/([^.]*)\">[^.]*<\/a>\}/', $parts[$i], $matches);
-      for ($j = 0; $j < count($matches[0]); $j++) {
+      $count = preg_match_all('/\\\ref\{<a href=\"\/tag\/([^.]*)\">[^.]*<\/a>\}/', $parts[$i], $matches);
+      for ($j = 0; $j < $count; $j++) {
         $parts[$i] = str_replace($matches[0][$j], get_id($matches[1][$j]), $parts[$i]);
       }
     }
   }
   $code = implode('$$', $parts);
   
-  preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-]+)<\/a>}/', $code, $references);
-  for ($i = 0; $i < count($references[0]); ++$i) {
+  $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-]+)<\/a>}/', $code, $references);
+  for ($i = 0; $i < $count; ++$i) {
     $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . get_id(substr($references[1][$i], -4, 4)) . "</a>", $code);
   }
 
