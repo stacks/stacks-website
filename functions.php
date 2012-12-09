@@ -249,7 +249,10 @@ function parse_latex($tag, $file, $code) {
   $code = parse_preview($code);
 
   // this is the regex for all (sufficiently nice) text that can occur in things like \emph
-  $regex = "[\w\s$,.:()'-\\\\$]+";
+  $regex = "[\p{L}\p{Nd}\s$,.:()'&#;-\\\\$]+";
+
+  // fix special characters
+  $code = latex_to_html($code);
 
   // all big environments with their corresponding markup
   $environments = array(
@@ -276,7 +279,7 @@ function parse_latex($tag, $file, $code) {
         $code = str_replace($matches[0][$i], "<strong>" . $information[0] . ".</strong>" . ($information[1] ? '<em>' : ''), $code);
     }
 
-    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[([^.]*)\]\n\\\label\{([^.]*)\}/", $code, $matches);
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([^.]*)\}/u", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
       
@@ -302,7 +305,7 @@ function parse_latex($tag, $file, $code) {
   }
 
   // sections etc.
-  $count = preg_match_all("/\\\section\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/", $code, $matches);
+  $count = preg_match_all("/\\\section\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/u", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[2][$i];
 
@@ -313,7 +316,7 @@ function parse_latex($tag, $file, $code) {
       $code = str_replace($matches[0][$i], "<h3>" . $matches[1][$i] . "</h3>", $code);
   }
 
-  $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/", $code, $matches);
+  $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/u", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[2][$i];
     $code = str_replace($matches[0][$i], "<h4><a class='environment-link' href='" . get_tag_referring_to($label) . "'>" . get_id_referring_to($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
@@ -334,23 +337,20 @@ function parse_latex($tag, $file, $code) {
 
   // proof environment
   $code = str_replace("\\begin{proof}\n", "<p><strong>Proof.</strong> ", $code);
-  $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/", "<p><strong>$1</strong> ", $code);
+  $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/u", "<p><strong>$1</strong> ", $code);
   $code = str_replace("\\end{proof}", "<span style='float: right;'>$\square$</span></p>", $code);
 
-  $code = preg_replace("/\\\section\{(" . $regex . ")\}/", "<h3>$1</h3>", $code);
-  $code = preg_replace("/\\\subsection\{(" . $regex . ")\}/", "<h4>$1</h4>", $code);
-
   // hyperlinks
-  $code = preg_replace("/\\\href\{(.*)\}\{(" . $regex . ")\}/", "<a href=\"$1\">$2</a>", $code);
+  $code = preg_replace("/\\\href\{(.*)\}\{(" . $regex . ")\}/u", "<a href=\"$1\">$2</a>", $code);
   $code = preg_replace("/\\\url\{(.*)\}/", "<a href=\"$1\">$1</a>", $code);
 
   // emphasis
-  $code = preg_replace("/\{\\\it (" . $regex . ")\}/", "<em>$1</em>", $code);
-  $code = preg_replace("/\{\\\em (" . $regex . ")\}/", "<em>$1</em>", $code);
-  $code = preg_replace("/\\\emph\{(" . $regex . ")\}/", "<em>$1</em>", $code);
+  $code = preg_replace("/\{\\\it (" . $regex . ")\}/u", "<em>$1</em>", $code);
+  $code = preg_replace("/\{\\\em (" . $regex . ")\}/u", "<em>$1</em>", $code);
+  $code = preg_replace("/\\\emph\{(" . $regex . ")\}/u", "<em>$1</em>", $code);
 
   // footnotes
-  $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/", " ($1)", $code);
+  $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/u", " ($1)", $code);
 
   // handle citations
   $code = preg_replace("/\\\cite\{([\w-]*)\}/", "[$1]", $code);
@@ -359,9 +359,6 @@ function parse_latex($tag, $file, $code) {
   // filter \input{chapters}
   $code = str_replace("\\input{chapters}", "", $code);
 
-  // fix special characters
-  $code = latex_to_html($code);
-
   // enumerates etc.
   $code = str_replace("\\begin{enumerate}\n", "<ol>", $code);
   $code = str_replace("\\end{enumerate}", "</ol>", $code);
@@ -369,7 +366,7 @@ function parse_latex($tag, $file, $code) {
   $code = str_replace("\\end{itemize}", "</ul>", $code);
   $code = preg_replace("/\\\begin{list}(.*)\n/", "<ul>", $code); // unfortunately I have to ignore information in here
   $code = str_replace("\\end{list}", "</ul>", $code);
-  $code = preg_replace("/\\\item\[(" . $regex . ")\]/", "<li>", $code);
+  $code = preg_replace("/\\\item\[(" . $regex . ")\]/u", "<li>", $code);
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
