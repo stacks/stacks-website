@@ -286,8 +286,12 @@ function parse_latex($tag, $file, $code) {
     $code = str_replace("\\end{" . $environment . "}", ($information[1] ? '</em>' : '') . "</p>", $code);
   }
 
-  // remove labels
-  // TODO fix numbering in equations
+  preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w-]*)\}\n/", $code, $matches);
+  for ($i = 0; $i < count($matches); $i++) {
+    $code = str_replace($matches[0][$i], "\\begin{equation}\n\\tag{" . get_id_referring_to($file . '-' . $matches[1][$i]) . "}\n", $code);
+  }
+
+  // remove remaining labels
   $code = preg_replace("/\\\label\{.*\}\n/", "", $code);
 
   // these do not fit into the system above

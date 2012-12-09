@@ -522,7 +522,7 @@
       MathJax.Hub.Config({
         extensions: ["tex2jax.js", "fp.js"],
         tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-        TeX: {extensions: ["xypic.js", "AMSmath.js", "AMSsymbols.js"]},
+        TeX: {extensions: ["xypic.js", "AMSmath.js", "AMSsymbols.js"], TagSide: "left"},
         "HTML-CSS": { scale: 85 }
       });
     </script>
