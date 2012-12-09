@@ -52,7 +52,7 @@
       $site = 'http://' . $site;
     // nonempty site, but the format is wrong
       if (!filter_var($site, FILTER_VALIDATE_URL)) {
-	print('You supplied a site but the format is wrong. Your current input is ' . $_POST['site']);
+        print('You supplied a site but the format is wrong. Your current input is ' . $_POST['site']);
         exit();
       }
     }
@@ -71,7 +71,7 @@
     $sql = $db->prepare('INSERT INTO comments (tag, author, comment, site, email) VALUES (:tag, :author, :comment, :site, :email)');
     $sql->bindParam(':tag', $tag);
     $sql->bindParam(':author', $author);
-    $sql->bindParam(':comment', $comment);
+    $sql->bindParam(':comment', htmlspecialchars_decode($comment));
     $sql->bindParam(':site', $site);
     $sql->bindParam(':email', $email);
 
