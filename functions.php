@@ -269,14 +269,22 @@ function parse_latex($tag, $file, $code) {
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[1][$i];
       
-      $code = str_replace($matches[0][$i], "<strong><a class='environment-link' href='" . get_tag_referring_to($label) . "'>" . $information[0] . " " . get_id_referring_to($label) . ".</a></strong>" . ($information[1] ? '<em>' : ''), $code);
+      // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
+      if (label_exists($label))
+        $code = str_replace($matches[0][$i], "<strong><a class='environment-link' href='" . get_tag_referring_to($label) . "'>" . $information[0] . " " . get_id_referring_to($label) . ".</a></strong>" . ($information[1] ? '<em>' : ''), $code);
+      else
+        $code = str_replace($matches[0][$i], "<strong>" . $information[0] . ".</strong>" . ($information[1] ? '<em>' : ''), $code);
     }
 
     $count = preg_match_all("/\\\begin\{" . $environment . "\}\[([^.]*)\]\n\\\label\{([^.]*)\}/", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
       
-      $code = str_replace($matches[0][$i], "<a class='environment-link' href='" . get_tag_referring_to($label) . "'><strong>" . $information[0] . " " . get_id_referring_to($label) . "</strong> (" . $matches[1][$i] . ")<strong>.</strong></a>" . ($information[1] ? '<em>' : ''), $code);
+      // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
+      if (label_exists($label))
+        $code = str_replace($matches[0][$i], "<a class='environment-link' href='" . get_tag_referring_to($label) . "'><strong>" . $information[0] . " " . get_id_referring_to($label) . "</strong> (" . $matches[1][$i] . ")<strong>.</strong></a>" . ($information[1] ? '<em>' : ''), $code);
+      else
+        $code = str_replace($matches[0][$i], "<strong>" . $information[0] . "</strong> (" . $matches[1][$i] . ")<strong>.</strong></a>" . ($information[1] ? '<em>' : ''), $code);
     }
 
     $code = str_replace("\\end{" . $environment . "}", ($information[1] ? '</em>' : '') . "</p>", $code);
@@ -284,13 +292,25 @@ function parse_latex($tag, $file, $code) {
 
   $count = preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w-]+)\}\n/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
-    $code = str_replace($matches[0][$i], "\\begin{equation}\n\\tag{" . get_id_referring_to($file . '-' . $matches[1][$i]) . "}\n", $code);
+    $label = $file . '-' . $matches[1][$i];
+
+    // check whether the label exists in the database, if not we cannot supply an equation number unfortunately
+    if (label_exists($label))
+      $code = str_replace($matches[0][$i], "\\begin{equation}\n\\tag{" . get_id_referring_to($label) . "}\n", $code);
+    else
+      $code = str_replace($matches[0][$i], "\\begin{equation}\n", $code);
   }
 
   // sections etc.
   $count = preg_match_all("/\\\section\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
-    $code = str_replace($matches[0][$i], "<h3>" . get_id_referring_to($file . '-' . $matches[2][$i]) . ". " . $matches[1][$i] . "</h3>", $code);
+    $label = $file . '-' . $matches[2][$i];
+
+    // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
+    if (label_exists($label))
+      $code = str_replace($matches[0][$i], "<h3>" . get_id_referring_to($label) . ". " . $matches[1][$i] . "</h3>", $code);
+    else
+      $code = str_replace($matches[0][$i], "<h3>" . $matches[1][$i] . "</h3>", $code);
   }
 
   $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/", $code, $matches);
