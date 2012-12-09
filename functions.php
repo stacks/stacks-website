@@ -295,7 +295,8 @@ function parse_latex($tag, $file, $code) {
 
   $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
-    $code = str_replace($matches[0][$i], "<h4>" . get_id_referring_to($file . '-' . $matches[2][$i]) . ". " . $matches[1][$i] . "</h4>", $code);
+    $label = $file . '-' . $matches[2][$i];
+    $code = str_replace($matches[0][$i], "<h4><a class='environment-link' href='" . get_tag_referring_to($label) . "'>" . get_id_referring_to($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
   }
 
   // remove remaining labels
