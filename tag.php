@@ -406,14 +406,14 @@
     }
     // print empty navigation for layout purposes
     else
-      print "<p style='font-size: .9em;' id='navigate-back'></p>";
+      print "<p style='font-size: .9em;' id='navigate-back'>&nbsp;</p>";
 
     if (position_exists($results['position'] + 1)) {
       $next_tag = get_tag_at($results['position'] + 1);
       print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
     }
     else
-      print "<p style='font-size: .9em;' id='navigate-forward'></p>";
+      print "<p style='font-size: .9em;' id='navigate-forward'>&nbsp;</p>";
 
     if ($results['type'] == 'section')
       print_sectional_navigation($results['book_id']);
@@ -482,10 +482,16 @@
         $previous_tag = get_tag_at($results['position'] - 1);
         print "<p style='font-size: .9em;' id='navigate-back'><a title='" . $previous_tag['label'] . "' href='" . full_url('tag/' . $previous_tag['tag']) . "'>&lt;&lt; Previous tag <var>" . $previous_tag['tag'] . "</var></a>";
       }
+      // print empty navigation for layout purposes
+      else
+        print "<p style='font-size: .9em;' id='navigate-back'>&nbsp;</p>";
+
       if (position_exists($results['position'] + 1)) {
         $next_tag = get_tag_at($results['position'] + 1);
         print "<p style='font-size: .9em;' id='navigate-forward'><a title='" . $next_tag['label'] . "' href='" . full_url('tag/' . $next_tag['tag']) . "'>Next tag <var>" . $next_tag['tag'] . " &gt;&gt;</var></a>";
       }
+      else
+        print "<p style='font-size: .9em;' id='navigate-forward'>&nbsp;</p>";
     }
   }
 
