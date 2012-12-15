@@ -1,9 +1,12 @@
+Options +Indexes
+
 RewriteEngine On
 RewriteBase /
 
 RewriteRule ^about$ about.php [L]
 RewriteRule ^browse$ browse.php [L]
 RewriteRule ^chapter/(.+)$ overview.php?number=$1 [L]
+RewriteRule ^download$ downloads [L,R=301]
 RewriteRule ^download/(.+)$ tex/tags/tmp/$1 [L]
 RewriteRule ^downloads$ downloads.php [L]
 RewriteRule ^contribute$ contribute.php [L]
@@ -14,9 +17,18 @@ RewriteRule ^markdown$ markdown.php [L]
 RewriteRule ^recent-comments$ recent-comments.php [L]
 RewriteRule ^recent-comments/(.+)$ recent-comments.php?page=$1 [L]
 RewriteRule ^recent-comments.xml$ comments-feed.php [L]
+RewriteRule ^recent-comments.rss$ comments-feed.php [L]
+RewriteRule ^comments-feed.rss$ comments-feed.php [L]
 RewriteRule ^search$ search.php [L]
 RewriteRule ^tags$ tags.php [L]
 RewriteRule ^tag$ tag.php [L]
+RewriteRule ^tag/tag/(.+)$ tag/$1 [L,R=301]
 RewriteRule ^tag/(.+)$ tag.php?tag=$1 [L]
 RewriteRule ^todo$ todo.php [L]
 RewriteRule ^acknowledgements$ acknowledgements.php [L]
+
+# fix apparent 404's
+RewriteRule ^tex/browse.html$ browse [L,R=301]
+RewriteRule ^tex/locate.html$ tag [L,R=301]
+RewriteRule ^tex/locate.php$ tag [L,R=301]
+RewriteRule ^tex/download$ downloads.php [L,R=301]
