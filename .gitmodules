@@ -12,7 +12,7 @@
 	url = git://github.com/jzaefferer/jquery-treeview.git
 [submodule "XyJax"]
 	path = XyJax
-	url = https://github.com/sonoisa/XyJax.git
+	url = git://github.com/sonoisa/XyJax.git
 [submodule "MathJax"]
 	path = MathJax
-	url = https://github.com/mathjax/MathJax.git
+	url = git://github.com/mathjax/MathJax.git
