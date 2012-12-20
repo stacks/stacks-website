@@ -54,6 +54,22 @@ function position_exists($position) {
   return false;
 }
 
+function bibliography_item_exists($name) {
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT COUNT(*) FROM bibliography_items WHERE name = :name');
+    $sql->bindParam(':name', $name);
+
+    if ($sql->execute())
+      return intval($sql->fetchColumn()) > 0;
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return false;
+}
+
 function tag_is_active($tag) {
   assert(is_valid_tag($tag));
 
@@ -119,6 +135,57 @@ function get_tag($tag) {
     if ($sql->execute()) {
       // return first (= only) row of the result
       while ($row = $sql->fetch()) return $row;
+    }
+    return null;
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
+function get_bibliography_item($name) {
+  assert(bibliography_item_exists($name));
+
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT bibliography_items.type, bibliography_values.key, bibliography_values.value FROM bibliography_items, bibliography_values WHERE bibliography_items.name = :name AND bibliography_items.name = bibliography_values.name');
+    $sql->bindParam(':name', $name);
+
+    if ($sql->execute()) {
+      $rows = $sql->fetchAll();
+
+      // this output is a mess, sanitize it
+      $result = array();
+      foreach ($rows as $row) {
+        $result['type'] = $row['type'];
+        $result[$row['key']] = $row['value'];
+      }
+
+      return $result;
+    }
+    return null;
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
+function get_bibliography_items() {
+  global $db;
+  try {
+    $sql = $db->prepare('SELECT bibliography_items.name, bibliography_items.type, bibliography_values.key, bibliography_values.value FROM bibliography_items, bibliography_values WHERE bibliography_items.name = bibliography_values.name');
+
+    if ($sql->execute()) {
+      $rows = $sql->fetchAll();
+
+      // this output is a mess, sanitize it
+      $result = array();
+      foreach ($rows as $row) {
+        $result[$row['name']]['type'] = $row['type'];
+        $result[$row['name']][$row['key']] = $row['value'];
+      }
+
+      return $result;
     }
     return null;
   }
@@ -353,8 +420,14 @@ function parse_latex($tag, $file, $code) {
   $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/u", " ($1)", $code);
 
   // handle citations
-  $code = preg_replace("/\\\cite\{([\w-]*)\}/", "[$1]", $code);
-  $code = preg_replace("/\\\cite\[(" . $regex . ")\]\{([\w-]*)\}/", "[$2, $1]", $code);
+  $count = preg_match_all("/\\\cite\{([\w-]*)\}/", $code, $matches);
+  for ($i = 0; $i < $count; $i++) {
+    $code = str_replace($matches[0][$i], '[<a href="' . full_url('bibliography/' . $matches[1][$i]) . '">' . $matches[1][$i] . "</a>]", $code);
+  }
+  $count = preg_match_all("/\\\cite\[(" . $regex . ")\]\{([\w-]*)\}/", $code, $matches);
+  for ($i = 0; $i < $count; $i++) {
+    $code = str_replace($matches[0][$i], '[<a href="' . full_url('bibliography/' . $matches[2][$i]) . '">' . $matches[2][$i] . "</a>, " . $matches[1][$i] . "]", $code);
+  }
 
   // filter \input{chapters}
   $code = str_replace("\\input{chapters}", "", $code);

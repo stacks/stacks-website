@@ -4,10 +4,13 @@
 directory = '/'
 
 # location of the database, relative to the scripts/ directory
-database = '../../stacks.sqlite'
+database = '../database/stacks.sqlite'
 
 # location of the tags file
 tags_file = '../tex/tags/tags'
+
+# location of the bibliography file
+bibliography_file = '../tex/my.bib'
 
 # location of the bootstrap file
 bootstrap_file = 'bootstrap.txt'
