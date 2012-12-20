@@ -268,7 +268,7 @@ function parse_latex($tag, $file, $code) {
   );
 
   foreach ($environments as $environment => $information) {
-    $count = preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([\w-]*)\}/", $code, $matches);
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([\w\-]*)\}/", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[1][$i];
       
@@ -279,7 +279,7 @@ function parse_latex($tag, $file, $code) {
         $code = str_replace($matches[0][$i], "<strong>" . $information[0] . ".</strong>" . ($information[1] ? '<em>' : ''), $code);
     }
 
-    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([^.]*)\}/u", $code, $matches);
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([\w\-]*)\}/u", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
       
@@ -293,7 +293,7 @@ function parse_latex($tag, $file, $code) {
     $code = str_replace("\\end{" . $environment . "}", ($information[1] ? '</em>' : '') . "</p>", $code);
   }
 
-  $count = preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w-]+)\}\n/", $code, $matches);
+  $count = preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w\-]+)\}\n/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[1][$i];
 
@@ -305,7 +305,7 @@ function parse_latex($tag, $file, $code) {
   }
 
   // sections etc.
-  $count = preg_match_all("/\\\section\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/u", $code, $matches);
+  $count = preg_match_all("/\\\section\{(" . $regex . ")\}\n\\\label\{([\w\-]+)\}/u", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[2][$i];
 
@@ -323,7 +323,7 @@ function parse_latex($tag, $file, $code) {
   }
 
   // remove remaining labels
-  $code = preg_replace("/\\\label\{.*\}\n/", "", $code);
+  $code = preg_replace("/\\\label\{[\w\-]*\}\n/", "", $code);
 
   // lines starting with % (tag 03NV for instance) should be removed
   $code = preg_replace("/\%[\w.]+/", "", $code);
