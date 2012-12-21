@@ -30,7 +30,8 @@ def import_bibliography(location):
   f = open(location)
 
   items = []
-  
+  not_finished = False
+
   for line in f:
     # beginning of a new item
     if line[0] == '@':
@@ -41,17 +42,37 @@ def import_bibliography(location):
       name = line.partition('{')[2].strip().strip(',')
 
       item[0] = (bib_type, name)
+
+      continue
   
     # end of an item
     if line[0] == '}':
       # add a *copy* to the list of items
       items.append(list(item))
-    
-    if '=' in line:
-      key = line.partition('=')[0].strip().lower()
-      value = line.partition('=')[2].strip().strip(',')[1:-1]
+
+      continue
+ 
+    # check whether we're still building a value or not
+    if not_finished:
+      # append to current value
+      value = value + ' ' + line.strip().strip(',')
+      # now it's finished
+      if line.strip()[-2:] == '},' or line.strip()[-2:] == '",' or line.strip()[-1] == '}' or line.strip()[-1:] == '"':
+        not_finished = False
+        item[1][key] = value
+
+    else:
+      if '=' in line:
+        key = line.partition('=')[0].strip().lower()
+
+        if line.strip()[-2:] == '},' or line.strip()[-2:] == '",' or line.strip()[-1] == '}' or line.strip()[-1:] == '"':
+          value = line.partition('=')[2].strip().strip(',')[1:-1]
+          item[1][key] = value
+
+        else:
+          not_finished = True
+          value = line.partition('=')[2].strip()
   
-      item[1][key] = value
 
   for item in items:
     insert_item(item)
