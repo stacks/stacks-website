@@ -79,9 +79,11 @@
       print("<h2>Error</h2>");
       print("<p>The name of the bibliography you are looking for (i.e. <var>" . htmlentities($_GET['name']) . "</var>) does not exist. You can try the overview at the <a href='" . full_url('bibliography') . "'>bibliography page</a>\n");
     }
+    print("<p>Go to the <a href='" . full_url('bibliography') . "'>bibliography overview</a>.</p>");
   }
   else {
     $items = get_bibliography_items();
+    print("<h2>Bibliography</h2>");
     print("<ul>");
     foreach ($items as $name => $item) {
       print_item($name, $item);

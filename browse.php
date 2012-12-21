@@ -78,6 +78,14 @@
       echo $e->getMessage();
     }
 ?>
+      <tr> 
+        <td><a href="<?php print(full_url('bibliography')); ?>">Bibliography</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
     </table>
 <?php
   }
