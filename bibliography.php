@@ -15,6 +15,33 @@
   catch(PDOException $e) {
     echo $e->getMessage();
   }
+
+  // do some bibliography-specific parsing (url's, removing {} around math etc.)
+  function parse_value($value) {
+    $value = preg_replace("/\\\url\{(.*)\}/", '<a href="$1">$1</a>', $value);
+
+    return $value;
+  }
+
+
+  function print_full_item($item) {
+    print("<dl>");
+    // print these keys in this order
+    $keys = array('author', 'title', 'year', 'type');
+    foreach ($keys as $key) {
+      print("<dt><i>" . $key . "</i></dt><dd>" . parse_value(latex_to_html($item[$key])) . "</dd>");
+    }
+
+    foreach ($item as $key => $value) {
+      if (!in_array($key, $keys))
+        print("<dt><i>" . $key . "</i></dt><dd>" . parse_value(latex_to_html($value)) . "</dd>");
+    }
+    print("</dl>");
+  }
+
+  function print_item($name, $item) {
+    print("<li>" . latex_to_html($item['author']) . ", <a href='" . full_url('bibliography/' . $name) . "'>" . latex_to_html($item['title']) . '</a>');
+  }
 ?>
 <html>
   <head>
@@ -51,12 +78,8 @@
       print("<h2>Bibliography item: <code>" . $_GET['name'] . "</code></h2>");
 
       $item = get_bibliography_item($_GET['name']);
+      print_full_item($item);
 
-      print("<dl>");
-      foreach ($item as $key => $value) {
-        print("<dt>" . $key . "</dt><dd>" . latex_to_html($value) . "</dd>");
-      }
-      print("</dl>");
     }
     else {
       print("<h2>Error</h2>");
@@ -67,8 +90,8 @@
     $items = get_bibliography_items();
     print("<ul>");
     foreach ($items as $name => $item) {
+      print_item($name, $item);
       // TODO move this to function and make a way better implementation
-      print("<li>" . latex_to_html($item['author']) . ", <a href='" . full_url('bibliography/' . $name) . "'>" . latex_to_html($item['title']) . '</a>');
       print("<!--\n");
       print_r($item);
       print("\n-->");

@@ -283,20 +283,22 @@ function get_id_referring_to($label) {
 }
 
 function latex_to_html($text) {
- $text = str_replace("\'E", "&Eacute;", $text);
- $text = str_replace("\'e", "&eacute;", $text);
- // TODO more accents
- $text = str_replace("\"o", "&ouml;", $text);
- $text = str_replace("\`e", "&egrave;", $text);
- $text = str_replace("{\\v C}", "&#268;", $text);
- $text = str_replace("\\u C", "&#268;", $text);
- $text = str_replace("``", "\"", $text);
- $text = str_replace("''", "\"", $text);
- $text = str_replace("\\ ", "&nbsp;", $text);
- // this is to remedy a bug in import_titles
- $text = str_replace("\\v C}", "&#268;", $text);
+  // TODO make enclosing {} optional
+  $text = str_replace("\'E", "&Eacute;", $text);
+  $text = str_replace("\'e", "&eacute;", $text);
+  // TODO more accents
+  $text = str_replace("\"o", "&ouml;", $text);
+  $text = str_replace("\`e", "&egrave;", $text);
+  $text = str_replace("{\\v C}", "&#268;", $text);
+  $text = str_replace("\\\"u", "&uuml;", $text);
+  $text = str_replace("\\u C", "&#268;", $text);
+  $text = str_replace("``", "\"", $text);
+  $text = str_replace("''", "\"", $text);
+  $text = str_replace("\\ ", "&nbsp;", $text);
+  // this is to remedy a bug in import_titles
+  $text = str_replace("\\v C}", "&#268;", $text);
 
- return $text;
+  return $text;
 }
 
 function parse_preview($preview) {
@@ -500,6 +502,7 @@ function print_navigation() {
       <li><a href="<?php print(full_url('tag')); ?>">tag lookup</a>
       <li><a href="<?php print(full_url('browse')); ?>">browse</a>
       <li><a href="<?php print(full_url('search')); ?>">search</a>
+      <li><a href="<?php print(full_url('bibliography')); ?>">bibliography</a>
       <li><a href="<?php print(full_url('recent-comments')); ?>">recent comments</a>
       <li><a href="http://math.columbia.edu/~dejong/wordpress/">blog</a>
     </ul>
