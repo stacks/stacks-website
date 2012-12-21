@@ -16,26 +16,6 @@
     echo $e->getMessage();
   }
 
-  // call latex_to_html first and then do some bibliography-specific parsing (url's, removing {} around math etc.)
-  function parse_value($value) {
-    $value = latex_to_html($value);
-
-    $value = preg_replace("/\\\url\{(.*)\}/", '<a href="$1">$1</a>', $value);
-    $value = preg_replace("/\{\\\itshape(.*)\}/", '$1', $value);
-    $value = str_replace("\\bf ", '', $value);
-
-    $parts = explode('$', $value);
-    for ($i = 0; $i < count($parts); $i++) {
-      // not in math mode, i.e. remove all {}
-      if ($i % 2 == 0) {
-        $parts[$i] = str_replace('{', '', $parts[$i]);
-        $parts[$i] = str_replace('}', '', $parts[$i]);
-      }
-    }
-    $value = implode('$', $parts);
-
-    return $value;
-  }
 
 
   function print_full_item($item) {

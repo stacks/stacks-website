@@ -283,7 +283,6 @@ function get_id_referring_to($label) {
 }
 
 function latex_to_html($text) {
-  // TODO make enclosing {} optional
   $text = preg_replace("/\{?\\\'\{?a\}?/", "&aacute;", $text);
   $text = preg_replace("/\{?\\\`\{?a\}?/", "&agrave;", $text);
   $text = preg_replace("/\{?\\\\\"\{?a\}?/", "&auml;", $text);
@@ -315,6 +314,27 @@ function latex_to_html($text) {
   $text = str_replace("\\v C}", "&#268;", $text);
 
   return $text;
+}
+
+// call latex_to_html first and then do some bibliography-specific parsing (url's, removing {} around math etc.)
+function parse_value($value) {
+  $value = latex_to_html($value);
+
+  $value = preg_replace("/\\\url\{(.*)\}/", '<a href="$1">$1</a>', $value);
+  $value = preg_replace("/\{\\\itshape(.*)\}/", '$1', $value);
+  $value = str_replace("\\bf ", '', $value);
+
+  $parts = explode('$', $value);
+  for ($i = 0; $i < count($parts); $i++) {
+    // not in math mode, i.e. remove all {}
+    if ($i % 2 == 0) {
+      $parts[$i] = str_replace('{', '', $parts[$i]);
+      $parts[$i] = str_replace('}', '', $parts[$i]);
+    }
+  }
+  $value = implode('$', $parts);
+
+  return $value;
 }
 
 function parse_preview($preview) {
@@ -440,11 +460,13 @@ function parse_latex($tag, $file, $code) {
   // handle citations
   $count = preg_match_all("/\\\cite\{([\w-]*)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
-    $code = str_replace($matches[0][$i], '[<a href="' . full_url('bibliography/' . $matches[1][$i]) . '">' . $matches[1][$i] . "</a>]", $code);
+    $item = get_bibliography_item($matches[1][$i]);
+    $code = str_replace($matches[0][$i], '[<a title="' . parse_value($item['author']) . ', ' . parse_value($item['title']) . '" href="' . full_url('bibliography/' . $matches[1][$i]) . '">' . $matches[1][$i] . "</a>]", $code);
   }
   $count = preg_match_all("/\\\cite\[(" . $regex . ")\]\{([\w-]*)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
-    $code = str_replace($matches[0][$i], '[<a href="' . full_url('bibliography/' . $matches[2][$i]) . '">' . $matches[2][$i] . "</a>, " . $matches[1][$i] . "]", $code);
+    $item = get_bibliography_item($matches[2][$i]);
+    $code = str_replace($matches[0][$i], '[<a title="' . parse_value($item['author']) . ', ' . parse_value($item['title']) . '" href="' . full_url('bibliography/' . $matches[2][$i]) . '">' . $matches[2][$i] . "</a>, " . $matches[1][$i] . "]", $code);
   }
 
   // filter \input{chapters}
