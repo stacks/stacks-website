@@ -114,7 +114,7 @@
         if ($result['type'] == 'item')
           print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('download/' . $result['file'] . ".pdf#" . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . "</a> matched your query.\n");
         else
-          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('download/' . $result['file'] . ".pdf#" . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": <strong>" . $result['name'] . "</strong></a>" : '</a>') . " matched your query.\n");
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('download/' . $result['file'] . ".pdf#" . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": <strong>" . latex_to_html($result['name']) . "</strong></a>" : '</a>') . " matched your query.\n");
 
         if ($include_proofs)
           print("<pre class='preview' id='text-" . $result['tag'] . "'>" . parse_preview($result['text']) . "</pre>");

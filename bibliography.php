@@ -16,9 +16,21 @@
     echo $e->getMessage();
   }
 
-  // do some bibliography-specific parsing (url's, removing {} around math etc.)
+  // call latex_to_html first and then do some bibliography-specific parsing (url's, removing {} around math etc.)
   function parse_value($value) {
+    $value = latex_to_html($value);
+
     $value = preg_replace("/\\\url\{(.*)\}/", '<a href="$1">$1</a>', $value);
+
+    $parts = explode('$', $value);
+    for ($i = 0; $i < count($parts); $i++) {
+      // not in math mode, i.e. remove all {}
+      if ($i % 2 == 0) {
+        $parts[$i] = str_replace('{', '', $parts[$i]);
+        $parts[$i] = str_replace('}', '', $parts[$i]);
+      }
+    }
+    $value = implode('$', $parts);
 
     return $value;
   }
@@ -29,18 +41,18 @@
     // print these keys in this order
     $keys = array('author', 'title', 'year', 'type');
     foreach ($keys as $key) {
-      print("<dt><i>" . $key . "</i></dt><dd>" . parse_value(latex_to_html($item[$key])) . "</dd>");
+      print("<dt><i>" . $key . "</i></dt><dd>" . parse_value($item[$key]) . "</dd>");
     }
 
     foreach ($item as $key => $value) {
       if (!in_array($key, $keys))
-        print("<dt><i>" . $key . "</i></dt><dd>" . parse_value(latex_to_html($value)) . "</dd>");
+        print("<dt><i>" . $key . "</i></dt><dd>" . parse_value($value) . "</dd>");
     }
     print("</dl>");
   }
 
   function print_item($name, $item) {
-    print("<li>" . latex_to_html($item['author']) . ", <a href='" . full_url('bibliography/' . $name) . "'>" . latex_to_html($item['title']) . '</a>');
+    print("<li>" . parse_value($item['author']) . ", <a href='" . full_url('bibliography/' . $name) . "'>" . parse_value($item['title']) . '</a>');
   }
 ?>
 <html>
@@ -91,7 +103,7 @@
     print("<ul>");
     foreach ($items as $name => $item) {
       print_item($name, $item);
-      // TODO move this to function and make a way better implementation
+
       print("<!--\n");
       print_r($item);
       print("\n-->");
