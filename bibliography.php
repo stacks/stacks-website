@@ -21,6 +21,8 @@
     $value = latex_to_html($value);
 
     $value = preg_replace("/\\\url\{(.*)\}/", '<a href="$1">$1</a>', $value);
+    $value = preg_replace("/\{\\\itshape(.*)\}/", '$1', $value);
+    $value = str_replace("\\bf ", '', $value);
 
     $parts = explode('$', $value);
     for ($i = 0; $i < count($parts); $i++) {
@@ -37,18 +39,18 @@
 
 
   function print_full_item($item) {
-    print("<dl>");
+    print("<table>");
     // print these keys in this order
     $keys = array('author', 'title', 'year', 'type');
     foreach ($keys as $key) {
-      print("<dt><i>" . $key . "</i></dt><dd>" . parse_value($item[$key]) . "</dd>");
+      print("<tr><td><i>" . $key . "</i></td><td>" . parse_value($item[$key]) . "</td></tr>");
     }
 
     foreach ($item as $key => $value) {
       if (!in_array($key, $keys))
-        print("<dt><i>" . $key . "</i></dt><dd>" . parse_value($value) . "</dd>");
+        print("<tr><td><i>" . $key . "</i></td><td>" . parse_value($value) . "</td></tr>");
     }
-    print("</dl>");
+    print("</table>");
   }
 
   function print_item($name, $item) {
