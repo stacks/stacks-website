@@ -286,8 +286,8 @@ function latex_to_html($text) {
   $text = preg_replace("/\{?\\\'\{?a\}?/", "&aacute;", $text);
   $text = preg_replace("/\{?\\\`\{?a\}?/", "&agrave;", $text);
   $text = preg_replace("/\{?\\\\\"\{?a\}?/", "&auml;", $text);
-  $text = preg_replace("/\{?\\\\u\{?a\}?\}?/", "&#259;", $text);
-  $text = preg_replace("/\{?\\\\v\{?a\}?\}?/", "&#462;", $text);
+  $text = preg_replace("/\{\\\\u\{a\}\}?/", "&#259;", $text);
+  $text = preg_replace("/\{\\\\v\{a\}\}?/", "&#462;", $text);
 
   $text = preg_replace("/\{?\\\c\{?c\}?\}?/", '&ccedil;', $text);
 
@@ -334,6 +334,8 @@ function parse_value($value) {
   }
   $value = implode('$', $parts);
 
+  $value = str_replace("--", "&ndash;", $value);
+
   return $value;
 }
 
@@ -356,8 +358,8 @@ function parse_latex($tag, $file, $code) {
   // this is the regex for all (sufficiently nice) text that can occur in things like \emph
   $regex = "[\p{L}\p{Nd}\s$,.:()'&#;\-\\\\$]+";
 
-  // fix special characters
-  $code = latex_to_html($code);
+  // fix special characters (&quot; should be " for \"e)
+  $code = latex_to_html(str_replace("&quot;", "\"", $code));
 
   // all big environments with their corresponding markup
   $environments = array(
@@ -451,6 +453,7 @@ function parse_latex($tag, $file, $code) {
 
   // emphasis
   $code = preg_replace("/\{\\\it (" . $regex . ")\}/u", "<em>$1</em>", $code);
+  $code = preg_replace("/\{\\\bf (" . $regex . ")\}/u", "<strong>$1</strong>", $code);
   $code = preg_replace("/\{\\\em (" . $regex . ")\}/u", "<em>$1</em>", $code);
   $code = preg_replace("/\\\emph\{(" . $regex . ")\}/u", "<em>$1</em>", $code);
 
