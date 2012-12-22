@@ -16,19 +16,27 @@
     echo $e->getMessage();
   }
 
+  function print_key_value($key, $value) {
+    switch ($key) {
+      case "url":
+        print("<tr><td><i>" . $key . "</i></td><td><a href='" . $value . "'>" . $value . "</a></td></tr>");
+        break;
 
+      default:
+        print("<tr><td><i>" . $key . "</i></td><td>" . parse_value($value) . "</td></tr>");
+    }
+  }
 
   function print_full_item($item) {
     print("<table>");
     // print these keys in this order
     $keys = array('author', 'title', 'year', 'type');
-    foreach ($keys as $key) {
-      print("<tr><td><i>" . $key . "</i></td><td>" . parse_value($item[$key]) . "</td></tr>");
-    }
+    foreach ($keys as $key)
+      print_key_value($key, $item[$key]);
 
     foreach ($item as $key => $value) {
       if (!in_array($key, $keys))
-        print("<tr><td><i>" . $key . "</i></td><td>" . parse_value($value) . "</td></tr>");
+        print_key_value($key, $value);
     }
     print("</table>");
   }
