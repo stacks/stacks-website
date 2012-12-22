@@ -16,15 +16,32 @@
       <tr> 
         <td></td> 
         <td><?php print($number . ".&nbsp;&nbsp;&nbsp;" . $chapter); ?></td> 
-        <td><a href="<?php print(full_url('chapter/' . $number)); ?>"><code>online</code></a></td> 
 <?php
+    if ($chapter == 'Bibliography')
+      print("        <td><a href='" . full_url('bibliography') . "'><code>online</code></a></td>");
+    else
+      print("        <td><a href='" . full_url('chapter/' . $number) . "'><code>online</code></a></td>");
+
     if ($chapter == 'Auto generated index')
       print("        <td></td>\n");
+    elseif ($chapter == 'Bibliography')
+      print("        <td><a href=\"" . full_url('tex/my.bib') . "\"><code>tex</code></a></td>\n");
     else
       print("        <td><a href=\"" . full_url('tex/' . $filename . '.tex') . "\"><code>tex</code></a></td>\n");
+
+    if ($chapter == 'Bibliography') {
+?>
+        <td><a href="<?php print(full_url('download/bibliography.pdf')); ?>"><code>pdf</code></a></td> 
+        <td><a href="<?php print(full_url('download/bibliography.dvi')); ?>"><code>dvi</code></a></td> 
+<?php
+    }
+    else {
 ?>
         <td><a href="<?php print(full_url('download/' . $filename . '.pdf')); ?>"><code>pdf</code></a></td> 
         <td><a href="<?php print(full_url('download/' . $filename . '.dvi')); ?>"><code>dvi</code></a></td> 
+<?php
+    }
+?>
       </tr> 
 <?php
   }
@@ -60,6 +77,8 @@
     // mapping the first chapter of each part to the title of the part
     $parts = array('Introduction' => 'Preliminaries', 'Schemes' => 'Schemes', 'Algebraic Spaces' => 'Algebraic Spaces', 'Stacks' => 'Algebraic Stacks', 'Coding Style' => 'Miscellany');
 
+    $number = 0;
+
     try {
       $sql = $db->prepare('SELECT number, title, filename FROM sections WHERE number NOT LIKE "%.%" ORDER BY CAST(number AS INTEGER)');
       if ($sql->execute()) {
@@ -71,22 +90,17 @@
 
           // change LaTeX escaping to HTML escaping
           print_chapter(latex_to_html($row['title']), $row['filename'], $row['number']);
+          $number = $row['number'];
         }
       }
     }
     catch(PDOException $e) {
       echo $e->getMessage();
     }
+
+    // print bibliography
+    print_chapter('Bibliography', '', $number + 1);
 ?>
-      <tr> 
-        <td><a href="<?php print(full_url('bibliography')); ?>">Bibliography</a></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
 <?php
   }
 
