@@ -17,7 +17,7 @@
     <?php print_navigation(); ?>
 
     <h2><a href="<?php print(full_url('about')); ?>">About</a></h2>
-    <p>This is the home page of the Stacks project. It is an open source textbook and reference work on algebraic stacks and the algebraic geometry needed to define them. For more general information click we have an <a href="<?php print(full_url('about')); ?>">extensive about page</a>.
+    <p>This is the home page of the Stacks project. It is an open source textbook and reference work on algebraic stacks and the algebraic geometry needed to define them. For more general information see our <a href="<?php print(full_url('about')); ?>">extensive about page</a>.
 
     <h2><a href="<?php print(full_url('contribute')); ?>">How to contribute</a></h2>
     <p>The Stacks project is a collaborative effort. There is a <a href="tex/CONTRIBUTORS">list of people who have contributed so far</a>. If you would like to know how to participate more can be found at the <a href="<?php print(full_url('contribute')); ?>">contribute page</a>. To informally comment on the Stacks project visit the <a href="http://math.columbia.edu/~dejong/wordpress/">blog</a>.
