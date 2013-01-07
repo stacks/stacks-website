@@ -1,10 +1,8 @@
-# current test version on paard.math.columbia.edu
-#directory = '/~pieter/algebraic_geometry/stacks-website/'
 # local version
-directory = '/'
+directory = '';
 
 # location of the database, relative to the scripts/ directory
-database = '../database/stacks.sqlite'
+database = '../db/stacks.sqlite'
 
 # location of the tags file
 tags_file = '../tex/tags/tags'
