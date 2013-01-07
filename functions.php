@@ -461,7 +461,7 @@ function parse_latex($tag, $file, $code) {
   $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/u", " ($1)", $code);
 
   // handle citations
-  $count = preg_match_all("/\\\cite\{([\w-]*)\}/", $code, $matches);
+  $count = preg_match_all("/\\\cite\{([\.\w\-\_]*)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $item = get_bibliography_item($matches[1][$i]);
     $code = str_replace($matches[0][$i], '[<a title="' . parse_value($item['author']) . ', ' . parse_value($item['title']) . '" href="' . full_url('bibliography/' . $matches[1][$i]) . '">' . $matches[1][$i] . "</a>]", $code);
