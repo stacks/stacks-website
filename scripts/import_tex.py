@@ -345,7 +345,6 @@ connection.execute(query)
 
 print 'Adding the TeX code to both tables'
 
-# Print link to location in chapter
 n = 0
 while n < len(tags):
   tag = tags[n][0]
@@ -366,7 +365,6 @@ while n < len(tags):
     if label in proof_texts:
       text = text + '\n' + proof_texts[label]
 
-  print "  Inserting text for tag", tag
   update_text(tag, text)
 
   n = n + 1
