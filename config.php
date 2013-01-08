@@ -1,10 +1,9 @@
 <?php
   // actual domain in use (cannot be deduced from $_SERVER)
-  $domain = 'http://math.columbia.edu';
+  $domain = 'http://stacks.math.columbia.edu';
 
-
-  // place the database in a directory that is not visible from outside
-  $database_directory = '/home/belmans/stacks';
+  // location of the database
+  $database_directory = '/usr/local/apache/htdocs/stacks/db';
   $database_name = 'stacks.sqlite';
 
   function get_database_location() {
