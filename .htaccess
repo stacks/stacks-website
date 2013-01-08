@@ -4,6 +4,8 @@ RewriteEngine On
 RewriteBase /
 
 RewriteRule ^about$ about.php [L]
+RewriteRule ^bibliography$ bibliography.php [L]
+RewriteRule ^bibliography/(.+)$ bibliography.php?name=$1 [L]
 RewriteRule ^browse$ browse.php [L]
 RewriteRule ^chapter/(.+)$ overview.php?number=$1 [L]
 RewriteRule ^download$ downloads [L,R=301]
