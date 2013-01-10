@@ -356,7 +356,10 @@ def get_text(tag):
     query = 'SELECT value FROM tags where tag = ?'
     cursor = connection.execute(query, [tag])
 
-    return cursor.fetchone()[0]
+    value = cursor.fetchone()[0]
+    # if the tag is new the database returns None
+    if value == None: value = ''
+    return value
 
   except sqlite3.Error, e:
     print "An error occurred:", e.args[0]
