@@ -153,11 +153,11 @@ def import_tags(filename, labels):
     if label not in labels:
       print 'ERROR, label', label, 'not found in auxiliary files. Have you ran `make tags`?'
       sys.exit()
-    info = labels[label]
-  
-    if get_label(tag) != label:
-      print 'The label for tag', tag, 'has changed from', get_label(tag), 'to', label, 'and will be updated accordingly'
 
+    if tag_exists(tag) and get_label(tag) != label:
+      print 'The label for tag %s has changed from \'%s\'to \'%s\' and will be updated accordingly' % (tag, get_label(tag), label)
+
+    info = labels[label]
     insert_tag(tag, (label, info[0], info[2][1], info[1][1], info[1][0], info[1][2], info[2][3], info[1][4]))
 
 # loop over all tags and check whether they are still present in the project
