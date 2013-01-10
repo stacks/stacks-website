@@ -30,6 +30,17 @@ def get_labels_from_source(path):
 
   return labels
 
+def get_label(tag):
+  try:
+    query = 'SELECT label FROM tags where tag = "' + tag + '"'
+    cursor = connection.execute(query)
+
+    return cursor.fetchone()[0]
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+  
+
 # read all tags from the current tags/tags file
 def parse_tags(filename):
   tags_file = open(filename, 'r')
@@ -144,6 +155,9 @@ def import_tags(filename, labels):
       sys.exit()
     info = labels[label]
   
+    if get_label(tag) != label:
+      print 'The label for tag', tag, 'has changed from', get_label(tag), 'to', label, 'and will be updated accordingly'
+
     insert_tag(tag, (label, info[0], info[2][1], info[1][1], info[1][0], info[1][2], info[2][3], info[1][4]))
 
 # loop over all tags and check whether they are still present in the project
