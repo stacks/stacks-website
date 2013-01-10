@@ -15,12 +15,26 @@ def title_exists(number):
 
   return False
 
+def get_title(number):
+  try:
+    query = 'SELECT title FROM sections WHERE number = ?'
+    cursor = connection.execute(query, [number])
+
+    return cursor.fetchone()[0]
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
 def insert_title(number, title, filename):
   try:
     if title_exists(number):
+      if title != get_title(number):
+        print "Chapter", number, "has changed from", get_title(number), "into", title
+
       query = 'UPDATE sections SET title = ?, filename = ? WHERE number = ?'
       connection.execute(query, (title, filename, number))
     else:
+      print "Creating the new chapter (i.e. its number", number, "is new) titled", title
       query = 'INSERT INTO sections (number, title, filename) VALUES (?, ?, ?)'
       connection.execute(query, (number, title, filename))
 
