@@ -317,6 +317,23 @@ def remove_proofs(text):
 
   return result
 
+# only give the proofs
+def extract_proofs(text):
+  result = ''
+
+  in_proof = False
+  for line in text.splitlines():
+    if beginning_of_proof(line):
+      in_proof = True
+
+    if in_proof:
+      result += "\n" + line
+
+    if end_of_proof(line):
+      in_proof = False
+
+  return result
+
 def update_text(tag, text):
   # insert the text of the tag in the real table
   try:
@@ -330,6 +347,16 @@ def update_text(tag, text):
   try:
     query = 'INSERT INTO tags_search (tag, text, text_without_proofs) VALUES(?, ?, ?)'
     connection.execute(query, (tag, text, remove_proofs(text)))
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+def get_text(tag):
+  try:
+    query = 'SELECT value FROM tags where tag = ?'
+    cursor = connection.execute(query, [tag])
+
+    return cursor.fetchone()[0]
 
   except sqlite3.Error, e:
     print "An error occurred:", e.args[0]
@@ -350,8 +377,8 @@ while n < len(tags):
   tag = tags[n][0]
   label = tags[n][1]
   if not label in label_loc:
-    print "Warning: missing location for tag" + tag
-    print "and label" + label
+    print "Warning: missing location for tag", tag
+    print "and label", label
     n = n + 1
     continue
   split = split_label(label)
@@ -365,6 +392,13 @@ while n < len(tags):
     if label in proof_texts:
       text = text + '\n' + proof_texts[label]
 
+  if get_text(tag) != text:
+    print "  The text of tag", tag, "has changed and will be updated"
+    if extract_proofs(get_text(tag)) != extract_proofs(text):
+      print "  This change also affects to proof of this tag"
+    print ""
+      
+  # update anyway to fill tags_search which is emptied every time
   update_text(tag, text)
 
   n = n + 1
