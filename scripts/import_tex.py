@@ -392,7 +392,8 @@ while n < len(tags):
     if label in proof_texts:
       text = text + '\n' + proof_texts[label]
 
-  if get_text(tag) != text:
+  # if text has changed and current text isn't empty (i.e. not a new tag)
+  if get_text(tag) != text and get_text(tag) != '':
     print "  The text of tag", tag, "has changed and will be updated"
     if extract_proofs(get_text(tag)) != extract_proofs(text):
       print "  This change also affects to proof of this tag"
