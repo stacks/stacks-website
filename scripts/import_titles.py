@@ -2,8 +2,22 @@ import sqlite3
 import config
 from functions import *
 
-# check whether a (sub)section number exists in the database
-def title_exists(number):
+# check whether a given title exists in the database
+# TODO: this should also check whether the title occurs
+# in the correct chapter
+def title_exists(title):
+  try:
+    query = 'SELECT COUNT(*) FROM sections WHERE title = ?'
+    cursor = connection.execute(query, [title])
+
+    return cursor.fetchone()[0]
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+  return False
+
+def title_number_exists(number):
   try:
     query = 'SELECT COUNT(*) FROM sections WHERE number = ?'
     cursor = connection.execute(query, [number])
@@ -15,26 +29,15 @@ def title_exists(number):
 
   return False
 
-def get_title(number):
-  try:
-    query = 'SELECT title FROM sections WHERE number = ?'
-    cursor = connection.execute(query, [number])
-
-    return cursor.fetchone()[0]
-
-  except sqlite3.Error, e:
-    print "An error occurred:", e.args[0]
-
 def insert_title(number, title, filename):
-  try:
-    if title_exists(number):
-      if title != get_title(number):
-        print "Chapter", number, "has changed from", get_title(number), "into", title
+  if title_exists(title) == 0:
+    print 'New or changed section \'%s\'' % (title)
 
+  try:
+    if title_number_exists(number):
       query = 'UPDATE sections SET title = ?, filename = ? WHERE number = ?'
       connection.execute(query, (title, filename, number))
     else:
-      print "Creating the new chapter (i.e. its number", number, "is new) titled", title
       query = 'INSERT INTO sections (number, title, filename) VALUES (?, ?, ?)'
       connection.execute(query, (number, title, filename))
 

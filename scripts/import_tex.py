@@ -397,10 +397,11 @@ while n < len(tags):
 
   # if text has changed and current text isn't empty (i.e. not a new tag)
   if get_text(tag) != text and get_text(tag) != '':
-    print "  The text of tag", tag, "has changed and will be updated"
+    print "The text of tag", tag, "has changed",
     if extract_proofs(get_text(tag)) != extract_proofs(text):
-      print "  This change also affects to proof of this tag"
-    print ""
+      print "as well as its proof"
+    else:
+      print ""
       
   # update anyway to fill tags_search which is emptied every time
   update_text(tag, text)

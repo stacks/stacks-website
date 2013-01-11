@@ -155,7 +155,9 @@ def import_tags(filename, labels):
       sys.exit()
 
     if tag_exists(tag) and get_label(tag) != label:
-      print 'The label for tag %s has changed from \'%s\'to \'%s\' and will be updated accordingly' % (tag, get_label(tag), label)
+      print 'The label for tag %s has changed from \'%s\'to \'%s\'' % (tag, get_label(tag), label)
+    if not tag_exists(tag):
+      print 'New tag %s with label \'%s\'' % (tag, label)
 
     info = labels[label]
     insert_tag(tag, (label, info[0], info[2][1], info[1][1], info[1][0], info[1][2], info[2][3], info[1][4]))
