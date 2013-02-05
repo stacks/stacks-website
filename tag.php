@@ -85,6 +85,22 @@
     }
   }
 
+  // for items and equations we want to give the parent tag
+  function get_parent_tag($position) {
+    global $db;
+    
+    try {
+      $sql = $db->prepare('SELECT tag, type, book_id FROM tags WHERE position < :position AND type != "item" AND type != "equation" ORDER BY position DESC LIMIT 1');
+      $sql->bindParam(':position', $position);
+
+      if ($sql->execute())
+        return $sql->fetch();
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
+
   // perform required database handling to get the title that belongs to a filename
   function get_title_from_filename($filename) {
     global $db;
@@ -463,6 +479,12 @@
       print("      <li><a href='" . full_url('download/book.pdf#' . $tag) . "'>". ucfirst($results['type']) . " " . $results['book_id'] . " on page " . $results['book_page'] . "</a> of the book version\n");
     }
     print("    </ul>\n\n");
+
+    // if the type of a tag is 'item' or 'equation' we refer to the tag it is a part of
+    if (empty($results['name']) or $results['type'] == 'item' or $results['type'] == 'equation') {
+      $parent_tag = get_parent_tag($results['position']);
+      print("and it belongs to <a href='" . full_url('tag/' . $parent_tag['tag']) . "'>" . ucfirst($parent_tag['type']) . " " . $parent_tag['book_id'] . '</a>');
+    }
 
     // output LaTeX code
     if(empty($results['value'])) {
