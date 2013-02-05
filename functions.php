@@ -495,21 +495,31 @@ function parse_latex($tag, $file, $code) {
   //$code = preg_replace('/\\\ref\{(.*)\}/', "$1", $code);
   $references = array();
 
-  // don't escape in $$ ... $$ because XyJax doesn't like that
-  $parts = explode('$$', $code);
-  for ($i = 0; $i < sizeof($parts); $i++) {
-    if ($i % 2 == 1) {
-      $parts[$i] = str_replace('&gt;', '>', $parts[$i]);
-      $parts[$i] = str_replace('&lt;', '<', $parts[$i]);
-      $parts[$i] = str_replace('&amp;', '&', $parts[$i]);
+  // don't escape in math mode because XyJax doesn't like that, and fix URLs too
+  $lines = explode("\n", $code);
+  $math_mode = false;
+  foreach ($lines as &$line) {
+    // $$ is a toggle
+    if ($line == '$$')
+      $math_mode = !$math_mode;
+    $environments = array('equation', 'align', 'align*', 'eqnarray', 'eqnarray*');
+    foreach ($environments as $environment) {
+      if ($line == '\begin{' . $environment . '}') $math_mode = true;
+      if ($line == '\end{' . $environment . '}') $math_mode = false;
+    }
+
+    if ($math_mode) {
+      $line = str_replace('&gt;', '>', $line);
+      $line = str_replace('&lt;', '<', $line);
+      $line = str_replace('&amp;', '&', $line);
       
-      $count = preg_match_all('/\\\ref\{<a href=\"\/tag\/([^.]*)\">[^.]*<\/a>\}/', $parts[$i], $matches);
+      $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-]+)<\/a>}/', $line, $matches);
       for ($j = 0; $j < $count; $j++) {
-        $parts[$i] = str_replace($matches[0][$j], get_id($matches[1][$j]), $parts[$i]);
+        $line = str_replace($matches[0][$j], get_id(substr($matches[1][$j], -4)), $line);
       }
     }
   }
-  $code = implode('$$', $parts);
+  $code = implode("\n", $lines);
   
   $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-]+)<\/a>}/', $code, $references);
   for ($i = 0; $i < $count; ++$i) {
