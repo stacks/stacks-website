@@ -430,7 +430,7 @@ function parse_latex($tag, $file, $code) {
   }
 
   // remove remaining labels
-  $code = preg_replace("/\\\label\{[\w\-]*\}\n/", "", $code);
+  $code = preg_replace("/\\\label\{[\w\-]+\}\n?/", "", $code);
 
   // lines starting with % (tag 03NV for instance) should be removed
   $code = preg_replace("/\%[\w.]+/", "", $code);
