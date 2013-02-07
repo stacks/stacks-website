@@ -101,6 +101,7 @@
     // print bibliography
     print_chapter('Bibliography', '', $number + 1);
 ?>
+  </table>
 <?php
   }
 
