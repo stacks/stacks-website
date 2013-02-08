@@ -30,9 +30,6 @@ def title_number_exists(number):
   return False
 
 def insert_title(number, title, filename):
-  if title_exists(title) == 0:
-    print 'New or changed section \'%s\'' % (title)
-
   try:
     if title_number_exists(number):
       query = 'UPDATE sections SET title = ?, filename = ? WHERE number = ?'
@@ -50,6 +47,11 @@ def import_titles(path):
   titles = get_titles(path)
   print 'Parsing the big table of contents'
   sections = parse_book_toc(path + 'book.toc')
+
+  # print out new or changed titles before updating the database
+  for section in sections:
+    if title_exists(section[2]) == 0 and not section[2] == 'Bibliography':
+      print 'New or changed section \'%s\'' % (section[2])
 
   print 'Inserting the information into the database'
   for section in sections:
