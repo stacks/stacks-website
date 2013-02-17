@@ -369,15 +369,15 @@
   }
 
   function print_comments($tag) {
+    $comments = get_comments($tag);
 ?>
-    <h2 id="comments-section-h2" style="cursor: pointer;">Comments</h2>
+    <h2 id="comments-section-h2" style="cursor: pointer;">Comments (<?php print(count($comments)); ?>)</h2>
     <script type="text/javascript">
       $(document).ready(function() { $('div#comments-section').toggle(); });
       $('h2#comments-section-h2').click(function() { $('div#comments-section').toggle(); });
     </script>
     <div id="comments-section">
 <?php
-    $comments = get_comments($tag);
     if (count($comments) == 0) {
       print("    <p>There are no comments yet for this tag.</p>\n\n");
     }
