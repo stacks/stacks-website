@@ -491,7 +491,7 @@
       print("    <p>There is no LaTeX code associated to this tag.\n");
     }
     else {
-      print("    <p>The LaTeX code of the corresponding environment is:");
+      print("    <p>The corresponding content:");
       print_tag_code_and_preview($tag, $results['file'], $results['value']);
     }
 
