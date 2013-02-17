@@ -163,7 +163,12 @@
 
   function print_comment_input($tag) {
 ?>
-    <h2>Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
+    <h2 id="comment-input-section-h2" style="cursor: pointer;">Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
+    <script type="text/javascript">
+      $(document).ready(function() { $('div#comment-input-section').toggle(); });
+      $('h2#comment-input-section-h2').click(function() { $('div#comment-input-section').toggle(); });
+    </script>
+    <div id="comment-input-section">
     <p>Your email address will not be published. Required fields are marked.
   
     <p>In your comment you can use <a href="<?php print(full_url('markdown')); ?>">Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).
@@ -267,6 +272,7 @@
   
       <input type="submit" id="comment-submit" value="Post comment">
     </form>
+    </div>
 <?php
   }
 
@@ -363,8 +369,14 @@
   }
 
   function print_comments($tag) {
-    print("    <h2>Comments</h2>\n");
-
+?>
+    <h2 id="comments-section-h2" style="cursor: pointer;">Comments</h2>
+    <script type="text/javascript">
+      $(document).ready(function() { $('div#comments-section').toggle(); });
+      $('h2#comments-section-h2').click(function() { $('div#comments-section').toggle(); });
+    </script>
+    <div id="comments-section">
+<?php
     $comments = get_comments($tag);
     if (count($comments) == 0) {
       print("    <p>There are no comments yet for this tag.</p>\n\n");
@@ -374,6 +386,9 @@
         print_comment($comment);
       }
     }
+?>
+    </div>
+<?php
   }
 
   function print_sectional_navigation($book_id) {
