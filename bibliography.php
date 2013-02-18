@@ -44,6 +44,32 @@
   function print_item($name, $item) {
     print("<li>" . parse_value($item['author']) . ", <a href='" . full_url('bibliography/' . $name) . "'>" . parse_value($item['title']) . '</a>');
   }
+
+  function print_referencing_tags($name) {
+    global $db;
+
+    $results = array();
+
+    try {
+      $query = 'SELECT tag, type, book_id, name FROM tags WHERE tags.value LIKE ' . $db->quote('%\cite{' . $name . '}%') . ' OR tags.value LIKE ' . $db->quote('%\cite[%]{' . $name . '}%') . ' ORDER BY position';
+
+      foreach ($db->query($query) as $row)
+        $results[] = $row;
+    }
+    catch (PDOException $e) {
+      echo $e->getMessage();
+    }
+
+    print("<p>This item is referenced in " . count($results) . " tags</p>");
+    print("<ul>");
+    foreach ($results as $result) {
+      if ($result['type'] == 'item')
+        print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . "</a>\n");
+      else
+        print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": " . latex_to_html($result['name']) . "</a>" : '</a>') . "\n");
+    }
+    print("</ul>");
+  }
 ?>
 <html>
   <head>
@@ -82,10 +108,11 @@
       $item = get_bibliography_item($_GET['name']);
       print_full_item($item);
 
+      print_referencing_tags($_GET['name']);
     }
     else {
       print("<h2>Error</h2>");
-      print("<p>The name of the bibliography you are looking for (i.e. <var>" . htmlentities($_GET['name']) . "</var>) does not exist. You can try the overview at the <a href='" . full_url('bibliography') . "'>bibliography page</a>\n");
+      print("<p>The name of the bibliography item you are looking for (i.e. <var>" . htmlentities($_GET['name']) . "</var>) does not exist. You can try the overview at the <a href='" . full_url('bibliography') . "'>bibliography page</a>\n");
     }
     print("<p>Go to the <a href='" . full_url('bibliography') . "'>bibliography overview</a>.</p>");
   }
