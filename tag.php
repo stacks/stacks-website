@@ -496,7 +496,7 @@
     print("    </ul>\n\n");
 
     // if the type of a tag is 'item' or 'equation' we refer to the tag it is a part of
-    if (empty($results['name']) or $results['type'] == 'item' or $results['type'] == 'equation') {
+    if ($results['type'] == 'item' or $results['type'] == 'equation') {
       $parent_tag = get_parent_tag($results['position']);
       print("and it belongs to <a href='" . full_url('tag/' . $parent_tag['tag']) . "'>" . ucfirst($parent_tag['type']) . " " . $parent_tag['book_id'] . '</a>');
     }
