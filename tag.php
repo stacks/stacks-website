@@ -163,7 +163,7 @@
 
   function print_comment_input($tag) {
 ?>
-    <h2 id="comment-input-section-h2" style="cursor: pointer;">Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
+    <h2 id="comment-input-section-h2" style="cursor: pointer;">Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var><span style='float: right;'>&gt;&gt;&gt;</span></h2>
     <script type="text/javascript">
       $(document).ready(function() { $('div#comment-input-section').toggle(); });
 
