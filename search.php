@@ -53,7 +53,15 @@
 
     <style type="text/css">
       p.preview {
-        margin: .4em 0;
+        float: right;
+        margin-top: -1.6em;
+      }
+      p.preview a {
+        text-decoration: none;
+        color: black;
+      }
+      p.preview a:hover {
+        text-decoration: underline;
       }
     </style>
 
@@ -112,9 +120,9 @@
       print("<ul id='results'>");
       foreach ($results as $result) {
         if ($result['type'] == 'item')
-          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('download/' . $result['file'] . ".pdf#" . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . "</a> matched your query.\n");
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . "</a>.\n");
         else
-          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('download/' . $result['file'] . ".pdf#" . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": <strong>" . latex_to_html($result['name']) . "</strong></a>" : '</a>') . " matched your query.\n");
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": " . latex_to_html($result['name']) . "</a>" : '</a>') . ".\n");
 
         if ($include_proofs)
           print("<pre class='preview' id='text-" . $result['tag'] . "'>" . parse_preview($result['text']) . "</pre>");
