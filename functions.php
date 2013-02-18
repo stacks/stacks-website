@@ -551,7 +551,6 @@ function parse_latex($tag, $file, $code) {
 function print_navigation() {
 ?>
     <ul id="navigation">
-      <li><a href="<?php print(full_url('')); ?>">index</a>
       <li><a href="<?php print(full_url('about')); ?>">about</a>
       <li><a href="<?php print(full_url('tags')); ?>">tags explained</a>
       <li><a href="<?php print(full_url('tag')); ?>">tag lookup</a>
