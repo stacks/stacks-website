@@ -64,9 +64,9 @@
     print("<ul>");
     foreach ($results as $result) {
       if ($result['type'] == 'item')
-        print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . "</a>\n");
+        print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . "</a>\n");
       else
-        print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>Tag <code>" . $result['tag'] . "</code></a> which points to <a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": " . latex_to_html($result['name']) . "</a>" : '</a>') . "\n");
+        print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": " . latex_to_html($result['name']) . "</a>" : '</a>') . "\n");
     }
     print("</ul>");
   }
