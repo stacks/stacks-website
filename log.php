@@ -2,7 +2,7 @@
 header('Content-type: text/plain');
 
 $output = '';
-exec('git submodule foreach git log --stat -50', $output);
+exec('/usr/local/bin/git submodule foreach git log --stat -50', $output);
 
 $tex_project = false;
 foreach ($output as $line) {
