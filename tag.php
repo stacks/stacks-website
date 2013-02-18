@@ -166,6 +166,7 @@
     <h2 id="comment-input-section-h2" style="cursor: pointer;">Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
     <script type="text/javascript">
       $(document).ready(function() { $('div#comment-input-section').toggle(); });
+
       $('h2#comment-input-section-h2').click(function() { $('div#comment-input-section').toggle(); });
     </script>
     <div id="comment-input-section">
@@ -373,7 +374,12 @@
 ?>
     <h2 id="comments-section-h2" style="cursor: pointer;">Comments (<?php print(count($comments)); ?>)</h2>
     <script type="text/javascript">
-      $(document).ready(function() { $('div#comments-section').toggle(); });
+      $(document).ready(function() { 
+        if (window.location.hash.substr(0, 8) != "#comment") {
+          $('div#comments-section').toggle();
+        }
+      });
+      
       $('h2#comments-section-h2').click(function() { $('div#comments-section').toggle(); });
     </script>
     <div id="comments-section">
