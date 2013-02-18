@@ -532,14 +532,29 @@
     }
   }
 
+  function print_tag_lookup() {
+?>
+    <h2>Look for a tag</h2>
+
+    <form action="<?php print(full_url('tag_search.php')); ?>" method="post">
+      <label>Tag: <input type="text" name="tag"></label>
+      <input type="submit" value="locate">
+    </form>
+
+    <p>For more information we refer to the <a href="<?php print(full_url('tags')); ?>">tags explained</a> page.
+<?php
+  }
+
   function print_inactive_tag($tag) {
     print("    <h2>Inactive tag: <var>" . $tag . "</var></h2>\n");
     print("    <p>The tag you requested did at some point in time belong to the Stacks project, but it was removed.\n");
+    print_tag_lookup();
   }
 
   function print_missing_tag($tag) {
     print("    <h2>Missing tag: <var>" . $tag . "</var></h2>\n");
     print("    <p>The tag you requested does not exist.\n");
+    print_tag_lookup();
   }
 ?>
 <html>
@@ -635,15 +650,6 @@
     <h1><a href="<?php print(full_url('')); ?>">The Stacks Project</a></h1>
     <?php print_navigation(); ?>
 
-    <h2>Look for a tag</h2>
-
-    <form action="<?php print(full_url('tag_search.php')); ?>" method="post">
-      <label>Tag: <input type="text" name="tag"></label>
-      <input type="submit" value="locate">
-    </form>
-
-    <p>For more information we refer to the <a href="<?php print(full_url('tags')); ?>">tags explained</a> page.
-
 <?php
   if (!empty($_GET['tag'])) {
     $_GET['tag'] = strtoupper($_GET['tag']);
@@ -671,7 +677,11 @@
       print("    <h2>Error</h2>\n");
       print("    <p>The tag you provided (i.e. <var>" . htmlspecialchars($_GET['tag']) . "</var>) is not in the correct format. See <a href=\"" . full_url('tags') . "\">tags explained</a> for an overview of the tag system and a description of the format. A summary: four characters, either digits or capital letters, e.g. <var>03DF</var>.\n");
       print("    <p>Perhaps you intended to search for the text <var>" . htmlspecialchars($_GET['tag']) . "</var> in the project? In case you did: <a href='" . full_url('search?keywords=' . $_GET['tag']) . "'>perform this search</a>.\n");
+      print_tag_lookup();
     }
+  }
+  else {
+    print_tag_lookup();
   }
 ?>
     <p id="backlink">Back to the <a href="<?php print(full_url('')); ?>">main page</a>.
