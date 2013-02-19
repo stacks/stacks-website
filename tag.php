@@ -163,11 +163,24 @@
 
   function print_comment_input($tag) {
 ?>
-    <h2 id="comment-input-section-h2" style="cursor: pointer;">Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var><span style='float: right;'>&gt;&gt;&gt;</span></h2>
+    <h2 id="comment-input-section-h2" style="cursor: pointer;">Add a comment on tag <var><?php print(htmlspecialchars($_GET['tag'])); ?></var></h2>
     <script type="text/javascript">
-      $(document).ready(function() { $('div#comment-input-section').toggle(); });
+      $(document).ready(function() {
+        $('div#comment-input-section').toggle();
+        $('h2#comment-input-section-h2').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
+      });
 
-      $('h2#comment-input-section-h2').click(function() { $('div#comment-input-section').toggle(); });
+      $('h2#comment-input-section-h2').click(function() {
+        $('div#comment-input-section').toggle();
+
+        // change <<< into >>> and vice versa
+        if ($('div#comment-input-section').is(':visible')) {
+          $('h2#comment-input-section-h2 span').text('<<<');
+        }
+        else {
+          $('h2#comment-input-section-h2 span').text('>>>');
+        }
+      });
     </script>
     <div id="comment-input-section">
     <p>Your email address will not be published. Required fields are marked.
@@ -375,12 +388,27 @@
     <h2 id="comments-section-h2" style="cursor: pointer;">Comments (<?php print(count($comments)); ?>)</h2>
     <script type="text/javascript">
       $(document).ready(function() { 
+        // we did not arrive here through a link to a comment, hence fold things
         if (window.location.hash.substr(0, 8) != "#comment") {
           $('div#comments-section').toggle();
+          $('h2#comments-section-h2').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
+        }
+        else {
+          $('h2#comments-section-h2').append("<span style='float: right;'>&lt;&lt;&lt;</span>");
         }
       });
       
-      $('h2#comments-section-h2').click(function() { $('div#comments-section').toggle(); });
+      $('h2#comments-section-h2').click(function() {
+        $('div#comments-section').toggle();
+
+        // change <<< into >>> and vice versa
+        if ($('div#comments-section').is(':visible')) {
+          $('h2#comments-section-h2 span').text('<<<');
+        }
+        else {
+          $('h2#comments-section-h2 span').text('>>>');
+        }
+      });
     </script>
     <div id="comments-section">
 <?php
