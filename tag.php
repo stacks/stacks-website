@@ -85,22 +85,6 @@
     }
   }
 
-  // for items and equations we want to give the parent tag
-  function get_parent_tag($position) {
-    global $db;
-    
-    try {
-      $sql = $db->prepare('SELECT tag, type, book_id FROM tags WHERE position < :position AND type != "item" AND type != "equation" ORDER BY position DESC LIMIT 1');
-      $sql->bindParam(':position', $position);
-
-      if ($sql->execute())
-        return $sql->fetch();
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
-  }
-
   // perform required database handling to get the title that belongs to a filename
   function get_title_from_filename($filename) {
     global $db;

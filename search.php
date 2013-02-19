@@ -17,7 +17,7 @@
 
     try {
       // FTS queries don't work with PDO (or maybe: a) I didn't try hard enough, b) did something stupid)
-      $query = 'SELECT tags.tag, tags.label, tags.type, tags.book_id, tags_search.text, tags_search.text_without_proofs, tags.book_page, tags.name, tags.file FROM tags_search, tags WHERE tags_search.tag = tags.tag AND tags.active = "TRUE"';
+      $query = 'SELECT tags.tag, tags.label, tags.type, tags.book_id, tags_search.text, tags_search.text_without_proofs, tags.book_page, tags.name, tags.file, tags.position FROM tags_search, tags WHERE tags_search.tag = tags.tag AND tags.active = "TRUE"';
       // the user doesn't want tags of the type section or subsection (which contain all the tags from that section)
       if ($exclude_sections) 
         $query .= ' AND tags.type NOT IN ("section", "subsection")';
@@ -52,15 +52,12 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 
     <style type="text/css">
-      p.preview {
-        float: right;
-        margin-top: -1.6em;
-      }
-      p.preview a {
+      span.preview a {
         text-decoration: none;
         color: black;
+        float: right;
       }
-      p.preview a:hover {
+      span.preview a:hover {
         text-decoration: underline;
       }
     </style>
@@ -75,7 +72,7 @@
         pre = $("#results pre");
         for (var i = 0; i < pre.length; i++) {
           el = $(pre[i]);
-          el.before('<p class="preview"><a href="javascript:void(0)" onclick="$(\'#' + pre[i].id + '\').toggle();">preview this tag</a></p>');
+          el.prev().append('<span class="preview"><a href="javascript:void(0)" onclick="$(\'#' + pre[i].id + '\').toggle();">preview</a>');
         }
 
         // hide all results by default
@@ -119,10 +116,22 @@
     if (count($results) > 0) {
       print("<ul id='results'>");
       foreach ($results as $result) {
-        if ($result['type'] == 'item')
-          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . " of the enumeration on page " . $result['book_page'] . "</a>.\n");
-        else
-          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": " . latex_to_html($result['name']) . "</a>" : '</a>') . ".\n");
+        if ($result['type'] == 'item') {
+          $parent = get_parent_tag($result['position']);
+          $section = get_enclosing_section($result['position']);
+
+          // enumeration can live in sections, hence we should take care of this sidecase
+          if ($parent['tag'] == $section['tag'])
+            print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . "</a> of the enumeration in <a href='" . full_url('tag/' . $section['tag']) . "'>" . ucfirst($section['type']) . " " . $section['book_id'] . "</a></p>\n");
+          else
+            print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . "</a> of the enumeration in <a href='" . full_url('tag/' . $parent['tag']) . "'>" . ucfirst($parent['type']) . " " . $parent['book_id'] . "</a> in <a href='" . full_url('tag/' . $section['tag']) . "'>" . "Section " . $section['book_id'] . ": " . $section['name'] . "</a></p>\n");
+        }
+        elseif ($result['type'] == 'section')
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": " . latex_to_html($result['name']) . "</a>" : '</a>') . "</p>\n");
+        else {
+          $section = get_enclosing_section($result['position']);
+          print("<li><p><a href='" . full_url('tag/' . $result['tag']) . "'>" . ucfirst($result['type']) . " " . $result['book_id'] . ((!empty($result['name']) and $result['type'] != 'equation') ? ": " . latex_to_html($result['name']) . "</a>" : '</a>') . " in <a href='" . full_url('tag/' . $section['tag']) . "'>" . "Section " . $section['book_id'] . ": " . $section['name'] . "</a></p>\n");
+        }
 
         if ($include_proofs)
           print("<pre class='preview' id='text-" . $result['tag'] . "'>" . parse_preview($result['text']) . "</pre>");
