@@ -246,6 +246,38 @@ function get_tag_with_id($id) {
   return "ZZZZ";
 }
 
+// for items and equations we want to give the parent tag
+function get_parent_tag($position) {
+  global $db;
+  
+  try {
+    $sql = $db->prepare('SELECT tag, type, book_id FROM tags WHERE position < :position AND type != "item" AND type != "equation" ORDER BY position DESC LIMIT 1');
+    $sql->bindParam(':position', $position);
+
+    if ($sql->execute())
+      return $sql->fetch();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
+// get the enclosing section for every type of item (even the ones without a book_id)
+function get_enclosing_section($position) {
+  global $db;
+  
+  try {
+    $sql = $db->prepare('SELECT tag, book_id, name FROM tags WHERE position <= :position AND type = "section" ORDER BY position DESC LIMIT 1');
+    $sql->bindParam(':position', $position);
+
+    if ($sql->execute())
+      return $sql->fetch();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
 function get_tag_referring_to($label) {
   assert(label_exists($label));
 
