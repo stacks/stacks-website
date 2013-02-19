@@ -85,5 +85,5 @@
     echo $e->getMessage();
   }
 
-  header('Location: ' . full_url('tag/' . $_POST['tag']));
+  header('Location: ' . full_url('tag/' . $_POST['tag']) . '#comment-' . $db->lastInsertId());
 ?>
