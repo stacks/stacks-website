@@ -36,6 +36,7 @@
 
 <?php
   $output = '';
+  putenv('PATH=' . getenv('PATH') . ':/usr/local/bin');
   exec('git submodule foreach git ls-files', $output);
 
   $tex_project = false;
