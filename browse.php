@@ -75,8 +75,14 @@
     global $db;
 
     // mapping the first chapter of each part to the title of the part
-    $parts = array('Introduction' => 'Preliminaries', 'Schemes' => 'Schemes', 'Algebraic Spaces' => 'Algebraic Spaces', 'Stacks' => 'Algebraic Stacks', 'Coding Style' => 'Miscellany');
-
+    $parts = array(
+      'Introduction' => 'Preliminaries',
+      'Schemes' => 'Schemes',
+      'Chow Homology and Chern Classes' => 'Topics in Scheme Theory',
+      'Algebraic Spaces' => 'Algebraic Spaces',
+      'Formal Deformation Theory' => 'Deformation Theory',
+      'Algebraic Stacks' => 'Algebraic Stacks',
+      'Examples' => 'Miscellany');
     $number = 0;
 
     try {
