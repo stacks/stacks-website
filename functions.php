@@ -267,7 +267,7 @@ function get_enclosing_section($position) {
   global $db;
   
   try {
-    $sql = $db->prepare('SELECT tag, book_id, name FROM tags WHERE position <= :position AND type = "section" ORDER BY position DESC LIMIT 1');
+    $sql = $db->prepare('SELECT tag, book_id, name, type FROM tags WHERE position <= :position AND type = "section" ORDER BY position DESC LIMIT 1');
     $sql->bindParam(':position', $position);
 
     if ($sql->execute())
