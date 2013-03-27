@@ -101,6 +101,21 @@
     }
   }
 
+  function get_title($tag) {
+    global $db;
+
+    try {
+      $sql = $db->prepare('SELECT name FROM tags WHERE tag = :tag');
+      $sql->bindParam(':tag', $tag);
+
+      if ($sql->execute())
+        return $sql->fetchColumn(0);
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+    }
+  }
+
   /*
    * various functions
    */
@@ -373,7 +388,7 @@
     <script type="text/javascript">
       $(document).ready(function() { 
         // we did not arrive here through a link to a comment, hence fold things
-        if (window.location.hash.substr(0, 8) != "#comment") {
+        if (window.location.hash.substr(0, 8) != "#comment" && <?php print(count($comments)); ?> == 0) {
           $('div#comments-section').toggle();
           $('h2#comments-section-h2').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
         }
@@ -578,8 +593,13 @@
 <html>
   <head>
 <?php
-  if (isset($_GET['tag']) and is_valid_tag($_GET['tag']))
-    print("    <title>Stacks Project -- Tag " . $_GET['tag'] . "</title>\n");
+  if (isset($_GET['tag']) and is_valid_tag($_GET['tag'])) {
+    $title = get_title($_GET['tag']);
+    if ($title != '')
+      print("    <title>Stacks Project -- Tag " . $_GET['tag'] . ": " . latex_to_html(get_title($_GET['tag'])) . "</title>\n");
+    else
+      print("    <title>Stacks Project -- Tag " . $_GET['tag'] . "</title>\n");
+  }
   else
     print("    <title>Stacks Project -- Tag lookup</title>\n");
 ?>
