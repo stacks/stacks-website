@@ -387,8 +387,7 @@
     <h2 id="comments-section-h2" style="cursor: pointer;">Comments (<?php print(count($comments)); ?>)</h2>
     <script type="text/javascript">
       $(document).ready(function() { 
-        // we did not arrive here through a link to a comment, hence fold things
-        if (window.location.hash.substr(0, 8) != "#comment" && <?php print(count($comments)); ?> == 0) {
+        if (<?php print(count($comments)); ?> == 0) {
           $('div#comments-section').toggle();
           $('h2#comments-section-h2').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
         }
