@@ -574,7 +574,8 @@ function parse_latex($tag, $file, $code) {
     "\\Sch" => "\\textit{Sch}",
     "\\Mor" => "\mathop{\\rm Mor}\\nolimits",
     "\\Ob" => "\mathop{\\rm Ob}\\nolimits",
-    "\\Sh" => "\mathop{\\textit{Sh}}\\nolimits");
+    "\\Sh" => "\mathop{\\textit{Sh}}\\nolimits",
+    "\\NL" => "\mathop{N\!L}\\nolimits");
   $code = str_replace(array_keys($macros), array_values($macros), $code);
 
   return $code;
