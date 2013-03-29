@@ -4,3 +4,4 @@ CREATE TABLE "tags" ("tag" VARCHAR PRIMARY KEY  NOT NULL ,"label" VARCHAR,"file"
 CREATE TABLE "bibliography_items" ("name" VARCHAR PRIMARY KEY NOT NULL UNIQUE, "type" NOT NULL)
 CREATE TABLE "bibliography_values" ("name" VARCHAR NOT NULL, "key" VARCHAR NOT NULL, "value" VARCHAR NOT NULL)
 CREATE VIRTUAL TABLE "tags_search" USING fts3(tag, text, text_without_proofs)
+CREATE INDEX "position" ON "tags" ("position")
