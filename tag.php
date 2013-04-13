@@ -542,6 +542,11 @@
       print_tag_code_and_preview($tag, $results['file'], $results['value']);
     }
 
+    // print citation information
+    print("<p>To cite this tag (see <a href='" . full_url('tags') . "#reference'>How to reference tags</a>), use: <pre style='margin-left:1em'>");
+    print("<code style='font-size:.9em'>\\cite[\\href{http://stacks.math.columbia.edu/tag/" . $tag . "}{Tag " . $tag . "}]{stacks-project}</code>\n");
+    print("</pre>");
+
     if ($results['type'] == 'section')
       print_sectional_navigation($results['book_id']);
     else {

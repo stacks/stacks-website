@@ -29,21 +29,21 @@
     
     <p>If it ever turns out that a lemma, theorem, etc. was wrong then we may remove it from the project. However, we will keep the tag, and there will be an explanation for its disappearance (in the file tags mentioned below).
 
-    <h2>How to reference tags in LaTeX documents</h2>
+    <h2 id="reference">How to reference tags</h2>
     <p>In your BibTeX file put 
-    <pre><code>@MISC{stacks-project, 
-  AUTHOR = "The {Stacks Project Authors}", 
-  TITLE = "{\itshape Stacks Project}", 
-  HOWPUBLISHED = "\url{http://stacks.math.columbia.edu}", 
+    <pre style="margin-left:1em"><code style="font-size:.9em">@misc{stacks-project, 
+  author       = {The {Stacks Project Authors}}, 
+  title        = {\itshape Stacks Project}, 
+  howpublished = {\url{http://stacks.math.columbia.edu}}, 
+  year         = {<?php print(date('Y')); ?>},
 }</code></pre>
-    <p>Then you can use a construction such as
-    <pre><code>\cite[Definition 0123]{stacks-project}</code></pre>
-    to reference the tag. If you feel couragous you can go ahead and make 0123 a link to the stable url by the following construction
-    <pre><code>\href<?php print('{http://stacks.math.columbia.edu/tag/0123}{0123}'); ?></code></pre>
+    Then you can use the citation code we provide on each tag's page (below the preview) to <em>cite</em> and <em>link</em> the corresponding tag, for example by
+    <pre style="margin-left:1em"><code style="font-size:.9em">\cite[\href{http://stacks.math.columbia.edu/tag/0123}{Tag 0123}]{stacks-project}</code></pre>
+    <p>This can be changed according to your tastes. In order to make the <code>\url</code> and <code>\href</code> commands to work, one should use the <a href="http://ctan.org/pkg/hyperref"><code>hyperref</code></a> package.</p>
 
     <h2>Technical information</h2>
     <p>There is a file called <a href="<?php print(full_url('tex/tags/tags')); ?>">tags</a> (in the <a href="https://github.com/stacks/stacks-project/tree/master/tags">tags subdirectory</a> of the actual Stacks project) which has on each line the tag followed by an identifier. Example:
-    <pre><code>01MB,constructions-lemma-proj-scheme</code></pre>
+    <pre style="margin-left:1em"><code>01MB,constructions-lemma-proj-scheme</code></pre>
     Here the tag is <var>01MB</var> and the identifier is <var>constructions-lemma-proj-scheme</var>. This means that the tag points to a lemma from the file <var>constructions.tex</var>. It currently has the label <var>lemma-proj-scheme</var>. If we ever change the lemma's  label, or move the lemma to a different file, then we will change the corresponding line in the file tags by changing the identifier correspondingly. But we will <strong>never change the tag</strong>. 
 
     <p>New tags are assigned by the maintainer of the project every once in a while using a script. A tag is a four character string made up out of digits and capital letters. They are ordered lexicographically between 0000 and ZZZZ giving 1679616 possible tags.
