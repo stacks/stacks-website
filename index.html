@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Stacks Project</title>
+    <link rel='stylesheet' type='text/css' href='/style.css'>
+    <link rel='icon' type='image/vnd.microsoft.icon' href='/stacks.ico'> 
+    <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='/stacks.ico'> 
+    <meta charset='utf-8'>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript">
+      function toggle_preview_output(e) {
+        // prevent movement
+        e.preventDefault();
+
+        $("blockquote#rendered, p#code-link, pre#code, p#rendered-link").toggle();
+      }
+
+      $(document).ready(function() {
+        // hide preview and link to the rendered result
+        $('pre#code, p#rendered-link').toggle();
+
+        $("p#code-link a, p#rendered-link").click(toggle_preview_output);
+
+        // make header look like link
+        $('h2#comments-header').css('cursor', 'pointer');
+        // hide comment section if there are no comments, and add the correct toggle symbol
+        if (0 == 0) {
+          $('div#comments').toggle();
+          $('h2#comments-header').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
+        }
+        else {
+          $('h2#comments-header').append("<span style='float: right;'>&lt;&lt;&lt;</span>");
+        }
+
+        // make the h2 for the comments act like a toggle
+        $('h2#comments-header').click(function() {
+          $('div#comments').toggle();
+
+          // change <<< into >>> and vice versa
+          if ($('div#comments').is(':visible')) {
+            $('h2#comments-header span').text('<<<');
+          }
+          else {
+            $('h2#comments-header span').text('>>>');
+          }
+        });
+      });
+
+    </script>
+  </head>
+
+  <body>
+    <h1><a href='/'>The Stacks Project</a></h1>
+
+    <ul id='menu'>
+      <li><a href='/about'>about</a>
+      <li><a href='/tags'>tags explained</a>
+      <li><a href='/tag'>tag lookup</a>
+      <li><a href='/browse'>browse</a>
+      <li><a href='/search'>search</a>
+      <li><a href='/bibliography'>bibliography</a>
+      <li><a href='/recent-comments'>recent comments</a>
+      <li><a href='http://math.columbia.edu/~dejong/wordpress/'>blog</a>
+    </ul>
+    <br style='clear: both;'>
+
+    <div id='main'>
+      <h2>Tag <var>03D9</var></h2>
+      <p class='navigation'>
+        <span class='left'><a title='sites-modules-lemma-push-pull-composition-modules' href='/tag/03D8'>&lt;&lt; Previous tag <var>03D8</var></a></span>
+        <span class='right'><a title='sites-modules-lemma-abelian' href='/tag/03DA'>Next tag <var>03DA &gt;&gt;</var></a></span>
+      </p>
+
+      <p class='navigation'>
+        <span class='left'><a title='Morphisms of ringed topoi and modules' href='/tag/03D5'>&lt;&lt; Section <var>17.13</var></a></span>
+        <span class='right'><a title='Exactness of pushforward' href='/tag/04BC'>Section <var>17.15 &gt;&gt;</var></a></span>
+      </p>
+
+      <p id='code-link' class='toggle'><a href='#code'>code</a></p>
+      <blockquote id='rendered'>
+        <h3>17.14. The abelian category of sheaves of modules</h3>
+        <p>Let $(\mathop{\textit{Sh}}\nolimits(\mathcal{C}), \mathcal{O})$ be a ringed topos. Let $\mathcal{F}$, $\mathcal{G}$ be sheaves of $\mathcal{O}$-modules, see Sheaves, Definition <a href='/tag/0077'>6.10.1</a>. Let $\varphi, \psi : \mathcal{F} \to \mathcal{G}$ be morphisms of sheaves of $\mathcal{O}$-modules. We define $\varphi + \psi : \mathcal{F} \to \mathcal{G}$ to be the sum of $\varphi$ and $\psi$ as morphisms of abelian sheaves. This is clearly again a map of $\mathcal{O}$-modules. It is also clear that composition of maps of $\mathcal{O}$-modules is bilinear with respect to this addition. Thus $\textit{Mod}(\mathcal{O})$ is a pre-additive category, see Homology, Definition <a href='/tag/00ZY'>11.3.1</a>.</p>
+      </blockquote>
+
+      <p id='rendered-link' class='toggle'><a href='#rendered'>view</a></p>
+      <pre id='code'>
+\section{The abelian category of sheaves of modules}
+\label{section-kernels}
+
+\noindent
+Let $(\Sh(\mathcal{C}), \mathcal{O})$ be a ringed topos.
+Let $\mathcal{F}$, $\mathcal{G}$ be sheaves of $\mathcal{O}$-modules, see
+Sheaves, Definition \ref{<a href='/tag/0077'>sheaves-definition-sheaf-modules</a>}.
+Let $\varphi, \psi : \mathcal{F} \to \mathcal{G}$
+be morphisms of sheaves of $\mathcal{O}$-modules.
+We define $\varphi + \psi : \mathcal{F} \to \mathcal{G}$
+to be the sum of $\varphi$ and $\psi$ as morphisms of abelian sheaves.
+This is clearly again a map of $\mathcal{O}$-modules.
+It is also clear that composition of maps of
+$\mathcal{O}$-modules is bilinear with respect to this
+addition. Thus $\textit{Mod}(\mathcal{O})$ is a pre-additive
+category, see Homology, Definition \ref{<a href='/tag/00ZY'>homology-definition-preadditive</a>}.
+      </pre>
+
+      <h2 id='comments-header'>Comments (0)</h2>
+      <div id='comments'>
+        <p>There are no comments yet for this tag.</p>
+      </div>
+
+      <h2>Add a comment on tag <var>03D9</var></h2>
+    </div>
+
+    <div id='sidebar'>
+      <h2>Location</h2>
+      <ul>
+        <li>Section 14 on <a href='#'>page 12</a> of <a href='/chapter/17'>Chapter&nbsp;17: Modules on Sites</a>
+        <li>Section 17.14 on <a href='#'>page 1159</a> of the book version
+      </ul>
+
+      <h2>How to cite this?</h2>
+      <p>To cite this tag (see <a href='/tags#reference'>How to reference tags</a>), use:
+      <pre><code style='font-size:.9em'>\cite[Tag 03D9]{stacks-project}</code></pre>
+
+      <h2>Extras</h2>
+      <ul>
+        <li><a href="#">dependency graph</a></li>
+        <li><a href="#">statistics</a></li>
+      </ul>
+    </div>
+
+    <br style='clear: both;'>
+
+    <p id='backlink'>Back to the <a href='/'>main page</a>.
+  </body>
+</html>

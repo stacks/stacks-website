@@ -1,0 +1,182 @@
+body {
+  font-family: sans-serif;
+  border: solid #d9d8d1;
+  border-width: 1px;
+  margin: 10px auto;
+  margin-bottom: 50px;
+  background-color: #fff;
+  color: #000;
+  max-width: 1000px;
+  font-size: 14px;
+}
+
+a {
+  color: #0000cc;
+}
+
+a:hover, a:visited, a:active {
+  color: #880000;
+}
+
+h1 {
+  height: 25px;
+  margin: 0;
+  padding: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  background-color: #d9d8d1;
+}
+
+h1:hover {
+  background-color: #c9c8c1;
+}
+
+h1 a {
+  color: black;
+  text-decoration: none;
+  display: block;
+}
+
+h1 a:visited {
+  color: black;
+}
+
+h2 {
+  font-size: 18px;
+  margin: -5px -5px 10px -5px;
+  display: block;
+  padding: 6px 8px;
+  font-weight: bold;
+  background-color: #edece6;
+  text-decoration: none;
+  color: #000000;
+}
+
+h2:hover {
+  background-color: #c9c8c1;
+}
+
+h2 a {
+  color: black;
+  text-decoration: none;
+  display: block;
+}
+
+h2 a:visited {
+  color: black;
+}
+
+var {
+  font-style: normal;
+  font-family: monospace;
+}
+
+pre {
+  margin-left: 1em;
+  white-space: pre-wrap;
+  font-size: .95em;
+}
+
+p.navigation {
+  text-align: right;
+}
+
+p.navigation span.left {
+  display: block;
+  float: left;
+}
+
+ul#menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul#menu li {
+  float: left;
+  padding: .5em .5em 1em .5em;
+  margin: 0;
+}
+
+ul#menu li:hover {
+  background-color: #edece6;
+}
+
+p#backlink {
+  background-color: #eee;
+  padding: 6px 8px;
+  margin-bottom: 0;
+  border-top: 1px solid #d9d8d1;
+}
+
+div#main, div#sidebar {
+  float: left;
+}
+
+div#main {
+  width: 725px;
+  border-color: #d9d8d1;
+  border-style: solid;
+  border-width: 1px 1px 1px 0;
+  float: left;
+  padding: 5px;
+}
+
+div#sidebar {
+  width: 250px;
+  padding: 5px;
+  border-color: #d9d8d1;
+  border-style: solid;
+  border-width: 1px 0 1px 1px;
+  float: right;
+}
+
+div#main h2 {
+  font-size: 18px;
+}
+
+p.toggle {
+  background-color: #edece6;
+  border: 1px solid #d9d8d1;
+  float: right;
+  font-size: 1em;
+  margin-top: 0;
+}
+
+p.toggle:hover {
+  background-color: #c9c8c1;
+}
+
+p.toggle a {
+  display: block;
+  width: 100%;
+  padding: 0.2em 1em;
+}
+
+blockquote#rendered {
+  margin-left: 1em;
+  line-height: 120%;
+  font-size: 16px;
+}
+
+blockquote#rendered a.environment-link {
+  color: black;
+  text-decoration: none;
+}
+
+blockquote#preview a.environment-link:hover {
+  text-decoration: underline;
+}
+
+div#sidebar h2 {
+  font-size: 14px;
+}
+
+div#sidebar ul {
+  margin-left: 0;
+  padding-left: 15px;
+}
+
+div#sidebar ul li {
+  margin-bottom: 5px;
+}
