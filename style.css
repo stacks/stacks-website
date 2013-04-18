@@ -180,3 +180,7 @@ div#sidebar ul {
 div#sidebar ul li {
   margin-bottom: 5px;
 }
+
+div#sidebar p {
+  margin-top: 0;
+}
