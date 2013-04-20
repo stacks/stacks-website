@@ -7,8 +7,8 @@
     <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='stacks.ico'> 
     <meta charset='utf-8'>
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-    <script type="text/javascript">
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
+    <script type='text/javascript'>
       function toggle_preview_output(e) {
         // prevent movement
         e.preventDefault();
@@ -18,41 +18,42 @@
 
       $(document).ready(function() {
         // hide preview and link to the rendered result
-        $('div#code, p#rendered-link').toggle();
+        $("div#code, p#rendered-link").toggle();
 
         $("p#code-link a, p#rendered-link").click(toggle_preview_output);
 
         // make header look like link
-        $('h2#comments-header').css('cursor', 'pointer');
+        $("h2#comments-header").css("cursor", "pointer");
         // hide comment section if there are no comments, and add the correct toggle symbol
-        if (0 == 0) {
-          $('div#comments').toggle();
-          $('h2#comments-header').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
+        // TODO it would be better if the serverside code would just generate the correct JS
+        if (2 == 0) {
+          $("div#comments").toggle();
+          $("h2#comments-header").append("<span title='expand comments' style='float: right;'>&gt;&gt;&gt;</span>");
         }
         else {
-          $('h2#comments-header').append("<span style='float: right;'>&lt;&lt;&lt;</span>");
+          $("h2#comments-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
         }
 
         // make the h2 for the comments act like a toggle
-        $('h2#comments-header').click(function() {
-          $('div#comments').toggle();
+        $("h2#comments-header").click(function() {
+          $("div#comments").toggle();
 
           // change <<< into >>> and vice versa
-          if ($('div#comments').is(':visible')) {
-            $('h2#comments-header span').text('<<<');
+          if ($("div#comments").is(":visible")) {
+            $("h2#comments-header span").text("<<<");
           }
           else {
-            $('h2#comments-header span').text('>>>');
+            $("h2#comments-header span").text('>>>');
           }
         });
       });
     </script>
 
-    <script type="text/javascript" src="MathJax/MathJax.js?config=default"></script>
-    <script type="text/x-mathjax-config">
+    <script type='text/javascript' src='MathJax/MathJax.js?config=default'></script>
+    <script type='text/x-mathjax-config'>
       MathJax.Hub.Config({
         extensions: ["tex2jax.js", "fp.js"],
-        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+        tex2jax: {inlineMath: [["$", "$"], ["\\(", "\\)"]]},
         TeX: {extensions: ["xypic.js", "AMSmath.js", "AMSsymbols.js"], TagSide: "left"},
         "HTML-CSS": { scale: 85 }
       });
@@ -116,9 +117,20 @@ category, see Homology, Definition \ref{<a href='#'>homology-definition-preaddit
       </p>
 
 
-      <h2 id='comments-header'>Comments (0)</h2>
+      <h2 id='comments-header'>Comments (2)</h2>
       <div id='comments'>
-        <p>There are no comments yet for this tag.</p>
+        <div class='comment' id='comment-175'>
+          <a href='#comment-175'>Comment #175</a> by <cite class='comment-author'>Adeel</cite> on March 20, 2013 at 6:45 pm UTC
+          <blockquote><p>In (3), the second Y should be X.</p>
+</bl    ockquote>
+        </div>
+
+        <div class='comment' id='comment-182'>
+          <a href='#comment-182'>Comment #182</a> by <cite class='comment-author'>Johan</cite> (<a href='http://math.columbia.edu/~dejong'>site</a>)
+on M    arch 27, 2013 at 6:05 pm UTC
+          <blockquote><p>Fixed, see <a href='https://github.com/stacks/stacks-project/commit/0fced65bc54854942308acb7c91adfa753ebaa1c'>here</a>. Thanks!</p>
+</bl    ockquote>
+        </div>
       </div>
 
       <h2>Add a comment on tag <var>03D9</var></h2>
@@ -157,8 +169,8 @@ category, see Homology, Definition \ref{<a href='#'>homology-definition-preaddit
 
       <h2>Extras</h2>
       <ul>
-        <li><a href="#">dependency graph</a></li>
-        <li><a href="#">statistics</a></li>
+        <li><a href='#'>dependency graph</a></li>
+        <li><a href='#'>statistics</a></li>
       </ul>
     </div>
 
