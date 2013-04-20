@@ -28,10 +28,12 @@
         // TODO it would be better if the serverside code would just generate the correct JS
         if (2 == 0) {
           $("div#comments").toggle();
-          $("h2#comments-header").append("<span title='expand comments' style='float: right;'>&gt;&gt;&gt;</span>");
+          $("h2#comments-header").append("<span style='float: right;'>&gt;&gt;&gt;</span>");
+          $("h2#comments-header").prop("title", "show comments");
         }
         else {
           $("h2#comments-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
+          $("h2#comments-header").prop("title", "hide comments");
         }
 
         // make the h2 for the comments act like a toggle
@@ -41,9 +43,11 @@
           // change <<< into >>> and vice versa
           if ($("div#comments").is(":visible")) {
             $("h2#comments-header span").text("<<<");
+            $("h2#comments-header").prop("title", "hide comments");
           }
           else {
             $("h2#comments-header span").text('>>>');
+            $("h2#comments-header").prop("title", "show comments");
           }
         });
       });
