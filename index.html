@@ -15,7 +15,7 @@
         // hide code display and the link to the rendered result
         $("div#code, p#rendered-link").toggle();
         // associate code / rendered toggle to both links
-        $("p#code-link a, p#rendered-link a").click(function() {
+        $("p#code-link a, p#rendered-link a").click(function(e) {
           // prevent movement
           e.preventDefault();
 
