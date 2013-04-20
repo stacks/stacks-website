@@ -95,8 +95,13 @@ ul#menu {
 
 ul#menu li {
   float: left;
-  padding: .5em .5em 1em .5em;
   margin: 0;
+  padding: 0;
+}
+
+ul#menu li a {
+  display: block;
+  padding: .5em .75em;
 }
 
 ul#menu li:hover {
