@@ -189,3 +189,22 @@ div#sidebar ul li {
 div#sidebar p {
   margin-top: 0;
 }
+
+div#sidebar dl {
+  margin-top: 0;
+}
+
+div#sidebar dt {
+  float: left;
+  clear: left;
+  width: 3em;
+}
+
+div#sidebar dt:after {
+  content: ":";
+}
+
+div#sidebar dd {
+  margin: 0 0 0 4em;
+  padding: 0;
+}
