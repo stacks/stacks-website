@@ -108,6 +108,24 @@ ul#menu li:hover {
   background-color: #edece6;
 }
 
+form#comment-form label {
+  width: 6em;
+  display: inline-block;
+  text-align: right;
+}
+
+form#comment-form input {
+  margin-bottom: 10px;
+}
+
+form#comment-form input#comment-submit {
+  text-align: right;
+}
+
+form#comment-form textarea {
+  display: block;
+}
+
 p#backlink {
   background-color: #eee;
   padding: 6px 8px;
@@ -176,6 +194,10 @@ blockquote#preview a.environment-link:hover {
 
 div#main p {
   margin-left: 5px;
+}
+
+div#main p.navigation {
+  margin-left: 0;
 }
 
 div#sidebar h2 {

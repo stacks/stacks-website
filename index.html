@@ -9,18 +9,36 @@
 
     <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
     <script type='text/javascript'>
-      function toggle_preview_output(e) {
-        // prevent movement
-        e.preventDefault();
-
-        $("blockquote#rendered, p#code-link, div#code, p#rendered-link").toggle();
-      }
-
       $(document).ready(function() {
-        // hide preview and link to the rendered result
+        // hide code display and the link to the rendered result
         $("div#code, p#rendered-link").toggle();
+        // associate code / rendered toggle to both links
+        $("p#code-link a, p#rendered-link a").click(function() {
+          // prevent movement
+          e.preventDefault();
 
-        $("p#code-link a, p#rendered-link").click(toggle_preview_output);
+          $("blockquote#rendered, p#code-link, div#code, p#rendered-link").toggle();
+        });
+
+        // hide comment section by default
+        $('div#comment-input').toggle();
+        $('h2#comment-input-header').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
+        $("h2#comment-input-header").prop("title", "show input form for comments");
+
+        // make the h2 for the comment input act like a toggle
+        $('h2#comment-input-header').click(function() {
+          $('div#comment-input').toggle();
+
+          // change <<< into >>> and vice versa
+          if ($('div#comment-input').is(':visible')) {
+            $('h2#comment-input-header span').text('<<<');
+            $("h2#comment-input-header").prop("title", "hide input form for comments");
+          }
+          else {
+            $('h2#comment-input-header span').text('>>>');
+            $("h2#comment-input-header").prop("title", "show input form for comments");
+          }
+        });
 
         // make header look like link
         $("h2#comments-header").css("cursor", "pointer");
@@ -131,13 +149,42 @@ category, see Homology, Definition \ref{<a href='#'>homology-definition-preaddit
 
         <div class='comment' id='comment-182'>
           <a href='#comment-182'>Comment #182</a> by <cite class='comment-author'>Johan</cite> (<a href='http://math.columbia.edu/~dejong'>site</a>)
-on M    arch 27, 2013 at 6:05 pm UTC
+on March 27, 2013 at 6:05 pm UTC
           <blockquote><p>Fixed, see <a href='https://github.com/stacks/stacks-project/commit/0fced65bc54854942308acb7c91adfa753ebaa1c'>here</a>. Thanks!</p>
 </bl    ockquote>
         </div>
       </div>
 
-      <h2>Add a comment on tag <var>03D9</var></h2>
+      <h2 id='comment-input-header'>Add a comment on tag <var>03D9</var></h2>
+      <div id='comment-input'>
+        <p>Your email address will not be published. Required fields are marked.
+  
+        <p>In your comment you can use <a href='#'>Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).
+        <noscript>Unfortunately JavaScript is disabled in your browser, so the comment preview function will not work.</noscript>
+  
+        <form name='comment' id='comment-form' action='#' method='post'>
+          <label for='name'>Name<sup>*</sup>:</label>
+          <input type='text' name='name' id='name'><br>
+  
+          <label for='mail'>E-mail<sup>*</sup>:</label>
+          <input type='text' name='email' id='mail'><br>
+  
+          <label for='site'>Site:</label>
+          <input type='text' name='site' id='site'><br>
+  
+          <label>Comment:</label> <span id='epiceditor-status'></span>
+          <textarea name='comment' id='comment-textarea' cols='80' rows='10'></textarea>
+          <div id='epiceditor'></div>
+
+          <p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>
+          <label for="check">Tag:</label>
+          <input type="text" name="check" id="check"><br>
+  
+          <input type='hidden' name='tag' value='03D9'>
+  
+          <input type='submit' id='comment-submit' value='Post comment'>
+        </form>
+      </div>
     </div>
 
     <div id='sidebar'>
