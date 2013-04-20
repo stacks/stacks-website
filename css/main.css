@@ -108,24 +108,6 @@ ul#menu li:hover {
   background-color: #edece6;
 }
 
-form#comment-form label {
-  width: 6em;
-  display: inline-block;
-  text-align: right;
-}
-
-form#comment-form input {
-  margin-bottom: 10px;
-}
-
-form#comment-form input#comment-submit {
-  text-align: right;
-}
-
-form#comment-form textarea {
-  display: block;
-}
-
 p#backlink {
   background-color: #eee;
   padding: 6px 8px;
@@ -157,39 +139,6 @@ div#sidebar {
 
 div#main h2 {
   font-size: 18px;
-}
-
-p.toggle {
-  background-color: #edece6;
-  border: 1px solid #d9d8d1;
-  float: right;
-  font-size: 1em;
-  margin-top: 0;
-}
-
-p.toggle:hover {
-  background-color: #c9c8c1;
-}
-
-p.toggle a {
-  display: block;
-  width: 100%;
-  padding: 0.2em 1em;
-}
-
-blockquote#rendered {
-  margin-left: 1em;
-  line-height: 120%;
-  font-size: 16px;
-}
-
-blockquote#rendered a.environment-link {
-  color: black;
-  text-decoration: none;
-}
-
-blockquote#preview a.environment-link:hover {
-  text-decoration: underline;
 }
 
 div#main p {
