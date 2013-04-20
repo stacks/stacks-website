@@ -79,6 +79,7 @@ pre {
 
 p.navigation {
   text-align: right;
+  margin-left: 0;
 }
 
 p.navigation span.left {
@@ -166,6 +167,10 @@ blockquote#rendered a.environment-link {
 
 blockquote#preview a.environment-link:hover {
   text-decoration: underline;
+}
+
+div#main p {
+  margin-left: 5px;
 }
 
 div#sidebar h2 {

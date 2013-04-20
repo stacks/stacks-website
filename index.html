@@ -13,12 +13,12 @@
         // prevent movement
         e.preventDefault();
 
-        $("blockquote#rendered, p#code-link, pre#code, p#rendered-link").toggle();
+        $("blockquote#rendered, p#code-link, div#code, p#rendered-link").toggle();
       }
 
       $(document).ready(function() {
         // hide preview and link to the rendered result
-        $('pre#code, p#rendered-link').toggle();
+        $('div#code, p#rendered-link').toggle();
 
         $("p#code-link a, p#rendered-link").click(toggle_preview_output);
 
@@ -83,7 +83,9 @@
       </blockquote>
 
       <p id='rendered-link' class='toggle'><a href='#rendered'>view</a></p>
-      <pre id='code'>
+      <div id='code'>
+        <p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/sites-modules.tex'><var>sites-modules.tex</var></a> and is located around <a href='https://github.com/stacks/stacks-project/blob/master/sites-modules.tex#L1238'>line 1238</a> (see <a href='#'>updates</a> for more information).
+        <pre id='code'>
 \section{The abelian category of sheaves of modules}
 \label{section-kernels}
 
@@ -100,7 +102,9 @@ It is also clear that composition of maps of
 $\mathcal{O}$-modules is bilinear with respect to this
 addition. Thus $\textit{Mod}(\mathcal{O})$ is a pre-additive
 category, see Homology, Definition \ref{<a href='#'>homology-definition-preadditive</a>}.
-      </pre>
+        </pre>
+      </div>
+      
       <p class='navigation'>
         <span class='left'><a title='sites-modules-lemma-push-pull-composition-modules' href='#'>&lt;&lt; Previous tag <var>03D8</var></a></span>
         <span class='right'><a title='sites-modules-lemma-abelian' href='#'>Next tag <var>03DA &gt;&gt;</var></a></span>
