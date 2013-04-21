@@ -105,6 +105,49 @@
       <blockquote id='rendered'>
         <h3>17.14. The abelian category of sheaves of modules</h3>
         <p>Let $(\mathop{\textit{Sh}}\nolimits(\mathcal{C}), \mathcal{O})$ be a ringed topos. Let $\mathcal{F}$, $\mathcal{G}$ be sheaves of $\mathcal{O}$-modules, see Sheaves, Definition <a href='#'>6.10.1</a>. Let $\varphi, \psi : \mathcal{F} \to \mathcal{G}$ be morphisms of sheaves of $\mathcal{O}$-modules. We define $\varphi + \psi : \mathcal{F} \to \mathcal{G}$ to be the sum of $\varphi$ and $\psi$ as morphisms of abelian sheaves. This is clearly again a map of $\mathcal{O}$-modules. It is also clear that composition of maps of $\mathcal{O}$-modules is bilinear with respect to this addition. Thus $\textit{Mod}(\mathcal{O})$ is a pre-additive category, see Homology, Definition <a href='#'>11.3.1</a>.</p>
+        <p>We will denote $0$ the sheaf of $\mathcal{O}$-modules which has constant value $\{0\}$ for all objects $U$ of $\mathcal{C}$. Clearly this is both a final and an initial object of $\textit{Mod}(\mathcal{O})$. Given a morphism of $\mathcal{O}$-modules $\varphi : \mathcal{F} \to \mathcal{G}$ the following are equivalent: (a) $\varphi$ is zero, (b) $\varphi$ factors through $0$, (c) $\varphi$ is zero on sections over each opject $U$.</p>
+        <p>Moreover, given a pair $\mathcal{F}$, $\mathcal{G}$ of sheaves of $\mathcal{O}$-modules we may define the direct sum as
+        $$
+          \mathcal{F} \oplus \mathcal{G} = \mathcal{F} \times \mathcal{G}
+        $$
+        with obvious maps $(i, j, p, q)$ as in Homology, Definition <a href='#'>11.3.5</a>. Thus $\textit{Mod}(\mathcal{O})$ is an additive category, see Homology, Definition <a href='#'>11.3.8</a>.</p>
+        <p>Let $\varphi : \mathcal{F} \to \mathcal{G}$ be a morphism of $\mathcal{O}$-modules. We may define $\text{Ker}(\varphi)$ to be the kernel of $\varphi$ as a map of abelian sheaves. By Section <a href='#'>17.3</a> this is the subsheaf of $\mathcal{F}$ with sections
+        $$
+          \text{Ker}(\varphi)(U) = \{ s \in \mathcal{F}(U) \mid \varphi(s) = 0 \text{ in } \mathcal{G}(U)\}
+        $$
+        for all objects $U$ of $\mathcal{C}$. It is easy to see that this is indeed a kernel in the category of $\mathcal{O}$-modules. In other words, a morphism $\alpha : \mathcal{H} \to \mathcal{F}$ factors through $\text{Ker}(\varphi)$ if and only if $\varphi \circ \alpha = 0$.</p>
+        <p>Similarly, we define $\text{Coker}(\varphi)$ as the cokernel of $\varphi$ as a map of abelian sheaves. There is a unique multiplication map
+        $$
+          \mathcal{O} \times \text{Coker}(\varphi) \longrightarrow \text{Coker}(\varphi)
+        $$
+        such that the map $\mathcal{G} \to \text{Coker}(\varphi)$ becomes a morphism of $\mathcal{O}$-modules (verification omitted). The map $\mathcal{G} \to \text{Coker}(\varphi)$ is surjective (as a map of sheaves of sets, see Section <a href='#'>17.3</a>). To show that $\text{Coker}(\varphi)$ is a cokernel in $\textit{Mod}(\mathcal{O})$, note that if $\beta : \mathcal{G} \to \mathcal{H}$ is a morphism of $\mathcal{O}$-modules such that $\beta \circ \varphi$ is zero, then you get for every object $U$ of $\mathcal{C}$ a map induced by $\beta$ from $\mathcal{G}(U)/\varphi(\mathcal{F}(U))$ into $\mathcal{H}(U)$. By the universal property of sheafification (see Sheaves, Lemma <a href='#'>6.20.1</a>) we obtain a canonical map $\text{Coker}(\varphi) \to \mathcal{H}$ such that the original $\beta$ is equal to the composition $\mathcal{G} \to \text{Coker}(\varphi) \to \mathcal{H}$. The morphism $\text{Coker}(\varphi) \to \mathcal{H}$ is unique because of the surjectivity mentioned above.</p>
+
+        <!-- TODO it would be good if this would be done through CSS, not by actually inserting <strong> and <em> -->
+        <p><strong><a class='environment-link' href='03DA'>Lemma 17.14.1.</a></strong><em>Let $(\mathop{\textit{Sh}}\nolimits(\mathcal{C}), \mathcal{O})$ be a ringed topos. The category $\textit{Mod}(\mathcal{O})$ is an abelian category. The forgetful functor $\textit{Mod}(\mathcal{O}) \to \textit{Ab}(\mathcal{C})$ is exact, hence kernels, cokernels and exactness of $\mathcal{O}$-modules, correspond to the corresponding notions for abelian sheaves.</em></p>
+        <!-- TODO there was a superfluous </p><p> (remark the strange order) here, and create a class for the $\square$ span -->
+        <p><strong>Proof.</strong> Above we have seen that $\textit{Mod}(\mathcal{O})$ is an additive category, with kernels and cokernels and that $\textit{Mod}(\mathcal{O}) \to \textit{Ab}(\mathcal{C})$ preserves kernels and cokernels. By Homology, Definition <a href='#'>11.3.12</a> we have to show that image and coimage agree. This is clear because it is true in $\textit{Ab}(\mathcal{C})$. The lemma follows. <span style='float: right;'>$\square$</span></p>
+        <!-- TODO again a double </p><p> -->
+        <p><strong><a class='environment-link' href='03DB'>Lemma 17.14.2.</a></strong><em>Let $(\mathop{\textit{Sh}}\nolimits(\mathcal{C}), \mathcal{O})$ be a ringed topos. All limits and colimits exist in $\textit{Mod}(\mathcal{O})$ and the forgetful functor $\textit{Mod}(\mathcal{O}) \to \textit{Ab}(\mathcal{C})$ commutes with them. Moreover, filtered colimits are exact.</em></p>
+        <p><strong>Proof.</strong> The final statement follows from the first as filtered colimits are exact in $\textit{Ab}(\mathcal{C})$ by Lemma <a href='#'>17.3.2</a>. Let $\mathcal{I} \to \textit{Mod}(\mathcal{C})$, $i \mapsto \mathcal{F}_i$ be a diagram. Let $\mathop{\rm lim}\nolimits_i \mathcal{F}_i$ be the limit of the diagram in $\textit{Ab}(\mathcal{C})$. By the description of this limit in Lemma <a href='#'>17.3.2</a> we see immediately that there exists a multiplication
+        $$
+          \mathcal{O} \times \mathop{\rm lim}\nolimits_i \mathcal{F}_i\longrightarrow\mathop{\rm lim}\nolimits_i \mathcal{F}_i
+        $$
+        which turns $\mathop{\rm lim}\nolimits_i \mathcal{F}_i$ into a sheaf of $\mathcal{O}$-modules. It is easy to see that this is the limit of the diagram in $\textit{Mod}(\mathcal{C})$. Let $\mathop{\rm colim}\nolimits_i \mathcal{F}_i$ be the colimit of the diagram in $\textit{PAb}(\mathcal{C})$. By the description of this colimit in the proof of Lemma <a href='#'>17.2.1</a> we see immediately that there exists a multiplication
+        $$
+          \mathcal{O} \times \mathop{\rm colim}\nolimits_i \mathcal{F}_i\longrightarrow\mathop{\rm colim}\nolimits_i \mathcal{F}_i
+        $$
+        which turns $\mathop{\rm colim}\nolimits_i \mathcal{F}_i$ into a presheaf of $\mathcal{O}$-modules. Applying sheafification we get a sheaf of $\mathcal{O}$-modules $(\mathop{\rm colim}\nolimits_i \mathcal{F}_i)^\#$, see Lemma <a href='#'>17.11.1</a>. It is easy to see that $(\mathop{\rm colim}\nolimits_i \mathcal{F}_i)^\#$ is the colimit of the diagram in $\textit{Mod}(\mathcal{O})$, and by Lemma <a href='#'>17.3.2</a> forgetting the $\mathcal{O}$-module structure is the colimit in $\textit{Ab}(\mathcal{C})$.<span style='float: right;'>$\square$</span></p>
+        <!-- TODO there was a <p> missing here -->
+        <p>The existence of limits and colimits allows us to consider exactness properties of functors defined on the category of $\mathcal{O}$-modules in terms of limits and colimits, as in Categories, Section <a href='#'>4.22</a>. See Homology, Lemma <a href='#'>11.5.1</a> for a description of exactness properties in terms of short exact sequences.</p>
+        <p><strong><a class='environment-link' href='03DC'>Lemma 17.14.3.</a></strong><em>Let $f : (\mathop{\textit{Sh}}\nolimits(\mathcal{C}), \mathcal{O}_\mathcal{C}) \to (\mathop{\textit{Sh}}\nolimits(\mathcal{D}), \mathcal{O}_\mathcal{D})$ be a morphism of ringed topoi.
+        <ol>
+          <li> The functor $f_*$ is left exact. In fact it commutes with all limits.
+          <li> The functor $f^*$ is right exact. In fact it commutes with all colimits.
+        </ol>
+        </em></p>
+        <p><strong>Proof.</strong> This is true because $(f^*, f_*)$ is an adjoint pair of functors, see Lemma <a href='#'>17.13.2</a>. See Categories, Section <a href='#'>4.23</a>. <span style='float: right;'>$\square$</span></p>
+        <p><strong><a class='environment-link' href='05V3'>Lemma 17.14.4.</a></strong><em>Let $\mathcal{C}$ be a site. If $\{p_i\}_{i \in I}$ is a conservative family of points, then we may check exactness of a sequence of abelian sheaves on the stalks at the points $p_i$, $i \in I$. If $\mathcal{C}$ has enough points, then exactness of a sequence of abelian sheaves may be checked on stalks.</em></p>
+        <p><strong>Proof.</strong> This is immediate from Sites, Lemma <a href='#'>7.35.2</a>.<span style='float: right;'>$\square$</span></p>
       </blockquote>
 
       <p id='rendered-link' class='toggle'><a href='#rendered'>view</a></p>
@@ -127,6 +170,178 @@ It is also clear that composition of maps of
 $\mathcal{O}$-modules is bilinear with respect to this
 addition. Thus $\textit{Mod}(\mathcal{O})$ is a pre-additive
 category, see Homology, Definition \ref{<a href='#'>homology-definition-preadditive</a>}.
+
+\medskip\noindent
+We will denote $0$ the sheaf of $\mathcal{O}$-modules
+which has constant value $\{0\}$ for all objects $U$ of $\mathcal{C}$.
+Clearly this is both a final and an initial object of
+$\textit{Mod}(\mathcal{O})$. Given a morphism
+of $\mathcal{O}$-modules $\varphi : \mathcal{F} \to \mathcal{G}$
+the following are equivalent:
+(a) $\varphi$ is zero, (b) $\varphi$ factors through $0$,
+(c) $\varphi$ is zero on sections over each opject $U$.
+
+\medskip\noindent
+Moreover, given a pair
+$\mathcal{F}$, $\mathcal{G}$ of sheaves of $\mathcal{O}$-modules
+we may define the direct sum as
+$$
+\mathcal{F} \oplus \mathcal{G} = \mathcal{F} \times \mathcal{G}
+$$
+with obvious maps $(i, j, p, q)$ as in Homology, Definition
+\ref{<a href='#'>homology-definition-direct-sum</a>}. Thus $\textit{Mod}(\mathcal{O})$
+is an additive category, see
+Homology, Definition \ref{<a href='#'>homology-definition-additive-category</a>}.
+
+\medskip\noindent
+Let $\varphi : \mathcal{F} \to \mathcal{G}$ be a morphism
+of $\mathcal{O}$-modules. We may define $\text{Ker}(\varphi)$
+to be the kernel of $\varphi$ as a map of abelian sheaves.
+By Section \ref{<a href='#'>section-abelian-sheaves</a>} this is the
+subsheaf of $\mathcal{F}$ with sections
+$$
+\text{Ker}(\varphi)(U) =
+\{ s \in \mathcal{F}(U) \mid \varphi(s) = 0 \text{ in } \mathcal{G}(U)\}
+$$
+for all objects $U$ of $\mathcal{C}$. It is easy to see that this is indeed
+a kernel in the category of $\mathcal{O}$-modules. In other words,
+a morphism $\alpha : \mathcal{H} \to \mathcal{F}$ factors
+through $\text{Ker}(\varphi)$ if and only if $\varphi \circ \alpha = 0$.
+
+\medskip\noindent
+Similarly, we define $\text{Coker}(\varphi)$ as the cokernel of
+$\varphi$ as a map of abelian sheaves. There is a unique
+multiplication map
+$$
+\mathcal{O} \times \text{Coker}(\varphi) \longrightarrow \text{Coker}(\varphi)
+$$
+such that the map $\mathcal{G} \to \text{Coker}(\varphi)$ becomes a
+morphism of $\mathcal{O}$-modules (verification omitted).
+The map $\mathcal{G} \to \text{Coker}(\varphi)$ is surjective
+(as a map of sheaves of sets, see Section \ref{<a href='#'>section-abelian-sheaves</a>}).
+To show that $\text{Coker}(\varphi)$ is a cokernel in
+$\textit{Mod}(\mathcal{O})$, note that if
+$\beta : \mathcal{G} \to \mathcal{H}$ is a morphism of $\mathcal{O}$-modules
+such that $\beta \circ \varphi$ is zero, then you get for every
+object $U$ of $\mathcal{C}$ a map induced by $\beta$ from
+$\mathcal{G}(U)/\varphi(\mathcal{F}(U))$ into $\mathcal{H}(U)$.
+By the universal property of sheafification (see
+Sheaves, Lemma \ref{<a href='#'>sheaves-lemma-sheafification-presheaf-modules</a>})
+we obtain a canonical map $\text{Coker}(\varphi) \to \mathcal{H}$
+such that the original $\beta$ is equal to the composition
+$\mathcal{G} \to \text{Coker}(\varphi) \to \mathcal{H}$.
+The morphism $\text{Coker}(\varphi) \to \mathcal{H}$ is unique
+because of the surjectivity mentioned above.
+
+\begin{lemma}
+\label{lemma-abelian}
+Let $(\Sh(\mathcal{C}), \mathcal{O})$ be a ringed topos.
+The category $\textit{Mod}(\mathcal{O})$ is an abelian category.
+The forgetful functor
+$\textit{Mod}(\mathcal{O}) \to \textit{Ab}(\mathcal{C})$
+is exact, hence kernels, cokernels and exactness of
+$\mathcal{O}$-modules, correspond to the corresponding notions
+for abelian sheaves.
+\end{lemma}
+
+\begin{proof}
+Above we have seen that $\textit{Mod}(\mathcal{O})$ is an additive
+category, with kernels and cokernels
+and that $\textit{Mod}(\mathcal{O}) \to \textit{Ab}(\mathcal{C})$
+preserves kernels and cokernels.
+By Homology, Definition \ref{<a href='#'>homology-definition-abelian-category</a>}
+we have to show that image and coimage agree. This is clear
+because it is true in $\textit{Ab}(\mathcal{C})$. The lemma follows.
+\end{proof}
+
+\begin{lemma}
+\label{lemma-limits-colimits}
+Let $(\Sh(\mathcal{C}), \mathcal{O})$ be a ringed topos.
+All limits and colimits exist in $\textit{Mod}(\mathcal{O})$
+and the forgetful functor
+$\textit{Mod}(\mathcal{O}) \to \textit{Ab}(\mathcal{C})$
+commutes with them. Moreover, filtered colimits are exact.
+\end{lemma}
+
+\begin{proof}
+The final statement follows from the first as filtered colimits are
+exact in $\textit{Ab}(\mathcal{C})$ by
+Lemma \ref{<a href='#'>lemma-limits-colimits-abelian-sheaves</a>}.
+Let $\mathcal{I} \to \textit{Mod}(\mathcal{C})$, $i \mapsto \mathcal{F}_i$
+be a diagram. Let $\lim_i \mathcal{F}_i$ be the limit of the diagram
+in $\textit{Ab}(\mathcal{C})$. By the description of this limit in
+Lemma \ref{<a href='#'>lemma-limits-colimits-abelian-sheaves</a>} we see immediately that
+there exists a multiplication
+$$
+\mathcal{O} \times \lim_i \mathcal{F}_i
+\longrightarrow
+\lim_i \mathcal{F}_i
+$$
+which turns $\lim_i \mathcal{F}_i$ into a sheaf of
+$\mathcal{O}$-modules. It is easy to see that this is the
+limit of the diagram in $\textit{Mod}(\mathcal{C})$. Let
+$\colim_i \mathcal{F}_i$ be the colimit of the diagram
+in $\textit{PAb}(\mathcal{C})$. By the description of this colimit
+in the proof of Lemma \ref{<a href='#'>lemma-limits-colimits-abelian-presheaves</a>}
+we see immediately that there exists a multiplication
+$$
+\mathcal{O} \times \colim_i \mathcal{F}_i
+\longrightarrow
+\colim_i \mathcal{F}_i
+$$
+which turns $\colim_i \mathcal{F}_i$ into a presheaf of
+$\mathcal{O}$-modules. Applying sheafification we get a
+sheaf of $\mathcal{O}$-modules $(\colim_i \mathcal{F}_i)^\#$,
+see Lemma \ref{<a href='#'>lemma-sheafification-presheaf-modules</a>}.
+It is easy to see that $(\colim_i \mathcal{F}_i)^\#$
+is the colimit of the diagram in $\textit{Mod}(\mathcal{O})$, and
+by Lemma \ref{<a href='#'>lemma-limits-colimits-abelian-sheaves</a>}
+forgetting the $\mathcal{O}$-module structure is
+the colimit in $\textit{Ab}(\mathcal{C})$.
+\end{proof}
+
+\noindent
+The existence of limits and colimits allows us to consider exactness
+properties of functors defined on the category of $\mathcal{O}$-modules
+in terms of limits and colimits, as in
+Categories, Section \ref{<a href='#'>categories-section-exact-functor</a>}.
+See Homology, Lemma \ref{<a href='#'>homology-lemma-exact-functor</a>} for a description of
+exactness properties in terms of short exact sequences.
+
+\begin{lemma}
+\label{lemma-exactness-pushforward-pullback}
+Let $f : (\Sh(\mathcal{C}), \mathcal{O}_\mathcal{C})
+\to (\Sh(\mathcal{D}), \mathcal{O}_\mathcal{D})$
+be a morphism of ringed topoi.
+\begin{enumerate}
+\item The functor $f_*$ is left exact. In fact it commutes with
+all limits.
+\item The functor $f^*$ is right exact. In fact it commutes
+with all colimits.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+This is true because $(f^*, f_*)$ is an adjoint pair
+of functors, see
+Lemma \ref{<a href='#'>lemma-adjoint-pullback-pushforward-modules</a>}.
+See Categories, Section \ref{<a href='#'>categories-section-adjoint</a>}.
+\end{proof}
+
+\begin{lemma}
+\label{lemma-check-exactness-stalks}
+Let $\mathcal{C}$ be a site. If $\{p_i\}_{i \in I}$ is a conservative
+family of points, then we may check exactness of a sequence of abelian
+sheaves on the stalks at the points $p_i$, $i \in I$.
+If $\mathcal{C}$ has enough points, then
+exactness of a sequence of abelian sheaves may
+be checked on stalks.
+\end{lemma}
+
+\begin{proof}
+This is immediate from
+Sites, Lemma \ref{<a href='#'>sites-lemma-exactness-stalks</a>}.
+\end{proof}
         </pre>
       </div>
       
