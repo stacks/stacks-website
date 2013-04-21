@@ -72,8 +72,11 @@ var {
 }
 
 pre {
-  margin-left: 1em;
+  margin: .5em 1em;
   white-space: pre-wrap;
+}
+
+code {
   font-size: .95em;
 }
 
