@@ -22,27 +22,7 @@
           $("blockquote#rendered, p#code-link, div#code, p#rendered-link").toggle();
         });
 
-        // hide comment section by default
-        $('div#comment-input').toggle();
-        $('h2#comment-input-header').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
-        $("h2#comment-input-header").prop("title", "show input form for comments");
-
-        // make the h2 for the comment input act like a toggle
-        $('h2#comment-input-header').click(function() {
-          $('div#comment-input').toggle();
-
-          // change <<< into >>> and vice versa
-          if ($('div#comment-input').is(':visible')) {
-            $('h2#comment-input-header span').text('<<<');
-            $("h2#comment-input-header").prop("title", "hide input form for comments");
-          }
-          else {
-            $('h2#comment-input-header span').text('>>>');
-            $("h2#comment-input-header").prop("title", "show input form for comments");
-          }
-        });
-
-        // make header look like link
+        // make comments header look like link
         $("h2#comments-header").css("cursor", "pointer");
         // hide comment section if there are no comments, and add the correct toggle symbol
         // TODO it would be better if the serverside code would just generate the correct JS
@@ -55,7 +35,6 @@
           $("h2#comments-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
           $("h2#comments-header").prop("title", "hide comments");
         }
-
         // make the h2 for the comments act like a toggle
         $("h2#comments-header").click(function() {
           $("div#comments").toggle();
@@ -68,6 +47,27 @@
           else {
             $("h2#comments-header span").text('>>>');
             $("h2#comments-header").prop("title", "show comments");
+          }
+        });
+
+        // hide comment input section by default
+        $('div#comment-input').toggle();
+        // make comment input header look like link
+        $("h2#comment-input-header").css("cursor", "pointer");
+        // make the h2 for the comment input act like a toggle
+        $('h2#comment-input-header').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
+        $("h2#comment-input-header").prop("title", "show input form for comments");
+        $('h2#comment-input-header').click(function() {
+          $('div#comment-input').toggle();
+
+          // change <<< into >>> and vice versa
+          if ($('div#comment-input').is(':visible')) {
+            $('h2#comment-input-header span').text('<<<');
+            $("h2#comment-input-header").prop("title", "hide input form for comments");
+          }
+          else {
+            $('h2#comment-input-header span').text('>>>');
+            $("h2#comment-input-header").prop("title", "show input form for comments");
           }
         });
       });
