@@ -1,6 +1,6 @@
-[submodule "MathJax"]
-	path = MathJax
+[submodule "js/MathJax"]
+	path = js/MathJax
 	url = git://github.com/mathjax/MathJax.git
-[submodule "XyJax"]
-	path = XyJax
+[submodule "js/XyJax"]
+	path = js/XyJax
 	url = git://github.com/sonoisa/XyJax.git
