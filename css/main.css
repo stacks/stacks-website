@@ -45,6 +45,10 @@ h1 a:visited {
   color: black;
 }
 
+a img {
+  border: none;
+}
+
 h2 {
   font-size: 18px;
   margin: -5px -5px 10px -5px;
