@@ -73,6 +73,13 @@ blockquote#rendered span.qed {
 ul#citation-options {
 }
 
-ul#citation-options img {
-  float: right;
+ul#citation-options li {
+  background-image: url('../images/clipboard.png');
+  background-repeat: no-repeat;
+  background-position: right center;
 }
+
+ul#citation-options li a {
+  display: block;
+}
+
