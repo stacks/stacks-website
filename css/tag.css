@@ -40,12 +40,28 @@ blockquote#rendered {
   font-size: 16px;
 }
 
-blockquote#rendered a.environment-link {
+blockquote#rendered a.theorem-identification {
   color: black;
+  font-weight: bold;
+  font-style: normal;
   text-decoration: none;
 }
 
-blockquote#preview a.environment-link:hover {
+blockquote#rendered a.theorem-identification:hover {
   text-decoration: underline;
+}
+
+blockquote#rendered p.definition {
+}
+
+blockquote#rendered p.plain {
+  font-style: italic;
+}
+
+blockquote#rendered p.remark {
+}
+
+blockquote#rendered span.qed {
+  float: right;
 }
 
