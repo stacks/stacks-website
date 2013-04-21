@@ -40,6 +40,11 @@ blockquote#rendered {
   font-size: 16px;
 }
 
+blockquote#rendered h2,
+blockquote#rendered p {
+  margin-left: 0;
+}
+
 blockquote#rendered a.theorem-identification {
   color: black;
   font-weight: bold;
