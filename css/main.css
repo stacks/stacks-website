@@ -154,7 +154,7 @@ div#sidebar h2 {
 }
 
 div#sidebar ul {
-  margin-left: 0;
+  margin: 5px 0 15px 5px;
   padding-left: 15px;
 }
 
