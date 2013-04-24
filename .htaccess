@@ -1,0 +1,9 @@
+Options +Indexes
+
+RewriteEngine On
+
+RewriteRule about$ index.php?page=about [L]
+RewriteRule browse$ index.php?page=browse [L]
+RewriteRule chapter/(.+)$ index.php?page=chapter&chapter=$1 [L]
+RewriteRule tag$ index.php?page=tag [L]
+RewriteRule tags$ index.php?page=tags [L]
