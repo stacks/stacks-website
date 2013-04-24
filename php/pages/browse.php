@@ -4,6 +4,10 @@ require_once("php/page.php");
 require_once("php/general.php");
 
 class BrowsePage extends Page {
+  public function getHead() {
+    return "<link rel='stylesheet' type='text/css' href='" . href("css/browse.css") . "'>";
+  }
+
   public function getMain() {
     $value = "";
 
