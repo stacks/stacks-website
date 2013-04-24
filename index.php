@@ -1,5 +1,6 @@
 <?php
 
+ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // read configuration file
@@ -24,7 +25,12 @@ include("php/pages/tagview.php");
 // TODO some error code
 // TODO "index" is default, no, should be an error message (but "index" == "")
 
-switch($_GET["page"]) {
+if (empty($_GET["page"]))
+  $page = "index";
+else
+  $page = $_GET["page"];
+
+switch($page) {
   case "about":
     $page = new AboutPage($database);
     break;
@@ -33,7 +39,12 @@ switch($_GET["page"]) {
     break;
   case "chapter":
     // TODO some checking of this value
-    $page = new ChapterPage($database, $_GET["chapter"]);
+    if (section_exists($_GET["chapter"])) {
+      $page = new ChapterPage($database, $_GET["chapter"]);
+    }
+    else {
+      $page = new AboutPage($database); // TODO an appropriate error page
+    }
     break;
   case "index":
     $page = new IndexPage($database);
@@ -54,7 +65,7 @@ switch($_GET["page"]) {
 <html>
   <head>
     <title>Stacks Project<?php print $page->getTitle(); ?></title>
-    <link rel='stylesheet' type='text/css' href='css/main.css'>
+    <link rel='stylesheet' type='text/css' href='<?php print href("css/main.css"); ?>'>
     <link rel='stylesheet' type='text/css' href='css/tag.css'>
 
     <link rel='icon' type='image/vnd.microsoft.icon' href='stacks.ico'> 
@@ -65,13 +76,13 @@ switch($_GET["page"]) {
   </head>
 
   <body>
-    <h1><a href='/'>The Stacks Project</a></h1>
+  <h1><a href='<?php print href(''); ?>'>The Stacks Project</a></h1>
 
     <ul id='menu'>
       <li><a href='<?php print href("about"); ?>'>about</a>
       <li><a href='<?php print href("tags"); ?>'>tags explained</a>
       <li><a href='<?php print href("tag"); ?>'>tag lookup</a>
-      <li><a href='#'>browse</a>
+      <li><a href='<?php print href("browse"); ?>'>browse</a>
       <li><a href='#'>search</a>
       <li><a href='#'>bibliography</a>
       <li><a href='#'>recent comments</a>
