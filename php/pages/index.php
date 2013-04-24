@@ -1,8 +1,9 @@
 <?php
 
-include("php/page.php");
-include("php/comments.php");
-include("php/general.php");
+require_once("php/page.php");
+require_once("php/comments.php");
+require_once("php/general.php");
+require_once("php/search.php");
 
 class IndexPage extends Page {
   public function getMain() {
@@ -18,10 +19,7 @@ class IndexPage extends Page {
 
     $value .= "<h2><a href='#'>Looking up tags</a></h2>";
     $value .= "<p>You can search the Stacks project by keywords:";
-    $value .= "<form action='#' method='get'>";
-    $value .= "<label>Keywords: <input type='text' name='keywords'></label>";
-    $value .= "<input type='submit' value='search'>";
-    $value .= "</form>";
+    $value .= get_simple_search_form();
     $value .= "<p>If you on the other hand have a tag for an item (which can be anything, from section, lemma, theorem, etc.) in the Stacks project, you can <a href='#'>look up the tag's page</a>.</p>";
 
     $value .= "<h2><a href='#'>Referencing the Stacks project</a></h2>";
@@ -47,7 +45,7 @@ class IndexPage extends Page {
     }
     $value .= "</ol>";
 
-    $value .= "<h2>Recent additions</h2>";
+    $value .= "<h2>Recent changes</h2>";
 
     $value .= "<h2>Recent blog posts</h2>";
 

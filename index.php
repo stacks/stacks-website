@@ -14,8 +14,24 @@ catch(PDOException $e) {
 }
 
 include("php/pages/index.php");
+include("php/pages/taglookup.php");
+include("php/pages/tagview.php");
 
-$page = new IndexPage($database, array());
+// TODO some error code
+// TODO "index" is default
+
+switch($_GET["page"]) {
+case "index":
+  $page = new IndexPage($database);
+  break;
+case "tag":
+  if(!empty($_GET["tag"]))
+    $page = new TagViewPage($database, $_GET["tag"]);
+  else
+    $page = new TagLookupPage($database);
+  break;
+}
+
 
 ?>
 <!doctype html>

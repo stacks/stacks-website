@@ -8,12 +8,10 @@
  * page elements.
  */
 abstract class Page {
-  protected $configuration;
-  protected $database;
+  protected $db;
 
-  public function __construct($database, $configuration) {
+  public function __construct($database) {
     $this->db = $database;
-    $this->configuration = $configuration;
   }
 
   public function getHead() {

@@ -179,6 +179,7 @@ div#sidebar ul li {
 
 div#sidebar p {
   margin-top: 0;
+  margin-bottom: 10px;
 }
 
 div#sidebar dl {
@@ -203,4 +204,8 @@ div#sidebar dd {
 div#sidebar ol {
   margin-top: 0;
   list-style-type: inside;
+}
+
+div#sidebar form {
+  margin: 0;
 }
