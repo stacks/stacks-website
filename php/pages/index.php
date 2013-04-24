@@ -1,6 +1,8 @@
 <?php
 
-include("page.php");
+include("php/page.php");
+include("php/comments.php");
+include("php/general.php");
 
 class IndexPage extends Page {
   public function getMain() {
@@ -37,7 +39,22 @@ class IndexPage extends Page {
     return $value;
   }
   public function getSidebar() {
-    return "";
+    $value .= "<h2><a href='" . href("recents-comments") . "'>Recent comments</a></h2>";
+    $comments = get_comments($this->db, 0, 5);
+    $value .= "<ol id='recent-comments-sidebar'>";
+    foreach($comments as $comment) {
+      $value .= "<li value='" . $comment["id"] . "'><a href='" . href("tag/" . $comment['tag'] . "#comment-" . $comment['id']) . "' title='" . $comment["date"] . "'>" . htmlentities($comment["author"]) . " on tag " . $comment["tag"] . "</a>";
+    }
+    $value .= "</ol>";
+
+    $value .= "<h2>Recent additions</h2>";
+
+    $value .= "<h2>Recent blog posts</h2>";
+
+    $value .= "<h2>Highlights</h2>";
+    // this could be pointers to blog posts discussing new functionality
+
+    return $value;
   }
   public function getTitle() {
     return "";

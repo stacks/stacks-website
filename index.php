@@ -2,9 +2,20 @@
 
 error_reporting(E_ALL);
 
-include("php/index.php");
+// read configuration file
+$config = parse_ini_file("config.ini");
 
-$page = new IndexPage();
+// initialize the global database object
+try {
+  $database = new PDO("sqlite:" . $config["database"]);
+}
+catch(PDOException $e) {
+  echo $e->getMessage();
+}
+
+include("php/pages/index.php");
+
+$page = new IndexPage($database, array());
 
 ?>
 <!doctype html>
