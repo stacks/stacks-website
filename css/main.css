@@ -202,5 +202,5 @@ div#sidebar dd {
 
 div#sidebar ol {
   margin-top: 0;
-  margin-left: -15px;
+  list-style-type: inside;
 }
