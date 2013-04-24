@@ -27,3 +27,7 @@ table#browse tr:nth-child(odd):hover {
 table#browse tr:nth-child(even):hover {
   background-color: #edece6;
 }
+
+table#browse td.download {
+  text-align: center;
+}

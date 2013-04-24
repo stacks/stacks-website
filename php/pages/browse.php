@@ -40,9 +40,8 @@ class BrowsePage extends Page {
     $value .= "<th>Part</th>";
     $value .= "<th>Chapter</th>";
     $value .= "<th>online</th>";
-    $value .= "<th>TeX</th>";
-    $value .= "<th>pdf</th> ";
-    $value .= "<th>dvi</th>";
+    $value .= "<th>TeX source</th>";
+    $value .= "<th>view pdf</th> ";
     $value .= "</tr>";
 
     try {
@@ -51,12 +50,11 @@ class BrowsePage extends Page {
         while ($row = $sql->fetch()) {
           // check whether it's the first chapter, insert row with part if necessary
           if (array_key_exists($row["title"], $this->parts)) {
-            $value .= $this->printPart($this->parts[$row["title"]]); // TODO latex_to_html
+            $value .= $this->printPart(latex_to_html($this->parts[$row["title"]]));
           }
 
           // change LaTeX escaping to HTML escaping
-          $value .= $this->printChapter($row["title"], $row["filename"], $row["number"]); // TODO latex_to_html
-          // this->printChapter(latex_to_html($row["title"]), $row["filename"], $row["number"]);
+          $value .= $this->printChapter(latex_to_html($row["title"]), $row["filename"], $row["number"]);
           $number = $row["number"];
         }
       }
@@ -96,26 +94,21 @@ class BrowsePage extends Page {
     $value .= "<td>" . $number . ".&nbsp;&nbsp;&nbsp;" . $chapter . "</td>";
     // third column
     if ($chapter == "Bibliography")
-      $value .= "<td><a href='" . href('bibliography') . "'><code>online</code></a></td>";
+      $value .= "<td class='download'><a href='" . href('bibliography') . "'><code>online</code></a></td>";
     else
-      $value .= "<td><a href='" . href('chapter/' . $number) . "'><code>online</code></a></td>";
+      $value .= "<td class='download'><a href='" . href('chapter/' . $number) . "'><code>online</code></a></td>";
     // fourth column
     if ($chapter == "Auto generated index")
       $value .= "<td></td>";
     elseif ($chapter == "Bibliography")
-      $value .= "<td><a href='" . href('tex/my.bib') . "'><code>tex</code></a></td>"; // TODO link to GitHub
+      $value .= "<td class='download'><a href='https://github.com/stacks/stacks-project/blob/master/my.bib'><code>tex</code></a></td>"; // TODO link to GitHub
     else
-      $value .= "<td><a href='" . href('tex/' . $filename . '.tex') . "'><code>tex</code></a></td>"; // TODO link to GitHub
+      $value .= "<td class='download'><a href='https://github.com/stacks/stacks-project/blob/master/" . $filename . ".tex'><code>tex</code></a></td>";
     // fifth column
-    // TODO maybe just drop dvi? is this still actively being downloaded?
-    if ($chapter == "Bibliography") {
-      $value .= "<td><a href='" . href('download/bibliography.pdf') . "'><code>pdf</code></a></td>";
-      $value .= "<td><a href='" . href('download/bibliography.dvi') . "'><code>dvi</code></a></td>";
-    }
-    else {
-      $value .= "<td><a href='" . href('download/' . $filename . '.pdf') . "'><code>pdf</code></a></td>";
-      $value .= "<td><a href='" . href('download/' . $filename . '.dvi') . "'><code>dvi</code></a></td>";
-    }
+    if ($chapter == "Bibliography")
+      $value .= "<td class='download'><a href='" . href('download/bibliography.pdf') . "'><code>pdf</code></a></td>";
+    else 
+      $value .= "<td class='download'><a href='" . href('download/' . $filename . '.pdf') . "'><code>pdf</code></a></td>";
     $value .= "</tr>";
 
     return $value;
