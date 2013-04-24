@@ -37,6 +37,8 @@ class IndexPage extends Page {
     return $value;
   }
   public function getSidebar() {
+    $value = "";
+
     $value .= "<h2><a href='" . href("recents-comments") . "'>Recent comments</a></h2>";
     $comments = get_comments($this->db, 0, 5);
     $value .= "<ol id='recent-comments-sidebar'>";
