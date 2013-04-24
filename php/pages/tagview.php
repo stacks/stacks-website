@@ -10,7 +10,7 @@ class TagViewPage extends Page {
     $this->db = $database;
 
     try {
-      $sql = $this->db->prepare("SELECT tag, name FROM tags WHERE tag = :tag");
+      $sql = $this->db->prepare("SELECT tag, name, position, type FROM tags WHERE tag = :tag");
       $sql->bindParam(":tag", $tag);
 
       if ($sql->execute())
@@ -36,37 +36,27 @@ class TagViewPage extends Page {
     $value .= "</div>";
 
     $value .= "<h2 id='comment-input-header'>Add a comment on tag <var>" . $this->tag["tag"] . "</var></h2>";
-    $value .= "<div id='comment-input'>";
-    $value .= "<p>Your email address will not be published. Required fields are marked.</p>";
-    $value .= "<p>In your comment you can use <a href='#'>Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).</p>"; // TODO fix link
-    $value .= "<noscript>Unfortunately JavaScript is disabled in your browser, so the comment preview function will not work.</noscript>";
-
-    $value .= "<form name='comment' id='comment-form' action='#' method='post'>";
-    $value .= "<label for='name'>Name<sup>*</sup>:</label>";
-    $value .= "<input type='text' name='name' id='name'><br>";
-    $value .= "<label for='mail'>E-mail<sup>*</sup>:</label>";
-    $value .= "<input type='text' name='email' id='mail'><br>";
-    $value .= "<label for='site'>Site:</label>";
-    $value .= "<input type='text' name='site' id='site'><br>";
-    $value .= "<label>Comment:</label> <span id='epiceditor-status'></span>";
-    $value .= "<textarea name='comment' id='comment-textarea' cols='80' rows='10'></textarea>";
-    $value .= "<div id='epiceditor'></div>";
-
-    $value .= "<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>";
-    $value .= "<label for='check'>Tag:</label>";
-    $value .= "<input type='text' name='check' id='check'><br>";
-    $value .= "<input type='hidden' name='tag' value='03D9'>";
-    $value .= "<input type='submit' id='comment-submit' value='Post comment'>";
-    $value .= "</form>";
-    $value .= "</div>";
+    $value .= $this->printCommentInput();
 
     return $value;
   }
   public function getSidebar() {
     $value = "";
 
+    $value .= "<h2>Navigating results</h2>";
+    $value .= $this->printNavigation();
+
+    $value .= "<h2>Your location</h2>";
+    $value .= $this->printLocation();
+
     $value .= "<h2>How can you cite this tag?</h2>";
     $value .= $this->printCitation();
+
+    $value .= "<h2>Extras</h2>";
+    $value .= "<ul>";
+    $value .= "<li><a href='#'>dependency graph</a></li>";
+    $value .= "<li><a href='#'>statistics</a></li>";
+    $value .= "</ul>";
 
     return $value;
   }
@@ -111,6 +101,86 @@ class TagViewPage extends Page {
 
     return $value;
   }
+
+  private function printCommentInput() {
+    $value = "";
+    $value .= "<div id='comment-input'>";
+    $value .= "<p>Your email address will not be published. Required fields are marked.</p>";
+    $value .= "<p>In your comment you can use <a href='#'>Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).</p>"; // TODO fix link
+    $value .= "<noscript>Unfortunately JavaScript is disabled in your browser, so the comment preview function will not work.</noscript>";
+
+    $value .= "<form name='comment' id='comment-form' action='#' method='post'>";
+    $value .= "<label for='name'>Name<sup>*</sup>:</label>";
+    $value .= "<input type='text' name='name' id='name'><br>";
+    $value .= "<label for='mail'>E-mail<sup>*</sup>:</label>";
+    $value .= "<input type='text' name='email' id='mail'><br>";
+    $value .= "<label for='site'>Site:</label>";
+    $value .= "<input type='text' name='site' id='site'><br>";
+    $value .= "<label>Comment:</label> <span id='epiceditor-status'></span>";
+    $value .= "<textarea name='comment' id='comment-textarea' cols='80' rows='10'></textarea>";
+    $value .= "<div id='epiceditor'></div>";
+
+    $value .= "<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>";
+    $value .= "<label for='check'>Tag:</label>";
+    $value .= "<input type='text' name='check' id='check'><br>";
+    $value .= "<input type='hidden' name='tag' value='03D9'>";
+    $value .= "<input type='submit' id='comment-submit' value='Post comment'>";
+    $value .= "</form>";
+    $value .= "</div>";
+
+    return $value;
+  }
+
+  private function printLocation() {
+    $value = "";
+
+    $value .= "<p>You're at<p>";
+    $value .= "<ul>";
+    $value .= "<li>Section 14 on <a href='#'>page 12</a> of <a href='#'>Chapter&nbsp;17: Modules on Sites</a>";
+    $value .= "<li>Section 17.14 on <a href='#'>page 1159</a> of the book version";
+    $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/sites-modules.tex#L1238-1425'>lines 1238&ndash;1425</a> of <var><a href='https://github.com/stacks/stacks-project/blob/master/sites-modules.tex'>sites-modules.tex</a></var>";
+    $value .= "</ul>";
+
+    return $value;
+  }
+
+  private function printNavigation() {
+    // TODO cache this?
+    $value = "";
+
+    if ($this->tag["type"] == "section") { // TODO what about subsection?
+      $value .= "<p class='navigation'>";
+      // previous section
+      $sql = $this->db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE tags.position < :position AND tags.type = "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY tags.position DESC LIMIT 1');
+      $sql->bindParam(':position', $this->tag["position"]);
+
+      if ($sql->execute()) {
+        // at most one will be selected
+        while ($row = $sql->fetch()) {
+          $value .= "<span class='left'><a title='" . $row["number"] . " " . $row["title"] . "' href='" . href("tag/" . $row["tag"]) . "'>&lt;&lt; Previous section</a></span>";
+        }
+      }
+      // next section
+      $sql = $this->db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE tags.position > :position AND tags.type = "section" AND tags.book_id = sections.number AND sections.number LIKE "%.%" ORDER BY tags.position LIMIT 1');
+      $sql->bindParam(':position', $this->tag["position"]);
+
+      if ($sql->execute()) {
+        while ($row = $sql->fetch()) {
+          $value .= "<span class='right'><a title='" . $row["number"] . " " . $row["title"] . "' href='" . href("tag/" . $row["tag"]) . "'>Next section &gt;&gt;</a></span>";
+        }
+      }
+      $value .= "</p>";
+    }
+
+    // TODO make this dynamic
+    $value .= "<p class='navigation'>";
+    $value .= "<span class='left'><a title='03D8 sites-modules-lemma-push-pull-composition-modules' href='#'>&lt;&lt; Previous tag</a></span>";
+    $value .= "<span class='right'><a title='03DA sites-modules-lemma-abelian' href='#'>Next tag &gt;&gt;</a></span>";
+    $value .= "</p>";
+
+    return $value;
+  }
+
   private function printView() {
     $value = "";
     $value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
