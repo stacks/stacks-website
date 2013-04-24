@@ -14,16 +14,26 @@ catch(PDOException $e) {
 }
 
 include("php/pages/about.php");
+include("php/pages/browse.php");
+include("php/pages/chapter.php");
 include("php/pages/index.php");
 include("php/pages/taglookup.php");
+include("php/pages/tags.php");
 include("php/pages/tagview.php");
 
 // TODO some error code
-// TODO "index" is default
+// TODO "index" is default, no, should be an error message (but "index" == "")
 
 switch($_GET["page"]) {
   case "about":
     $page = new AboutPage($database);
+    break;
+  case "browse":
+    $page = new BrowsePage($database);
+    break;
+  case "chapter":
+    // TODO some checking of this value
+    $page = new ChapterPage($database, $_GET["chapter"]);
     break;
   case "index":
     $page = new IndexPage($database);
@@ -33,6 +43,9 @@ switch($_GET["page"]) {
       $page = new TagViewPage($database, $_GET["tag"]);
     else
       $page = new TagLookupPage($database);
+    break;
+  case "tags":
+    $page = new TagsPage($database);
     break;
 }
 
@@ -55,9 +68,9 @@ switch($_GET["page"]) {
     <h1><a href='/'>The Stacks Project</a></h1>
 
     <ul id='menu'>
-      <li><a href='#'>about</a>
-      <li><a href='#'>tags explained</a>
-      <li><a href='#'>tag lookup</a>
+      <li><a href='<?php print href("about"); ?>'>about</a>
+      <li><a href='<?php print href("tags"); ?>'>tags explained</a>
+      <li><a href='<?php print href("tag"); ?>'>tag lookup</a>
       <li><a href='#'>browse</a>
       <li><a href='#'>search</a>
       <li><a href='#'>bibliography</a>
