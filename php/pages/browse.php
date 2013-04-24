@@ -3,7 +3,28 @@
 require_once("php/page.php");
 require_once("php/general.php");
 
+// turn the name of a part into an identifier that is more HTMLish
+function partToIdentifier($part) {
+  return strtolower(str_replace(" ", "-", $part));
+}
+
 class BrowsePage extends Page {
+  private $parts;
+
+  public function __construct($database) {
+    $this->db = $database;
+
+    // mapping the first chapter of each part to the title of the part
+    $this->parts = array(
+      "Introduction"                    => "Preliminaries",
+      "Schemes"                         => "Schemes",
+      "Chow Homology and Chern Classes" => "Topics in Scheme Theory",
+      "Algebraic Spaces"                => "Algebraic Spaces",
+      "Formal Deformation Theory"       => "Deformation Theory",
+      "Algebraic Stacks"                => "Algebraic Stacks",
+      "Examples"                        => "Miscellany");
+  }
+
   public function getHead() {
     return "<link rel='stylesheet' type='text/css' href='" . href("css/browse.css") . "'>";
   }
@@ -12,16 +33,6 @@ class BrowsePage extends Page {
     $value = "";
 
     $value .= "<h2>Browse chapters</h2>";
-
-    // mapping the first chapter of each part to the title of the part
-    $parts = array(
-      "Introduction"                    => "Preliminaries",
-      "Schemes"                         => "Schemes",
-      "Chow Homology and Chern Classes" => "Topics in Scheme Theory",
-      "Algebraic Spaces"                => "Algebraic Spaces",
-      "Formal Deformation Theory"       => "Deformation Theory",
-      "Algebraic Stacks"                => "Algebraic Stacks",
-      "Examples"                        => "Miscellany");
     $number = 0;
 
     $value .= "<table id='browse'>";
@@ -38,9 +49,9 @@ class BrowsePage extends Page {
       $sql = $this->db->prepare("SELECT number, title, filename FROM sections WHERE number NOT LIKE '%.%' ORDER BY CAST(number AS INTEGER)");
       if ($sql->execute()) {
         while ($row = $sql->fetch()) {
-          // check wheter it's the first chapter, insert row with part if necessary
-          if (array_key_exists($row["title"], $parts)) {
-            $value .= $this->printPart($parts[$row["title"]]); // TODO latex_to_html
+          // check whether it's the first chapter, insert row with part if necessary
+          if (array_key_exists($row["title"], $this->parts)) {
+            $value .= $this->printPart($this->parts[$row["title"]]); // TODO latex_to_html
           }
 
           // change LaTeX escaping to HTML escaping
@@ -59,8 +70,14 @@ class BrowsePage extends Page {
     return $value;
   }
   public function getSidebar() {
-    // TODO print parts in the sidebar
     $value = "";
+
+    $value .= "<h2>Parts</h2>";
+    $value .= "<ol>";
+    foreach ($this->parts as $part) {
+      $value .= "<li><a href='#" . partToIdentifier($part) . "'>" . $part . "</a>";
+    }
+    $value .= "</ol>";
 
     return $value;
   }
@@ -108,7 +125,7 @@ class BrowsePage extends Page {
   private function printPart($part) {
     $value = "";
 
-    $value .= "<tr>";
+    $value .= "<tr id='" . partToIdentifier($part) . "'>";
     $value .= "<td>" . $part . "</td>";
     $value .= "<td></td>";
     $value .= "<td></td>";
