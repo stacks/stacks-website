@@ -13,6 +13,7 @@ catch(PDOException $e) {
   echo $e->getMessage();
 }
 
+include("php/pages/about.php");
 include("php/pages/index.php");
 include("php/pages/taglookup.php");
 include("php/pages/tagview.php");
@@ -21,17 +22,19 @@ include("php/pages/tagview.php");
 // TODO "index" is default
 
 switch($_GET["page"]) {
-case "index":
-  $page = new IndexPage($database);
-  break;
-case "tag":
-  if(!empty($_GET["tag"]))
-    $page = new TagViewPage($database, $_GET["tag"]);
-  else
-    $page = new TagLookupPage($database);
-  break;
+  case "about":
+    $page = new AboutPage($database);
+    break;
+  case "index":
+    $page = new IndexPage($database);
+    break;
+  case "tag":
+    if(!empty($_GET["tag"]))
+      $page = new TagViewPage($database, $_GET["tag"]);
+    else
+      $page = new TagLookupPage($database);
+    break;
 }
-
 
 ?>
 <!doctype html>
