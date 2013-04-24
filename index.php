@@ -79,6 +79,7 @@ switch($page) {
   <h1><a href='<?php print href(''); ?>'>The Stacks Project</a></h1>
 
     <ul id='menu'>
+      <li><a href='<?php print href(""); ?>'>main</a>
       <li><a href='<?php print href("about"); ?>'>about</a>
       <li><a href='<?php print href("tags"); ?>'>tags explained</a>
       <li><a href='<?php print href("tag"); ?>'>tag lookup</a>
