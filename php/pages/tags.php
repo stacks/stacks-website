@@ -21,10 +21,11 @@ class TagsPage extends Page {
     $value .= "<h2 id='reference'>How to reference tags</h2>";
     $value .= "<p>In your BibTeX file put";
     $value .= "<pre><code>@misc{stacks-project,\n";
+    $value .= "  shorthand    = {Stacks},\n";
     $value .= "  author       = {The {Stacks Project Authors}},\n";
     $value .= "  title        = {\itshape Stacks Project},\n";
     $value .= "  howpublished = {\url{http://stacks.math.columbia.edu}},\n";
-    $value .= "  year         = {" . date('Y'). ",\n";
+    $value .= "  year         = {" . date('Y'). "},\n";
     $value .= "}</code></pre>";
     $value .= "Then you can use the citation code we provide on each tag's page (below the preview) to <em>cite</em> and <em>link</em> the corresponding tag, for example by";
     $value .= "<pre><code>\cite[\href{http://stacks.math.columbia.edu/tag/0123}{Tag 0123}]{stacks-project}</code></pre>";
