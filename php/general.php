@@ -42,5 +42,29 @@ function parseAccents($text) {
   return $text;
 }
 
+// this is minor TeX parsing routine, mostly used for interpreting brackets {} in the correct way depending on math mode or not
+function parseTeX($value) {
+  $value = parseAccents($value);
+
+  $value = preg_replace("/\\\url\{(.*)\}/", '<a href="$1">$1</a>', $value);
+  $value = preg_replace("/\{\\\itshape(.*)\}/", '$1', $value);
+  $value = str_replace("\\bf ", '', $value);
+
+  $parts = explode('$', $value);
+  for ($i = 0; $i < count($parts); $i++) {
+    // not in math mode, i.e. remove all {}
+    if ($i % 2 == 0) {
+      $parts[$i] = str_replace('{', '', $parts[$i]);
+      $parts[$i] = str_replace('}', '', $parts[$i]);
+    }
+  }
+  $value = implode('$', $parts);
+
+  $value = str_replace("--", "&ndash;", $value);
+
+  return $value;
+}
+
+
 
 ?>

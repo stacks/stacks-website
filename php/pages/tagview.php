@@ -30,6 +30,18 @@ function isPhantom($label) {
   return substr_compare($label, "section-phantom", -15, 15) == 0;
 }
 
+function preprocessCode($code) {
+  // remove irrelevant new lines at the end
+  $code = trim($code);
+  // escape stuff
+  $code = htmlentities($code);
+
+  // but links should work: tag links are made up from alphanumeric characters, slashes, dashes and underscores, while the LaTeX label contains only alphanumeric characters and dashes
+  $code = preg_replace('/&lt;a href=&quot;\/([A-Za-z0-9\/\-]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . href("") . '$1">$2</a>', $code);
+
+  return $code;
+}
+
 function stripChapter($id) {
   return implode(array_splice(explode(".", $id), 1), ".");
 }
@@ -42,7 +54,7 @@ class TagViewPage extends Page {
     $this->db = $database;
 
     try {
-      $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page, label FROM tags WHERE tag = :tag");
+      $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page, label, file, value FROM tags WHERE tag = :tag");
       $sql->bindParam(":tag", $tag);
 
       if ($sql->execute())
@@ -66,12 +78,25 @@ class TagViewPage extends Page {
     $value .= "<script type='text/javascript' src='" . href("js/tag.js") . "'></script>";
     $value .= "<link rel='stylesheet' type='text/css' href='" . href("css/tag.css") . "'>";
 
+    $value .= "<script type='text/javascript' src='" . href("js/MathJax/MathJax.js?config=default'") . "></script>";
+    $value .= "<script type='text/x-mathjax-config'>";
+    $value .= "  MathJax.Hub.Config({";
+    $value .= "    extensions: ['tex2jax.js', 'fp.js'],";
+    $value .= "    tex2jax: {inlineMath: [['$', '$']]},";
+    $value .= "    TeX: {extensions: ['xypic.js', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},";
+    $value .= "    'HTML-CSS': { scale: 85 }";
+    $value .= "  });";
+    $value .= "</script>";
+
     return $value;
   }
 
   public function getMain() {
     $value = "";
-    $value .= "<h2>Tag <var>" . $this->tag["tag"] . "</var></h2>";
+    $value .= "<h2>Tag <var>" . $this->tag["tag"] . "</var>";
+    if (!empty($this->tag["name"]))
+      $value .= ": " . parseAccents($this->tag["name"]);
+    $value .= "</h2>";
     $value .= $this->printView();
 
     $comments = $this->getComments(); // TODO initialize in constructor?
@@ -293,7 +318,20 @@ class TagViewPage extends Page {
 
   private function printView() {
     $value = "";
-    //$value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
+    $value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
+    $value .= "<blockquote id='rendered'>";
+    $value .= convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["value"]);
+    $value .= "</blockquote>";
+
+    $value .= "<p id='rendered-link' class='toggle'><a href='#rendered'>view</a></p>";
+    $value .= "<div id='code'>";
+    $value .= "<p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a> and is located in <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . "#'>lines 1238&ndash;1425</a> (see <a href='#'>updates</a> for more information)."; // TODO line references, and a page on the updating process
+    $value .= "<pre><code>";
+    $value .= preprocessCode($this->tag["value"]);
+    $value .= "</code></pre>";
+    $value .= "</div>";
+
+    $value .= $this->printNavigation();
 
     return $value;
   }
