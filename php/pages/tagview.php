@@ -26,6 +26,10 @@ function getChapter($id) {
   return $parts[0];
 }
 
+function isPhantom($label) {
+  return substr_compare($label, "section-phantom", -15, 15) == 0;
+}
+
 function stripChapter($id) {
   return implode(array_splice(explode(".", $id), 1), ".");
 }
@@ -38,7 +42,7 @@ class TagViewPage extends Page {
     $this->db = $database;
 
     try {
-      $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page FROM tags WHERE tag = :tag");
+      $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page, label FROM tags WHERE tag = :tag");
       $sql->bindParam(":tag", $tag);
 
       if ($sql->execute())
@@ -49,6 +53,9 @@ class TagViewPage extends Page {
     catch(PDOException $e) {
       echo $e->getMessage();
     }
+
+    if (isPhantom($this->tag["label"]))
+      $this->tag["type"] = "phantom";
   }
 
   public function getHead() {
@@ -207,6 +214,18 @@ class TagViewPage extends Page {
 
         break;
 
+      case "phantom":
+        $chapter = get_chapter(getChapter($this->tag["book_id"]));
+        $value .= "<li>Chapter " . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["book_page"] . "</a> of the book";
+        break;
+
+      case "equation":
+        $containingTag = getEnclosingTag($this->tag["position"]);
+        $chapter = get_chapter(getChapter($containingTag["book_id"]));
+        $value .= "<li>Equation " . stripChapter($this->tag["book_id"]) . " in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . " " . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("downloads/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter " . $chapter["number"] . ": " . $chapter["title"] . "</a>";
+        $value .= "<li>Equation " . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["book_page"] . "</a> of the book";
+        break;
+
       default:
         $chapter = get_chapter(getChapter($this->tag["book_id"]));
         $value .= "<li>" . ucfirst($this->tag["type"]) . " " . stripChapter($this->tag["book_id"]) . " on <a href='" . href("download/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter " . $chapter["number"] . ": " . $chapter["title"] . "</a>";
@@ -215,7 +234,10 @@ class TagViewPage extends Page {
         break;
     }
     
-    $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex#L'>lines ...</a> of <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
+    if ($this->tag["type"] != "phantom")
+      $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex#L'>lines ...</a> of <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
+    else
+      $value .= "<li>in <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
 
     $value .= "</ul>";
 
@@ -257,11 +279,14 @@ class TagViewPage extends Page {
     }
 
     $siblingTags = $this->getSiblingTags();
-
-    $value .= "<p class='navigation'>";
-    $value .= "<span class='left'><a title='" . $siblingTags["previous"]["tag"] . " " . $siblingTags["previous"]["label"] . "' href='" . href("tag/" . $siblingTags["previous"]["tag"]) . "'>&lt;&lt; Previous tag</a></span>";
-    $value .= "<span class='right'><a title='" . $siblingTags["next"]["tag"] . " " . $siblingTags["next"]["label"] . "' href='" . href("tag/" . $siblingTags["next"]["tag"]) . "'>Next tag &gt;&gt;</a></span>";
-    $value .= "</p>";
+    if (!empty($siblingTags)) {
+      $value .= "<p class='navigation'>";
+      if (isset($siblingTags["previous"]))
+        $value .= "<span class='left'><a title='" . $siblingTags["previous"]["tag"] . " " . $siblingTags["previous"]["label"] . "' href='" . href("tag/" . $siblingTags["previous"]["tag"]) . "'>&lt;&lt; Previous tag</a></span>";
+      if (isset($siblingTags["next"]))
+        $value .= "<span class='right'><a title='" . $siblingTags["next"]["tag"] . " " . $siblingTags["next"]["label"] . "' href='" . href("tag/" . $siblingTags["next"]["tag"]) . "'>Next tag &gt;&gt;</a></span>";
+      $value .= "</p>";
+    }
 
     return $value;
   }

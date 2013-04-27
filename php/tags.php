@@ -6,7 +6,7 @@ function getEnclosingTag($position) {
   global $database;
 
   try {
-    $sql = $database->prepare("SELECT tag, type, book_id FROM tags WHERE position < :position AND active = 'TRUE' AND type != 'item' ORDER BY position DESC LIMIT 1");
+    $sql = $database->prepare("SELECT tag, type, book_id FROM tags WHERE position < :position AND active = 'TRUE' AND type != 'item' AND TYPE != 'equation' ORDER BY position DESC LIMIT 1");
     $sql->bindParam(":position", $position);
 
     if ($sql->execute())
