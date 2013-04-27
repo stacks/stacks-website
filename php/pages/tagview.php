@@ -195,13 +195,28 @@ class TagViewPage extends Page {
   private function printLocation() {
     $value = "";
 
-    $value .= "<p>You're at<p>";
+    $value .= "<p>You're at</p>";
+
     $value .= "<ul>";
-    $chapter = get_chapter(getChapter($this->tag["book_id"]));
-    $value .= "<li>" . ucfirst($this->tag["type"]) . " " . stripChapter($this->tag["book_id"]) . " on <a href='" . href("download/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter " . $chapter["number"] . ": " . $chapter["title"] . "</a>";
-    $value .= "<li>" . ucfirst($this->tag["type"]) . " " . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["book_page"] . "</a> of the book";
-    // TODO implement lines in database
+    switch ($this->tag["type"]) {
+      // items have book_id equal to their enumeration number, so look up tag etc from position
+      case "item":
+        $containingTag = getEnclosingTag($this->tag["position"]);
+        $chapter = get_chapter(getChapter($containingTag["book_id"]));
+        $value .= "<li>Item " . $this->tag["book_id"] . " of the enumeration in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . " " . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("downloads/" . $chapter["filename"] . ".pdf#nameddest=" . $containingTag["tag"]) . "'>page " . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter " . $chapter["number"] . ": " . $chapter["title"] . "</a>";
+
+        break;
+
+      default:
+        $chapter = get_chapter(getChapter($this->tag["book_id"]));
+        $value .= "<li>" . ucfirst($this->tag["type"]) . " " . stripChapter($this->tag["book_id"]) . " on <a href='" . href("download/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter " . $chapter["number"] . ": " . $chapter["title"] . "</a>";
+        $value .= "<li>" . ucfirst($this->tag["type"]) . " " . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["book_page"] . "</a> of the book";
+        // TODO implement lines in database
+        break;
+    }
+    
     $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex#L'>lines ...</a> of <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
+
     $value .= "</ul>";
 
     return $value;
