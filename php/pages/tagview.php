@@ -93,10 +93,7 @@ class TagViewPage extends Page {
 
   public function getMain() {
     $value = "";
-    $value .= "<h2>Tag <var>" . $this->tag["tag"] . "</var>";
-    if (!empty($this->tag["name"]))
-      $value .= ": " . parseAccents($this->tag["name"]);
-    $value .= "</h2>";
+    $value .= "<h2>Tag <var>" . $this->tag["tag"] . "</var></h2>";
     $value .= $this->printView();
 
     $comments = $this->getComments(); // TODO initialize in constructor?
