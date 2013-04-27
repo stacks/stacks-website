@@ -2,8 +2,10 @@
 
 require_once("php/page.php");
 require_once("php/general.php");
+require_once("php/tags.php");
 
 class TagViewPage extends Page {
+  private $siblingTags;
   private $tag;
 
   public function __construct($database, $tag) {
@@ -89,6 +91,20 @@ class TagViewPage extends Page {
     // TODO implement
     return array();
   }
+
+  private function getSiblingTags() {
+    // check whether result is already cached (TODO initialize in constructor?)
+    if ($this->siblingTags != null)
+      return $this->siblingTags;
+
+    if (positionExists($this->tag["position"] - 1))
+      $this->siblingTags["previous"] = getTagAtPosition($this->tag["position"] - 1);
+    if (positionExists($this->tag["position"] + 1))
+      $this->siblingTags["next"] = getTagAtPosition($this->tag["position"] + 1);
+
+    return $this->siblingTags;
+  }
+
   private function printCitation() {
     $value = "";
 
@@ -197,10 +213,11 @@ class TagViewPage extends Page {
         break;
     }
 
-    // TODO make this dynamic
+    $siblingTags = $this->getSiblingTags();
+
     $value .= "<p class='navigation'>";
-    $value .= "<span class='left'><a title='03D8 sites-modules-lemma-push-pull-composition-modules' href='#'>&lt;&lt; Previous tag</a></span>";
-    $value .= "<span class='right'><a title='03DA sites-modules-lemma-abelian' href='#'>Next tag &gt;&gt;</a></span>";
+    $value .= "<span class='left'><a title='" . $siblingTags["previous"]["tag"] . " " . $siblingTags["previous"]["label"] . "' href='" . href("tag/" . $siblingTags["previous"]["tag"]) . "'>&lt;&lt; Previous tag</a></span>";
+    $value .= "<span class='right'><a title='" . $siblingTags["next"]["tag"] . " " . $siblingTags["next"]["label"] . "' href='" . href("tag/" . $siblingTags["next"]["tag"]) . "'>Next tag &gt;&gt;</a></span>";
     $value .= "</p>";
 
     return $value;
