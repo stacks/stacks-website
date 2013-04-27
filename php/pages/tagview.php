@@ -135,7 +135,7 @@ class TagViewPage extends Page {
     $value = "";
 
     $value .= "<p>Use:";
-    $value .= "<pre>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
+    $value .= "<pre><code>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
     $value .= "or one of the following (click to see and copy the code)";
     $value .= "<ul id='citation-options'>";
     $value .= "<li><a href='javascript:copyToClipboard(\"\\cite[\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{Tag " . $this->tag["tag"] . "}]{stacks-project}\")'>[Tag " . $this->tag["tag"] . ", Stacks]</a>";
