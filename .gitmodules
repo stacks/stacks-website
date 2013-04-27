@@ -4,3 +4,6 @@
 [submodule "js/XyJax"]
 	path = js/XyJax
 	url = git://github.com/sonoisa/XyJax.git
+[submodule "js/jquery-treeview"]
+	path = js/jquery-treeview
+	url = git://github.com/jzaefferer/jquery-treeview.git
