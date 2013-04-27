@@ -15,7 +15,7 @@ class IndexPage extends Page {
     $value .= "<p>The Stacks project is a collaborative effort. There is a <a href='#'>list of people who have contributed so far</a>. If you would like to know how to participate more can be found at the <a href='#'>contribute page</a>. To informally comment on the Stacks project visit the <a href='#'>blog</a>.</p>";
 
     $value .= "<h2><a href='#'>Browsing and downloads</a></h2>";
-    $value .= "<p>The entire project in one file: <a href='#'><var>pdf</var> version</a> | <a href='#'><var>dvi</var> version</a>. You can browse the project. There is a tree view which starts at <a href='#'>Chapter 1</a>. For other downloads (e.g. TeX files) we have a <a href='#'>dedicated downloads page</a>.</p>";
+    $value .= "<p>The entire project in <a href='#'>one pdf file</a>. You can also <a href='" . href("browse") . "'>browse the project online</a>, and there is a tree view which starts at <a href='#'>Chapter 1</a>. For other downloads (e.g. TeX files) we have a <a href='#'>dedicated downloads page</a>.</p>";
 
     $value .= "<h2><a href='#'>Looking up tags</a></h2>";
     $value .= "<p>You can search the Stacks project by keywords:";
