@@ -1,5 +1,8 @@
 <?php
 
+// TODO use this variable everywhere
+$jQuery = "https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js";
+
 function href($path) {
   // TODO this function should produce correct paths in any situation, given a path relative to the index
   return "/new/" . $path;
