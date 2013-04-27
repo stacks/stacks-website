@@ -94,9 +94,9 @@ class BrowsePage extends Page {
     $value .= "<td>" . $number . ".&nbsp;&nbsp;&nbsp;" . parseAccents($chapter) . "</td>";
     // third column
     if ($chapter == "Bibliography")
-      $value .= "<td class='download'><a href='" . href('bibliography') . "'><code>online</code></a></td>";
+      $value .= "<td class='download'><a href='" . href('bibliography') . "'>online</a></td>";
     else
-      $value .= "<td class='download'><a href='" . href('chapter/' . $number) . "'><code>online</code></a></td>";
+      $value .= "<td class='download'><a href='" . href('chapter/' . $number) . "'>online</a></td>";
     // fourth column
     if ($chapter == "Auto generated index")
       $value .= "<td></td>";
