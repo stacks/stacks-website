@@ -66,8 +66,9 @@ class TagViewPage extends Page {
       echo $e->getMessage();
     }
 
+    // phantom is actually a chapter
     if (isPhantom($this->tag["label"]))
-      $this->tag["type"] = "phantom";
+      $this->tag["type"] = "chapter";
   }
 
   public function getHead() {
@@ -316,20 +317,19 @@ class TagViewPage extends Page {
   private function printView() {
     $value = "";
     $value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
-    if (isPhantom($this->tag["label"])) {
-      $value .= "<div id='rendered'>";
+    $value .= "<blockquote id='rendered'>";
+    if ($this->tag["type"] == "chapter") {
+      $value .= "<h3>Chapter " . $this->tag["book_id"] . ": " . $this->tag["name"] . "</h3>";
       $value .= "<p>This tag corresponds to <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>, and contains no further text. To view the contents of the chapter, go to the next tag.</p>";
-      $value .= "</div>";
     }
     else {
-      $value .= "<blockquote id='rendered'>";
       $value .= convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["value"]);
-      $value .= "</blockquote>";
     }
+    $value .= "</blockquote>";
 
     $value .= "<p id='rendered-link' class='toggle'><a href='#rendered'>view</a></p>";
     $value .= "<div id='code'>";
-    if (isPhantom($this->tag["label"])) {
+    if ($this->tag["type"] == "chapter") {
       $value .= "<p>The tag corresponds to the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a>, or equivalently to the whole of <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>. No code preview is provided here.</p>";
     }
     else {
