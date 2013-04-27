@@ -66,7 +66,6 @@ switch($page) {
   <head>
     <title>Stacks Project<?php print $page->getTitle(); ?></title>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/main.css"); ?>'>
-    <link rel='stylesheet' type='text/css' href='css/tag.css'>
 
     <link rel='icon' type='image/vnd.microsoft.icon' href='stacks.ico'> 
     <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='stacks.ico'> 
