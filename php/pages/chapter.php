@@ -46,6 +46,12 @@ class ChapterPage extends Page {
     $value .= "<h2>Navigating chapters</h2>";
     $value .= $this->printNavigation(false);
 
+    $value .= "<h2>Downloads</h2>";
+    $value .= "<ul>";
+    $value .= "<li><a href='" . href("download/" . $this->chapter["filename"] . ".pdf") . "'><code>pdf</code> of this chapter</a>";
+    $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/" . $this->chapter["filename"] . ".tex'><code>tex</code> file for this chapter</a>";
+    $value .= "</ul>";
+
     return $value;
   }
   public function getTitle() {
@@ -60,7 +66,6 @@ class ChapterPage extends Page {
     // back
     if (section_exists(intval($this->chapter["number"]) - 1)) {
       $previousChapter = get_chapter(intval($this->chapter["number"]) - 1);
-      $value .= "<span class='left'><a href='" . href("chapter/" . (intval($this->chapter["number"]) - 1)) . "'>";
       if ($displayTitle) {
         $value .= "<span class='left'><a href='" . href("chapter/" . (intval($this->chapter["number"]) - 1)) . "'>";
         $value .= "&lt;&lt; Chapter " . (intval($this->chapter["number"]) - 1) . ": " . parseAccents($previousChapter["title"]);
@@ -84,6 +89,7 @@ class ChapterPage extends Page {
       }
       $value .= "</a></span>"; 
     }
+    $value .= "</p>";
 
     return $value;
   }
