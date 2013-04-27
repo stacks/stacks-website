@@ -35,7 +35,7 @@ class ChapterPage extends Page {
   public function getMain() {
     $value = "";
 
-    $value .= "<h2>Tree view for Chapter " . $this->chapter["number"] . ": " . $this->chapter["title"] . "</h2>";
+    $value .= "<h2>Tree view for Chapter " . $this->chapter["number"] . ": " . parseAccents($this->chapter["title"]) . "</h2>";
     $value .= $this->printNavigation();
 
     return $value;
@@ -62,7 +62,7 @@ class ChapterPage extends Page {
       $previous_chapter_information = get_chapter(intval($this->chapter['number']) - 1);
       $value .= "<span class='left'><a href='" . href('chapter/' . (intval($this->chapter['number']) - 1)) . "'>";
       if ($displayTitle)
-        $value .= "&lt;&lt; Chapter " . (intval($this->chapter['number']) - 1) . ": " . latex_to_html($previous_chapter_information['title']);
+        $value .= "&lt;&lt; Chapter " . (intval($this->chapter['number']) - 1) . ": " . parseAccents($previous_chapter_information['title']);
       else
         $value .= "&lt;&lt; Previous chapter";
       $value .= "</a></span>";
@@ -72,7 +72,7 @@ class ChapterPage extends Page {
       $next_chapter_information = get_chapter(intval($this->chapter['number']) + 1);
       $value .= "<span class='right'><a href='" . href('chapter/' . (intval($this->chapter['number']) + 1)) . "'>";
       if ($displayTitle)
-        $value .= "Chapter " . (intval($this->chapter['number']) + 1) . ": " . latex_to_html($next_chapter_information['title']) . " &gt;&gt;";
+        $value .= "Chapter " . (intval($this->chapter['number']) + 1) . ": " . parseAccents($next_chapter_information['title']) . " &gt;&gt;";
       else
         $value .= "Next chapter &gt;&gt;";
       $value .= "</a></span>"; 

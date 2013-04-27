@@ -50,11 +50,11 @@ class BrowsePage extends Page {
         while ($row = $sql->fetch()) {
           // check whether it's the first chapter, insert row with part if necessary
           if (array_key_exists($row["title"], $this->parts)) {
-            $value .= $this->printPart(latex_to_html($this->parts[$row["title"]]));
+            $value .= $this->printPart($this->parts[$row["title"]]);
           }
 
           // change LaTeX escaping to HTML escaping
-          $value .= $this->printChapter(latex_to_html($row["title"]), $row["filename"], $row["number"]);
+          $value .= $this->printChapter($row["title"], $row["filename"], $row["number"]);
           $number = $row["number"];
         }
       }
@@ -91,7 +91,7 @@ class BrowsePage extends Page {
     // first column
     $value .= "<td></td>";
     // second column
-    $value .= "<td>" . $number . ".&nbsp;&nbsp;&nbsp;" . $chapter . "</td>";
+    $value .= "<td>" . $number . ".&nbsp;&nbsp;&nbsp;" . parseAccents($chapter) . "</td>";
     // third column
     if ($chapter == "Bibliography")
       $value .= "<td class='download'><a href='" . href('bibliography') . "'><code>online</code></a></td>";
@@ -101,7 +101,7 @@ class BrowsePage extends Page {
     if ($chapter == "Auto generated index")
       $value .= "<td></td>";
     elseif ($chapter == "Bibliography")
-      $value .= "<td class='download'><a href='https://github.com/stacks/stacks-project/blob/master/my.bib'><code>tex</code></a></td>"; // TODO link to GitHub
+      $value .= "<td class='download'><a href='https://github.com/stacks/stacks-project/blob/master/my.bib'><code>tex</code></a></td>";
     else
       $value .= "<td class='download'><a href='https://github.com/stacks/stacks-project/blob/master/" . $filename . ".tex'><code>tex</code></a></td>";
     // fifth column
@@ -119,7 +119,7 @@ class BrowsePage extends Page {
     $value = "";
 
     $value .= "<tr id='" . partToIdentifier($part) . "'>";
-    $value .= "<td>" . $part . "</td>";
+    $value .= "<td>" . parseAccents($part) . "</td>";
     $value .= "<td></td>";
     $value .= "<td></td>";
     $value .= "<td></td>";
