@@ -20,7 +20,7 @@ $(document).ready(function() {
     // prevent movement
     e.preventDefault();
 
-    $("blockquote#rendered, p#code-link, div#code, p#rendered-link").toggle();
+    $("#rendered, p#code-link, div#code, p#rendered-link").toggle();
   });
 
   // make comments header look like link
