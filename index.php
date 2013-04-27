@@ -50,6 +50,8 @@ switch($page) {
     $page = new IndexPage($database);
     break;
   case "tag":
+    // TODO some checking of this value
+
     if(!empty($_GET["tag"]))
       $page = new TagViewPage($database, $_GET["tag"]);
     else

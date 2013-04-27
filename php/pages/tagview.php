@@ -23,6 +23,17 @@ class TagViewPage extends Page {
     }
   }
 
+  public function getHead() {
+    global $jQuery;
+    $value = "";
+
+    $value .= "<script type='text/javascript' src='" . $jQuery . "'></script>";
+    $value .= "<script type='text/javascript' src='" . href("js/tag.js") . "'></script>";
+    $value .= "<link rel='stylesheet' type='text/css' href='" . href("css/tag.css") . "'>";
+
+    return $value;
+  }
+
   public function getMain() {
     $value = "";
     $value .= "<h2>Tag <var>" . $this->tag["tag"] . "</var></h2>";
@@ -31,8 +42,14 @@ class TagViewPage extends Page {
     $comments = $this->getComments(); // TODO initialize in constructor?
     $value .= "<h2 id='comments-header'>Comments (" . count($comments) . ")</h2>";
     $value .= "<div id='comments'>";
-    foreach($comments as $comment)
-      $this->printComment($comment);
+    if (count($comments) == 0) {
+      $value .= "<p>There are no comments yet for this tag.</p>";
+    }
+    else {
+      foreach($comments as $comment)
+        $this->printComment($comment);
+      $value .= "<script type='text/javascript'>toggleComments();</script>";
+    }
     $value .= "</div>";
 
     $value .= "<h2 id='comment-input-header'>Add a comment on tag <var>" . $this->tag["tag"] . "</var></h2>";
@@ -73,6 +90,8 @@ class TagViewPage extends Page {
     return array();
   }
   private function printCitation() {
+    $value = "";
+
     $value .= "<p>Use:";
     $value .= "<pre>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
     $value .= "or one of the following (click to see and copy the code)";
@@ -148,28 +167,34 @@ class TagViewPage extends Page {
     // TODO cache this?
     $value = "";
 
-    if ($this->tag["type"] == "section") { // TODO what about subsection?
-      $value .= "<p class='navigation'>";
-      // previous section
-      $sql = $this->db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE tags.position < :position AND tags.type = "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY tags.position DESC LIMIT 1');
-      $sql->bindParam(':position', $this->tag["position"]);
+    switch ($this->tag["type"]) {
+      case "section": // TODO what about subsection?
+        $value .= "<p class='navigation'>";
+        // previous section
+        $sql = $this->db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE tags.position < :position AND tags.type = "section" AND sections.number LIKE "%.%" AND tags.book_id = sections.number ORDER BY tags.position DESC LIMIT 1');
+        $sql->bindParam(':position', $this->tag["position"]);
 
-      if ($sql->execute()) {
-        // at most one will be selected
-        while ($row = $sql->fetch()) {
-          $value .= "<span class='left'><a title='" . $row["number"] . " " . $row["title"] . "' href='" . href("tag/" . $row["tag"]) . "'>&lt;&lt; Previous section</a></span>";
+        if ($sql->execute()) {
+          // at most one will be selected
+          while ($row = $sql->fetch()) {
+            $value .= "<span class='left'><a title='" . $row["number"] . " " . $row["title"] . "' href='" . href("tag/" . $row["tag"]) . "'>&lt;&lt; Previous section</a></span>";
+          }
         }
-      }
-      // next section
-      $sql = $this->db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE tags.position > :position AND tags.type = "section" AND tags.book_id = sections.number AND sections.number LIKE "%.%" ORDER BY tags.position LIMIT 1');
-      $sql->bindParam(':position', $this->tag["position"]);
+        // next section
+        $sql = $this->db->prepare('SELECT sections.number, sections.title, tags.tag FROM sections, tags WHERE tags.position > :position AND tags.type = "section" AND tags.book_id = sections.number AND sections.number LIKE "%.%" ORDER BY tags.position LIMIT 1');
+        $sql->bindParam(':position', $this->tag["position"]);
 
-      if ($sql->execute()) {
-        while ($row = $sql->fetch()) {
-          $value .= "<span class='right'><a title='" . $row["number"] . " " . $row["title"] . "' href='" . href("tag/" . $row["tag"]) . "'>Next section &gt;&gt;</a></span>";
+        if ($sql->execute()) {
+          while ($row = $sql->fetch()) {
+            $value .= "<span class='right'><a title='" . $row["number"] . " " . $row["title"] . "' href='" . href("tag/" . $row["tag"]) . "'>Next section &gt;&gt;</a></span>";
+          }
         }
-      }
-      $value .= "</p>";
+        $value .= "</p>";
+        break;
+
+      case "lemma": // TODO and some others
+        // print enclosing section here?
+        break;
     }
 
     // TODO make this dynamic
@@ -183,7 +208,7 @@ class TagViewPage extends Page {
 
   private function printView() {
     $value = "";
-    $value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
+    //$value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
 
     return $value;
   }
