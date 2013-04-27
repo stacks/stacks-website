@@ -130,6 +130,10 @@ p#backlink {
   border-top: 1px solid #d9d8d1;
 }
 
+table {
+  margin: 15px;
+}
+
 div#main, div#sidebar {
   float: left;
 }

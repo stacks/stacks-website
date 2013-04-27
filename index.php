@@ -15,6 +15,7 @@ catch(PDOException $e) {
 }
 
 include("php/pages/about.php");
+include("php/pages/bibliography.php");
 include("php/pages/browse.php");
 include("php/pages/chapter.php");
 include("php/pages/index.php");
@@ -34,6 +35,13 @@ switch($page) {
   case "about":
     $page = new AboutPage($database);
     break;
+  case "bibliography":
+    // TODO some checking of this value
+    if(!empty($_GET["key"]))
+      $page = new BibliographyItemPage($database, $_GET["key"]);
+    else
+      $page = new BibliographyPage($database);
+    break;
   case "browse":
     $page = new BrowsePage($database);
     break;
@@ -51,7 +59,6 @@ switch($page) {
     break;
   case "tag":
     // TODO some checking of this value
-
     if(!empty($_GET["tag"]))
       $page = new TagViewPage($database, $_GET["tag"]);
     else
@@ -86,7 +93,7 @@ switch($page) {
       <li><a href='<?php print href("tag"); ?>'>tag lookup</a>
       <li><a href='<?php print href("browse"); ?>'>browse</a>
       <li><a href='#'>search</a>
-      <li><a href='#'>bibliography</a>
+      <li><a href='<?php print href("bibliography"); ?>'>bibliography</a>
       <li><a href='#'>recent comments</a>
       <li><a href='http://math.columbia.edu/~dejong/wordpress/'>blog</a>
     </ul>

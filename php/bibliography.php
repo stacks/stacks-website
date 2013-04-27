@@ -21,7 +21,7 @@ function getBibliographyItem($name) {
 
   global $database;
   try {
-    $sql = $database->prepare('SELECT bibliography_items.type, bibliography_values.key, bibliography_values.value FROM bibliography_items, bibliography_values WHERE bibliography_items.name = :name AND bibliography_items.name = bibliography_values.name');
+    $sql = $database->prepare('SELECT bibliography_items.type, bibliography_values.key, bibliography_values.value, bibliography_items.name FROM bibliography_items, bibliography_values WHERE bibliography_items.name = :name AND bibliography_items.name = bibliography_values.name');
     $sql->bindParam(':name', $name);
 
     if ($sql->execute()) {
@@ -32,6 +32,7 @@ function getBibliographyItem($name) {
       foreach ($rows as $row) {
         $result['type'] = $row['type'];
         $result[$row['key']] = $row['value'];
+        $result["name"] = $row["name"];
       }
 
       return $result;
