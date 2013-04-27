@@ -4,6 +4,32 @@ require_once("php/page.php");
 require_once("php/general.php");
 require_once("php/tags.php");
 
+/** 
+ * The list of possible types:
+ * - definition
+ * - equation
+ * - example
+ * - exercise
+ * - item
+ * - lemma
+ * - proposition
+ * - remark
+ * - remarks
+ * - section
+ * - situation
+ * - subsection
+ * - theorem
+ */
+
+function getChapter($id) {
+  $parts = explode(".", $id);
+  return $parts[0];
+}
+
+function stripChapter($id) {
+  return implode(array_splice(explode(".", $id), 1), ".");
+}
+
 class TagViewPage extends Page {
   private $siblingTags;
   private $tag;
@@ -12,7 +38,7 @@ class TagViewPage extends Page {
     $this->db = $database;
 
     try {
-      $sql = $this->db->prepare("SELECT tag, name, position, type FROM tags WHERE tag = :tag");
+      $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page FROM tags WHERE tag = :tag");
       $sql->bindParam(":tag", $tag);
 
       if ($sql->execute())
@@ -171,9 +197,11 @@ class TagViewPage extends Page {
 
     $value .= "<p>You're at<p>";
     $value .= "<ul>";
-    $value .= "<li>Section 14 on <a href='#'>page 12</a> of <a href='#'>Chapter&nbsp;17: Modules on Sites</a>";
-    $value .= "<li>Section 17.14 on <a href='#'>page 1159</a> of the book version";
-    $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/sites-modules.tex#L1238-1425'>lines 1238&ndash;1425</a> of <var><a href='https://github.com/stacks/stacks-project/blob/master/sites-modules.tex'>sites-modules.tex</a></var>";
+    $chapter = get_chapter(getChapter($this->tag["book_id"]));
+    $value .= "<li>" . ucfirst($this->tag["type"]) . " " . stripChapter($this->tag["book_id"]) . " on <a href='" . href("download/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter " . $chapter["number"] . ": " . $chapter["title"] . "</a>";
+    $value .= "<li>" . ucfirst($this->tag["type"]) . " " . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page " . $this->tag["book_page"] . "</a> of the book";
+    // TODO implement lines in database
+    $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex#L'>lines ...</a> of <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
     $value .= "</ul>";
 
     return $value;
