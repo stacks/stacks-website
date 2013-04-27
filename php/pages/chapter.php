@@ -59,22 +59,29 @@ class ChapterPage extends Page {
     $value .= "<p class='navigation'>";
     // back
     if (section_exists(intval($this->chapter["number"]) - 1)) {
-      $previous_chapter_information = get_chapter(intval($this->chapter['number']) - 1);
-      $value .= "<span class='left'><a href='" . href('chapter/' . (intval($this->chapter['number']) - 1)) . "'>";
-      if ($displayTitle)
-        $value .= "&lt;&lt; Chapter " . (intval($this->chapter['number']) - 1) . ": " . parseAccents($previous_chapter_information['title']);
-      else
+      $previousChapter = get_chapter(intval($this->chapter["number"]) - 1);
+      $value .= "<span class='left'><a href='" . href("chapter/" . (intval($this->chapter["number"]) - 1)) . "'>";
+      if ($displayTitle) {
+        $value .= "<span class='left'><a href='" . href("chapter/" . (intval($this->chapter["number"]) - 1)) . "'>";
+        $value .= "&lt;&lt; Chapter " . (intval($this->chapter["number"]) - 1) . ": " . parseAccents($previousChapter["title"]);
+      }
+      else {
+        $value .= "<span class='left'><a href='" . href("chapter/" . (intval($this->chapter["number"]) - 1)) . "' title='Chapter " . $previousChapter["number"] . ": " . parseAccents($previousChapter["title"]) . "'>";
         $value .= "&lt;&lt; Previous chapter";
+      }
       $value .= "</a></span>";
     }
     // forward
-    if (section_exists(intval($this->chapter['number']) + 1)) {
-      $next_chapter_information = get_chapter(intval($this->chapter['number']) + 1);
-      $value .= "<span class='right'><a href='" . href('chapter/' . (intval($this->chapter['number']) + 1)) . "'>";
-      if ($displayTitle)
-        $value .= "Chapter " . (intval($this->chapter['number']) + 1) . ": " . parseAccents($next_chapter_information['title']) . " &gt;&gt;";
-      else
+    if (section_exists(intval($this->chapter["number"]) + 1)) {
+      $nextChapter = get_chapter(intval($this->chapter["number"]) + 1);
+      if ($displayTitle) {
+        $value .= "<span class='right'><a href='" . href("chapter/" . (intval($this->chapter["number"]) + 1)) . "'>";
+        $value .= "Chapter " . (intval($this->chapter["number"]) + 1) . ": " . parseAccents($nextChapter["title"]) . " &gt;&gt;";
+      }
+      else {
+        $value .= "<span class='right'><a href='" . href("chapter/" . (intval($this->chapter["number"]) + 1)) . "' title='Chapter " . $nextChapter["number"] . ": " . parseAccents($nextChapter["title"]) . "'>";
         $value .= "Next chapter &gt;&gt;";
+      }
       $value .= "</a></span>"; 
     }
 
