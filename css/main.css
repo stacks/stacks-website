@@ -18,6 +18,14 @@ a:hover, a:visited, a:active {
   color: #880000;
 }
 
+a[href^="https://github.com"] {
+  background-image: url('../images/github-16.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+  padding-right: 18px;
+  min-height: 16px;
+}
+
 h1 {
   background-image: url('../images/stacks.png');
   background-repeat: no-repeat;
