@@ -9,17 +9,32 @@ function printKeyValue($key, $value) {
     case "url":
       $output .= "<tr><td><i>" . $key . "</i></td><td><a href='" . $value . "'>" . $value . "</a></td></tr>";
       break;
-
     case "name":
       // this should be ignored
       break;
-
     default:
       $output .= "<tr><td><i>" . $key . "</i></td><td>" . parseTeX($value) . "</td></tr>";
   }
 
   return $output;
 }
+
+function printKeyValueCode($key, $value) {
+  $output = "";
+
+  switch ($key) {
+    case "name":
+    case "type":
+      // this should be ignored
+      break;
+    default:
+      $output .= "  " . $key . " = {" . $value . "},\n";
+      break;
+  }
+
+  return $output;
+}
+
 
 class BibliographyPage extends Page {
   public function getMain() {
@@ -50,13 +65,14 @@ class BibliographyItemPage extends Page {
   public function getMain() {
     $output = "";
 
+    // these keys are the most important ones, and should be treated in this order
+    // TODO these should always be present, check this
+    $keys = array("author", "title", "year", "type");
+
     $output .= "<h2>Bibliography item: <code>" . $this->item["name"] . "</code></h2>";
     $output .= "<table id='bibliography'>";
-    // print these keys in this order
-    $keys = array("author", "title", "year", "type");
     foreach ($keys as $key)
       $output .= printKeyValue($key, $this->item[$key]);
-
     foreach ($this->item as $key => $value) {
       if (!in_array($key, $keys))
         $output .= printKeyValue($key, $value);
@@ -64,8 +80,17 @@ class BibliographyItemPage extends Page {
     $output .= "</table>";
 
     $output .= "<h2>BibTeX code</h2>";
+    $output .= "<p>You can use the following code to cite this item yourself.</p>";
+    // TODO add copy code
     $output .= "<pre><code>";
-    $output .= "TODO"; // TODO create BibTeX code from database information
+    $output .= "@" . $this->item["type"] . "{" . $this->item["name"] . ",\n";
+    foreach ($keys as $key)
+      $output .= printKeyValueCode($key, $this->item[$key]);
+    foreach ($this->item as $key => $value) {
+      if (!in_array($key, $keys))
+        $output .= printKeyValueCode($key, $value);
+    }
+    $output .= "}";
     $output .= "</code></pre>";
 
     return $output;
