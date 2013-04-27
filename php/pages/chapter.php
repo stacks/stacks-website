@@ -12,8 +12,8 @@ class ChapterPage extends Page {
 
     $this->db = $database;
     try {
-      $sql = $this->db->prepare('SELECT title, filename, number FROM sections WHERE number = :number');
-      $sql->bindParam(':number', $chapter);
+      $sql = $this->db->prepare("SELECT sections.title, sections.filename, sections.number, tags.tag FROM sections, tags WHERE sections.number = :number AND sections.number = tags.book_id AND type = 'section'");
+      $sql->bindParam(":number", $chapter);
   
       if ($sql->execute())
         $this->chapter = $sql->fetch();
@@ -41,12 +41,13 @@ class ChapterPage extends Page {
     $value .= $this->printNavigation();
 
     $value .= "<div id='control'>";
-    $value .= "<a href='#'><img src='" . href("js/jquery-treeview/images/minus.gif") . "'> Collapse all</a>";
+    $value .= "<p><a href='#'><img src='" . href("js/jquery-treeview/images/minus.gif") . "'> Collapse all</a>";
     $value .= " ";
-    $value .= "<a href='#'><img src='" . href("js/jquery-treeview/images/plus.gif") . "'> Expand all</a>";
+    $value .= "<a href='#'><img src='" . href("js/jquery-treeview/images/plus.gif") . "'> Expand all</a></p>";
     $value .= "</div>";
 
     $value .= "<div id='treeview'>";
+    $value .= "<a href='" . href("tag/" . $this->chapter["tag"]) . "'>Tag " . $this->chapter["tag"] . "</a> points to Chapter " . $this->chapter["number"] . ": " . $this->chapter["title"];
     $value .= $this->printTags();
     $value .= "</div>";
 
