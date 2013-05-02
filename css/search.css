@@ -1,0 +1,8 @@
+span.preview a {
+  text-decoration: none;
+  color: black;
+  float: right;
+}
+span.preview a:hover {
+  text-decoration: underline;
+}

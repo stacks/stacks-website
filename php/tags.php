@@ -200,6 +200,22 @@ function convertLaTeX($tag, $file, $code) {
   return $code;
 }
 
+// get the enclosing section for every type of item (even the ones without a book_id)
+function getEnclosingSection($position) {
+  global $database;
+  
+  try {
+    $sql = $database->prepare("SELECT tag, book_id, name, type FROM tags WHERE position <= :position AND type = 'section' ORDER BY position DESC LIMIT 1");
+    $sql->bindParam(":position", $position);
+
+    if ($sql->execute())
+      return $sql->fetch();
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
 function getEnclosingTag($position) {
   assert(positionExists($position));
 

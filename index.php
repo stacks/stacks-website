@@ -19,6 +19,8 @@ include("php/pages/bibliography.php");
 include("php/pages/browse.php");
 include("php/pages/chapter.php");
 include("php/pages/index.php");
+include("php/pages/results.php");
+include("php/pages/search.php");
 include("php/pages/taglookup.php");
 include("php/pages/tags.php");
 include("php/pages/tagview.php");
@@ -57,6 +59,18 @@ switch($page) {
   case "index":
     $page = new IndexPage($database);
     break;
+  case "search":
+    if (!isset($_GET["keywords"]))
+      $page = new SearchPage($database); // this page doesn't need the database? maybe change the structure of the Page object?
+    else {
+      // TODO some preprocessing / checking / pagination
+      // TODO set options in new form
+      $options = array();
+      $options["keywords"] = $_GET["keywords"];
+      $options["limit"] = "all";
+      $page = new SearchResultsPage($database, $options);
+    }
+    break;
   case "tag":
     // TODO some checking of this value
     if(!empty($_GET["tag"]))
@@ -92,7 +106,7 @@ switch($page) {
       <li><a href='<?php print href("tags"); ?>'>tags explained</a>
       <li><a href='<?php print href("tag"); ?>'>tag lookup</a>
       <li><a href='<?php print href("browse"); ?>'>browse</a>
-      <li><a href='#'>search</a>
+      <li><a href='<?php print href("search"); ?>'>search</a>
       <li><a href='<?php print href("bibliography"); ?>'>bibliography</a>
       <li><a href='#'>recent comments</a>
       <li><a href='http://math.columbia.edu/~dejong/wordpress/'>blog</a>

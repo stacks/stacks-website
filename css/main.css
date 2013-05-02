@@ -19,7 +19,7 @@ a:hover, a:visited, a:active {
 }
 
 a[href^="https://github.com"] {
-  background-image: url('../images/github-16.png');
+  background-image: url('../images/github-16-black.png');
   background-repeat: no-repeat;
   background-position: center right;
   padding-right: 18px;

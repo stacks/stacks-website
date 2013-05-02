@@ -42,6 +42,7 @@ function parseAccents($text) {
   return $text;
 }
 
+
 // this is minor TeX parsing routine, mostly used for interpreting brackets {} in the correct way depending on math mode or not
 function parseTeX($value) {
   $value = parseAccents($value);
