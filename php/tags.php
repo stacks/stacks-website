@@ -313,7 +313,7 @@ function getTagWithLabel($label) {
 }
 
 function isValidTag($tag) {
-  return (bool) preg_match_all('/^[[:alnum:]]{4}$/', $tag, $matches) == 1;
+  return preg_match_all('/^[[:alnum:]]{4}$/', $tag, $matches) === 1;
 }
 
 function labelExists($label) {

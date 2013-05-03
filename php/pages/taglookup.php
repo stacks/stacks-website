@@ -8,7 +8,7 @@ function printTagLookup() {
   $output = "";
 
   $output .= "<p>Look for a tag, if you have its 4-symbol code</p>";
-  $output .= "<form action='#' method='post'>"; // TODO fix URL
+  $output .= "<form action='" . href("lookup") . "' method='post'>";
   $output .= "<label>Tag: <input type='text' name='tag'></label>";
   $output .= "<input type='submit' value='locate'>";
   $output .= "</form>";
