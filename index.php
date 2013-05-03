@@ -14,16 +14,18 @@ catch(PDOException $e) {
   echo $e->getMessage();
 }
 
-include("php/pages/about.php");
-include("php/pages/bibliography.php");
-include("php/pages/browse.php");
-include("php/pages/chapter.php");
-include("php/pages/index.php");
-include("php/pages/results.php");
-include("php/pages/search.php");
-include("php/pages/taglookup.php");
-include("php/pages/tags.php");
-include("php/pages/tagview.php");
+require_once("php/pages/about.php");
+require_once("php/pages/bibliography.php");
+require_once("php/pages/browse.php");
+require_once("php/pages/chapter.php");
+require_once("php/pages/index.php");
+require_once("php/pages/missingtag.php");
+require_once("php/pages/results.php");
+require_once("php/pages/search.php");
+require_once("php/pages/tagdeleted.php");
+require_once("php/pages/taglookup.php");
+require_once("php/pages/tags.php");
+require_once("php/pages/tagview.php");
 
 // TODO some error code
 // TODO "index" is default, no, should be an error message (but "index" == "")
@@ -73,8 +75,17 @@ switch($page) {
     break;
   case "tag":
     // TODO some checking of this value
-    if(!empty($_GET["tag"]))
-      $page = new TagViewPage($database, $_GET["tag"]);
+    if(!empty($_GET["tag"])) {
+      if (tagExists($_GET["tag"])) {
+        if (tagIsActive($_GET["tag"]))
+          $page = new TagViewPage($database, $_GET["tag"]);
+        else
+          $page = new TagDeletedPage($database, $_GET["tag"]);
+      }
+      else
+        $page = new MissingTagPage($database, $_GET["tag"]);
+
+    }
     else
       $page = new TagLookupPage($database);
     break;

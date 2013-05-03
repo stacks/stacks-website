@@ -7,7 +7,7 @@ function convertLaTeX($tag, $file, $code) {
   $code = preprocessCode($code);
 
   // this is the regex for all (sufficiently nice) text that can occur in things like \emph
-  $regex = "[\p{L}\p{Nd}\?@\s$,.:()'&#;\-\\\\$]+";
+  $regex = "[\p{L}\p{Nd}\?@\s$,.:()N&#;\-\\\\$]+";
 
   // fix special characters (&quot; should be " for \"e)
   $code = parseAccents(str_replace("&quot;", "\"", $code));
@@ -342,6 +342,42 @@ function positionExists($position) {
     if ($sql->execute())
       return intval($sql->fetchColumn()) > 0;
     // TODO error handling
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return false;
+}
+
+function tagExists($tag) {
+  assert(isValidTag($tag));
+
+  global $database;
+  try {
+    $sql = $database->prepare("SELECT COUNT(*) FROM tags WHERE tag = :tag");
+    $sql->bindParam(":tag", $tag);
+
+    if ($sql->execute())
+      return intval($sql->fetchColumn()) > 0;
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return false;
+}
+
+function tagIsActive($tag) {
+  assert(isValidTag($tag));
+
+  global $database;
+  try {
+    $sql = $database->prepare("SELECT active FROM tags WHERE tag = :tag");
+    $sql->bindParam(":tag", $tag);
+
+    if ($sql->execute())
+      return $sql->fetchColumn() == "TRUE";
   }
   catch(PDOException $e) {
     echo $e->getMessage();
