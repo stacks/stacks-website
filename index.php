@@ -101,8 +101,8 @@ switch($page) {
     <title>Stacks Project<?php print $page->getTitle(); ?></title>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/main.css"); ?>'>
 
-    <link rel='icon' type='image/vnd.microsoft.icon' href='stacks.ico'> 
-    <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='stacks.ico'> 
+    <link rel='icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
+    <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
     <meta charset='utf-8'>
 
     <?php print $page->getHead(); ?>

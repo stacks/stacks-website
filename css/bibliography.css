@@ -1,0 +1,33 @@
+h3 {
+  font-size: 15px;
+  margin: -5px -5px 10px 500px;
+  display: block;
+  padding: 6px 8px;
+  font-weight: bold;
+  background-color: #edece6;
+  text-decoration: none;
+  color: #000000;
+  text-align: right;
+}
+
+h3:hover {
+  background-color: #c9c8c1;
+}
+
+ul.bibliography li {
+  margin-bottom: 3px;
+}
+
+ol#index {
+  list-style-type: none;
+  padding-left: 5px;
+}
+
+ol#index li {
+  float: left;
+  margin: 0 5px 3px 0;
+}
+
+p.up {
+  text-align: right;
+}
