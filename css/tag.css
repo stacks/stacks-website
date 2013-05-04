@@ -74,6 +74,19 @@ blockquote#rendered span.qed {
   float: right;
 }
 
+blockquote#rendered ol {
+  counter-reset: list;
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 20px;
+}
+
+blockquote#rendered ol li:before {
+  counter-increment: list;
+  content: counter(list) ") ";
+  margin-right: 15px;
+}
+
 ul#citation-options {
 }
 
