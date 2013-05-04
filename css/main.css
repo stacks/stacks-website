@@ -26,6 +26,14 @@ a[href^="https://github.com"] {
   min-height: 16px;
 }
 
+a.rss, a[href*="rss"] {
+  background-image: url('../images/rss.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+  padding-right: 18px;
+  min-height: 16px;
+}
+
 h1 {
   background-image: url('../images/stacks.png');
   background-repeat: no-repeat;

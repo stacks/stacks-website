@@ -26,7 +26,7 @@ class IndexPage extends Page {
     $value .= "<p>Items (sections, lemmas, theorems, etc.) in the Stacks project are referenced by their tag. See the <a href='#'>tags explained page</a> to learn more about tags and how to reference them in a LaTeX document.</p>";
 
     $value .= "<h2>Leaving comments</h2>";
-    $value .= "<p>You can leave comments on each and every tag's page. If you wish to stay updated on the comments, there is both a <a href='#'>page containing recent comments</a> and an <a href='#'>RSS feed <img src='images/rss.png'></a> available.</p>";
+    $value .= "<p>You can leave comments on each and every tag's page. If you wish to stay updated on the comments, there is both a <a href='#'>page containing recent comments</a> and an <a href='" . href("recent-comments.xml") . "' class='rss'>RSS feed</a> available.</p>";
 
     $value .= "<h2>Recent changes to the Stacks project</h2>";
     $value .= "<p>The Stacks project is hosted at GitHub, so you can <a href='https://github.com/stacks/stacks-project/commits/master'>browse the complete history</a> there.</p>";
