@@ -31,6 +31,8 @@ function parseAccents($text) {
   $text = preg_replace("/\{?\\\\\"\{?u\}?/", "&uuml;", $text);
   $text = preg_replace("/\{?\\\`\{?u\}?/", "&ugrave;", $text);
 
+  $text = str_replace("\&", "&amp;", $text);
+
   $text = str_replace("{\\v C}", "&#268;", $text);
   $text = str_replace("\\u C", "&#268;", $text);
   $text = str_replace("``", "''", $text);
