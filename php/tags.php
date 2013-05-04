@@ -15,15 +15,15 @@ function convertLaTeX($tag, $file, $code) {
   // all big environments with their corresponding markup
   // TODO make this part of the code aware of the three types used in the TeX
   $environments = array(
-    "lemma"       => array("Lemma", true),
-    "definition"  => array("Definition", false),
-    "remark"      => array("Remark", false),
-    "remarks"     => array("Remarks", false),
-    "example"     => array("Example", false),
-    "theorem"     => array("Theorem", true),
-    "exercise"    => array("Exercise", false),
-    "situation"   => array("Situation", false),
-    "proposition" => array("Proposition", true)
+    "lemma"       => array("name" => "Lemma",       "type" => "plain"),
+    "definition"  => array("name" => "Definition",  "type" => "definition"),
+    "remark"      => array("name" => "Remark",      "type" => "remark"),
+    "remarks"     => array("name" => "Remarks",     "type" => "remark"),
+    "example"     => array("name" => "Example",     "type" => "definition"),
+    "theorem"     => array("name" => "Theorem",     "type" => "plain"),
+    "exercise"    => array("name" => "Exercise",    "type" => "definition"),
+    "situation"   => array("name" => "Situation",   "type" => "definition"),
+    "proposition" => array("name" => "Proposition", "type" => "plain")
   );
 
   foreach ($environments as $environment => $information) {
@@ -33,23 +33,24 @@ function convertLaTeX($tag, $file, $code) {
       
       // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
       if (labelExists($label))
-        $code = str_replace($matches[0][$i], "<strong><a class='environment-link' href='" . getTagWithLabel($label) . "'>" . $information[0] . " " . getIDWithLabel($label) . ".</a></strong>" . ($information[1] ? '<em>' : ''), $code);
+        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . $information["name"] . " " . getIDWithLabel($label) . ".</a>", $code);
       else
-        $code = str_replace($matches[0][$i], "<strong>" . $information[0] . ".</strong>" . ($information[1] ? '<em>' : ''), $code);
+        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . ".</span>", $code);
     }
 
+    // do the same for named environments
     $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([\w\-]*)\}/u", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
       
       // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
       if (labelExists($label))
-        $code = str_replace($matches[0][$i], "<a class='environment-link' href='" . getTagWithLabel($label) . "'><strong>" . $information[0] . " " . getIDWithLabel($label) . "</strong> (" . $matches[1][$i] . ")<strong>.</strong></a>" . ($information[1] ? '<em>' : ''), $code);
+        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . $information["name"] . " " . getIDWithLabel($label) . " <span class='named'>(" . $matches[1][$i] . ")</span>.</a>", $code);
       else
-        $code = str_replace($matches[0][$i], "<strong>" . $information[0] . "</strong> (" . $matches[1][$i] . ")<strong>.</strong></a>" . ($information[1] ? '<em>' : ''), $code);
+        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . " <span class='named'>(" . $matches[1][$i] . ")</span>.</span>", $code);
     }
 
-    $code = str_replace("\\end{" . $environment . "}", ($information[1] ? '</em>' : '') . "</p>", $code);
+    $code = str_replace("\\end{" . $environment . "}", "</p></div>", $code);
   }
 
   $count = preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w\-]+)\}\n/", $code, $matches);
