@@ -177,7 +177,14 @@ class BibliographyItemPage extends Page {
 
     $output .= "<h2>Navigation</h2>";
     $output .= "<p><a href='" . href("bibliography") . "'>Back to bibliography</a></p>";
-    $output .= "<p class='navigation'><span class='left'>Previous item</span><span class='right'>Next item</span></p>";
+    $neighbours = $this->getNeighbouringItems();
+    $output .= "<p class='navigation'>";
+    if (!empty($neighbours["previous"]))
+      $output .= "<span class='left'><a href='" . href("bibliography/" . $neighbours["previous"]) . "'>&lt;&lt; Previous item</a></span>";
+    $output .= "&nbsp;"; // make sure paragraph is not empty for styling purposes
+    if (!empty($neighbours["next"]))
+      $output .= "<span class='right'><a href='" . href("bibliography/" . $neighbours["next"]) . "'>Next item &gt;&gt;</a></span>";
+    $output .= "</p>";
 
     $output .= "<h2>Referencing tags</h2>";
     $referencingTags = $this->getReferencingTags();
@@ -205,6 +212,34 @@ class BibliographyItemPage extends Page {
 
       foreach ($this->db->query($query) as $row)
         $results[] = $row;
+    }
+    catch (PDOException $e) {
+      echo $e->getMessage();
+    }
+
+    return $results;
+  }
+
+  private function getNeighbouringItems() {
+    $results = array();
+
+    try {
+      $sql = $this->db->prepare("SELECT name FROM bibliography_items WHERE UPPER(name) < UPPER(:name) ORDER BY name COLLATE NOCASE DESC LIMIT 1");
+      $sql->bindParam(":name", $this->item["name"]);
+
+      if ($sql->execute())
+        $results["previous"] = $sql->fetchColumn();
+    }
+    catch (PDOException $e) {
+      echo $e->getMessage();
+    }
+
+    try {
+      $sql = $this->db->prepare("SELECT name FROM bibliography_items WHERE UPPER(name) > UPPER(:name) ORDER BY name COLLATE NOCASE LIMIT 1");
+      $sql->bindParam(":name", $this->item["name"]);
+
+      if ($sql->execute())
+        $results["next"] = $sql->fetchColumn();
     }
     catch (PDOException $e) {
       echo $e->getMessage();
