@@ -51,6 +51,16 @@ class IndexPage extends Page {
 
     $value .= "<h2>Recent blog posts</h2>";
 
+    $value .= "<h2>Statistics</h2>";
+    // TODO some possible statistics (this would be dynamic, the current values were pulled from my severely outdated local database)
+    $value .= "<ul>";
+    $value .= "<li>333768 lines of code";
+    $value .= "<li>10070 tags (54 inactive tags)";
+    $value .= "<li>1761 sections";
+    $value .= "<li>71 chapters";
+    $value .= "<li>3305 pages";
+    $value .= "</ul>";
+
     $value .= "<h2>Highlights</h2>";
     // this could be pointers to blog posts discussing new functionality
 

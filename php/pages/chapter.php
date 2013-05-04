@@ -67,6 +67,15 @@ class ChapterPage extends Page {
     $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/" . $this->chapter["filename"] . ".tex'><code>tex</code> file for this chapter</a>";
     $value .= "</ul>";
 
+    $value .= "<h2>Statistics</h2>";
+    // TODO if this is a nice idea, make this dynamic
+    $value .= "<ul>";
+    $value .= "<li><em>n<sub>1</sub></em> lines of code</li>";
+    $value .= "<li><em>n<sub>2</sub></em> tags</li>";
+    $value .= "<li><em>n<sub>3</sub></em> sections</li>";
+    $value .= "<li><em>n<sub>4</sub></em> pages</li>";
+    $value .= "</ul>";
+
     return $value;
   }
   public function getTitle() {
