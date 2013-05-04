@@ -228,6 +228,7 @@ class TagViewPage extends Page {
     $value .= "<p>You're at</p>";
 
     $value .= "<ul>";
+    // TODO idea: display a dialog box asking the user whether he really wants to open the pdf (especially book.pdf) as it will take a while?
     switch ($this->tag["type"]) {
       // items have book_id equal to their enumeration number, so look up tag etc from position
       case "item":
