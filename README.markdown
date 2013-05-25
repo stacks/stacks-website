@@ -25,7 +25,7 @@ The following configuration is to remind me of what I have to do to get an insta
 
 8. get the correct styling in EpicEditor by executing `ln -s css/stacks-editor.css EpicEditor/epiceditor/themes/editor/stacks-editor.css` and `ln -s css/stacks-preview.css EpicEditor/epiceditor/themes/preview/stacks-preview.css` from the `stacks-website` directory
 
-9. make MathJax aware of XyJax by executing `ln -s MathJax/extensions/fp.js XyJax/extensions/fp.js` and `ln -s MathJax/extensions/TeX/xypic.js XyJax/extensions/TeX/xypic.js`  from the `stacks-website` directory
+9. make MathJax aware of XyJax by executing `ln -s ../../XyJax/extensions/fp.js MathJax/extensions/fp.js` and `ln -s ../../../XyJax/extensions/TeX/xypic.js MathJax/extensions/TeX/xypic.js` from the `stacks-website` directory
 
 
 Updating the website
