@@ -22,6 +22,28 @@ function tag_exists($tag) {
   return false;
 }
 
+function get_macros() {
+  global $db;
+
+  try {
+    $sql = $db->prepare('SELECT name, value FROM macros');
+
+    if ($sql->execute()) {
+      $rows = $sql->fetchAll();
+
+      $result = array();
+      foreach ($rows as $row)
+        $result[$row["name"]] = $row["value"];
+      return $result;
+    }
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  return array();
+}
+
 function label_exists($label) {
   global $db;
   try {
@@ -562,20 +584,7 @@ function parse_latex($tag, $file, $code) {
     $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . get_id(substr($references[1][$i], -4, 4)) . "</a>", $code);
   }
 
-
-  // fix macros
-  $macros = array(
-    // TODO check \mathop in output
-    "\\lim" => "\mathop{\\rm lim}\\nolimits",
-    "\\colim" => "\mathop{\\rm colim}\\nolimits",
-    "\\Spec" => "\mathop{\\rm Spec}",
-    "\\Hom" => "\mathop{\\rm Hom}\\nolimits",
-    "\\SheafHom" => "\mathop{\mathcal{H}\!{\it om}}\\nolimits",
-    "\\Sch" => "\\textit{Sch}",
-    "\\Mor" => "\mathop{\\rm Mor}\\nolimits",
-    "\\Ob" => "\mathop{\\rm Ob}\\nolimits",
-    "\\Sh" => "\mathop{\\textit{Sh}}\\nolimits",
-    "\\NL" => "\mathop{N\!L}\\nolimits");
+  $macros = get_macros();
   $code = str_replace(array_keys($macros), array_values($macros), $code);
 
   return $code;

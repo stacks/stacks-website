@@ -7,6 +7,7 @@ os.system("python import_tags.py")
 os.system("python import_titles.py")
 os.system("python import_tex.py")
 os.system("python import_bibliography.py")
+os.system("python import_macros.py")
 # create archives
 if not os.path.exists("../archives"):
   os.system("mkdir ../archives")
