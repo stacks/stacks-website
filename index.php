@@ -22,6 +22,7 @@ require_once("php/pages/index.php");
 require_once("php/pages/missingtag.php");
 require_once("php/pages/results.php");
 require_once("php/pages/search.php");
+require_once("php/pages/statistics.php");
 require_once("php/pages/tagdeleted.php");
 require_once("php/pages/taglookup.php");
 require_once("php/pages/tags.php");
@@ -72,6 +73,21 @@ switch($page) {
       $options["limit"] = "all";
       $page = new SearchResultsPage($database, $options);
     }
+    break;
+  case "statistics":
+    // TODO some checking of this value
+    if(!empty($_GET["tag"])) {
+      if (tagExists($_GET["tag"])) {
+        if (tagIsActive($_GET["tag"]))
+          $page = new StatisticsPage($database, $_GET["tag"]);
+        else
+          $page = new TagDeletedPage($database, $_GET["tag"]); // TODO something more reasonable
+      }
+      else
+        $page = new MissingTagPage($database, $_GET["tag"]); // TODO something more reasonable
+    }
+    else
+      $page = new TagLookupPage($database);
     break;
   case "tag":
     // TODO some checking of this value

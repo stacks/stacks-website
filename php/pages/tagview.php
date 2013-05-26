@@ -130,7 +130,7 @@ class TagViewPage extends Page {
     $value .= "<h2>Extras</h2>";
     $value .= "<ul>";
     $value .= "<li><a href='#'>dependency graph</a></li>";
-    $value .= "<li><a href='#'>statistics</a></li>";
+    $value .= "<li><a href='" . href("tag/" . $this->tag["tag"] . "/statistics") . "'>statistics</a></li>";
     $value .= "</ul>";
 
     return $value;
