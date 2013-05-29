@@ -8,9 +8,9 @@ Some ideas and examples for the dependency graph.
   * what type of graph: treeview, or force-directed graph, or ...?
   * how much navigation / information displayed: tag number, information on location, maybe even the statement?
   * what type of view: integrate in layout or not? as some graphs will be *huge* this will pose a problem
-  * colours: related to chapters, or to the level in the dependency graph? other ideas?
+  * colours: related to chapters, or to the level in the dependency graph? other ideas? yes: type of the tag (so you immediately recognise the definitions etc)
+  * have a visual indication of which nodes have a name
   * clustering per chapter? there are no forward-references, so this could work
-  * 
 
 Technical questions to solve:
 
