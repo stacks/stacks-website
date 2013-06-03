@@ -1,8 +1,5 @@
 <?php
 
-// TODO use this variable everywhere
-$jQuery = "https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js";
-
 function href($path) {
   // TODO this function should produce correct paths in any situation, given a path relative to the index
   return "/new/" . $path;
@@ -68,6 +65,26 @@ function parseTeX($value) {
   return $value;
 }
 
+function printMathJax() {
+    global $jQuery;
+    $value = "";
+
+    $value .= "<script type='text/javascript' src='" . $jQuery . "'></script>";
+    $value .= "<script type='text/javascript' src='" . href("js/tag.js") . "'></script>";
+    $value .= "<link rel='stylesheet' type='text/css' href='" . href("css/tag.css") . "'>";
+
+    $value .= "<script type='text/javascript' src='" . href("js/MathJax/MathJax.js?config=default'") . "></script>";
+    $value .= "<script type='text/x-mathjax-config'>";
+    $value .= "  MathJax.Hub.Config({";
+    $value .= "    extensions: ['tex2jax.js', 'fp.js'],";
+    $value .= "    tex2jax: {inlineMath: [['$', '$']]},";
+    $value .= "    TeX: {extensions: ['xypic.js', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},";
+    $value .= "    'HTML-CSS': { scale: 85 }";
+    $value .= "  });";
+    $value .= "</script>";
+
+    return $value;
+}
 
 
 ?>
