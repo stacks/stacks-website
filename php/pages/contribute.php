@@ -35,7 +35,7 @@ class ContributePage extends Page {
     $output .= "<h2 id='geeks'>Instructions on using a version control system (for major geeks)</h2>";
     $output .= "<p>We are using the <a href='http://git-scm.com'>git</a> version control system. To clone the project type";
     $output .= "<pre><code>git clone git://github.com/stacks/stacks-project.git</code></pre>";
-    $output .= "on the command line. This assumes that you have <code>git</code> installed. For more information on using Git and GitHub, we refer to <a href='https://help.github.com/'>GitHub Help</a>. To actually contribute the changes you have made you use a 'pull request' on GitHub.";
+    $output .= "on the command line. This assumes that you have <code>git</code> installed. For more information on using Git and GitHub, we refer to <a href='http://git-scm.com/documentation'>the documentation</a> and <a href='https://help.github.com/'>GitHub Help</a>. To actually contribute the changes you have made you use a 'pull request' on GitHub.";
 
     return $output;
   }
