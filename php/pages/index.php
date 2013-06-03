@@ -2,6 +2,7 @@
 
 require_once("php/page.php");
 require_once("php/comments.php");
+require_once("php/feeds.php");
 require_once("php/general.php");
 require_once("php/search.php");
 
@@ -39,42 +40,11 @@ class IndexPage extends Page {
     return $value;
   }
   public function getSidebar() {
+    global $config;
     $value = "";
 
-    $value .= "<h2>Recent changes</h2>";
-    $value .= "<ul>";
-
-    $feed = new SimplePie();
-    $feed->set_cache_location($_SERVER["DOCUMENT_ROOT"] . "/new/php/cache"); // TODO fix this
-
-    $feed->set_feed_url("https://github.com/stacks/stacks-project/commits/master.atom");
-    $feed->init();
-    $feed->handle_content_type(); // TODO maybe not required?
-    foreach ($feed->get_items(0, 5) as $item) {
-      $value .= "<li>" . $item->get_date() . ":<br> <a href='" . $item->get_link() . "'>" . $item->get_title() . "</a></li>"; // TODO better output possible?
-    }
-
-    $value .= "</ul>";
-
-    $value .= "<h2>Recent blog posts</h2>";
-    $value .= "<ul>";
-
-    $feed->set_feed_url("http://math.columbia.edu/~dejong/wordpress/?feed=rss2");
-    $feed->init();
-    $feed->handle_content_type(); // TODO maybe not required?
-    foreach ($feed->get_items(0, 5) as $item) {
-      $value .= "<li>" . $item->get_date() . ":<br> <a href='" . $item->get_link() . "'>" . $item->get_title() . "</a></li>"; // TODO better output possible?
-    }
-
-    $value .= "</ul>";
-
-    $value .= "<h2><a href='" . href("recents-comments") . "'>Recent comments</a></h2>";
-    $comments = get_comments($this->db, 0, 5);
-    $value .= "<ol id='recent-comments-sidebar'>";
-    foreach($comments as $comment) {
-      $value .= "<li value='" . $comment["id"] . "'><a href='" . href("tag/" . $comment['tag'] . "#comment-" . $comment['id']) . "' title='" . $comment["date"] . "'>" . htmlentities($comment["author"]) . " on tag " . $comment["tag"] . "</a>";
-    }
-    $value .= "</ol>";
+    $value .= getRecentChanges();
+    $value .= getRecentBlogposts();
 
     $value .= "<h2>Statistics</h2>";
     // TODO some possible statistics (this would be dynamic, the current values were pulled from my severely outdated local database)

@@ -1,5 +1,7 @@
 <?php
 
+require_once("php/config.php");
+
 /**
  * The KISS approach to a template engine
  *
