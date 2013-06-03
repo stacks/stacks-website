@@ -1,6 +1,7 @@
 <?php
 
 require_once("php/page.php");
+require_once("php/statistics.php");
 require_once("php/general.php");
 
 class AboutPage extends Page {
@@ -27,6 +28,10 @@ class AboutPage extends Page {
   }
   public function getSidebar() {
     $value = "";
+
+    $value .= getRecentChanges();
+    $value .= getRecentBlogposts();
+    $value .= getStatisticsSidebar();
 
     return $value;
   }
