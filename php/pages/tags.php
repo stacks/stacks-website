@@ -44,6 +44,11 @@ class TagsPage extends Page {
   public function getSidebar() {
     $value = "";
 
+    $value .= getStatisticsSidebar($this->db);
+
+    $value .= "<h2>Search</h2>";
+    $value .= getSimpleSearchForm(10);
+
     return $value;
   }
   public function getTitle() {

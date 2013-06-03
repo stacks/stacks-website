@@ -23,7 +23,7 @@ class IndexPage extends Page {
 
     $value .= "<h2><a href='#'>Looking up tags</a></h2>";
     $value .= "<p>You can search the Stacks project by keywords:";
-    $value .= get_simple_search_form();
+    $value .= getSimpleSearchForm();
     $value .= "<p>If you on the other hand have a tag for an item (which can be anything, from section, lemma, theorem, etc.) in the Stacks project, you can <a href='#'>look up the tag's page</a>.</p>";
 
     $value .= "<h2><a href='#'>Referencing the Stacks project</a></h2>";
