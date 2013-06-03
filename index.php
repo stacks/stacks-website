@@ -21,6 +21,7 @@ require_once("php/pages/chapter.php");
 require_once("php/pages/contribute.php");
 require_once("php/pages/index.php");
 require_once("php/pages/missingtag.php");
+require_once("php/pages/recentcomments.php");
 require_once("php/pages/results.php");
 require_once("php/pages/search.php");
 require_once("php/pages/statistics.php");
@@ -66,6 +67,14 @@ switch($page) {
     break;
   case "index":
     $page = new IndexPage($database);
+    break;
+  case "recent-comments":
+    if (empty($_GET["number"]))
+      $number = 1;
+    else
+      $number = $_GET["number"];
+
+    $page = new RecentCommentsPage($database, $number);
     break;
   case "search":
     if (!isset($_GET["keywords"]))
@@ -143,7 +152,7 @@ switch($page) {
       <li><a href='<?php print href("browse"); ?>'>browse</a>
       <li><a href='<?php print href("search"); ?>'>search</a>
       <li><a href='<?php print href("bibliography"); ?>'>bibliography</a>
-      <li><a href='#'>recent comments</a>
+      <li><a href='<?php print href("recent-comments"); ?>'>recent comments</a>
       <li><a href='<?php print $config["blog"]; ?>'>blog</a>
     </ul>
     <br style='clear: both;'>

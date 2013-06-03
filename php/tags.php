@@ -274,6 +274,25 @@ function getIDWithLabel($label) {
   return "ZZZZ";
 }
 
+function getTag($tag) {
+  assert(isValidTag($tag));
+
+  global $database;
+  try {
+    $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position FROM tags WHERE tag = :tag');
+    $sql->bindParam(':tag', $tag);
+
+    if ($sql->execute()) {
+      // return first (= only) row of the result
+      while ($row = $sql->fetch()) return $row;
+    }
+    return null;
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
 function getTagAtPosition($position) {
   assert(positionExists($position));
 
