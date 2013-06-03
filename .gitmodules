@@ -10,3 +10,6 @@
 [submodule "php/simplepie"]
 	path = php/simplepie
 	url = git://github.com/simplepie/simplepie.git
+[submodule "php/markdown"]
+	path = php/markdown
+	url = git://github.com/drdrang/php-markdown-extra-math.git
