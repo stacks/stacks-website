@@ -124,6 +124,10 @@ p.navigation span.left {
   float: left;
 }
 
+ul {
+  list-style-type: circle;
+}
+
 ul#menu {
   list-style-type: none;
   padding: 0;

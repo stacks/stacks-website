@@ -28,6 +28,7 @@ require_once("php/pages/tagdeleted.php");
 require_once("php/pages/taglookup.php");
 require_once("php/pages/tags.php");
 require_once("php/pages/tagview.php");
+require_once("php/pages/todo.php");
 
 // TODO some error code
 // TODO "index" is default, no, should be an error message (but "index" == "")
@@ -112,6 +113,9 @@ switch($page) {
   case "tags":
     $page = new TagsPage($database);
     break;
+  case "todo":
+    $page = new TodoPage($database);
+    break;
 }
 
 ?>
@@ -140,7 +144,7 @@ switch($page) {
       <li><a href='<?php print href("search"); ?>'>search</a>
       <li><a href='<?php print href("bibliography"); ?>'>bibliography</a>
       <li><a href='#'>recent comments</a>
-      <li><a href='http://math.columbia.edu/~dejong/wordpress/'>blog</a>
+      <li><a href='<?php print $config["blog"]; ?>'>blog</a>
     </ul>
     <br style='clear: both;'>
 

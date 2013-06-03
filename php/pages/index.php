@@ -10,13 +10,15 @@ require_once("php/statistics.php");
 require_once("php/simplepie/autoloader.php");
 
 class IndexPage extends Page {
-  public function getMain() {
+  public function getMain() { 
+    global $config;
+
     $value = "";
     $value .= "<h2><a href='#'>About</a></h2>";
     $value .= "<p>This is the home page of the Stacks project. It is an open source textbook and reference work on algebraic stacks and the algebraic geometry needed to define them. For more general information see our extensive <a href='#'>about page</a>.</p>";
 
     $value .= "<h2><a href='#'>How to contribute?</a></h2>";
-    $value .= "<p>The Stacks project is a collaborative effort. There is a <a href='#'>list of people who have contributed so far</a>. If you would like to know how to participate more can be found at the <a href='#'>contribute page</a>. To informally comment on the Stacks project visit the <a href='#'>blog</a>.</p>";
+    $value .= "<p>The Stacks project is a collaborative effort. There is a <a href='#'>list of people who have contributed so far</a>. If you would like to know how to participate more can be found at the <a href='" . href("contribute") . "'>contribute page</a>. To informally comment on the Stacks project visit the <a href='" . href($config["blog"]) . "'>blog</a>.</p>";
 
     $value .= "<h2><a href='#'>Browsing and downloads</a></h2>";
     $value .= "<p>The entire project in <a href='#'>one pdf file</a>. You can also <a href='" . href("browse") . "'>browse the project online</a>, and there is a tree view which starts at <a href='#'>Chapter 1</a>. For other downloads (e.g. TeX files) we have a <a href='#'>dedicated downloads page</a>.</p>";

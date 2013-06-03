@@ -72,22 +72,13 @@ class TagViewPage extends Page {
   }
 
   public function getHead() {
-    global $jQuery;
     $value = "";
 
-    $value .= "<script type='text/javascript' src='" . $jQuery . "'></script>";
+    $value .= "<script type='text/javascript' src='" . $config["jQuery"] . "'></script>";
     $value .= "<script type='text/javascript' src='" . href("js/tag.js") . "'></script>";
     $value .= "<link rel='stylesheet' type='text/css' href='" . href("css/tag.css") . "'>";
 
-    $value .= "<script type='text/javascript' src='" . href("js/MathJax/MathJax.js?config=default'") . "></script>";
-    $value .= "<script type='text/x-mathjax-config'>";
-    $value .= "  MathJax.Hub.Config({";
-    $value .= "    extensions: ['tex2jax.js', 'fp.js'],";
-    $value .= "    tex2jax: {inlineMath: [['$', '$']]},";
-    $value .= "    TeX: {extensions: ['xypic.js', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},";
-    $value .= "    'HTML-CSS': { scale: 85 }";
-    $value .= "  });";
-    $value .= "</script>";
+    $value .= printMathJax();
 
     return $value;
   }

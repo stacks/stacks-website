@@ -46,10 +46,11 @@ class ContributePage extends Page {
     
     $output .= "<h2>Contributors</h2>";
     $output .= "So far contributed " . sizeof($contributors) . " people have contributed to the Stacks project, and these are:";
-    $output .= "<p style='margin: .5em; font-size: .8em'>";
+    //$output .= "<p style='margin: .5em; font-size: .8em'>";
+    $output .= "<ul>";
     foreach ($contributors as $contributor)
-      $output .= trim($contributor) . ($contributor != $contributors[sizeof($contributors) - 1] ? ", " : "");
-    $output .= "</p>";
+      $output .= "<li style='margin: 0'>" . trim($contributor);
+    $output .= "</ul>";
 
     return $output;
   }
