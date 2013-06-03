@@ -18,6 +18,7 @@ require_once("php/pages/about.php");
 require_once("php/pages/bibliography.php");
 require_once("php/pages/browse.php");
 require_once("php/pages/chapter.php");
+require_once("php/pages/contribute.php");
 require_once("php/pages/index.php");
 require_once("php/pages/missingtag.php");
 require_once("php/pages/results.php");
@@ -58,6 +59,9 @@ switch($page) {
     else {
       $page = new AboutPage($database); // TODO an appropriate error page
     }
+    break;
+  case "contribute":
+    $page = new ContributePage($database);
     break;
   case "index":
     $page = new IndexPage($database);
