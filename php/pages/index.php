@@ -5,6 +5,8 @@ require_once("php/comments.php");
 require_once("php/general.php");
 require_once("php/search.php");
 
+require_once("php/simplepie/autoloader.php");
+
 class IndexPage extends Page {
   public function getMain() {
     $value = "";
@@ -39,6 +41,33 @@ class IndexPage extends Page {
   public function getSidebar() {
     $value = "";
 
+    $value .= "<h2>Recent changes</h2>";
+    $value .= "<ul>";
+
+    $feed = new SimplePie();
+    $feed->set_cache_location($_SERVER["DOCUMENT_ROOT"] . "/new/php/cache"); // TODO fix this
+
+    $feed->set_feed_url("https://github.com/stacks/stacks-project/commits/master.atom");
+    $feed->init();
+    $feed->handle_content_type(); // TODO maybe not required?
+    foreach ($feed->get_items(0, 5) as $item) {
+      $value .= "<li>" . $item->get_date() . ":<br> <a href='" . $item->get_link() . "'>" . $item->get_title() . "</a></li>"; // TODO better output possible?
+    }
+
+    $value .= "</ul>";
+
+    $value .= "<h2>Recent blog posts</h2>";
+    $value .= "<ul>";
+
+    $feed->set_feed_url("http://math.columbia.edu/~dejong/wordpress/?feed=rss2");
+    $feed->init();
+    $feed->handle_content_type(); // TODO maybe not required?
+    foreach ($feed->get_items(0, 5) as $item) {
+      $value .= "<li>" . $item->get_date() . ":<br> <a href='" . $item->get_link() . "'>" . $item->get_title() . "</a></li>"; // TODO better output possible?
+    }
+
+    $value .= "</ul>";
+
     $value .= "<h2><a href='" . href("recents-comments") . "'>Recent comments</a></h2>";
     $comments = get_comments($this->db, 0, 5);
     $value .= "<ol id='recent-comments-sidebar'>";
@@ -46,10 +75,6 @@ class IndexPage extends Page {
       $value .= "<li value='" . $comment["id"] . "'><a href='" . href("tag/" . $comment['tag'] . "#comment-" . $comment['id']) . "' title='" . $comment["date"] . "'>" . htmlentities($comment["author"]) . " on tag " . $comment["tag"] . "</a>";
     }
     $value .= "</ol>";
-
-    $value .= "<h2>Recent changes</h2>";
-
-    $value .= "<h2>Recent blog posts</h2>";
 
     $value .= "<h2>Statistics</h2>";
     // TODO some possible statistics (this would be dynamic, the current values were pulled from my severely outdated local database)
@@ -60,9 +85,6 @@ class IndexPage extends Page {
     $value .= "<li>71 chapters";
     $value .= "<li>3305 pages";
     $value .= "</ul>";
-
-    $value .= "<h2>Highlights</h2>";
-    // this could be pointers to blog posts discussing new functionality
 
     return $value;
   }

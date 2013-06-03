@@ -7,3 +7,6 @@
 [submodule "js/jquery-treeview"]
 	path = js/jquery-treeview
 	url = git://github.com/jzaefferer/jquery-treeview.git
+[submodule "php/simplepie"]
+	path = php/simplepie
+	url = git://github.com/simplepie/simplepie.git
