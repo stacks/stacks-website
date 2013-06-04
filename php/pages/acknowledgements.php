@@ -34,8 +34,6 @@ class AcknowledgementsPage extends Page {
     $output .= "<a href='http://nsf.gov'><img width='180' src='" . href("images/logos/nsf.gif") . "'></a>";
     $output .= "</div>";
     
-    // TODO what to do in the sidebar?
-
     return $output;
   }
   public function getTitle() {
