@@ -69,10 +69,6 @@ function printMathJax() {
     global $jQuery;
     $value = "";
 
-    $value .= "<script type='text/javascript' src='" . $jQuery . "'></script>";
-    $value .= "<script type='text/javascript' src='" . href("js/tag.js") . "'></script>";
-    $value .= "<link rel='stylesheet' type='text/css' href='" . href("css/tag.css") . "'>";
-
     $value .= "<script type='text/javascript' src='" . href("js/MathJax/MathJax.js?config=default'") . "></script>";
     $value .= "<script type='text/x-mathjax-config'>";
     $value .= "  MathJax.Hub.Config({";

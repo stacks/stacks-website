@@ -15,6 +15,20 @@ function getLineCount($db, $filename) {
   }
 }
 
+function getBibliographyItemCount($db) {
+  try {
+    $sql = $db->prepare("SELECT COUNT(*) FROM bibliography_items");
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
+    // else
+    // TODO error handling
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
 function getTagsInFileCount($db, $filename) {
   try {
     $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE file = :filename");

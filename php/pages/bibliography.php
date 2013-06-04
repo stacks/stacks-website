@@ -60,6 +60,7 @@ class BibliographyPage extends Page {
     $output = "";
 
     $output .= "<link rel='stylesheet' type='text/css' href='" . href("css/bibliography.css") . "'>";
+    $output .= printMathJax();
 
     return $output;
   }
@@ -94,13 +95,16 @@ class BibliographyPage extends Page {
     $output .= "<h2>Index</h2>";
     $output .= "<ol id='index'>";
     foreach ($this->letters as $letter)
-      $output .= "<li><a href='#" . $letter . "'>" . $letter . "</a>";
-    $output .= "</ol>";
+      $output .= "<li><a href='#" . $letter . "'>" . $letter . "</a></li>";
+    $output .= "</ol><p style='clear: both'>";
+
+    $output .= "<h2>Statistics</h2>";
+    $output .= "<p>There are currently " . getBibliographyItemCount($this->db) . " items in the bibliography.";
 
     return $output;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Bibliography";
   }
 
   private function getItems() {
@@ -148,8 +152,10 @@ class BibliographyItemPage extends Page {
 
     $output .= "<h2>Bibliography item: <code>" . $this->item["name"] . "</code></h2>";
     $output .= "<table id='bibliography'>";
-    foreach ($keys as $key)
-      $output .= printKeyValue($key, $this->item[$key]);
+    foreach ($keys as $key) {
+      if (isset($this->item[$key]))
+        $output .= printKeyValue($key, $this->item[$key]);
+    }
     foreach ($this->item as $key => $value) {
       if (!in_array($key, $keys))
         $output .= printKeyValue($key, $value);
@@ -161,8 +167,10 @@ class BibliographyItemPage extends Page {
     // TODO add copy code
     $output .= "<pre><code>";
     $output .= "@" . $this->item["type"] . "{" . $this->item["name"] . ",\n";
-    foreach ($keys as $key)
-      $output .= printKeyValueCode($key, $this->item[$key]);
+    foreach ($keys as $key) {
+      if (isset($this->item[$key]))
+        $output .= printKeyValueCode($key, $this->item[$key]);
+    }
     foreach ($this->item as $key => $value) {
       if (!in_array($key, $keys))
         $output .= printKeyValueCode($key, $value);
@@ -188,7 +196,7 @@ class BibliographyItemPage extends Page {
 
     $output .= "<h2>Referencing tags</h2>";
     $referencingTags = $this->getReferencingTags();
-    $output .= "<p>This item is referenced in " . count($referencingTags). " tags</p>";
+    $output .= "<p>This item is referenced in " . count($referencingTags). " tag(s)</p>";
     $output .= "<ul>";
     foreach ($referencingTags as $tag) {
       if ($tag["type"] == "item")
