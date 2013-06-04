@@ -72,6 +72,7 @@ class TagViewPage extends Page {
   }
 
   public function getHead() {
+    global $config;
     $value = "";
 
     $value .= "<script type='text/javascript' src='" . $config["jQuery"] . "'></script>";

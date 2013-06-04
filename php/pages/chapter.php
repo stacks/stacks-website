@@ -72,7 +72,7 @@ class ChapterPage extends Page {
     $value .= "<li>" . getLineCount($this->db, $this->chapter["filename"] . ".tex") . " lines of code</li>";
     $value .= "<li>" . getTagsInFileCount($this->db, $this->chapter["filename"]) . " tags</li>"; // TODO is this the intuitively correct count?
     $value .= "<li>" . (getSectionsInFileCount($this->db, $this->chapter["filename"]) - 1) . " sections</li>"; // -1 to take care of the phantom section
-    $value .= "<li><em>n<sub>4</sub></em> pages</li>"; // TODO implement page count
+    $value .= "<li>" . getPageCount($this->db, $this->chapter["filename"]) . " pages</li>";
     $value .= "</ul>";
 
     return $value;
