@@ -27,7 +27,7 @@ function convertLaTeX($tag, $file, $code) {
   );
 
   foreach ($environments as $environment => $information) {
-    $count = preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([\w\-]*)\}/", $code, $matches);
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([\w\*\-]*)\}/", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[1][$i];
       
@@ -39,7 +39,7 @@ function convertLaTeX($tag, $file, $code) {
     }
 
     // do the same for named environments
-    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([\w\-]*)\}/u", $code, $matches);
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([\w\*\-]*)\}/u", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
       
@@ -50,7 +50,7 @@ function convertLaTeX($tag, $file, $code) {
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . " <span class='named'>(" . $matches[1][$i] . ")</span>.</span>", $code);
     }
 
-    $code = str_replace("\\end{" . $environment . "}", "</p></div>", $code);
+    $code = str_replace("\\end{" . $environment . "}", "</div>", $code);
   }
 
   $count = preg_match_all("/\\\begin\{equation\}\n\\\label\{([\w\-]+)\}\n/", $code, $matches);
@@ -101,7 +101,7 @@ function convertLaTeX($tag, $file, $code) {
   // proof environment
   $code = str_replace("\\begin{proof}\n", "<p><strong>Proof.</strong> ", $code);
   $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/u", "<p><strong>$1</strong> ", $code);
-  $code = str_replace("\\end{proof}", "<span style='float: right;'>$\square$</span></p>", $code);
+  $code = str_replace("\\end{proof}", "<span style='float: right;'>$\square$</span>", $code);
 
   // hyperlinks
   $code = preg_replace("/\\\href\{(.*)\}\{(" . $regex . ")\}/u", "<a href=\"$1\">$2</a>", $code);
@@ -143,7 +143,7 @@ function convertLaTeX($tag, $file, $code) {
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
-  $code = str_replace("\n\n", "</p><p>", $code);
+  $code = str_replace("\n\n", "<p>", $code);
   $code = str_replace("\\smallskip", "", $code);
   $code = str_replace("\\medskip", "", $code);
   $code = str_replace("\\noindent", "", $code);
