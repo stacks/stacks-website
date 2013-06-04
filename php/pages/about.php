@@ -23,6 +23,7 @@ class AboutPage extends Page {
 
     $value .= "<h2><a href='https://github.com/pbelmans/stacks-website'>Stacks project website</a></h2>";
     $value .= "<p>This website is maintained and developed as a <a href='https://github.com/pbelmans/stacks-website'>separate project</a>. If you wish to start your own project, inspired by the Stacks project the combination of <a href='https://github.com/stacks/stacks-project'><code>stacks-project</code></a> and <a href='https://github.com/pbelmans/stacks-website'><code>stacks-website</code></a> can serve as a starting point. If you have any questions about this, send an email to <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>.";
+    // TODO fix this text: 3 projects
 
     return $value;
   }
@@ -31,7 +32,7 @@ class AboutPage extends Page {
 
     $value .= getRecentChanges();
     $value .= getRecentBlogposts();
-    $value .= getStatisticsSidebar();
+    $value .= getStatisticsSidebar($this->db);
 
     return $value;
   }

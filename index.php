@@ -15,6 +15,7 @@ catch(PDOException $e) {
 }
 
 require_once("php/pages/about.php");
+require_once("php/pages/acknowledgements.php");
 require_once("php/pages/bibliography.php");
 require_once("php/pages/browse.php");
 require_once("php/pages/chapter.php");
@@ -42,6 +43,9 @@ else
 switch($page) {
   case "about":
     $page = new AboutPage($database);
+    break;
+  case "acknowledgements":
+    $page = new AcknowledgementsPage($database);
     break;
   case "bibliography":
     // TODO some checking of this value
