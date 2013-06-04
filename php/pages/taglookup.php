@@ -4,12 +4,11 @@ require_once("php/page.php");
 require_once("php/general.php");
 require_once("php/search.php");
 
-function printTagLookup() {
+function printTagLookup($size = 20) {
   $output = "";
 
-  $output .= "<p>Look for a tag, if you have its 4-symbol code</p>";
   $output .= "<form class='simple' action='" . href("lookup") . "' method='post'>";
-  $output .= "<label><span>Tag:</span> <input type='text' name='tag' maxlength='4'></label>";
+  $output .= "<label><span>Tag:</span> <input type='text' name='tag' maxlength='4' size='" . $size . "'></label>";
   $output .= "<input type='submit' value='locate'>";
   $output .= "</form>";
 
@@ -21,6 +20,7 @@ class TagLookupPage extends Page {
     $value = "";
 
     $value .= "<h2>Look for a tag</h2>";
+    $value .= "<p>Look for a tag, if you have its 4-symbol code</p>";
     $value .= printTagLookup();
     $value .= "<p>For more information we refer to the <a href='" . href('tags') . "'>tags explained</a> page.";
 

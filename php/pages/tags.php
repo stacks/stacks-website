@@ -48,6 +48,9 @@ class TagsPage extends Page {
 
     $value .= getStatisticsSidebar($this->db);
 
+    $value .= "<h2>Tag lookup</h2>";
+    $value .= printTagLookup(10);
+    $value .= "<p style='clear: both'>";
     $value .= "<h2>Search</h2>";
     $value .= getSimpleSearchForm(10);
 
