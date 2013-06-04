@@ -30,6 +30,84 @@ function isPhantom($label) {
   return substr_compare($label, "section-phantom", -15, 15) == 0;
 }
 
+function parseComment($comment) {
+  // parse \ref{}, but only when the line is not inside a code fragment
+  $lines = explode("\n", $comment);
+  foreach ($lines as &$line) {
+    // check whether the line is a code fragment or not
+    if (substr($line, 0, 4) != '    ')
+      $line = parseReferences($line);
+  }
+  $comment = implode($lines, "\n");
+
+  // fix underscores (all underscores in math mode will be escaped
+  $result = '';
+  $mathmode = false;
+  foreach (str_split($comment) as $position => $character) {
+    // match math mode (\begin{equation}\end{equation} goes fine mysteriously)
+    if ($character == "$") {
+      // handle $$ correctly
+      if ($position + 1 < strlen($comment) && $comment[$position + 1] != "$")
+        $mathmode = !$mathmode;
+    }
+
+    // replace unescaped underscores in math mode, the accessed position always exists because we had to enter math mode first
+    if ($mathmode && $character == "_" && $comment[$position - 1] != "\\")
+      $result .= "\\_";
+    else
+      $result .= $character;
+  }
+  $comment = $result;
+  // remove <>&"'
+  $comment = htmlspecialchars($comment);
+  // duplicate double backslashes
+  $comment = str_replace("\\\\", "\\\\\\\\", $comment);
+  // apply Markdown (i.e. we get an almost finished HTML string)
+  $comment = Markdown($comment);
+  // Google Chrome somehow adds this character so let's remove it
+  $comment = str_replace("\xA0", ' ', $comment);
+  // Firefox liked to throw in some &nbsp;'s, but I believe this particular fix is redundant now
+  $comment = str_replace("&nbsp;", ' ', $comment);
+
+  return $comment;
+}
+
+function parseReferences($string) {
+  // look for \ref before MathJax can and see if they point to existing tags
+  $references = array();
+  
+  preg_match_all('/\\\ref{[\w-]*}/', $string, $references);
+  foreach ($references[0] as $reference) {
+    // get the label or tag we're referring to, nothing more
+    $target = substr($reference, 5, -1);
+  
+    // we're referring to a tag
+    if (is_valid_tag($target)) {
+      // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
+      $string = str_replace($reference, '[`' . $target . '`](' . full_url('tag/' . $target) . ')', $string);
+    }
+    // the user might be referring to a label
+    else {
+      // might it be that he is referring to a "local" label, i.e. in the same chapter as the tag?
+      if (!label_exists($target)) {
+        $label = get_label(strtoupper($_GET['tag']));
+        $parts = explode('-', $label);
+        // let's try it with the current chapter in front of the label
+        $target = $parts[0] . '-' . $target;
+      }
+  
+      // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
+      // if he declared a \label{} in his string with this particular label value he's out of luck
+      if (label_exists($target)) {
+        $tag = get_tag_referring_to($target);
+        $string = str_replace($reference, '[`' . $tag . '`](' . full_url('tag/' . $tag) . ')', $string);
+      }
+    }
+  }
+  
+  return $string;
+}
+
 function preprocessCode($code) {
   // remove irrelevant new lines at the end
   $code = trim($code);
@@ -94,11 +172,11 @@ class TagViewPage extends Page {
     $value .= "<div id='comments'>";
     if (count($comments) == 0) {
       $value .= "<p>There are no comments yet for this tag.</p>";
+      $value .= "<script type='text/javascript'>\$(document).ready(toggleComments());</script>";
     }
     else {
       foreach($comments as $comment)
-        $this->printComment($comment);
-      $value .= "<script type='text/javascript'>toggleComments();</script>";
+        $value .= $this->printComment($comment);
     }
     $value .= "</div>";
 
@@ -136,8 +214,24 @@ class TagViewPage extends Page {
 
   // private functions
   private function getComments() {
-    // TODO implement
-    return array();
+    $comments = array();
+
+    try {
+      $sql = $this->db->prepare("SELECT id, tag, author, date, comment, site FROM comments WHERE tag = :tag ORDER BY date");
+      $sql->bindParam(':tag', $this->tag["tag"]);
+
+      if ($sql->execute()) {
+        while ($row = $sql->fetch())
+          array_push($comments, $row);
+      }
+    }
+    catch(PDOException $e) {
+      echo $e->getMessage();
+
+      return array();
+    }
+
+    return $comments;
   }
 
   private function getSiblingTags() {
@@ -169,17 +263,16 @@ class TagViewPage extends Page {
 
     return $value;
   }
-  private function printComment() {
+  private function printComment($comment) {
     $value = "";
     $value .= "<div class='comment' id='comment-" . $comment["id"] . "'>";
-    //    <a href='#comment-175'>Comment #175</a> by <cite class='comment-author'>Adeel</cite> on March 20, 2013 at 6:45 pm UTC
-    //    <blockquote><p>In (3), the second Y should be X.</p></blockquote>
-    //  </div>
-
-    //  <div class='comment' id='comment-182'>
-    //    <a href='#comment-182'>Comment #182</a> by <cite class='comment-author'>Johan</cite> (<a href='http://math.columbia.edu/~dejong'>site</a>) on March 27, 2013 at 6:05 pm UTC
-    //    <blockquote><p>Fixed, see <a href='https://github.com/stacks/stacks-project/commit/0fced65bc54854942308acb7c91adfa753ebaa1c'>here</a>. Thanks!</p></blockquote>
-    //  </div>
+    $value .= "<a href='#comment-" . $comment["id"] . "'>Comment #" . $comment["id"] . "</a> ";
+    $value .= "by <cite class='comment-author'>" . htmlspecialchars($comment["author"]) . "</cite> ";
+    if (!empty($comment["site"])) 
+      $value .=  "<a href='" . htmlspecialchars($comment['site']) . "'>site</a>)";
+    $date = date_create($comment['date'], timezone_open('GMT'));
+    $value .= "on " . date_format($date, "F j, Y \a\t g:i a e") . "\n";
+    $value .= "<blockquote>" . parseComment($comment["comment"]) . "</blockquote>";
     $value .= "</div>";
 
     return $value;

@@ -1,15 +1,17 @@
 function toggleComments() {
-  $("div#comments").toggle();
+  $(document).ready(function() {
+    // change <<< into >>> and vice versa
+    if ($("div#comments").is(":visible")) {
+      $("h2#comments-header span").text('>>>');
+      $("h2#comments-header").prop("title", "show comments");
+    }
+    else {
+      $("h2#comments-header span").text("<<<");
+      $("h2#comments-header").prop("title", "hide comments");
+    }
 
-  // change <<< into >>> and vice versa
-  if ($("div#comments").is(":visible")) {
-    $("h2#comments-header span").text("<<<");
-    $("h2#comments-header").prop("title", "hide comments");
-  }
-  else {
-    $("h2#comments-header span").text('>>>');
-    $("h2#comments-header").prop("title", "show comments");
-  }
+    $("div#comments").toggle();
+  });
 }
 
 $(document).ready(function() {
@@ -26,9 +28,8 @@ $(document).ready(function() {
   // make comments header look like link
   $("h2#comments-header").css("cursor", "pointer");
   // hide comment section, and add the correct toggle symbol
-  $("div#comments").toggle();
-  $("h2#comments-header").append("<span style='float: right;'>&gt;&gt;&gt;</span>");
-  $("h2#comments-header").prop("title", "show comments");
+  $("h2#comments-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
+  $("h2#comments-header").prop("title", "hide comments");
   // make the h2 for the comments act like a toggle
   $("h2#comments-header").click(toggleComments);
 
