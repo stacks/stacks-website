@@ -15,6 +15,21 @@ function getLineCount($db, $filename) {
   }
 }
 
+function getPageCount($db, $filename) {
+  try {
+    $sql = $db->prepare("SELECT value FROM statistics WHERE key = :key");
+    $sql->bindValue(":key", "pagecount " . $filename);
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
+    // else
+    // TODO error handling
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
 function getBibliographyItemCount($db) {
   try {
     $sql = $db->prepare("SELECT COUNT(*) FROM bibliography_items");
@@ -127,7 +142,7 @@ function getStatisticsSidebar($db) {
   $value .= "<li>" . getTagCount($db) . " tags (" . getInactiveTagCount($db) . " inactive tags)";
   $value .= "<li>" . getSectionCount($db) . " sections";
   $value .= "<li>" . getChapterCount($db) . " chapters";
-  $value .= "<li>3305 pages";
+  $value .= "<li>" . getPageCount($db, "book") . " pages";
   $value .= "</ul>";
 
   return $value;
