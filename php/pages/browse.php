@@ -97,6 +97,8 @@ class BrowsePage extends Page {
     // third column
     if ($chapter == "Bibliography")
       $value .= "<td class='download'><a href='" . href('bibliography') . "'>online</a></td>";
+    elseif ($chapter == "Auto generated index")
+      $value .= "<td></td>";
     else
       $value .= "<td class='download'><a href='" . href('chapter/' . $number) . "'>online</a></td>";
     // fourth column
