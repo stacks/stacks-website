@@ -2,6 +2,34 @@
 
 require_once("bibliography.php");
 
+function parseFootnotes($string) {
+  $parts = explode("\\footnote", $string);
+
+  $result = $parts[0];
+
+  // each of these strings contains a footnote at the beginning
+  foreach (array_slice($parts, 1) as $part) {
+    $number = 0;
+    foreach (str_split($part) as $i => $character) {
+      if ($character == "{") $number++;
+
+      if ($character == "}") {
+        $number--;
+
+        if ($number == 0) {
+          $part[0] = "(";
+          $part[$i] = ")";
+          $result = $result . " " . $part;
+          break;
+        }
+      }
+    }
+  }
+
+  return $result;
+}
+
+
 function convertLaTeX($tag, $file, $code) {
   // get rid of things that should be HTML
   $code = preprocessCode($code);
@@ -114,7 +142,9 @@ function convertLaTeX($tag, $file, $code) {
   $code = preg_replace("/\\\emph\{(" . $regex . ")\}/u", "<em>$1</em>", $code);
 
   // footnotes
+  $code = parseFootnotes($code);
   $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/u", " ($1)", $code);
+
 
   // handle citations
   $count = preg_match_all("/\\\cite\{([\.\w\-\_]*)\}/", $code, $matches);
