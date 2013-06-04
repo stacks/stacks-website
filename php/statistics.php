@@ -77,6 +77,7 @@ function getStatisticsSidebar($db) {
   $value = "";
 
   $value .= "<h2>Statistics</h2>";
+  $value .= "<p>The Stacks project now consists of</p>";
   $value .= "<ul>";
   $value .= "<li>" . getLineCount($db, "total") . " lines of code";
   $value .= "<li>" . getTagCount($db) . " tags (" . getInactiveTagCount($db) . " inactive tags)";
