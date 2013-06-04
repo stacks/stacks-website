@@ -29,8 +29,8 @@ class AcknowledgementsPage extends Page {
 
     $output .= "<h2>Supporting institutions</h2>";
     $output .= "<div style='text-align: center'>";
-    $output .= "<a href='http://simonsfoundation.org'><img width='180' src='" . href("images/logos/simons.png") . "'></a>";
-    $output .= "<a href='http://columbia.edu'><img src='" . href("images/logos/columbia.jpg") . "'></a>";
+    $output .= "<a href='http://simonsfoundation.org'><img style='margin-bottom: 30px; margin-top: 10px' width='180' src='" . href("images/logos/simons.png") . "'></a>";
+    $output .= "<a href='http://columbia.edu'><img style='margin-bottom: 30px' src='" . href("images/logos/columbia.jpg") . "'></a>";
     $output .= "<a href='http://nsf.gov'><img width='180' src='" . href("images/logos/nsf.gif") . "'></a>";
     $output .= "</div>";
     
