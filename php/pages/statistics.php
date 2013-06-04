@@ -45,7 +45,7 @@ class StatisticsPage extends Page {
     return $output;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Statistics for the tag " . $this->tag["tag"];
   }
 }
 

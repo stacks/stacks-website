@@ -114,7 +114,7 @@ class RecentCommentsPage extends Page {
     return $output;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Recent comments";
   }
 }
 

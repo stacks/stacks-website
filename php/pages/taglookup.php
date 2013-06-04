@@ -41,7 +41,7 @@ class TagLookupPage extends Page {
     return $value;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Look for a tag";
   }
 }
 

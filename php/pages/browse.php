@@ -82,7 +82,7 @@ class BrowsePage extends Page {
     return $value;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Chapters";
   }
 
   // print a row of the table containing a chapter

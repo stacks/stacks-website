@@ -207,7 +207,7 @@ class TagViewPage extends Page {
   }
   public function getTitle() {
     if(!empty($this->tag["title"]))
-      return " -- Tag " . $this->tag["tag"] . ": " . $this->tag["name"]; // TODO latex_to_html
+      return " -- Tag " . $this->tag["tag"] . ": " . parseAccents($this->tag["name"]);
     else
       return " -- Tag " . $this->tag["tag"];
   }

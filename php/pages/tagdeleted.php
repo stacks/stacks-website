@@ -34,7 +34,7 @@ class TagDeletedPage extends Page {
     return $output;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; The tag " . $this->tag["tag"] . " has been deleted";
   }
 }
 

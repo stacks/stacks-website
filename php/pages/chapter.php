@@ -47,7 +47,7 @@ class ChapterPage extends Page {
     $value .= "</div>";
 
     $value .= "<div id='treeview'>";
-    $value .= "<a href='" . href("tag/" . $this->chapter["tag"]) . "'>Tag " . $this->chapter["tag"] . "</a> points to Chapter " . $this->chapter["number"] . ": " . $this->chapter["title"];
+    $value .= "<a href='" . href("tag/" . $this->chapter["tag"]) . "'>Tag " . $this->chapter["tag"] . "</a> points to Chapter " . $this->chapter["number"] . ": " . parseAccents($this->chapter["title"]);
     $value .= $this->printTags();
     $value .= "</div>";
 
@@ -78,7 +78,7 @@ class ChapterPage extends Page {
     return $value;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Chapter " . $this->chapter["number"] . ": " . parseAccents($this->chapter["title"]);
   }
 
 

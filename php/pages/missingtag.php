@@ -35,7 +35,7 @@ class MissingTagPage extends Page {
     return $output;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Missing tag";
   }
 }
 

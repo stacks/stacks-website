@@ -55,7 +55,7 @@ class SearchResultsPage extends Page {
     return $output;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Search results for '" . htmlspecialchars($this->options["keywords"]) . "'";
   }
 
   private function printResult($result, $includeProofs) {

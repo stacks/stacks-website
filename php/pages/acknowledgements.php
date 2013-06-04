@@ -38,7 +38,6 @@ class AcknowledgementsPage extends Page {
   }
   public function getTitle() {
     return " &mdash; Acknowledgements";
-    // TODO fix this in all the other pages: add title and use &mdash;
   }
 }
 

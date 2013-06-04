@@ -55,7 +55,7 @@ class ContributePage extends Page {
     return $output;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; How to contribute?";
   }
 
   private function getContributors() {
