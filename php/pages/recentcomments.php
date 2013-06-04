@@ -81,8 +81,7 @@ class RecentCommentsPage extends Page {
     $output = "";
 
     $output .= "<h2>Recent comments</h2>";
-    $output .= "<p>There is also an <a class='rss' href='" . href("recent-comments.rss") . "'><abbr title='Really Simple Syndication'>RSS</abbr> feed</a> if you wish to follow the recent comments from your newsreader. ";
-    $output .= "There are currently " . $this->commentsCount . " comments. ";
+    $output .= "<p>There are currently " . $this->commentsCount . " comments. ";
     $output .= "You are now displaying comments " . ($this->page - 1) * $config["comments per page"] . " to " . min($this->page * $config["comments per page"], $this->commentsCount) . " in reverse chronological order.</p>";
 
     $comments = getComments($this->db, ($this->page - 1) * $config["comments per page"], $config["comments per page"]);
@@ -109,6 +108,9 @@ class RecentCommentsPage extends Page {
 
     $output .= "</p>";
 
+    $output .= "<h2>Recent comments feed</h2>";
+    $output .= "<p>There is also an <a class='rss' href='" . href("recent-comments.rss") . "'><abbr title='Really Simple Syndication'>RSS</abbr> feed</a> if you wish to follow the recent comments from your newsreader. ";
+    
     return $output;
   }
   public function getTitle() {
