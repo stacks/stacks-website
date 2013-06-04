@@ -105,10 +105,9 @@ function getSectionCount($db) {
 function getChapterCount($db) {
   try {
     $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE label LIKE '%phantom'");
-    // TODO check relationship between this chapter count and the browse page
 
     if ($sql->execute())
-      return $sql->fetchColumn();
+      return $sql->fetchColumn() - 1;
     // else
     // TODO error handling
   }
