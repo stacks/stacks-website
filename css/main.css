@@ -100,6 +100,11 @@ form {
   margin: 0 15px 15px 15px;
 }
 
+form.simple label span {
+  width: 70px;
+  display: inline-block;
+}
+
 var {
   font-style: normal;
   font-family: monospace;

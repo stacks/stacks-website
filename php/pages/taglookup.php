@@ -8,8 +8,8 @@ function printTagLookup() {
   $output = "";
 
   $output .= "<p>Look for a tag, if you have its 4-symbol code</p>";
-  $output .= "<form action='" . href("lookup") . "' method='post'>";
-  $output .= "<label>Tag: <input type='text' name='tag' maxlength='4'></label>";
+  $output .= "<form class='simple' action='" . href("lookup") . "' method='post'>";
+  $output .= "<label><span>Tag:</span> <input type='text' name='tag' maxlength='4'></label>";
   $output .= "<input type='submit' value='locate'>";
   $output .= "</form>";
 

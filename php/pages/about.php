@@ -37,7 +37,7 @@ class AboutPage extends Page {
     return $value;
   }
   public function getTitle() {
-    return " -- About";
+    return " &mdash; About";
   }
 }
 
