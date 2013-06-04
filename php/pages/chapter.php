@@ -25,9 +25,9 @@ class ChapterPage extends Page {
 
   public function getHead() {
     $value = "";
+    global $config;
 
-    global $jQuery;
-    $value .= "<script type='text/javascript' src='" . $jQuery . "'></script>";
+    $value .= "<script type='text/javascript' src='" . $config["jQuery"] . "'></script>";
     $value .= "<script type='text/javascript' src='" . href('js/jquery-treeview/jquery.treeview.js') . "'></script>";
     $value .= "<link rel='stylesheet' href='" . href('js/jquery-treeview/jquery.treeview.css') . "' />";
 
@@ -68,12 +68,11 @@ class ChapterPage extends Page {
     $value .= "</ul>";
 
     $value .= "<h2>Statistics</h2>";
-    // TODO if this is a nice idea, make this dynamic
     $value .= "<ul>";
-    $value .= "<li><em>n<sub>1</sub></em> lines of code</li>";
-    $value .= "<li><em>n<sub>2</sub></em> tags</li>";
-    $value .= "<li><em>n<sub>3</sub></em> sections</li>";
-    $value .= "<li><em>n<sub>4</sub></em> pages</li>";
+    $value .= "<li>" . getLineCount($this->db, $this->chapter["filename"] . ".tex") . " lines of code</li>";
+    $value .= "<li>" . getTagsInFileCount($this->db, $this->chapter["filename"]) . " tags</li>"; // TODO is this the intuitively correct count?
+    $value .= "<li>" . (getSectionsInFileCount($this->db, $this->chapter["filename"]) - 1) . " sections</li>"; // -1 to take care of the phantom section
+    $value .= "<li><em>n<sub>4</sub></em> pages</li>"; // TODO implement page count
     $value .= "</ul>";
 
     return $value;

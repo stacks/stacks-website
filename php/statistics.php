@@ -15,6 +15,36 @@ function getLineCount($db, $filename) {
   }
 }
 
+function getTagsInFileCount($db, $filename) {
+  try {
+    $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE file = :filename");
+    $sql->bindValue(":filename", $filename);
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
+    // else
+    // TODO error handling
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
+function getSectionsInFileCount($db, $filename) {
+  try {
+    $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE file = :filename AND type = 'section'");
+    $sql->bindValue(":filename", $filename);
+
+    if ($sql->execute())
+      return $sql->fetchColumn();
+    // else
+    // TODO error handling
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
 function getInactiveTagCount($db) {
   try {
     $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE active = 'FALSE'");

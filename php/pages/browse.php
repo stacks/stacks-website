@@ -77,6 +77,8 @@ class BrowsePage extends Page {
     }
     $value .= "</ol>";
 
+    $value .= getStatisticsSidebar($this->db);
+
     return $value;
   }
   public function getTitle() {
