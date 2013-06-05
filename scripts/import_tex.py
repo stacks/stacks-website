@@ -68,7 +68,6 @@ def assign_label_text(label, text):
     label_texts[label] = text
 
 def assign_label_linenumbers(label, linenumbers):
-    print "label " + label + " is on lines " + str(linenumbers)
     label_linenumbers[label] = list(linenumbers)
 
 path = '../tex/'
@@ -83,8 +82,6 @@ lijstje = list_text_files(path)
 
 # Get locations in chapters
 list_dict = {}
-lijstje.remove("perfect") # TODO fix this, conflicting versions of output require this for testing purposes
-lijstje.remove("spaces-divisors")
 for name in lijstje:
     label_loc = parse_aux_file(name, path)
     list_dict[name] = label_loc
@@ -444,7 +441,6 @@ print 'Adding the TeX code to both tables'
 n = 0
 while n < len(tags):
   tag = tags[n][0]
-  print tag
   label = tags[n][1]
   if not label in label_loc:
     print "Warning: missing location for tag", tag
