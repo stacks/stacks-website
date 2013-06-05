@@ -1,6 +1,5 @@
-
 import json
-from collections import deque
+from collections import deque, defaultdict
 from functions import *
 
 def find_tag(label, label_tags):
@@ -273,10 +272,9 @@ def graph(tag):
        "type": tags_labels[tag].split("-")[1]
       })
 
-  #print "tag " + tag + " has children " + str(tags_refs[tag])
-  for child in tags_refs[tag]:
-    graph(child)
-    result["links"].append({"source": mapping[tag], "target": mapping[child]})
+    for child in tags_refs[tag]:
+      graph(child)
+      result["links"].append({"source": mapping[tag], "target": mapping[child]})
 
 #def graph(tag, depth = 0):
 #    global mapping, n
@@ -319,9 +317,36 @@ def graph(tag):
 #result = {"nodes": [], "links": []}
 #mapping = {}
 #n = 0
-graph("00SC")
+
+
+#graph("00QA")
+#print "contains " + str(len(result["nodes"])) + " nodes and " + str(len(result["links"])) + " links"
+#sources, targets = defaultdict(int), defaultdict(int)
+#for link in result["links"]:
+#  sources[link["source"]] += 1
+#  targets[link["target"]] += 1
+#
+#print sources
+#print targets
+
+
+for tag in tags:
+  # clean data
+  mapping = {}
+  n = 0
+  result = {"nodes": [], "links": []}
+
+  f = open(tag[0] + "-force.json", "w")
+  graph(tag[0])
+  print "generating " + tag[0] + "-force.json, which contains " + str(len(result["nodes"])) + " nodes and " + str(len(result["links"])) + " links"
+  f.write(json.dumps(result).replace("'", '"'))
+  f.close()
+
+
+
+
 #print len(result["nodes"])
-print json.dumps(result, indent = 2).replace("'", '"')
+#print json.dumps(result, indent = 2).replace("'", '"')
 
 #print set([split_label(key)[1] for key in label_tags.keys()])
 

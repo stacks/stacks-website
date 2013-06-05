@@ -47,7 +47,7 @@
           .attr("width", width)
           .attr("height", height);
       
-      d3.json("00SC-force.json", function(error, graph) {
+      d3.json("<?php print $_GET["tag"]; ?>-force.json", function(error, graph) {
         force
           .nodes(graph.nodes) 
           .links(graph.links)
@@ -93,6 +93,10 @@
         function hideInfo(node) {
           $("#" + node.tag + "-tooltip").fadeOut(200);
         }
+
+        function openTag(node) {
+          window.open("graph.php?tag=" + node.tag);
+        }
       
         var node = svg.selectAll(".node")
           .data(graph.nodes)
@@ -102,6 +106,7 @@
           .style("fill", function(d) { return type_map[d.type]; }) // control the color
           .on("mouseover", displayInfo)
           .on("mouseout", hideInfo)
+          .on("click", openTag)
           .call(force.drag);
       
         force.on("tick", function() {
