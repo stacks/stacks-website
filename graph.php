@@ -8,7 +8,7 @@
       }
       
       .named {
-        stroke: #777;
+        stroke: black;
       }
       
       .unnamed {
@@ -80,6 +80,7 @@
           else {
             var tooltipContent = $("<p>")
               .append("tag " + node.tag)
+              .append(": " + node.name)
               .append("<br>" + node.type);
       
             var tooltip = $("<div>", {class: "tooltip", id: node.tag + "-tooltip"})
@@ -101,7 +102,7 @@
         var node = svg.selectAll(".node")
           .data(graph.nodes)
           .enter().append("circle")
-          .attr("class", function(d) { if (typeof d.tag == "undefined") { return "named"; } else { return "unnamed"; } })
+          .attr("class", function(d) { if (d.name != "") { return "named"; } else { return "unnamed"; } })
           .attr("r", function(d) { return 4*Math.pow(parseInt(d.size)+1, 1/3); }) // control the size
           .style("fill", function(d) { return type_map[d.type]; }) // control the color
           .on("mouseover", displayInfo)

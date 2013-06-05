@@ -1,5 +1,6 @@
 import json
 from collections import deque, defaultdict
+import sqlite3
 from functions import *
 
 def find_tag(label, label_tags):
@@ -242,6 +243,29 @@ def print_graph_tag(mytag):
         n = n - 1
     print "}"
 
+connection = sqlite3.connect("../../stacks-website/database/stacks.sqlite") # TODO configuration
+
+names = {}
+def getName(tag):
+  try:
+    query = "SELECT name FROM tags WHERE tag = :tag"
+    cursor = connection.execute(query, [tag])
+
+    result = cursor.fetchone()
+    if result != None: # TODO conflicting versions of databases etc require this, will this occur in real life too?
+      return result[0]
+    else:
+      return ""
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+def addNames():
+  for tag, label in tags:
+    names[tag] = getName(tag)
+
+addNames()
+
 #names = {}
 #for tag in tags:
 #    print tag
@@ -269,7 +293,8 @@ def graph(tag):
       {"tag": tag, 
        "size": tags_nr[tag],
        "file" : tags_labels[tag].split("-")[0],
-       "type": tags_labels[tag].split("-")[1]
+       "type": tags_labels[tag].split("-")[1],
+       "name": names[tag]
       })
 
     for child in tags_refs[tag]:
@@ -339,9 +364,8 @@ for tag in tags:
   f = open(tag[0] + "-force.json", "w")
   graph(tag[0])
   print "generating " + tag[0] + "-force.json, which contains " + str(len(result["nodes"])) + " nodes and " + str(len(result["links"])) + " links"
-  f.write(json.dumps(result).replace("'", '"'))
+  f.write(json.dumps(result, indent = 2))
   f.close()
-
 
 
 
