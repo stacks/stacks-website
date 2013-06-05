@@ -165,6 +165,10 @@ class TagViewPage extends Page {
   public function getMain() {
     $value = "";
     $value .= "<h2>Tag <var>" . $this->tag["tag"] . "</var></h2>";
+
+    if ($this->tag["type"] != "section" and $this->tag["type"] != "chapter")
+      $value .= $this->printBreadcrumb();
+
     $value .= $this->printView();
 
     $comments = $this->getComments(); // TODO initialize in constructor?
@@ -383,7 +387,7 @@ class TagViewPage extends Page {
         break;
 
       case "lemma": // TODO and some others
-        // print enclosing section here?
+        // print enclosing section here? YES!
         break;
     }
 
@@ -398,6 +402,17 @@ class TagViewPage extends Page {
     }
 
     return $value;
+  }
+
+  private function printBreadcrumb() {
+    $output = "";
+
+    $chapter = getEnclosingChapter($this->tag["position"]);
+    $section = getEnclosingSection($this->tag["position"]);
+    $output .= "<p><a href='" . href("chapter/" . $chapter["book_id"]) . "'>Chapter " . $chapter["book_id"] . ": " . $chapter["name"] . "</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;";
+    $output .= "<a href='" . href("tag/" . $section["tag"]) . "'>Section " . $section["book_id"] . ": " . $section["name"] . "</a>";
+
+    return $output;
   }
 
   private function printView() {
