@@ -1,0 +1,15 @@
+html {
+  padding: 10px;
+}
+
+body {
+  border: 2px #eee inset;
+  background: white;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 10px;
+  line-height: 1.35em;
+  margin: 0;
+  min-height: 125px;
+  padding: 0;
+}

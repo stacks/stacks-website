@@ -13,3 +13,6 @@
 [submodule "php/markdown"]
 	path = php/markdown
 	url = git://github.com/drdrang/php-markdown-extra-math.git
+[submodule "js/EpicEditor"]
+	path = js/EpicEditor
+	url = git@github.com:OscarGodson/EpicEditor

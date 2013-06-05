@@ -157,6 +157,26 @@ class TagViewPage extends Page {
     $value .= "<script type='text/javascript' src='" . href("js/tag.js") . "'></script>";
     $value .= "<link rel='stylesheet' type='text/css' href='" . href("css/tag.css") . "'>";
 
+    $value .= "<script type='text/javascript' src='" . href("js/sfm.js") . "'></script>";
+    $value .= "<script type='text/javascript' src='" . href("js/EpicEditor/epiceditor/js/epiceditor.js") . "'></script>";
+    $value .= "<script type='text/javascript'>";
+    $value .= "  var options = {";
+    $value .= "    basePath: '" . href("js/EpicEditor/epiceditor") . "',";
+    $value .= "    file: {";
+    $value .= "      name: '" . $this->tag["tag"] . "',";
+    $value .= "      defaultContent: 'You can type your comment here, use the preview option to see what it will look like.',";
+    $value .= "    },";
+    $value .= "    theme: {";
+    $value .= "      editor: '/themes/editor/stacks-editor.css',";
+    $value .= "      preview: '/themes/preview/stacks-preview.css',";
+    $value .= "    },";
+    $value .= "    parser : sfm,";
+    $value .= "    shortcut : {";
+    $value .= "      modifier : 0,";
+    $value .= "    } ";
+    $value .= "  }";
+    $value .= "</script>";
+
     $value .= printMathJax();
 
     return $value;
@@ -211,9 +231,9 @@ class TagViewPage extends Page {
   }
   public function getTitle() {
     if(!empty($this->tag["title"]))
-      return " -- Tag " . $this->tag["tag"] . ": " . parseAccents($this->tag["name"]);
+      return " &mdash; Tag " . $this->tag["tag"] . ": " . parseAccents($this->tag["name"]);
     else
-      return " -- Tag " . $this->tag["tag"];
+      return " &mdash; Tag " . $this->tag["tag"];
   }
 
   // private functions
@@ -299,6 +319,7 @@ class TagViewPage extends Page {
     $value .= "<label>Comment:</label> <span id='epiceditor-status'></span>";
     $value .= "<textarea name='comment' id='comment-textarea' cols='80' rows='10'></textarea>";
     $value .= "<div id='epiceditor'></div>";
+    $value .= "<script type='text/javascript' src='" . href("js/editor.js") . "'></script>";
 
     $value .= "<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>";
     $value .= "<label for='check'>Tag:</label>";
