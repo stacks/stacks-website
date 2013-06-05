@@ -12,9 +12,6 @@ path.arc {
 }
 
 .node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
 }
 
 .node {
@@ -40,6 +37,17 @@ path.arc {
       </div>
     </div>
     <script type="text/javascript">
+
+        var type_map = {
+          "definition": d3.rgb("green"),
+          "remark": d3.rgb("black"),
+          "item": d3.rgb("yellow"),
+          "section": d3.rgb("red"),
+          "lemma": d3.rgb("orange"),
+          "proposition": d3.rgb("blue"),
+          "theorem": d3.rgb("purple"),
+          "example": d3.rgb("grey"),
+        }
 
 var w = 1280,
     h = 800,
@@ -79,18 +87,27 @@ d3.json("data/<?php print $_GET['tag']; ?>-tree.json", function(json) {
       .attr("class", "link")
       .attr("d", diagonal);
 
+  function colorType(node) { return type_map[node.type]; }
+
   var node = vis.selectAll("g.node")
       .data(nodes)
     .enter().append("svg:g")
       .attr("class", "node")
+      .style("fill", colorType)
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
 
+  function openTag(node) {
+    window.open("graph.php?tag=" + node.tag);
+  }
+
   node.append("svg:circle")
-      .attr("r", 3);
+      .attr("r", 5)
+      .on("click", openTag);
 
   node.append("svg:text")
       .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
       .attr("dy", ".31em")
+      .style("fill", "black")
       .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
       .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
       .text(function(d) { return d.tag; });
