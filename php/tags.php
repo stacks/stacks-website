@@ -35,13 +35,12 @@ function convertLaTeX($tag, $file, $code) {
   $code = preprocessCode($code);
 
   // this is the regex for all (sufficiently nice) text that can occur in things like \emph
-  $regex = "[\p{L}\p{Nd}\?@\s$,.:()N&#;\-\\\\$]+";
+  $regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$]+";
 
   // fix special characters (&quot; should be " for \"e)
   $code = parseAccents(str_replace("&quot;", "\"", $code));
 
   // all big environments with their corresponding markup
-  // TODO make this part of the code aware of the three types used in the TeX
   $environments = array(
     "lemma"       => array("name" => "Lemma",       "type" => "plain"),
     "definition"  => array("name" => "Definition",  "type" => "definition"),
@@ -67,7 +66,7 @@ function convertLaTeX($tag, $file, $code) {
     }
 
     // do the same for named environments
-    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([\w\*\-]*)\}/u", $code, $matches);
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([\w\-]*)\}/u", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
       
