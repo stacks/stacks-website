@@ -283,7 +283,7 @@ def children(tag):
 
 mapping = {}
 n = 0
-def graph(tag):
+def graph(tag, depth = 0):
   global mapping, n
 
   if tag not in mapping.keys():
@@ -294,38 +294,24 @@ def graph(tag):
        "size": tags_nr[tag],
        "file" : tags_labels[tag].split("-")[0],
        "type": tags_labels[tag].split("-")[1],
-       "name": names[tag]
+       "name": names[tag],
+       "depth": depth
       })
 
     for child in tags_refs[tag]:
-      graph(child)
+      graph(child, depth + 1)
       result["links"].append({"source": mapping[tag], "target": mapping[child]})
+  else:
+    # overwrite depth if necessary
+    result["nodes"][mapping[tag]]["depth"] = max(depth, result["nodes"][mapping[tag]]["depth"])
 
-#def graph(tag, depth = 0):
-#    global mapping, n
-#    if tag not in mapping:
-#        mapping[tag] = n
-#        n = n + 1
-#        result["nodes"].append({"tag": tag, "group": 1, "size": tags_nr[tag], "file" : tags_labels[tag].split("-")[0], "type": tags_labels[tag].split("-")[1]})
-#
-#    if tags_refs[tag] == []:
-#        return 
-#    else:
-#        for child in tags_refs[tag]:
-#            graph(child, depth + 1)
-#            #used.add(child)
-#            print tag
-#            print tags_refs[tag]
-#            result["links"].append({"source": mapping[tag], "target": mapping[child]})
-#
-#
-#
-#def tree(tag):
-#    # child node
-#    if tags_refs[tag] == []:
-#        return {"tag": tag, "size": 2000}
-#    else:
-#        return {"tag": tag, "children": [tree(child) for child in tags_refs[tag]]}
+
+def tree(tag):
+    # child node
+    if tags_refs[tag] == []:
+        return {"tag": tag, "size": 2000}
+    else:
+        return {"tag": tag, "children": [tree(child) for child in tags_refs[tag]]}
         
 
 #print_whole_graph()

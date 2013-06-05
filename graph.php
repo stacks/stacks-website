@@ -48,6 +48,13 @@
           .attr("height", height);
       
       d3.json("<?php print $_GET["tag"]; ?>-force.json", function(error, graph) {
+        depth = 0
+        for (var i = 0; i < graph.nodes.length; i++)
+          depth = Math.max(depth, graph.nodes[i].depth);
+        var heat = d3.scale.linear()
+          .domain([0, depth])
+          .range(["red", "blue"]);
+
         force
           .nodes(graph.nodes) 
           .links(graph.links)
@@ -104,7 +111,8 @@
           .enter().append("circle")
           .attr("class", function(d) { if (d.name != "") { return "named"; } else { return "unnamed"; } })
           .attr("r", function(d) { return 4*Math.pow(parseInt(d.size)+1, 1/3); }) // control the size
-          .style("fill", function(d) { return type_map[d.type]; }) // control the color
+          .style("fill", function(d) { return heat(d.depth); }) // control the color
+          //.style("fill", function(d) { return type_map[d.type]; }) // control the color
           .on("mouseover", displayInfo)
           .on("mouseout", hideInfo)
           .on("click", openTag)
