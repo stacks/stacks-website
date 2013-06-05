@@ -33,6 +33,8 @@
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
   </head>
   <body>
+    <a href="javascript:void(0)" onclick="toggleColor('heat');">heat</a><br>
+    <a href="javascript:void(0)" onclick="toggleColor('type');">type</a><br>
     <script>
       var width = 1800,
           height = 1000;
@@ -46,8 +48,9 @@
       var svg = d3.select("body").append("svg")
           .attr("width", width)
           .attr("height", height);
+
       
-      d3.json("<?php print $_GET["tag"]; ?>-force.json", function(error, graph) {
+      result = d3.json("data/<?php print $_GET["tag"]; ?>-force.json", function(error, graph) {
         depth = 0
         for (var i = 0; i < graph.nodes.length; i++)
           depth = Math.max(depth, graph.nodes[i].depth);
@@ -64,7 +67,6 @@
           .data(graph.links)
           .enter().append("line")
           .attr("class", "link")
-          .style("stroke-width", function(d) { return Math.sqrt(d.value); });
       
         var type_map = {
           "definition": d3.rgb("green"),
@@ -105,14 +107,16 @@
         function openTag(node) {
           window.open("graph.php?tag=" + node.tag);
         }
-      
+
+        function colorHeat(node) { return heat(node.depth); }
+        function colorType(node) { return type_map[d.type]; }
+
         var node = svg.selectAll(".node")
           .data(graph.nodes)
           .enter().append("circle")
           .attr("class", function(d) { if (d.name != "") { return "named"; } else { return "unnamed"; } })
           .attr("r", function(d) { return 4*Math.pow(parseInt(d.size)+1, 1/3); }) // control the size
-          .style("fill", function(d) { return heat(d.depth); }) // control the color
-          //.style("fill", function(d) { return type_map[d.type]; }) // control the color
+          .style("fill", colorHeat)
           .on("mouseover", displayInfo)
           .on("mouseout", hideInfo)
           .on("click", openTag)

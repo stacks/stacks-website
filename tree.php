@@ -49,7 +49,7 @@
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
-    d3.json("07D9.json", function(error, flare) {
+    d3.json("data/<?php print $_GET["tag"]; ?>-tree.json", function(error, flare) {
       root = flare;
       root.x0 = height / 2;
       root.y0 = 0;
