@@ -293,7 +293,7 @@ class TagViewPage extends Page {
     $value .= "<a href='#comment-" . $comment["id"] . "'>Comment #" . $comment["id"] . "</a> ";
     $value .= "by <cite class='comment-author'>" . htmlspecialchars($comment["author"]) . "</cite> ";
     if (!empty($comment["site"])) 
-      $value .=  "<a href='" . htmlspecialchars($comment['site']) . "'>site</a>)";
+      $value .=  "(<a href='" . htmlspecialchars($comment['site']) . "'>site</a>) ";
     $date = date_create($comment['date'], timezone_open('GMT'));
     $value .= "on " . date_format($date, "F j, Y \a\t g:i a e") . "\n";
     $value .= "<blockquote>" . parseComment($comment["comment"]) . "</blockquote>";
@@ -309,7 +309,7 @@ class TagViewPage extends Page {
     $value .= "<p>In your comment you can use <a href='#'>Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).</p>"; // TODO fix link
     $value .= "<noscript>Unfortunately JavaScript is disabled in your browser, so the comment preview function will not work.</noscript>";
 
-    $value .= "<form name='comment' id='comment-form' action='#' method='post'>";
+    $value .= "<form name='comment' id='comment-form' action='" . href("php/post.php") . "' method='post'>";
     $value .= "<label for='name'>Name<sup>*</sup>:</label>";
     $value .= "<input type='text' name='name' id='name'><br>";
     $value .= "<label for='mail'>E-mail<sup>*</sup>:</label>";
@@ -324,7 +324,7 @@ class TagViewPage extends Page {
     $value .= "<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>";
     $value .= "<label for='check'>Tag:</label>";
     $value .= "<input type='text' name='check' id='check'><br>";
-    $value .= "<input type='hidden' name='tag' value='03D9'>";
+    $value .= "<input type='hidden' name='tag' value='" . $this->tag["tag"] . "'>";
     $value .= "<input type='submit' id='comment-submit' value='Post comment'>";
     $value .= "</form>";
     $value .= "</div>";
