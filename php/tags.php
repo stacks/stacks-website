@@ -186,8 +186,9 @@ function convertLaTeX($tag, $file, $code) {
   $math_mode = false;
   foreach ($lines as &$line) {
     // $$ is a toggle
-    if ($line == '$$')
+    if ($line == "$$")
       $math_mode = !$math_mode;
+
     $environments = array('equation', 'align', 'align*', 'eqnarray', 'eqnarray*');
     foreach ($environments as $environment) {
       if ($line == '\begin{' . $environment . '}') $math_mode = true;
@@ -207,9 +208,9 @@ function convertLaTeX($tag, $file, $code) {
   }
   $code = implode("\n", $lines);
   
-  $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-]+)<\/a>}/', $code, $references);
+  $count = preg_match_all('/\\\ref{&lt;a href=\"([\w\/]+)\"&gt;([\w-]+)&lt;\/a&gt;}/', $code, $references);
   for ($i = 0; $i < $count; ++$i) {
-    $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . getID(substr($references[1][$i], -4, 4)) . "</a>", $code);
+    $code = str_replace($references[0][$i], "<a href='" . href($references[1][$i]) . "'>" . getID(substr($references[1][$i], -4, 4)) . "</a>", $code);
   }
 
   // fix macros
