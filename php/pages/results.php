@@ -100,7 +100,6 @@ class SearchResultsPage extends Page {
       // the user doesn't want tags of the type section or subsection (which contain all the tags from that section)
       switch ($options["limit"]) {
         case "statements":
-          $query .= " AND tags.TYPE NOT IN ('section', 'subsection')";
           $query .= " AND tags_search.text_without_proofs MATCH " . $this->db->quote($options["keywords"]);
           break;
         case "sections":
@@ -121,7 +120,24 @@ class SearchResultsPage extends Page {
       echo $e->getMessage();
     }
 
-    // TODO filtering duplicates
+    // remove duplicates if requested
+    $tags = array();
+    if (isset($options["exclude-duplicates"])) {
+      foreach ($results as $result) {
+        // there is already a parent tag in the result list, so we have to remove this one
+        $parentTag = implode(".", array_splice(explode(".", $result["book_id"]), 0, 2));
+
+        if (in_array($parentTag, $tags))
+          $tags = array_diff($tags, array($parentTag));
+        array_push($tags, $result["book_id"]);
+      }
+
+      // filter the results based on the list of tags that we want to keep
+      foreach ($results as $key => $result) {
+        if (!in_array($result["book_id"], $tags))
+          unset($results[$key]);
+      }
+    }
 
     return $results; 
   }
