@@ -125,6 +125,63 @@ def addNames():
 
 addNames()
 
+# get sections for tags from the database
+sections = {}
+chapters = {}
+def getID(tag):
+  try:
+    query = "SELECT book_id FROM tags WHERE tag = ?"
+    cursor = connection.execute(query, [tag])
+
+    result = cursor.fetchone()
+    if result != None:
+      return result[0]
+    else:
+      return ""
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+def getChapter(tag):
+  ID = ".".join(getID(tag).split(".")[0:1])
+  try:
+    query = "SELECT title FROM sections WHERE number = ?"
+    cursor = connection.execute(query, [ID])
+
+    result = cursor.fetchone()
+    if result != None:
+      return (result[0], ID)
+    else:
+      return ("", "0.0")
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+def getSection(tag):
+  ID = ".".join(getID(tag).split(".")[0:2])
+  try:
+    query = "SELECT title FROM sections WHERE number = ?"
+    cursor = connection.execute(query, [ID])
+
+    result = cursor.fetchone()
+    if result != None:
+      return (result[0], ID)
+    else:
+      return ("", "0.0")
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+def addSections():
+  for tag, label in tags:
+    sections[tag] = getSection(tag)
+def addChapters():
+  for tag, label in tags:
+    chapters[tag] = getChapter(tag)
+
+addSections()
+addChapters()
+
 # dictionary for easy label access
 tags_labels = dict((v, k) for k, v in label_tags.iteritems())
 
@@ -170,6 +227,33 @@ def countTree(tree):
     return 1 + sum([countTree(tag) for tag in tree["children"]])
 
 
+def generatePacked(tag):
+  children = set(getChildren(tag))
+
+  packed = defaultdict(list)
+  packed["name"] = ""
+  packed["type"] = "root"
+  chaptersMapping = {}
+  sectionsMapping = defaultdict(dict)
+  for child in children:
+    chapter = chapters[child][0]
+    section = sections[child][0]
+
+    if chapter not in chaptersMapping:
+      chaptersMapping[chapter] = max(chaptersMapping.values() + [-1]) + 1
+      #print "assigning " + str(chaptersMapping[chapter]) + " to " + chapter
+      packed["children"].append({"name": chapter, "type": "chapter", "children": []})
+
+    if section not in sectionsMapping[chapter]:
+      sectionsMapping[chapter][section] = max(sectionsMapping[chapter].values() + [-1]) + 1
+      #print "assigning " + str(sectionsMapping[chapter][section]) + " to " + chapter + ", " + section
+      packed["children"][chaptersMapping[chapter]]["children"].append({"name": section, "type": "section", "children": []})
+
+    packed["children"][chaptersMapping[chapter]]["children"][sectionsMapping[chapter][section]]["children"].append({"name": child, "type": "tag", "size": 2000})
+
+  return packed
+
+
 # force directed dependency graph
 def generateGraphs():
   for tag in tags:
@@ -184,6 +268,7 @@ def generateGraphs():
     f.write(json.dumps(result, indent = 2))
     f.close()
 
+# treeview (or clusterview)
 maximum = 150
 def optimizeTree(tag):
   cutoffValue = 1
@@ -199,8 +284,6 @@ def optimizeTree(tag):
       tree = candidate
       cutoffValue = cutoffValue + 1
 
-
-# treeview (or clusterview)
 def generateTrees():
   for tag in tags:
     f = open("data/" + tag[0] + "-tree.json", "w")
@@ -210,4 +293,19 @@ def generateTrees():
     f.write(json.dumps(result, indent = 2))
     f.close()
 
-generateTrees()
+def getChildren(tag):
+  return [tag] + sum([getChildren(child) for child in tags_refs[tag]], [])
+
+# packed view with clusters corresponding to parts (TODO) and chapters
+def generatePackeds():
+  for tag in tags:
+    f = open("data/" + tag[0] + "-packed.json", "w")
+    packed = generatePacked(tag[0])
+    print "generating packed view for " + tag[0]
+    f.write(json.dumps(packed, indent = 2))
+    f.close()
+
+
+#generateGraphs()
+#generateTrees()
+generatePackeds()
