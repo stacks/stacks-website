@@ -14,8 +14,8 @@ function parseAccents($text) {
 
   $text = preg_replace("/\{?\\\c\{?c\}?\}?/", '&ccedil;', $text);
 
-  $text = preg_replace("/\{\\\'E\}|\\\'E?/", "&Eacute;", $text);
-  $text = preg_replace("/\{\\\'e\}|\\\'e?/", "&eacute;", $text);
+  $text = preg_replace("/\{\\\'E\}|\\\'E/", "&Eacute;", $text);
+  $text = preg_replace("/\{\\\'e\}|\\\'e/", "&eacute;", $text);
   $text = preg_replace("/\{?\\\`\{?e\}?/", "&egrave;", $text);
   $text = preg_replace("/\{?\\\`\{?E\}?/", "&Egrave;", $text);
   $text = preg_replace("/\{?\\\\\^\{?e\}?/", "&ecirc;", $text);
