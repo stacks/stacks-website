@@ -59,7 +59,9 @@ class ContributePage extends Page {
   }
 
   private function getContributors() {
-    $file = file("../stacks-project/CONTRIBUTORS"); // TODO fix configuration
+    global $config;
+
+    $file = file($config["project"] . "/CONTRIBUTORS"); // TODO fix configuration
     return  array_slice($file, 4);
   }
 }
