@@ -34,10 +34,11 @@ class SearchResultsPage extends Page {
 
     $results = $this->search($this->options);
 
+    $output .= "<p>There are " . sizeof($results) . " results</p>";
+
     $output .= "<ul id='results'>";
     foreach ($results as $result) {
-      // TODO includProofs
-      $output .= $this->printResult($result, false);
+      $output .= $this->printResult($result, false); // we never show the proofs in the preview, although it would be possible
     }
     $output .= "</ul>";
 
@@ -51,6 +52,11 @@ class SearchResultsPage extends Page {
     $output .= "<li>use wildcards, <code>ideal</code> doesn't match <code>ideals</code>, but <code>ideal*</code> matches both;";
     $output .= "<li>strings like <code>quasi-compact</code> should be enclosed by double quotes, otherwise you are looking for tags containing <code>quasi</code> but not <code>compact</code>;";
     $output .= "</ul>";
+    $output .= "<h2>Remarks</h2>";
+    $output .= "<ul>";
+    $output .= "<li>if a search result corresponds to a (sub)section no preview option is given";
+    $output .= "</ul>";
+      // TODO more remarks?
 
     return $output;
   }
@@ -83,10 +89,12 @@ class SearchResultsPage extends Page {
         break;
     }
     
-    if ($includeProofs)
-      $output .= "<pre class='preview' id='text-" . $result["tag"] . "'>" . parsePreview($result["text"]) . "</pre>";
-    else
-      $output .= "<pre class='preview' id='text-" . $result["tag"] . "'>" . parsePreview($result["text_without_proofs"]) . "</pre>";
+    if (!in_array($result["type"], array("section", "subsection"))) {
+      if ($includeProofs)
+        $output .= "<pre class='preview' id='text-" . $result["tag"] . "'>" . parsePreview($result["text"]) . "</pre>";
+      else
+        $output .= "<pre class='preview' id='text-" . $result["tag"] . "'>" . parsePreview($result["text_without_proofs"]) . "</pre>";
+    }
 
     return $output;
   }
