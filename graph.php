@@ -27,17 +27,32 @@
         background-color: white;
         padding: 2px;
       }
+body {
+width: 5000px;
+height: 5000px;
+}
     </style>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
   </head>
   <body>
+    <script type="text/javascript">
+
+      function scrollToGraph() {
+        console.log("scroll");
+        console.log(window.innerHeight);
+        window.scrollTo(
+          (document.body.offsetWidth -document.documentElement.offsetWidth )/2,
+          (document.body.offsetHeight-window.innerHeight)/2);
+      }
+    </script>
+    <a href="javascript:void(0)" onclick="scrollToGraph()">scroll</a><br><br>
     <a href="javascript:void(0)" onclick="toggleColor('heat');">heat</a><br>
     <a href="javascript:void(0)" onclick="toggleColor('type');">type</a><br>
     <script>
-      var width = 1800,
-          height = 1000;
+      var width = 5000,
+          height = 5000;
       
       var force = d3.layout.force()
           .charge(-500)
@@ -134,6 +149,13 @@
             .attr("cy", function(d) { return d.y; });
         });
       });
+ //     $(document).ready( function() {
+
+ //       console.log((document.body.offsetWidth -document.documentElement.offsetWidth )/2);
+ //       console.log((document.body.offsetHeight-document.documentElement.offsetHeight)/2);
+ //       console.log(document.documentElement.offsetHeight);
+ //       window.scrollTo(2500, 2500);
+ //});
     </script>
   </body>
 </html>
