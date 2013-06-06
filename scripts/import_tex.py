@@ -183,11 +183,9 @@ for name in lijstje:
                 linenumber_item[1] = line_nr
                 assign_label_linenumbers(label_item, linenumber_item)
 
-                in_item = 0
-                text_item = ""
-                label_item = ""
-
             in_item = 1
+            text_item = ""
+            label_item = ""
             linenumber_item[0] = line_nr
 
         # See if section starts
