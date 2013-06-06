@@ -429,8 +429,8 @@ class TagViewPage extends Page {
 
     $chapter = getEnclosingChapter($this->tag["position"]);
     $section = getEnclosingSection($this->tag["position"]);
-    $output .= "<p><a href='" . href("chapter/" . $chapter["book_id"]) . "'>Chapter " . $chapter["book_id"] . ": " . $chapter["name"] . "</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;";
-    $output .= "<a href='" . href("tag/" . $section["tag"]) . "'>Section " . $section["book_id"] . ": " . $section["name"] . "</a>";
+    $output .= "<p><a href='" . href("chapter/" . $chapter["book_id"]) . "'>Chapter " . $chapter["book_id"] . ": " . parseAccents($chapter["name"]) . "</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;";
+    $output .= "<a href='" . href("tag/" . $section["tag"]) . "'>Section " . $section["book_id"] . ": " . parseAccents($section["name"]) . "</a>";
 
     return $output;
   }
