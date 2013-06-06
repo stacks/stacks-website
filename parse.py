@@ -296,7 +296,8 @@ def generateTrees():
     f.close()
 
 def getChildren(tag):
-  return list(set([tag] + sum([getChildren(child) for child in tags_refs[tag]], [])))
+  children = [getChildren(child) for child in tags_refs[tag]]
+  return set([tag]).union(*children)
 
 # packed view with clusters corresponding to parts and chapters
 def generatePackeds():
@@ -308,6 +309,6 @@ def generatePackeds():
     f.close()
 
 
-#generateGraphs()
-#generateTrees()
+generateGraphs()
+generateTrees()
 generatePackeds()
