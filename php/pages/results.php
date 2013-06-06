@@ -30,7 +30,7 @@ class SearchResultsPage extends Page {
     $output = "";
 
     $output .= "<h2>Search</h2>";
-    $output .= SearchPage::getSearchForm($this->options["keywords"]);
+    $output .= SearchPage::getSearchForm($this->options["keywords"], $this->options);
 
     $results = $this->search($this->options);
 
@@ -100,7 +100,7 @@ class SearchResultsPage extends Page {
       // the user doesn't want tags of the type section or subsection (which contain all the tags from that section)
       switch ($options["limit"]) {
         case "statements":
-          $query .= " AND tags.TYPE IN ('section', 'subsection')";
+          $query .= " AND tags.TYPE NOT IN ('section', 'subsection')";
           $query .= " AND tags_search.text_without_proofs MATCH " . $this->db->quote($options["keywords"]);
           break;
         case "sections":

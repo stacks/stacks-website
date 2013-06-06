@@ -88,7 +88,9 @@ switch($page) {
       // TODO set options in new form
       $options = array();
       $options["keywords"] = $_GET["keywords"];
-      $options["limit"] = "all";
+      $options["limit"] = $_GET["limit"];
+      if (isset($_GET["exclude-duplicates"]))
+        $options["exclude-duplicates"] = "on";
       $page = new SearchResultsPage($database, $options);
     }
     break;
