@@ -76,7 +76,7 @@ class SearchResultsPage extends Page {
         if ($parent["tag"] == $section["tag"])
           $output .= "<li><p><a href='" . href("tag/" . $result["tag"]) . "'>" . ucfirst($result["type"]) . " " . $result["book_id"] . "</a> of the enumeration in <a href='" . href("tag/" . $section["tag"]) . "'>" . ucfirst($section["type"]) . " " . $section["book_id"] . "</a></p>";
         else
-          $output .= "<li><p><a href='" . href("tag/" . $result["tag"]) . "'>" . ucfirst($result["type"]) . " " . $result["book_id"] . "</a> of the enumeration in <a href='" . href("tag/" . $parent["tag"]) . "'>" . ucfirst($parent["type"]) . " " . $parent["book_id"] . "</a> in <a href='" . href("tag/" . $section["tag"]) . "'>" . "Section " . $section["book_id"] . ": " . $section["name"] . "</a></p>";
+          $output .= "<li><p><a href='" . href("tag/" . $result["tag"]) . "'>" . ucfirst($result["type"]) . " " . $result["book_id"] . "</a> of the enumeration in <a href='" . href("tag/" . $parent["tag"]) . "'>" . ucfirst($parent["type"]) . " " . $parent["book_id"] . "</a> in <a href='" . href("tag/" . $section["tag"]) . "'>" . "Section " . $section["book_id"] . ": " . parseAccents($section["name"]) . "</a></p>";
         break;
 
       case "section":
@@ -85,7 +85,7 @@ class SearchResultsPage extends Page {
 
       default:
         $section = getEnclosingSection($result["position"]);
-        $output .= "<li><p><a href='" . href("tag/" . $result["tag"]) . "'>" . ucfirst($result["type"]) . " " . $result["book_id"] . ((!empty($result["name"]) and $result["type"] != "equation") ? ": " . parseAccents($result["name"]) . "</a>" : "</a>") . " in <a href='" . href("tag/" . $section["tag"]) . "'>" . "Section " . $section["book_id"] . ": " . $section["name"] . "</a></p>";
+        $output .= "<li><p><a href='" . href("tag/" . $result["tag"]) . "'>" . ucfirst($result["type"]) . " " . $result["book_id"] . ((!empty($result["name"]) and $result["type"] != "equation") ? ": " . parseAccents($result["name"]) . "</a>" : "</a>") . " in <a href='" . href("tag/" . $section["tag"]) . "'>" . "Section " . $section["book_id"] . ": " . parseAccents($section["name"]) . "</a></p>";
         break;
     }
     
