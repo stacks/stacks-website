@@ -96,7 +96,7 @@ class BibliographyPage extends Page {
     $output .= "<ol id='index'>";
     foreach ($this->letters as $letter)
       $output .= "<li><a href='#" . $letter . "'>" . $letter . "</a></li>";
-    $output .= "</ol><p style='clear: both'>";
+    $output .= "<br style='clear: both'></ol>";
 
     $output .= "<h2>Statistics</h2>";
     $output .= "<p>There are currently " . getBibliographyItemCount($this->db) . " items in the bibliography.";
