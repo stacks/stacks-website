@@ -296,8 +296,17 @@ def generateTrees():
     f.close()
 
 def getChildren(tag):
-  children = [getChildren(child) for child in tags_refs[tag]]
-  return set([tag]).union(*children)
+  queue = deque([tag])
+  result = set([])
+
+  while queue:
+    tag = queue.popleft()
+    if tag not in result:
+      result.add(tag)
+      queue.extend(tags_refs[tag])
+
+  return result
+
 
 # packed view with clusters corresponding to parts and chapters
 def generatePackeds():
