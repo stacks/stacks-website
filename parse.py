@@ -191,7 +191,7 @@ mapping = {}
 n = 0
 
 def generateGraph(tag, depth = 0):
-  global mapping, n
+  global mapping, n, result
 
   if tag not in mapping.keys():
     mapping[tag] = n
@@ -200,7 +200,7 @@ def generateGraph(tag, depth = 0):
       {"tag": tag, 
        "size": tags_nr[tag],
        "file" : split_label(tags_labels[tag])[0],
-       "type": split(tags_labels[tag])[1],
+       "type": split_label(tags_labels[tag])[1],
        "name": names[tag],
        "depth": depth
       })
@@ -229,6 +229,7 @@ def countTree(tree):
 
 def generatePacked(tag):
   children = set(getChildren(tag))
+  print len(children)
 
   packed = defaultdict(list)
   packed["name"] = ""
@@ -257,6 +258,7 @@ def generatePacked(tag):
 # force directed dependency graph
 def generateGraphs():
   for tag in tags:
+    global mapping, n, result
     # clean data
     mapping = {}
     n = 0
@@ -294,9 +296,9 @@ def generateTrees():
     f.close()
 
 def getChildren(tag):
-  return [tag] + sum([getChildren(child) for child in tags_refs[tag]], [])
+  return list(set([tag] + sum([getChildren(child) for child in tags_refs[tag]], [])))
 
-# packed view with clusters corresponding to parts (TODO) and chapters
+# packed view with clusters corresponding to parts and chapters
 def generatePackeds():
   for tag in tags:
     f = open("data/" + tag[0] + "-packed.json", "w")

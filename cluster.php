@@ -3,7 +3,6 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="style.css"/>
     <style type="text/css">
 
 path.arc {
