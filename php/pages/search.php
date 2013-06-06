@@ -5,10 +5,10 @@ require_once("php/general.php");
 
 class SearchPage extends Page {
   public function getHead() {
-    global $jQuery;
+    global $config;
     $output = "";
 
-    $output .= "<script type='text/javascript' src='" . $jQuery . "'></script>";
+    $output .= "<script type='text/javascript' src='" . $config["jQuery"] . "'></script>";
     $output .= "<script type='text/javascript' src='" . href("js/search.js") . "'></script>";
     $output .= "<link rel='stylesheet' type='text/css' href='" . href("css/search.css") . "'>";
 
@@ -35,10 +35,10 @@ class SearchPage extends Page {
     return $output;
   }
   public function getTitle() {
-    return "";
+    return " &mdash; Search";
   }
 
-  public function getSearchForm($keywords = "") {
+  public function getSearchForm($keywords = "", $options = array()) {
     $output = "";
     $output .= "<form id='search' method='get' action='" . href('search') . "'>
       <fieldset>
@@ -49,15 +49,30 @@ class SearchPage extends Page {
 
       <fieldset>
         <legend>Options</legend>
-        <p>Limit your search to include:<br>
-        <label for='limit-none'><input type='radio' name='limit' id='limit-none' checked='checked'> all tags</label><br>
-        <label for='limit-sections'><input type='radio' name='limit' id='limit-sections'> only complete sections</label><br>
-        <label for='limit-statements'><input type='radio' name='limit' id='limit-statements'> only statements, not the proofs</label>
+        <p>Limit your search to include:<br>";
 
-        <p>If a query matches both a tag and a parent tag, only display the child:<br>
-        <label for='exclude-duplicates'><input type='checkbox' name='exclude-duplicates' id='exclude-duplicates'> remove duplicates</label>
-      </fieldset>
-    </form>";
+    if (!array_key_exists("limit", $options)) {
+      $output .= "
+        <label for='limit-none'><input type='radio' value='all' name='limit' id='limit-none' checked='checked'> all tags</label><br>
+        <label for='limit-sections'><input type='radio' name='limit' value='sections' id='limit-sections'> only complete sections</label><br>
+        <label for='limit-statements'><input type='radio' name='limit' value='statements' id='limit-statements'> only statements, not the proofs</label>";
+    }
+    else {
+      $output .= "
+        <label for='limit-none'><input type='radio' value='all' name='limit' id='limit-none'" . ($options["limit"] == "all" ? " checked='checked'" : "") . "> all tags</label><br>
+        <label for='limit-sections'><input type='radio' name='limit' value='sections' id='limit-sections'" . ($options["limit"] == "sections" ? " checked='checked'" : "") . "> only complete sections</label><br>
+        <label for='limit-statements'><input type='radio' name='limit' value='statements' id='limit-statements'" . ($options["limit"] == "statements" ? " checked='checked'" : "") . "> only statements, not the proofs</label>";
+    }
+
+    $output .= "<p>If a query matches both a tag and a parent tag, only display the child:<br>";
+    if (!array_key_exists("exclude-duplicates", $options)) {
+      $output .= "<label for='exclude-duplicates'><input type='checkbox' name='exclude-duplicates' id='exclude-duplicates'> remove duplicates</label>";
+    }
+    else {
+      $output .= "<label for='exclude-duplicates'><input type='checkbox' name='exclude-duplicates' id='exclude-duplicates' checked='checked'> remove duplicates</label>";
+    }
+
+    $output .= "</fieldset></form>";
 
     return $output;
   }
