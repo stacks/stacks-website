@@ -429,8 +429,12 @@ class TagViewPage extends Page {
 
     $chapter = getEnclosingChapter($this->tag["position"]);
     $section = getEnclosingSection($this->tag["position"]);
-    $output .= "<p><a href='" . href("chapter/" . $chapter["book_id"]) . "'>Chapter " . $chapter["book_id"] . ": " . parseAccents($chapter["name"]) . "</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;";
+    $output .= "<p style='font-size: .9em'><a href='" . href("chapter/" . $chapter["book_id"]) . "'>Chapter " . $chapter["book_id"] . ": " . parseAccents($chapter["name"]) . "</a> &gt;&ensp;";
     $output .= "<a href='" . href("tag/" . $section["tag"]) . "'>Section " . $section["book_id"] . ": " . parseAccents($section["name"]) . "</a>";
+    if ($this->tag["type"] == "item" or $this->tag["type"] == "equation") {
+      $enclosingTag = getEnclosingTag($this->tag["position"]);
+      $output .= " &gt;&ensp;<a href='" . href("tag/" . $enclosingTag["tag"]) . "'>" . ucfirst($enclosingTag["type"]) . "&nbsp;" . $enclosingTag["book_id"] . "</a>";
+    }
 
     return $output;
   }
