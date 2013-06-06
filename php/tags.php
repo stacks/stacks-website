@@ -106,7 +106,7 @@ function convertLaTeX($tag, $file, $code) {
   $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/u", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[2][$i];
-    $code = str_replace($matches[0][$i], "<h4><a class='environment-link' href='" . getTagWithLabel($label) . "'>" . getIDWithLabel($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
+    $code = str_replace($matches[0][$i], "<h4><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . getIDWithLabel($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
   }
 
   // remove remaining labels
@@ -146,10 +146,14 @@ function convertLaTeX($tag, $file, $code) {
 
 
   // handle citations
-  $count = preg_match_all("/\\\cite\{([\.\w\-\_]*)\}/", $code, $matches);
+  $count = preg_match_all("/\\\cite\{([\.\w,\-\_]*)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
-    $item = getBibliographyItem($matches[1][$i]);
-    $code = str_replace($matches[0][$i], '[<a title="' . parseTeX($item['author']) . ', ' . parseTeX($item['title']) . '" href="' . href('bibliography/' . $matches[1][$i]) . '">' . $matches[1][$i] . "</a>]", $code);
+    $keys = explode(",", $matches[1][$i]);
+    $matchings = explode(",", $matches[0][$i]);
+    foreach ($keys as $index => $key) {
+      $item = getBibliographyItem($key);
+      $code = str_replace($matchings[$index], '[<a title="' . parseTeX($item['author']) . ', ' . parseTeX($item['title']) . '" href="' . href('bibliography/' . $key) . '">' . $key . "</a>]", $code);
+    }
   }
   $count = preg_match_all("/\\\cite\[(" . $regex . ")\]\{([\w-]*)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
