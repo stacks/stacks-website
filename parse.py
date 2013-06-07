@@ -207,7 +207,7 @@ def generateGraph(tag, depth = 0):
        "file" : split_label(tags_labels[tag])[0],
        "type": split_label(tags_labels[tag])[1],
        "tagName": names[tag],
-       "id": tagToID[tag],
+       "book_id": tagToID[tag],
        "depth": depth
        # TODO also chapter name etc, but I don't feel like it right now
       })
