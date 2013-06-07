@@ -27,14 +27,38 @@
         background-color: white;
         padding: 2px;
       }
-body {
-width: 5000px;
-height: 5000px;
-}
+
+<?php
+// TODO check for inexisting file
+$filesize = filesize("data/" . $_GET["tag"] . "-force.json");
+$size = 500 + 10 * $filesize / 1000;
+?>
+
+      body {
+        width: <?php print $size; ?>px;
+        height: <?php print $size; ?>px;
+      }
+      
+      svg {
+        border: 1px solid black;
+      }
+  
     </style>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript">
+      function centerViewport() {
+        x = ($(document).width() - $(window).width()) / 2;
+        y = ($(document).height() - $(window).height()) / 2;
+        $(document).scrollLeft(x);
+        $(document).scrollTop(y);
+      }
+
+      $(document).ready(function () {
+        setTimeout(centerViewport, 100);
+      });
+    </script>
   </head>
   <body>
     <script type="text/javascript">
@@ -47,12 +71,10 @@ height: 5000px;
           (document.body.offsetHeight-window.innerHeight)/2);
       }
     </script>
-    <a href="javascript:void(0)" onclick="scrollToGraph()">scroll</a><br><br>
-    <a href="javascript:void(0)" onclick="toggleColor('heat');">heat</a><br>
-    <a href="javascript:void(0)" onclick="toggleColor('type');">type</a><br>
+<?php print $size; ?>
     <script>
-      var width = 5000,
-          height = 5000;
+var width = <?php print $size; ?>,
+    height = <?php print $size; ?>;
       
       var force = d3.layout.force()
           .charge(-500)
