@@ -201,6 +201,7 @@ def generateGraph(tag, depth = 0):
 
   if tag not in mapping.keys():
     mapping[tag] = n
+    n = n + 1
     result["nodes"].append(
       {"tag": tag, 
        "size": tags_nr[tag],
