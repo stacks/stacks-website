@@ -196,8 +196,6 @@ result = {"nodes": [], "links": []}
 mapping = {}
 n = 0
 
-print IDs
-
 def generateGraph(tag, depth = 0):
   global mapping, n, result
 
@@ -328,5 +326,5 @@ def generatePackeds():
 
 
 generateGraphs()
-#generateTrees()
-#generatePackeds()
+generateTrees()
+generatePackeds()
