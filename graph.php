@@ -39,10 +39,8 @@
         margin: 5px;
       }
 
-      div#controls {
+      div#controls, div#legend {
         position: fixed;
-        top: 10px;
-        left: 10px;
         padding: 2px;
         border: 1px solid #d9d8d1;
         border-radius: 5px;
@@ -52,8 +50,27 @@
       div#controls ul {
         margin: 0;
       }
+      div#legend ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+      }
+      div#legend ul li {
+        margin: 0;
+        padding: 0;
+      }
+
+      div#legend {
+        bottom: 10px;
+        left: 10px;
+      }
+
+      div#controls {
+        top: 10px;
+        left: 10px;
+      }
       
-      svg {
+      svg#graph {
         border: 1px solid #d9d8d1;
       }
   
@@ -71,10 +88,12 @@
 
       function toggleHeat() {
         global["node"].style("fill", global["colorHeat"]);
+        ("div#legend").toggle(); // TODO fix toggle
       }
 
       function toggleType() {
         global["node"].style("fill", global["colorType"]);
+        $("div#legend").toggle();
       }
 
       $(document).ready(function () {
@@ -82,14 +101,14 @@
         setTimeout(centerViewport, 100);
 
         // disable context menu in graph (for right click to act as new window)
-        $("svg").bind("contextmenu",function(e){
+        $("svg").bind("contextmenu", function(e) {
           return false;
         }); 
 
         // the controls for the graph
         $("body").append("<div id='controls'></div>");
         $("div#controls").append("Tag <?php print $_GET["tag"]; ?> (<a href='<?php print "/new/tag/" . $_GET["tag"]; ?>'>show</a>)<br>"); // TODO fix URL
-        $("div#controls").append("<ul>");
+        $("div#controls").append("<ul>"); // TODO createElement
         $("div#controls").append("<li><a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
         $("div#controls").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
         $("div#controls").append("</ul>");
@@ -110,6 +129,7 @@
       var svg = d3.select("body").append("svg")
         .attr("width", width)
         .attr("height", height)
+        .attr("id", "graph");
 
       var global = Array(); // this catches some things that need to be available globally
       
@@ -197,6 +217,19 @@
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
         });
+
+        
+        var types = {};
+        for (var i = 0; i < graph.nodes.length; i++) 
+          types[graph.nodes[i].type] = true;
+
+
+        $("body").append("<div id='legend'></div>");
+        $("div#legend").append("Legend");
+        $("div#legend").append("<ul>");
+        for (type in types) {
+          $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + type).appendTo($("div#legend ul"));
+        }
       });
     </script>
   </body>
