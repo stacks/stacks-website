@@ -150,10 +150,10 @@
           .attr("class", "link")
 
         function openTag(node) {
-          window.location.href = "graph.php?tag=" + node.tag;
+          window.location.href = "force.php?tag=" + node.tag;
         }
         function openTagNew(node) {
-          window.open("graph.php?tag=" + node.tag);
+          window.open("force.php?tag=" + node.tag);
         }
 
         var node = svg.selectAll(".node")
