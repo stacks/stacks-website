@@ -3,16 +3,15 @@
   <head>
     <meta charset="utf-8">
     <style>
-      .named, .unnamed {
-        stroke-width: 1.5px;
-      }
-      
       .named {
+        stroke-width: 1.5px;
         stroke: black;
       }
-      
-      .unnamed {
-        stroke: #fff;
+
+      .root {
+        stroke-width: 2px;
+        stroke-dasharray: 2, 2;
+        stroke: black;
       }
       
       .link {
@@ -57,6 +56,9 @@ $size = 500 + 10 * $filesize / 1000;
 
       $(document).ready(function () {
         setTimeout(centerViewport, 100);
+        $(document).bind("contextmenu",function(e){
+          return false;
+        }); 
       });
     </script>
   </head>
@@ -84,43 +86,34 @@ var width = <?php print $size; ?>,
       
       var svg = d3.select("body").append("svg")
           .attr("width", width)
-          .attr("height", height);
+          .attr("height", height)
 
       
       result = d3.json("data/<?php print $_GET["tag"]; ?>-force.json", function(error, graph) {
-        depth = 0
+        var depth = 0
         for (var i = 0; i < graph.nodes.length; i++)
           depth = Math.max(depth, graph.nodes[i].depth);
+        // heat scale
         var heat = d3.scale.linear()
           .domain([0, depth])
           .range(["red", "blue"]);
+
+        var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
 
         force
           .nodes(graph.nodes) 
           .links(graph.links)
           .start();
-      
+
         var link = svg.selectAll(".link")
           .data(graph.links)
           .enter().append("line")
           .attr("class", "link")
       
-        var type_map = {
-          "definition": d3.rgb("green"),
-          "remark": d3.rgb("black"),
-          "item": d3.rgb("yellow"),
-          "section": d3.rgb("red"),
-          "lemma": d3.rgb("orange"),
-          "proposition": d3.rgb("blue"),
-          "theorem": d3.rgb("purple"),
-          "example": d3.rgb("grey"),
-        }
-      
         function displayInfo(node) {
           // element exists, so we show it, while updating its position
           if ($("#" + node.tag + "-tooltip").length) {
-            $("#" + node.tag + "-tooltip").css({top: node.y - 10 + "px", left: node.x + 20 + "px"})
-              .fadeIn(100);
+            $("#" + node.tag + "-tooltip").css({top: node.y - 10 + "px", left: node.x + 20 + "px"}).fadeIn(100);
           }
           // otherwise we create a new tooltip
           else {
@@ -142,22 +135,29 @@ var width = <?php print $size; ?>,
         }
 
         function openTag(node) {
+          window.location.href = "graph.php?tag=" + node.tag;
+        }
+        function openTagNew(node) {
           window.open("graph.php?tag=" + node.tag);
         }
 
         function colorHeat(node) { return heat(node.depth); }
-        function colorType(node) { return type_map[d.type]; }
+        function colorType(node) { return typeMap(node.type); }
 
         var node = svg.selectAll(".node")
           .data(graph.nodes)
           .enter().append("circle")
           .attr("class", function(d) { if (d.name != "") { return "named"; } else { return "unnamed"; } })
+          .attr("class", function(d) { if (d.depth == 0) { return "root"; } })
           .attr("r", function(d) { return 4*Math.pow(parseInt(d.size)+1, 1/3); }) // control the size
-          .style("fill", colorHeat)
+          .style("fill", colorType)
           .on("mouseover", displayInfo)
           .on("mouseout", hideInfo)
           .on("click", openTag)
+          .on("contextmenu", openTagNew)
           .call(force.drag);
+
+        console.log(node[0][0]);
       
         force.on("tick", function() {
           link
