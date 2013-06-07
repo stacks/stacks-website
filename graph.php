@@ -39,7 +39,7 @@
         margin: 5px;
       }
 
-      div#controls, div#legend {
+      div#controls, div.legend {
         position: fixed;
         padding: 2px;
         border: 1px solid #d9d8d1;
@@ -50,17 +50,17 @@
       div#controls ul {
         margin: 0;
       }
-      div#legend ul {
+      div.legend ul {
         padding: 0;
         margin: 0;
         list-style-type: none;
       }
-      div#legend ul li {
+      div.legend ul li {
         margin: 0;
         padding: 0;
       }
 
-      div#legend {
+      div.legend {
         bottom: 10px;
         left: 10px;
       }
@@ -79,6 +79,8 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript">
+      var colorMapping;
+  
       function centerViewport() {
         x = ($(document).width() - $(window).width()) / 2;
         y = ($(document).height() - $(window).height()) / 2;
@@ -86,14 +88,40 @@
         $(document).scrollTop(y);
       }
 
+      function toggleLegend() {
+        $("div.legend").hide();
+
+        switch (colorMapping) {
+          case global["colorHeat"]:
+            return; // TODO no legend, or rather explain red to blue?
+          case global["colorType"]:
+            $("div#legendType").show();
+            return;
+          case global["colorChapters"]:
+            $("div#legendChapters").show();
+            return;
+        }
+      }
+
       function toggleHeat() {
         global["node"].style("fill", global["colorHeat"]);
-        ("div#legend").toggle(); // TODO fix toggle
+
+        colorMapping = global["colorHeat"];
+        toggleLegend();
       }
 
       function toggleType() {
         global["node"].style("fill", global["colorType"]);
-        $("div#legend").toggle();
+
+        colorMapping = global["colorType"];
+        toggleLegend();
+      }
+
+      function toggleChapters() {
+        global["node"].style("fill", global["colorChapters"]);
+
+        colorMapping = global["colorChapters"];
+        toggleLegend();
       }
 
       $(document).ready(function () {
@@ -109,8 +137,9 @@
         $("body").append("<div id='controls'></div>");
         $("div#controls").append("Tag <?php print $_GET["tag"]; ?> (<a href='<?php print "/new/tag/" . $_GET["tag"]; ?>'>show</a>)<br>"); // TODO fix URL
         $("div#controls").append("<ul>"); // TODO createElement
-        $("div#controls").append("<li><a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
-        $("div#controls").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
+        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
+        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
+        //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
         $("div#controls").append("</ul>");
       });
     </script>
@@ -144,11 +173,22 @@
 
         var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
 
+        var chapters = {};
+        for (var i = 0; i < graph.nodes.length; i++) 
+          chapters[graph.nodes[i].file] = true;
+        var i = 0;
+        for (chapter in chapters)
+          chapters[chapter] = i++;
+
+        var chapterMap = d3.scale.linear().domain([0, Object.keys(chapters).length]).range(["green", "yellow"]);
+
         function colorHeat(node) { return heat(node.depth); }
         function colorType(node) { return typeMap(node.type); }
+        function colorChapters(node) { return chapterMap(chapters[node.file]); }
 
         global["colorHeat"] = colorHeat;
         global["colorType"] = colorType;
+        global["colorChapters"] = colorChapters;
 
         force
           .nodes(graph.nodes) 
@@ -197,7 +237,7 @@
           .attr("class", function(d) { if (d.name != "") { return "named"; } else { return "unnamed"; } })
           .attr("class", function(d) { if (d.depth == 0) { return "root"; } })
           .attr("r", function(d) { return 4 * Math.pow(parseInt(d.size) + 1, 1 / 3); })
-          .style("fill", colorType)
+          .style("fill", function(d) { colorMapping = colorHeat; return colorHeat(d); })
           .on("mouseover", displayInfo)
           .on("mouseout", hideInfo)
           .on("click", openTag)
@@ -219,17 +259,31 @@
         });
 
         
+        // add legend for the type coloring
         var types = {};
         for (var i = 0; i < graph.nodes.length; i++) 
           types[graph.nodes[i].type] = true;
 
-
-        $("body").append("<div id='legend'></div>");
-        $("div#legend").append("Legend");
-        $("div#legend").append("<ul>");
+        $("body").append("<div class='legend' id='legendType'></div>");
+        $("div#legendType").append("Legend");
+        $("div#legendType").append("<ul>");
         for (type in types) {
-          $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + type).appendTo($("div#legend ul"));
+          $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + type).appendTo($("div#legendType ul"));
         }
+
+        // add legend for the heat coloring
+        $("body").append("<div class='legend' id='legendHeat'></div>");
+        // TODO
+
+        // add legend for the chapter coloring
+        $("body").append("<div class='legend' id='legendChapters'></div>");
+        $("div#legendChapters").append("Legend");
+        $("div#legendChapters").append("<ul>");
+        for (chapter in chapters) {
+          $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + chapterMap(chapters[chapter]) + "'/></svg>").append(" " + chapter).appendTo($("div#legendChapters ul"));
+        }
+
+        toggleLegend();
       });
     </script>
   </body>
