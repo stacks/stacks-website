@@ -14,7 +14,7 @@
         stroke: black;
       }
 
-      .root {
+      #root {
         stroke-width: 2px;
         stroke-dasharray: 2, 2;
         stroke: black;
@@ -159,8 +159,8 @@
         var node = svg.selectAll(".node")
           .data(graph.nodes)
           .enter().append("circle")
-          .attr("class", function(d) { if (d.tagName != "") { return "named"; } else { return "unnamed"; } })
-          .attr("class", function(d) { if (d.depth == 0) { return "root"; } })
+          .attr("class", function(d) { console.log(d.tagName); if (d.tagName != "") { return "named"; } else { return "unnamed"; } })
+          .attr("id", function(d) { if (d.depth == 0) { return "root"; } })
           .attr("r", function(d) { return 4 * Math.pow(parseInt(d.size) + 1, 1 / 3); })
           .style("fill", function(d) { colorMapping = colorHeat; return colorHeat(d); })
           .on("mouseover", displayTagInfo)
