@@ -219,6 +219,7 @@ def generateGraph(tag, depth = 0):
   else:
     # overwrite depth if necessary
     result["nodes"][mapping[tag]]["depth"] = max(depth, result["nodes"][mapping[tag]]["depth"])
+    # TODO this code is not correct
 
 
 def generateTree(tag, depth = 0, cutoff = 4):
