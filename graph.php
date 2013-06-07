@@ -93,7 +93,8 @@
 
         switch (colorMapping) {
           case global["colorHeat"]:
-            return; // TODO no legend, or rather explain red to blue?
+            $("div#legendHeat").show();
+            return;
           case global["colorType"]:
             $("div#legendType").show();
             return;
@@ -136,7 +137,7 @@
         // the controls for the graph
         $("body").append("<div id='controls'></div>");
         $("div#controls").append("Tag <?php print $_GET["tag"]; ?> (<a href='<?php print "/new/tag/" . $_GET["tag"]; ?>'>show</a>)<br>"); // TODO fix URL
-        $("div#controls").append("<ul>"); // TODO createElement
+        $("div#controls").append("<ul>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
         //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
@@ -167,7 +168,7 @@
         for (var i = 0; i < graph.nodes.length; i++)
           depth = Math.max(depth, graph.nodes[i].depth);
         // heat scale
-        var heat = d3.scale.linear()
+        var heatMap = d3.scale.linear()
           .domain([0, depth])
           .range(["red", "blue"]);
 
@@ -182,7 +183,7 @@
 
         var chapterMap = d3.scale.linear().domain([0, Object.keys(chapters).length]).range(["green", "yellow"]);
 
-        function colorHeat(node) { return heat(node.depth); }
+        function colorHeat(node) { return heatMap(node.depth); }
         function colorType(node) { return typeMap(node.type); }
         function colorChapters(node) { return chapterMap(chapters[node.file]); }
 
@@ -265,7 +266,7 @@
           types[graph.nodes[i].type] = true;
 
         $("body").append("<div class='legend' id='legendType'></div>");
-        $("div#legendType").append("Legend");
+        $("div#legendType").append("Legend for the type mapping");
         $("div#legendType").append("<ul>");
         for (type in types) {
           $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + type).appendTo($("div#legendType ul"));
@@ -273,11 +274,15 @@
 
         // add legend for the heat coloring
         $("body").append("<div class='legend' id='legendHeat'></div>");
-        // TODO
+        $("div#legendHeat").append("Legend for the heat mapping<br>");
+        $("div#legendHeat").append("root node&nbsp;&nbsp;");
+        for (var i = 0; i <= depth; i++) 
+          $("<svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + heatMap(i) + "'/></svg>").appendTo($("div#legendHeat"));
+        $("div#legendHeat").append("&nbsp;&nbsp;children");
 
         // add legend for the chapter coloring
         $("body").append("<div class='legend' id='legendChapters'></div>");
-        $("div#legendChapters").append("Legend");
+        $("div#legendChapters").append("<p>Legend for the chapter mapping</p>");
         $("div#legendChapters").append("<ul>");
         for (chapter in chapters) {
           $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + chapterMap(chapters[chapter]) + "'/></svg>").append(" " + chapter).appendTo($("div#legendChapters ul"));
