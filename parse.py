@@ -179,8 +179,14 @@ def addChapters():
   for tag, label in tags:
     chapters[tag] = getChapter(tag)
 
+IDs = {}
+def addIDs():
+  for tag, label in tags:
+    IDs[tag] = getID(tag)
+
 addSections()
 addChapters()
+addIDs()
 
 # dictionary for easy label access
 tags_labels = dict((v, k) for k, v in label_tags.iteritems())
@@ -190,19 +196,22 @@ result = {"nodes": [], "links": []}
 mapping = {}
 n = 0
 
+print IDs
+
 def generateGraph(tag, depth = 0):
   global mapping, n, result
 
   if tag not in mapping.keys():
     mapping[tag] = n
-    n = n + 1
     result["nodes"].append(
       {"tag": tag, 
        "size": tags_nr[tag],
        "file" : split_label(tags_labels[tag])[0],
        "type": split_label(tags_labels[tag])[1],
        "name": names[tag],
+       "id": IDs[tag],
        "depth": depth
+       # TODO also chapter name etc, but I don't feel like it right now
       })
 
     for child in tags_refs[tag]:
@@ -319,5 +328,5 @@ def generatePackeds():
 
 
 generateGraphs()
-generateTrees()
-generatePackeds()
+#generateTrees()
+#generatePackeds()

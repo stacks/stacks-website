@@ -146,7 +146,12 @@
     </script>
   </head>
   <body>
-    <script>
+    <script type="text/javascript">
+      // capitalize a string
+      function capitalize(s) {
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      }
+
       var width = <?php print $size; ?>,
         height = <?php print $size; ?>;
       
@@ -209,9 +214,11 @@
           // otherwise we create a new tooltip
           else {
             var tooltipContent = $("<p>")
-              .append("tag " + node.tag)
-              .append(": " + node.name)
-              .append("<br>" + node.type);
+              .append("Tag " + node.tag + " which points to " + capitalize(node.type) + " " + node.id)
+            if (node.name != "")
+              tooltipContent.append(" and it is called " + node.name);
+
+            tooltipContent.append("<br>It is contained in the file " + node.file + ".tex");
       
             var tooltip = $("<div>", {class: "tooltip", id: node.tag + "-tooltip"})
               .append(tooltipContent)
