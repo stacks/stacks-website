@@ -1,3 +1,9 @@
+<?php
+  // TODO check for inexisting file
+  $filename = "data/" . $_GET["tag"] . "-force.json";
+  $filesize = filesize($filename);
+  $size = 500 + 10 * $filesize / 1000;
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -27,19 +33,13 @@
         padding: 2px;
       }
 
-<?php
-// TODO check for inexisting file
-$filesize = filesize("data/" . $_GET["tag"] . "-force.json");
-$size = 500 + 10 * $filesize / 1000;
-?>
-
       body {
         width: <?php print $size; ?>px;
         height: <?php print $size; ?>px;
       }
       
       svg {
-        border: 1px solid black;
+        border: 1px solid #d9d8d1;
       }
   
     </style>
@@ -56,40 +56,29 @@ $size = 500 + 10 * $filesize / 1000;
 
       $(document).ready(function () {
         setTimeout(centerViewport, 100);
-        $(document).bind("contextmenu",function(e){
+        $("svg").bind("contextmenu",function(e){
           return false;
         }); 
       });
     </script>
   </head>
   <body>
-    <script type="text/javascript">
-
-      function scrollToGraph() {
-        console.log("scroll");
-        console.log(window.innerHeight);
-        window.scrollTo(
-          (document.body.offsetWidth -document.documentElement.offsetWidth )/2,
-          (document.body.offsetHeight-window.innerHeight)/2);
-      }
-    </script>
-<?php print $size; ?>
     <script>
-var width = <?php print $size; ?>,
-    height = <?php print $size; ?>;
+      var width = <?php print $size; ?>,
+        height = <?php print $size; ?>;
       
       var force = d3.layout.force()
-          .charge(-500)
-          .linkDistance(10)
-          .gravity(.5)
-          .size([width, height]);
+        .charge(-500)
+        .linkDistance(10)
+        .gravity(.5)
+        .size([width, height]);
       
       var svg = d3.select("body").append("svg")
-          .attr("width", width)
-          .attr("height", height)
+        .attr("width", width)
+        .attr("height", height)
 
       
-      result = d3.json("data/<?php print $_GET["tag"]; ?>-force.json", function(error, graph) {
+        result = d3.json("<?php print $filename; ?>", function(error, graph) {
         var depth = 0
         for (var i = 0; i < graph.nodes.length; i++)
           depth = Math.max(depth, graph.nodes[i].depth);
@@ -149,7 +138,7 @@ var width = <?php print $size; ?>,
           .enter().append("circle")
           .attr("class", function(d) { if (d.name != "") { return "named"; } else { return "unnamed"; } })
           .attr("class", function(d) { if (d.depth == 0) { return "root"; } })
-          .attr("r", function(d) { return 4*Math.pow(parseInt(d.size)+1, 1/3); }) // control the size
+          .attr("r", function(d) { return 4 * Math.pow(parseInt(d.size) + 1, 1 / 3); })
           .style("fill", colorType)
           .on("mouseover", displayInfo)
           .on("mouseout", hideInfo)
@@ -157,8 +146,6 @@ var width = <?php print $size; ?>,
           .on("contextmenu", openTagNew)
           .call(force.drag);
 
-        console.log(node[0][0]);
-      
         force.on("tick", function() {
           link
             .attr("x1", function(d) { return d.source.x; })
@@ -171,13 +158,6 @@ var width = <?php print $size; ?>,
             .attr("cy", function(d) { return d.y; });
         });
       });
- //     $(document).ready( function() {
-
- //       console.log((document.body.offsetWidth -document.documentElement.offsetWidth )/2);
- //       console.log((document.body.offsetHeight-document.documentElement.offsetHeight)/2);
- //       console.log(document.documentElement.offsetHeight);
- //       window.scrollTo(2500, 2500);
- //});
     </script>
   </body>
 </html>
