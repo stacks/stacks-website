@@ -43,8 +43,14 @@
         position: fixed;
         top: 10px;
         left: 10px;
+        padding: 2px;
         border: 1px solid #d9d8d1;
         border-radius: 5px;
+        background-color: rgb(255, 255, 255);
+        background-color: rgba(255, 255, 255, .8);
+      }
+      div#controls ul {
+        margin: 0;
       }
       
       svg {
@@ -82,8 +88,11 @@
 
         // the controls for the graph
         $("body").append("<div id='controls'></div>");
-        $("div#controls").append("<a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
-        $("div#controls").append("<a href='javascript:void(0)' onclick='toggleType();'>view as typemap</a>");
+        $("div#controls").append("Tag <?php print $_GET["tag"]; ?> (<a href='<?php print "/new/tag/" . $_GET["tag"]; ?>'>show</a>)<br>"); // TODO fix URL
+        $("div#controls").append("<ul>");
+        $("div#controls").append("<li><a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
+        $("div#controls").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
+        $("div#controls").append("</ul>");
       });
     </script>
   </head>
