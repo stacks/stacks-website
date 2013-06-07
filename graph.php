@@ -36,6 +36,15 @@
       body {
         width: <?php print $size; ?>px;
         height: <?php print $size; ?>px;
+        margin: 5px;
+      }
+
+      div#controls {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        border: 1px solid #d9d8d1;
+        border-radius: 5px;
       }
       
       svg {
@@ -54,11 +63,27 @@
         $(document).scrollTop(y);
       }
 
+      function toggleHeat() {
+        global["node"].style("fill", global["colorHeat"]);
+      }
+
+      function toggleType() {
+        global["node"].style("fill", global["colorType"]);
+      }
+
       $(document).ready(function () {
+        // scroll to where the graph will be created
         setTimeout(centerViewport, 100);
+
+        // disable context menu in graph (for right click to act as new window)
         $("svg").bind("contextmenu",function(e){
           return false;
         }); 
+
+        // the controls for the graph
+        $("body").append("<div id='controls'></div>");
+        $("div#controls").append("<a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
+        $("div#controls").append("<a href='javascript:void(0)' onclick='toggleType();'>view as typemap</a>");
       });
     </script>
   </head>
@@ -77,8 +102,9 @@
         .attr("width", width)
         .attr("height", height)
 
+      var global = Array(); // this catches some things that need to be available globally
       
-        result = d3.json("<?php print $filename; ?>", function(error, graph) {
+      result = d3.json("<?php print $filename; ?>", function(error, graph) {
         var depth = 0
         for (var i = 0; i < graph.nodes.length; i++)
           depth = Math.max(depth, graph.nodes[i].depth);
@@ -88,6 +114,12 @@
           .range(["red", "blue"]);
 
         var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
+
+        function colorHeat(node) { return heat(node.depth); }
+        function colorType(node) { return typeMap(node.type); }
+
+        global["colorHeat"] = colorHeat;
+        global["colorType"] = colorType;
 
         force
           .nodes(graph.nodes) 
@@ -130,9 +162,6 @@
           window.open("graph.php?tag=" + node.tag);
         }
 
-        function colorHeat(node) { return heat(node.depth); }
-        function colorType(node) { return typeMap(node.type); }
-
         var node = svg.selectAll(".node")
           .data(graph.nodes)
           .enter().append("circle")
@@ -145,6 +174,8 @@
           .on("click", openTag)
           .on("contextmenu", openTagNew)
           .call(force.drag);
+
+        global["node"] = node;
 
         force.on("tick", function() {
           link
