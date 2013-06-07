@@ -207,7 +207,7 @@ def generateGraph(tag, depth = 0):
        "file" : split_label(tags_labels[tag])[0],
        "type": split_label(tags_labels[tag])[1],
        "tagName": names[tag],
-       "id": IDs[tag],
+       "id": tagToID[tag],
        "depth": depth
        # TODO also chapter name etc, but I don't feel like it right now
       })
@@ -242,8 +242,9 @@ def generatePacked(tag):
   packed["tagName"] = "" # TODO fix this
   packed["nodeType"] = "root"
   packed["book_id"] = tagToID[tag]
-  packed["type"] = "lemma" # TODO fix this
   packed["tag"] = tag
+  packed["file"] = split_label(tags_labels[tag])[0]
+  packed["type"] = split_label(tags_labels[tag])[1]
   chaptersMapping = {}
   sectionsMapping = defaultdict(dict)
   for child in children:
@@ -277,9 +278,11 @@ def generatePacked(tag):
     packed["children"][chaptersMapping[chapter]]["children"][sectionsMapping[chapter][section]]["children"].append(
       {"tagName": "", # TODO fix this
        "nodeType": "tag",
-       "type": "lemma", # TODO fix this
        "size": 2000,
        "tag": child,
+       "book_id": tagToID[child],
+       "file" : split_label(tags_labels[child])[0],
+       "type": split_label(tags_labels[child])[1],
       })
 
   return packed
@@ -348,6 +351,6 @@ def generatePackeds():
     f.close()
 
 
-#generateGraphs()
-#generateTrees()
+generateGraphs()
+generateTrees()
 generatePackeds()

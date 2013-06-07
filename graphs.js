@@ -19,9 +19,7 @@ function displayTooltip(node, content) {
 }
 
 function displayTagInfo(node) {
-  console.log(node);
   content = "Tag " + node.tag + " which points to " + capitalize(node.type) + " " + node.book_id;
-  console.log(node)
   if (node.tagName != "")
     content += " and it is called " + node.tagName;
   content += "<br>It is contained in the file " + node.file + ".tex";

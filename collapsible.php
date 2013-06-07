@@ -27,9 +27,9 @@ line.link {
 
         disableContextMenu();
 
-        createControls();
+        createControls("<?php print $_GET["tag"]; ?>");
         $("div#controls").append("<ul>");
-        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick=''>expand all nodes</a><br>");
+        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='expand(root);update()'>expand all nodes</a><br>");
         $("div#controls").append("</ul>");
       });
     </script>
@@ -55,6 +55,8 @@ function distance(d) {
       return 5;
   }
 }
+
+var global;
 
 var force = d3.layout.force()
     .on("tick", tick)
@@ -157,7 +159,6 @@ function tick() {
 
 // Color leaf nodes orange, and packages white or blue.
 function color(d) {
-  console.log(d.nodeType);
   switch (d.nodeType) {
     case "root":
       return "green";
@@ -170,12 +171,24 @@ function color(d) {
   }
 }
 
+function expand(node) {
+  if ("_children" in node || node._children) {
+    node.children = node._children;
+    node._children = null
+  }
+
+  if ("children" in node) {
+    for (var i = 0; i < node.children.length; i++)
+      expand(node.children[i]);
+  }
+}
+
 // Toggle children on click.
 function click(d) {
-  if (d.children) {
+  if (d.children) { // collapsing
     d._children = d.children;
     d.children = null;
-  } else {
+  } else { // expanding
     d.children = d._children;
     d._children = null;
   }
