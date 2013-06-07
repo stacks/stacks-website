@@ -172,11 +172,9 @@ function color(d) {
 }
 
 function expand(node) {
-  if ("_children" in node || node._children) {
-    node.children = node._children;
-    node._children = null
-  }
-
+  if (node._children)
+    click(node);
+  
   if ("children" in node) {
     for (var i = 0; i < node.children.length; i++)
       expand(node.children[i]);
@@ -210,6 +208,7 @@ function flatten(root) {
   return nodes;
 }
 
+// TODO add legend
     </script>
   </body>
 </html>
