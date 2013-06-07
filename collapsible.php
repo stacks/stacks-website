@@ -18,17 +18,31 @@ line.link {
 }
 
     </style>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="graphs.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        // scroll to where the graph will be created
+        setTimeout(centerViewport, 100);
+
+        disableContextMenu();
+
+        createControls();
+        $("div#controls").append("<ul>");
+        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick=''></a><br>");
+        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick=''>view types</a>");
+        //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
+        $("div#controls").append("</ul>");
+      });
+    </script>
   </head>
   <body>
-    <h2>
-      Flare code size<br>
-      force-directed graph
-    </h2>
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='style.css'>
     <script type="text/javascript">
 
-var w = 1280,
-    h = 800,
+var w = 600,
+    h = 600,
     node,
     link,
     root;
@@ -43,7 +57,6 @@ function distance(d) {
     case "tag":
       return 5;
   }
-  console.log("magni");
 }
 
 var force = d3.layout.force()
@@ -52,9 +65,10 @@ var force = d3.layout.force()
     .linkDistance(distance)
     .size([w, h - 160]);
 
-var vis = d3.select("body").append("svg:svg")
+var vis = d3.select("body").append("svg")
     .attr("width", w)
-    .attr("height", h);
+    .attr("height", h)
+    .attr("id", "graph");
 
 d3.json("data/<?php print $_GET["tag"]; ?>-packed.json", function(json) {
   root = json;
@@ -106,6 +120,8 @@ function update() {
       .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.size) / 10; })
       .style("fill", color)
       .on("click", click)
+      .on("mouseover", displayInfo)
+      .on("mouseout", hideInfo)
       .attr("title", function(d) { return d.name; })
       .call(force.drag);
 

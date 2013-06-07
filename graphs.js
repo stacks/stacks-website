@@ -1,3 +1,9 @@
+// capitalize a string
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+
 function displayInfo(node) {
   // element exists, so we show it, while updating its position
   if ($("#" + node.tag + "-tooltip").length) {
@@ -22,4 +28,24 @@ function displayInfo(node) {
       
 function hideInfo(node) {
   $("#" + node.tag + "-tooltip").fadeOut(200);
+}
+
+function centerViewport() {
+  x = ($(document).width() - $(window).width()) / 2;
+  y = ($(document).height() - $(window).height()) / 2;
+  $(document).scrollLeft(x);
+  $(document).scrollTop(y);
+}
+
+function createControls(tag) {
+  // the controls for the graph
+  $("body").append("<div id='controls'></div>");
+  $("div#controls").append("Tag " + tag + " (<a href='tag/" + tag + "'>show</a>)<br>"); // TODO fix URL
+}
+
+function disableContextMenu() {
+  // disable context menu in graph (for right click to act as new window)
+  $("svg").bind("contextmenu", function(e) {
+    return false;
+  }); 
 }

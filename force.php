@@ -25,56 +25,14 @@
         stroke-opacity: .6;
       }
       
-      .tooltip p {
-        font-size: .9em;
-        border-radius: 5px;
-        border: 1px solid black;
-        background-color: white;
-        padding: 2px;
-      }
-
       body {
         width: <?php print $size; ?>px;
         height: <?php print $size; ?>px;
-        margin: 5px;
-      }
-
-      div#controls, div.legend {
-        position: fixed;
-        padding: 2px;
-        border: 1px solid #d9d8d1;
-        border-radius: 5px;
-        background-color: rgb(255, 255, 255);
-        background-color: rgba(255, 255, 255, .8);
-      }
-      div#controls ul {
-        margin: 0;
-      }
-      div.legend ul {
-        padding: 0;
-        margin: 0;
-        list-style-type: none;
-      }
-      div.legend ul li {
-        margin: 0;
-        padding: 0;
-      }
-
-      div.legend {
-        bottom: 10px;
-        left: 10px;
-      }
-
-      div#controls {
-        top: 10px;
-        left: 10px;
-      }
-      
-      svg#graph {
-        border: 1px solid #d9d8d1;
       }
   
     </style>
+    <link rel='stylesheet' type='text/css' href='style.css'>
+
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -83,13 +41,6 @@
     <script type="text/javascript">
       var colorMapping;
   
-      function centerViewport() {
-        x = ($(document).width() - $(window).width()) / 2;
-        y = ($(document).height() - $(window).height()) / 2;
-        $(document).scrollLeft(x);
-        $(document).scrollTop(y);
-      }
-
       function toggleLegend() {
         $("div.legend").hide();
 
@@ -131,14 +82,9 @@
         // scroll to where the graph will be created
         setTimeout(centerViewport, 100);
 
-        // disable context menu in graph (for right click to act as new window)
-        $("svg").bind("contextmenu", function(e) {
-          return false;
-        }); 
+        disableContextMenu();
 
-        // the controls for the graph
-        $("body").append("<div id='controls'></div>");
-        $("div#controls").append("Tag <?php print $_GET["tag"]; ?> (<a href='<?php print "/new/tag/" . $_GET["tag"]; ?>'>show</a>)<br>"); // TODO fix URL
+        createControls();
         $("div#controls").append("<ul>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
@@ -149,11 +95,6 @@
   </head>
   <body>
     <script type="text/javascript">
-      // capitalize a string
-      function capitalize(s) {
-        return s.charAt(0).toUpperCase() + s.slice(1);
-      }
-
       var width = <?php print $size; ?>,
         height = <?php print $size; ?>;
       
