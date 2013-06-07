@@ -29,9 +29,7 @@ line.link {
 
         createControls();
         $("div#controls").append("<ul>");
-        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick=''></a><br>");
-        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick=''>view types</a>");
-        //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
+        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick=''>expand all nodes</a><br>");
         $("div#controls").append("</ul>");
       });
     </script>
@@ -41,15 +39,14 @@ line.link {
     <link rel='stylesheet' type='text/css' href='style.css'>
     <script type="text/javascript">
 
-var w = 600,
-    h = 600,
+var w = 1000, // TODO dynamic size
+    h = 1000,
     node,
     link,
     root;
 
 function distance(d) {
-  console.log(d.source.type);
-  switch(d.target.type) {
+  switch(d.target.nodeType) {
     case "chapter":
       return 150;
     case "section":
@@ -69,6 +66,15 @@ var vis = d3.select("body").append("svg")
     .attr("width", w)
     .attr("height", h)
     .attr("id", "graph");
+
+function displaySectionInfo(node) {
+  displayTooltip(node, "Section " + node.book_id + ": " + node.tagName);
+}
+
+function displayChapterInfo(node) {
+  displayTooltip(node, "Chapter " + node.book_id + ": " + node.tagName);
+}
+// TODO on drag we should not display tooltips
 
 d3.json("data/<?php print $_GET["tag"]; ?>-packed.json", function(json) {
   root = json;
@@ -107,10 +113,21 @@ function update() {
   node = vis.selectAll("circle.node")
       .data(nodes, function(d) { return d.id; })
       .style("fill", color)
-      .attr("title", function(d) { return d.name; });
 
   node.transition()
-      .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.size) / 10; });
+    .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.size) / 10; });
+
+  function displayInfo(node) {
+    switch (node.nodeType) {
+      case "root":
+      case "tag":
+        return displayTagInfo(node);
+      case "section":
+        return displaySectionInfo(node);
+      case "chapter":
+        return displayChapterInfo(node);
+    }
+  }
 
   // Enter any new nodes.
   node.enter().append("svg:circle")
@@ -122,7 +139,6 @@ function update() {
       .on("click", click)
       .on("mouseover", displayInfo)
       .on("mouseout", hideInfo)
-      .attr("title", function(d) { return d.name; })
       .call(force.drag);
 
   // Exit any old nodes.
@@ -141,15 +157,16 @@ function tick() {
 
 // Color leaf nodes orange, and packages white or blue.
 function color(d) {
-  switch (d.type) {
-  case "root":
-    return "green";
-  case "chapter":
-    return "#3182bd";
-  case "section":
-    return "#c6dbef";
-  case "tag":
-    return "#fd8d3c";
+  console.log(d.nodeType);
+  switch (d.nodeType) {
+    case "root":
+      return "green";
+    case "chapter":
+      return "#3182bd";
+    case "section":
+      return "#c6dbef";
+    case "tag":
+      return "#fd8d3c";
   }
 }
 

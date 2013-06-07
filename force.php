@@ -163,7 +163,7 @@
           .attr("class", function(d) { if (d.depth == 0) { return "root"; } })
           .attr("r", function(d) { return 4 * Math.pow(parseInt(d.size) + 1, 1 / 3); })
           .style("fill", function(d) { colorMapping = colorHeat; return colorHeat(d); })
-          .on("mouseover", displayInfo)
+          .on("mouseover", displayTagInfo)
           .on("mouseout", hideInfo)
           .on("click", openTag)
           .on("contextmenu", openTagNew)

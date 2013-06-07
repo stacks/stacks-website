@@ -125,9 +125,9 @@ def addNames():
 
 addNames()
 
-# get sections for tags from the database
-sections = {}
-chapters = {}
+# map tags to IDs
+tagToID = {}
+
 def getID(tag):
   try:
     query = "SELECT book_id FROM tags WHERE tag = ?"
@@ -142,51 +142,50 @@ def getID(tag):
   except sqlite3.Error, e:
     print "An error occurred:", e.args[0]
 
-def getChapter(tag):
-  ID = ".".join(getID(tag).split(".")[0:1])
-  try:
-    query = "SELECT title FROM sections WHERE number = ?"
-    cursor = connection.execute(query, [ID])
-
-    result = cursor.fetchone()
-    if result != None:
-      return (result[0], ID)
-    else:
-      return ("", "0.0")
-
-  except sqlite3.Error, e:
-    print "An error occurred:", e.args[0]
-
-def getSection(tag):
-  ID = ".".join(getID(tag).split(".")[0:2])
-  try:
-    query = "SELECT title FROM sections WHERE number = ?"
-    cursor = connection.execute(query, [ID])
-
-    result = cursor.fetchone()
-    if result != None:
-      return (result[0], ID)
-    else:
-      return ("", "0.0")
-
-  except sqlite3.Error, e:
-    print "An error occurred:", e.args[0]
-
-def addSections():
-  for tag, label in tags:
-    sections[tag] = getSection(tag)
-def addChapters():
-  for tag, label in tags:
-    chapters[tag] = getChapter(tag)
-
-IDs = {}
 def addIDs():
   for tag, label in tags:
-    IDs[tag] = getID(tag)
+    tagToID[tag] = getID(tag)
 
-addSections()
-addChapters()
 addIDs()
+
+# get sections for tags from the database
+tagToSection = {}
+tagToChapter = {}
+
+sections = {}
+
+def getSectionsAndChapters():
+  try:
+    query = "SELECT tags.book_id, tags.name, tags.tag FROM tags, sections WHERE tags.book_id = sections.number AND type = 'section'"
+    cursor = connection.execute(query)
+
+    result = cursor.fetchall()
+    for section in result:
+      sections[section[0]] = (section[0], section[1], section[2])
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+getSectionsAndChapters()
+
+def mapTagToSectionAndChapter(tag):
+  ID = tagToID[tag]
+  if ID == '': # TODO check whether this is possible in real life
+    tagToSection[tag] = ("", "", "")
+    tagToChapter[tag] = ("", "", "")
+    return
+
+  chapterID = ".".join(ID.split(".")[0:1])
+  sectionID = ".".join(ID.split(".")[0:2])
+
+  tagToSection[tag] = sections[sectionID]
+  tagToChapter[tag] = sections[chapterID]
+
+def mapTags():
+  for tag, label in tags:
+    mapTagToSectionAndChapter(tag)
+
+mapTags()
 
 # dictionary for easy label access
 tags_labels = dict((v, k) for k, v in label_tags.iteritems())
@@ -207,7 +206,7 @@ def generateGraph(tag, depth = 0):
        "size": tags_nr[tag],
        "file" : split_label(tags_labels[tag])[0],
        "type": split_label(tags_labels[tag])[1],
-       "name": names[tag],
+       "tagName": names[tag],
        "id": IDs[tag],
        "depth": depth
        # TODO also chapter name etc, but I don't feel like it right now
@@ -238,28 +237,50 @@ def countTree(tree):
 
 def generatePacked(tag):
   children = set(getChildren(tag))
-  print len(children)
 
   packed = defaultdict(list)
-  packed["name"] = ""
-  packed["type"] = "root"
+  packed["tagName"] = "" # TODO fix this
+  packed["nodeType"] = "root"
+  packed["book_id"] = tagToID[tag]
+  packed["type"] = "lemma" # TODO fix this
+  packed["tag"] = tag
   chaptersMapping = {}
   sectionsMapping = defaultdict(dict)
   for child in children:
-    chapter = chapters[child][0]
-    section = sections[child][0]
+    chapter = tagToChapter[child][1]
+    section = tagToSection[child][1]
 
     if chapter not in chaptersMapping:
       chaptersMapping[chapter] = max(chaptersMapping.values() + [-1]) + 1
       #print "assigning " + str(chaptersMapping[chapter]) + " to " + chapter
-      packed["children"].append({"name": chapter, "type": "chapter", "children": []})
+      packed["children"].append(
+        {"tagName": chapter,
+         "nodeType": "chapter",
+         "type": "chapter",
+         "children": [],
+         "book_id": tagToChapter[child][0],
+         "tag": tagToChapter[child][2],
+        })
 
     if section not in sectionsMapping[chapter]:
       sectionsMapping[chapter][section] = max(sectionsMapping[chapter].values() + [-1]) + 1
       #print "assigning " + str(sectionsMapping[chapter][section]) + " to " + chapter + ", " + section
-      packed["children"][chaptersMapping[chapter]]["children"].append({"name": section, "type": "section", "children": []})
+      packed["children"][chaptersMapping[chapter]]["children"].append(
+        {"tagName": section, 
+         "nodeType": "section",
+         "type": "section",
+         "book_id": tagToSection[child][0],
+         "tag": tagToSection[child][2],
+         "children": []
+        })
 
-    packed["children"][chaptersMapping[chapter]]["children"][sectionsMapping[chapter][section]]["children"].append({"name": child, "type": "tag", "size": 2000})
+    packed["children"][chaptersMapping[chapter]]["children"][sectionsMapping[chapter][section]]["children"].append(
+      {"tagName": "", # TODO fix this
+       "nodeType": "tag",
+       "type": "lemma", # TODO fix this
+       "size": 2000,
+       "tag": child,
+      })
 
   return packed
 
@@ -327,6 +348,6 @@ def generatePackeds():
     f.close()
 
 
-generateGraphs()
-generateTrees()
+#generateGraphs()
+#generateTrees()
 generatePackeds()
