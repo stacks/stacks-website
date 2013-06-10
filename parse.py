@@ -224,9 +224,24 @@ def generateGraph(tag, depth = 0):
 def generateTree(tag, depth = 0, cutoff = 4):
   # child node
   if tags_refs[tag] == [] or depth == cutoff:
-    return {"tag": tag, "type": split_label(tags_labels[tag])[1], "size": 2000}
+    return {
+      "tag": tag,
+      "type": split_label(tags_labels[tag])[1],
+      "size": 2000,
+      "book_id" : tagToID[tag],
+      "file" : split_label(tags_labels[tag])[0],
+      "tagName": names[tag]
+    }
   else:
-    return {"tag": tag, "type": split_label(tags_labels[tag])[1], "children": [generateTree(child, depth + 1, cutoff) for child in set(tags_refs[tag])]}
+    return {
+      "tag": tag,
+      "type": split_label(tags_labels[tag])[1],
+      "size": 2000,
+      "book_id" : tagToID[tag],
+      "tagName": names[tag],
+      "file" : split_label(tags_labels[tag])[0],
+      "children": [generateTree(child, depth + 1, cutoff) for child in set(tags_refs[tag])]
+    }
         
 def countTree(tree):
   if "children" not in tree.keys():
@@ -351,6 +366,6 @@ def generatePackeds():
     f.close()
 
 
-generateGraphs()
+#generateGraphs()
 generateTrees()
-generatePackeds()
+#generatePackeds()
