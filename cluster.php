@@ -3,40 +3,38 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="graphs.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <link rel='stylesheet' type='text/css' href='style.css'>
     <style type="text/css">
+      div#graph {
+        cursor: default;
+        border: 1px solid #d9d8d1;
+      }
 
-path.arc {
-  cursor: move;
-  fill: #fff;
-}
-
-.node circle {
-}
-
-.node {
-  font-size: 10px;
-  pointer-events: none;
-}
-
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-}
-
+      path.arc {
+        cursor: move;
+        fill: #fff;
+      }
+      
+      circle {
+        cursor: pointer;
+      }
+      
+      .node {
+        font-size: 10px;
+        pointer-events: none;
+      }
+      
+      .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+      }
     </style>
   </head>
   <body>
-    <div id="body">
-      <div id="footer">
-        d3.layout.cluster
-        <div class="hint">
-          drag the ring to rotate
-        </div>
-      </div>
-    </div>
     <script type="text/javascript">
-
         var type_map = {
           "definition": d3.rgb("green"),
           "remark": d3.rgb("black"),
@@ -55,24 +53,30 @@ var w = 1280,
     m0,
     rotate = 0;
 
-var cluster = d3.layout.cluster()
-    .size([360, ry - 120])
-    .sort(null);
+
+var diameter = 800;
+
+var cluster = d3.layout.tree()
+    .size([360, diameter / 2 - 120])
+    .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
 var diagonal = d3.svg.diagonal.radial()
     .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-var svg = d3.select("#body").append("div")
+var div = d3.select("body").append("div")
+  .attr("id", "graph")
+
+var svg = div.append("div")
     .style("width", w + "px")
     .style("height", w + "px");
 
-var vis = svg.append("svg:svg")
+var vis = svg.append("svg")
     .attr("width", w)
     .attr("height", w)
-  .append("svg:g")
+  .append("g")
     .attr("transform", "translate(" + rx + "," + ry + ")");
 
-vis.append("svg:path")
+vis.append("path")
     .attr("class", "arc")
     .attr("d", d3.svg.arc().innerRadius(ry - 120).outerRadius(ry).startAngle(0).endAngle(2 * Math.PI))
     .on("mousedown", mousedown);
@@ -88,28 +92,32 @@ d3.json("data/<?php print $_GET['tag']; ?>-tree.json", function(json) {
 
   function colorType(node) { return type_map[node.type]; }
 
-  var node = vis.selectAll("g.node")
-      .data(nodes)
-    .enter().append("svg:g")
-      .attr("class", "node")
-      .style("fill", colorType)
+  var node = vis.selectAll(".node")
+  .data(nodes);
+
+  var nodeEnter = node.enter().append("g");
+
+  nodeEnter
+      .append("circle")
+      .attr("r", 6)
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+      .style("fill", colorType)
+      .on("mouseover", displayTagInfo)
+      .on("mouseout", hideInfo)
 
   function openTag(node) {
     window.open("graph.php?tag=" + node.tag);
   }
 
-  node.append("svg:circle")
-      .attr("r", 5)
-      .on("click", openTag);
-
-  node.append("svg:text")
-      .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
-      .attr("dy", ".31em")
-      .style("fill", "black")
-      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-      .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
-      .text(function(d) { return d.tag; });
+  nodeEnter
+      .append("svg:text")
+      .style("font-size", "12px")
+      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+      .attr("text-anchor", "start")
+      .on("mouseover", displayTagInfo)
+      .on("mouseout", hideInfo)
+      .attr("xml:space", "preserve")
+      .text(function(d) { return "  " + d.tag; })
 });
 
 d3.select(window)
