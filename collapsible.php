@@ -27,7 +27,7 @@ line.link {
 
         disableContextMenu();
 
-        createControls("<?php print $_GET["tag"]; ?>");
+        createControls("<?php print $_GET["tag"]; ?>", "collapsible");
         $("div#controls").append("<ul>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='expand(root);update()'>expand all nodes</a><br>");
         $("div#controls").append("</ul>");

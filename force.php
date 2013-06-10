@@ -73,7 +73,7 @@
 
         disableContextMenu();
 
-        createControls();
+        createControls("<?php print $_GET["tag"]; ?>", "force");
         $("div#controls").append("<ul>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");

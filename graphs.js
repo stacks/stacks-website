@@ -38,10 +38,36 @@ function centerViewport() {
   $(document).scrollTop(y);
 }
 
-function createControls(tag) {
+function getLinkTo(tag, type) {
+  switch (type) {
+    // TODO fix URLs
+    case "cluster":
+      return "<a href='cluster.php?tag=" + tag + "'>view clustered</a>";
+    case "collapsible":
+      return "<a href='collapsible.php?tag=" + tag + "'>view collapsible</a>";
+    case "force":
+      return "<a href='force.php?tag=" + tag + "'>view force-directed</a>";
+  }
+}
+
+function createControls(tag, type) {
   // the controls for the graph
   $("body").append("<div id='controls'></div>");
-  $("div#controls").append("Tag " + tag + " (<a href='tag/" + tag + "'>show</a>)<br>"); // TODO fix URL
+  var text = "Tag " + tag + " (<a href='/tag/" + tag + "'>show tag</a>, ";
+  switch (type) {
+    case "cluster":
+      text += getLinkTo(tag, "collapsible") + ", " + getLinkTo(tag, "force");
+      break;
+    case "collapsible":
+      text += getLinkTo(tag, "cluster") + ", " + getLinkTo(tag, "force");
+      break;
+    case "force":
+      text += getLinkTo(tag, "cluster") + ", " + getLinkTo(tag, "collapsible");
+      break;
+  }
+  text += ")<br>";
+
+  $("div#controls").append(text);
 }
 
 function disableContextMenu() {
@@ -57,7 +83,6 @@ function openTag(node, type) {
 function openTagNew(node, type) {
   window.open(type + ".php?tag=" + node.tag);
 }
-
 
 var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
 

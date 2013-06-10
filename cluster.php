@@ -47,7 +47,7 @@ print printMathJax();
     <script type="text/javascript">
       $(document).ready(function () {
         disableContextMenu();
-        createControls("<?php print $_GET["tag"]; ?>");
+        createControls("<?php print $_GET["tag"]; ?>", "cluster");
 
       });
 
