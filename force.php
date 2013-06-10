@@ -9,17 +9,6 @@
   <head>
     <meta charset="utf-8">
     <style>
-      .named {
-        stroke-width: 1.5px;
-        stroke: black;
-      }
-
-      #root {
-        stroke-width: 2px;
-        stroke-dasharray: 2, 2;
-        stroke: black;
-      }
-      
       .link {
         stroke: #999;
         stroke-opacity: .6;
@@ -120,8 +109,6 @@
           .domain([0, depth])
           .range(["red", "blue"]);
 
-        var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
-
         var chapters = {};
         for (var i = 0; i < graph.nodes.length; i++) 
           chapters[graph.nodes[i].file] = true;
@@ -182,12 +169,8 @@
         for (var i = 0; i < graph.nodes.length; i++) 
           types[graph.nodes[i].type] = true;
 
-        $("body").append("<div class='legend' id='legendType'></div>");
-        $("div#legendType").append("Legend for the type mapping");
-        $("div#legendType").append("<ul>");
-        for (type in types) {
-          $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + capitalize(type)).appendTo($("div#legendType ul"));
-        }
+        // add legend for type coloring
+        typeLegend(types);
 
         // add legend for the heat coloring
         $("body").append("<div class='legend' id='legendHeat'></div>");

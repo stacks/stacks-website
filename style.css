@@ -1,9 +1,13 @@
 body {
-  margin: 5px;
-}
-      
-svg#graph {
-  border: 1px solid #d9d8d1;
+  font-family: Arial, sans-serif;
+  border: solid #d9d8d1;
+  border-width: 1px;
+  width: 1100px;
+  margin: 10px;
+  margin-bottom: 50px;
+  background-color: #fff;
+  color: #000;
+  font-size: 15px;
 }
 
 .tooltip p {
@@ -14,42 +18,63 @@ svg#graph {
   padding: 2px;
 }
 
-div#controls, div.legend, div#tagInfo {
+div#controls, div.legend, div#information {
   position: fixed;
-  padding: 2px;
+  padding: 4px;
   border: 1px solid #d9d8d1;
   border-radius: 5px;
   background-color: rgb(255, 255, 255);
   background-color: rgba(255, 255, 255, .8);
 }
+
 div#controls ul {
   margin: 0;
 }
+
 div.legend ul {
   padding: 0;
   margin: 0;
   list-style-type: none;
 }
+
 div.legend ul li {
   margin: 0;
   padding: 0;
 }
 
 div.legend {
-  bottom: 10px;
-  left: 10px;
+  bottom: 15px;
+  left: 15px;
 }
 
 div#controls {
-  top: 10px;
-  left: 10px;
+  top: 15px;
+  left: 15px;
 }
 
-div#tagInfo {
-  width: 300px;
-  top: 40px;
-  left: 10px;
+div#information {
+  width: 500px;
+  top: 50px;
+  left: 15px;
 }
-div#tagInfo p {
+
+div#information p {
   margin: 0;
 }
+
+div#information blockquote.rendered {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.named {
+  stroke-width: 1.5px;
+  stroke: black;
+}
+
+#root {
+  stroke-width: 2px;
+  stroke-dasharray: 2, 2;
+  stroke: black;
+}
+

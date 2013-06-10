@@ -1,11 +1,21 @@
+<?php
+
+require_once("../../stacks-website-new/php/general.php"); # TODO fix path
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="graphs.js"></script>
+    <script src="graphs.js"></script> <!-- TODO fix path -->
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<?php
+print printMathJax();
+?>
     <link rel='stylesheet' type='text/css' href='style.css'>
+    <link rel='stylesheet' type='text/css' href='../../stacks-website-new/css/tag.css'> <!-- TODO fix URL -->
     <style type="text/css">
       div#graph {
         cursor: default;
@@ -37,7 +47,8 @@
     <script type="text/javascript">
       $(document).ready(function () {
         disableContextMenu();
-        createControls();
+        createControls("<?php print $_GET["tag"]; ?>");
+
       });
 
         var type_map = {
@@ -61,7 +72,7 @@ var w = 1280,
 
 var diameter = 800;
 
-var cluster = d3.layout.tree()
+var cluster = d3.layout.cluster()
     .size([360, diameter / 2 - 120])
     .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
@@ -71,7 +82,7 @@ var diagonal = d3.svg.diagonal.radial()
 var div = d3.select("body").append("div") // this is the non-rotating part of the construction
   .attr("id", "graph")
 
-var tagInfo = $("div#graph").append("<div id='tagInfo'>");
+var information = $("body").append("<div id='information'>");
 displayGeneralInformation();
 
 var svg = div.append("div") // this is the rotating part of the construction
@@ -111,14 +122,18 @@ d3.json("data/<?php print $_GET['tag']; ?>-tree.json", function(json) {
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
       .style("fill", colorType)
       .on("mouseover", displayTag)
+      .attr("class", function(d) { if (d.tagName != "") { return "named"; } else { return "unnamed"; } })
+      .attr("id", function(d) { if (d.depth == 0) { return "root"; } })
       .on("mouseout", displayGeneralInformation)
       .on("click", function(node) { openTag(node, "cluster"); })
       .on("contextmenu", function(node) { openTagNew(node, "cluster"); })
 
   nodeEnter
       .append("svg:text")
-      .style("font-size", "12px")
-      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+      .style("height", "15px")
+      .style("vertical-align", "middle")
+      .style("font-size", "10px")
+      .attr("transform", function(d) { console.log(d.x); return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; }) // TODO improve text rotation
       .attr("text-anchor", "start")
       .on("mouseover", displayTag)
       .on("mouseout", displayGeneralInformation)
@@ -126,27 +141,50 @@ d3.json("data/<?php print $_GET['tag']; ?>-tree.json", function(json) {
       .on("contextmenu", function(node) { openTagNew(node, "cluster"); })
       .attr("xml:space", "preserve")
       .text(function(d) { return "  " + d.tag; })
+
+  // add legend for the type coloring
+  var types = {};
+  for (var i = 0; i < nodes.length; i++) 
+    types[nodes[i].type] = true;
+  typeLegend(types);
 });
 
 function displayGeneralInformation() {
-  tagInfo = $("div#tagInfo");
-  tagInfo.empty();
+  // hide all the divs
+  $("div#information div.tagInfo").hide();
 
-  tagInfo.append("<p>If you move your cursor over a node you can see the tag's contents.");
+  // only show the one explaining the system
+  if ($("div#information div#general").length == 0)
+    $("div#information").append("<div id='general' class='tagInfo'>Use the mouse, Luke");
+  else
+    $("div#information div#general").show();
 }
 
 function displayTag(node) {
-  tagInfo = $("div#tagInfo");
-  tagInfo.empty();
+  // hide all the divs
+  $("div#information div.tagInfo").hide();
 
-  console.log(node);
+  // the id used for the tag information
+  id = "tagInfo-" + node.tag;
 
-  content = "Tag " + node.tag + " which points to " + capitalize(node.type) + " " + node.book_id;
-  if (node.tagName != "")
-    content += " and it is called " + node.tagName;
-  content += "<br>It is contained in the file " + node.file + ".tex";
+  // check whether there is already a parsed version
+  if ($("div#" + id).length > 0) {
+    $("div#" + id).toggle(50);
+  }
+  else {
+    $("div#information").append("<div class='tagInfo' id='" + id + "'></div>");
+    tagInfo = $("div#" + id);
+    
+    tagInfo.append("Tag " + node.tag + " points to " + capitalize(node.type) + " " + node.book_id);
+    if (node.tagName != "")
+      tagInfo.append(": " + node.tagName);
 
-  tagInfo.append(content);
+    tagInfo.append("<blockquote class='rendered' id='" + id + "-content'>");
+    if (node.type != "section" && node.type != "subsection") {
+      url = "/new/stacks-graphs/tag.php?tag=" + node.tag + "&type=statement";
+      tagContent = $("blockquote#" + id + "-content").load(url, function() { MathJax.Hub.Queue(["Typeset",MathJax.Hub]); }); // TODO change URL
+    }
+  }
 }
 
 d3.select(window)
