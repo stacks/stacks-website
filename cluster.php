@@ -51,16 +51,6 @@ print printMathJax();
 
       });
 
-        var type_map = {
-          "definition": d3.rgb("green"),
-          "remark": d3.rgb("black"),
-          "item": d3.rgb("yellow"),
-          "section": d3.rgb("red"),
-          "lemma": d3.rgb("orange"),
-          "proposition": d3.rgb("blue"),
-          "theorem": d3.rgb("purple"),
-          "example": d3.rgb("grey"),
-        }
 
 var w = 1280,
     h = 800,
@@ -109,7 +99,7 @@ d3.json("data/<?php print $_GET['tag']; ?>-tree.json", function(json) {
       .attr("class", "link")
       .attr("d", diagonal);
 
-  function colorType(node) { return type_map[node.type]; }
+  function colorType(node) { return typeMap(node.type); }
 
   var node = vis.selectAll(".node")
   .data(nodes);
