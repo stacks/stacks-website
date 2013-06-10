@@ -140,7 +140,7 @@
         var node = svg.selectAll(".node")
           .data(graph.nodes)
           .enter().append("circle")
-          .attr("class", function(d) { console.log(d.tagName); if (d.tagName != "") { return "named"; } else { return "unnamed"; } })
+          .attr("class", namedClass)
           .attr("id", function(d) { if (d.depth == 0) { return "root"; } })
           .attr("r", function(d) { return 4 * Math.pow(parseInt(d.size) + 1, 1 / 3); })
           .style("fill", function(d) { colorMapping = colorHeat; return colorHeat(d); })

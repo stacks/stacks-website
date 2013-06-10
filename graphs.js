@@ -20,9 +20,10 @@ function displayTooltip(node, content) {
 
 function displayTagInfo(node) {
   content = "Tag " + node.tag + " which points to " + capitalize(node.type) + " " + node.book_id;
-  if (node.tagName != "")
+  if (node.tagName != "" && (node.type != "equation" && node.type != "item"))
     content += " and it is called " + node.tagName;
   content += "<br>It is contained in the file " + node.file + ".tex";
+  // TODO possibly improve this with real chapter name (change parse.py)
 
   displayTooltip(node, content);
 }
@@ -93,4 +94,14 @@ function typeLegend(types) {
   for (type in types) {
     $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + capitalize(type)).appendTo($("div#legendType ul"));
   }
+}
+
+function namedClass(node) {
+  if (node.type == "item" || node.type == "equation")
+    return "unnamed";
+  
+  if (node.tagName != "")
+    return "named";
+  else
+    return "unnamed";
 }

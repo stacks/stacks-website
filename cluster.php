@@ -114,7 +114,7 @@ d3.json("data/<?php print $_GET['tag']; ?>-tree.json", function(json) {
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
       .style("fill", colorType)
       .on("mouseover", displayTag)
-      .attr("class", function(d) { if (d.tagName != "") { return "named"; } else { return "unnamed"; } })
+      .attr("class", namedClass)
       .attr("id", function(d) { if (d.depth == 0) { return "root"; } })
       .on("mouseout", displayGeneralInformation)
       .on("click", function(node) { openTag(node, "cluster"); })
