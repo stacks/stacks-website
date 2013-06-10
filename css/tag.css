@@ -34,54 +34,54 @@ p.toggle a {
   padding: 0.2em 1em;
 }
 
-blockquote#rendered {
+blockquote.rendered {
   margin-left: 1em;
   line-height: 120%;
   font-size: 16px;
 }
 
-blockquote#rendered h2,
-blockquote#rendered p {
+blockquote.rendered h2,
+blockquote.rendered p {
   margin-left: 0;
 }
 
-blockquote#rendered a.environment-identification {
+blockquote.rendered a.environment-identification {
   color: black;
   font-weight: bold;
   font-style: normal;
   text-decoration: none;
 }
 
-blockquote#rendered a.environment-identification span.named {
+blockquote.rendered a.environment-identification span.named {
   font-weight: normal;
 }
 
-blockquote#rendered a.environment-identification:hover {
+blockquote.rendered a.environment-identification:hover {
   text-decoration: underline;
 }
 
-blockquote#rendered div.definition {
+blockquote.rendered div.definition {
 }
 
-blockquote#rendered div.plain {
+blockquote.rendered div.plain {
   font-style: italic;
 }
 
-blockquote#rendered div.remark {
+blockquote.rendered div.remark {
 }
 
-blockquote#rendered span.qed {
+blockquote.rendered span.qed {
   float: right;
 }
 
-blockquote#rendered ol {
+blockquote.rendered ol {
   counter-reset: list;
   list-style-type: none;
   margin-left: 0;
   padding-left: 20px;
 }
 
-blockquote#rendered ol li:before {
+blockquote.rendered ol li:before {
   counter-increment: list;
   content: counter(list) ") ";
   margin-right: 15px;
