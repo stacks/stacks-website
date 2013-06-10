@@ -108,18 +108,6 @@ function parseReferences($string) {
   return $string;
 }
 
-function preprocessCode($code) {
-  // remove irrelevant new lines at the end
-  $code = trim($code);
-  // escape stuff
-  $code = htmlentities($code);
-
-  // but links should work: tag links are made up from alphanumeric characters, slashes, dashes and underscores, while the LaTeX label contains only alphanumeric characters and dashes
-  $code = preg_replace('/&lt;a href=&quot;\/([A-Za-z0-9\/\-]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . href("") . '$1">$2</a>', $code);
-
-  return $code;
-}
-
 function stripChapter($id) {
   return implode(array_splice(explode(".", $id), 1), ".");
 }
@@ -442,7 +430,7 @@ class TagViewPage extends Page {
   private function printView() {
     $value = "";
     $value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
-    $value .= "<blockquote id='rendered'>";
+    $value .= "<blockquote class='rendered'>";
     if ($this->tag["type"] == "chapter") {
       $value .= "<h3>Chapter " . $this->tag["book_id"] . ": " . $this->tag["name"] . "</h3>";
       $value .= "<p>This tag corresponds to <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>, and contains no further text. To view the contents of the chapter, go to the next tag.</p>";

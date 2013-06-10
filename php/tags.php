@@ -1,6 +1,7 @@
 <?php
 
 require_once("bibliography.php");
+require_once("general.php");
 
 function parseFootnotes($string) {
   $parts = explode("\\footnote", $string);
@@ -29,6 +30,17 @@ function parseFootnotes($string) {
   return $result;
 }
 
+function preprocessCode($code) {
+  // remove irrelevant new lines at the end
+  $code = trim($code);
+  // escape stuff
+  $code = htmlentities($code);
+
+  // but links should work: tag links are made up from alphanumeric characters, slashes, dashes and underscores, while the LaTeX label contains only alphanumeric characters and dashes
+  $code = preg_replace('/&lt;a href=&quot;\/([A-Za-z0-9\/\-]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . href("") . '$1">$2</a>', $code);
+
+  return $code;
+}
 
 function convertLaTeX($tag, $file, $code) {
   // get rid of things that should be HTML
