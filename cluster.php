@@ -172,7 +172,10 @@ function displayTag(node) {
     tagInfo.append("<blockquote class='rendered' id='" + id + "-content'>");
     if (node.type != "section" && node.type != "subsection") {
       url = "/new/stacks-graphs/tag.php?tag=" + node.tag + "&type=statement";
-      tagContent = $("blockquote#" + id + "-content").load(url, function() { MathJax.Hub.Queue(["Typeset",MathJax.Hub]); }); // TODO change URL
+      $("blockquote#" + id + "-content").load(url, function() { MathJax.Hub.Queue(["Typeset",MathJax.Hub]); }); // TODO change URL
+    }
+    else {
+      $("blockquote#" + id + "-content").text("Sections and subsections are not displayed in this preview due to size constraints.");
     }
   }
 }
