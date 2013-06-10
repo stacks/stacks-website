@@ -31,6 +31,8 @@ line.link {
         $("div#controls").append("<ul>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='expand(root);update()'>expand all nodes</a><br>");
         $("div#controls").append("</ul>");
+
+        depthLegend();
       });
     </script>
   </head>
@@ -157,18 +159,11 @@ function tick() {
       .attr("cy", function(d) { return d.y; });
 }
 
+depthMap = {"root": "green", "chapter": "#3182bd", "section": "#c6dbef", "tag": "#fd8d3c"};
+
 // Color leaf nodes orange, and packages white or blue.
 function color(d) {
-  switch (d.nodeType) {
-    case "root":
-      return "green";
-    case "chapter":
-      return "#3182bd";
-    case "section":
-      return "#c6dbef";
-    case "tag":
-      return "#fd8d3c";
-  }
+  return depthMap[d.nodeType];
 }
 
 function expand(node) {
@@ -208,7 +203,14 @@ function flatten(root) {
   return nodes;
 }
 
-// TODO add legend
+function depthLegend(types) {
+  $("body").append("<div class='legend' id='legendDepth'></div>");
+  $("div#legendDepth").append("Legend");
+  $("div#legendDepth").append("<ul>");
+  for (type in depthMap) {
+    $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + depthMap[type] + "'/></svg>").append(" " + capitalize(type)).appendTo($("div#legendDepth ul"));
+  }
+}
     </script>
   </body>
 </html>
