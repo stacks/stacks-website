@@ -11,7 +11,7 @@
         cursor: default;
         border: 1px solid #d9d8d1;
       }
-
+      
       path.arc {
         cursor: move;
         fill: #fff;
@@ -35,6 +35,11 @@
   </head>
   <body>
     <script type="text/javascript">
+      $(document).ready(function () {
+        disableContextMenu();
+        createControls();
+      });
+
         var type_map = {
           "definition": d3.rgb("green"),
           "remark": d3.rgb("black"),
@@ -63,10 +68,13 @@ var cluster = d3.layout.tree()
 var diagonal = d3.svg.diagonal.radial()
     .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-var div = d3.select("body").append("div")
+var div = d3.select("body").append("div") // this is the non-rotating part of the construction
   .attr("id", "graph")
 
-var svg = div.append("div")
+var tagInfo = $("div#graph").append("<div id='tagInfo'>");
+displayGeneralInformation();
+
+var svg = div.append("div") // this is the rotating part of the construction
     .style("width", w + "px")
     .style("height", w + "px");
 
@@ -102,23 +110,44 @@ d3.json("data/<?php print $_GET['tag']; ?>-tree.json", function(json) {
       .attr("r", 6)
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
       .style("fill", colorType)
-      .on("mouseover", displayTagInfo)
-      .on("mouseout", hideInfo)
-
-  function openTag(node) {
-    window.open("graph.php?tag=" + node.tag);
-  }
+      .on("mouseover", displayTag)
+      .on("mouseout", displayGeneralInformation)
+      .on("click", function(node) { openTag(node, "cluster"); })
+      .on("contextmenu", function(node) { openTagNew(node, "cluster"); })
 
   nodeEnter
       .append("svg:text")
       .style("font-size", "12px")
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
       .attr("text-anchor", "start")
-      .on("mouseover", displayTagInfo)
-      .on("mouseout", hideInfo)
+      .on("mouseover", displayTag)
+      .on("mouseout", displayGeneralInformation)
+      .on("click", function(node) { openTag(node, "cluster"); })
+      .on("contextmenu", function(node) { openTagNew(node, "cluster"); })
       .attr("xml:space", "preserve")
       .text(function(d) { return "  " + d.tag; })
 });
+
+function displayGeneralInformation() {
+  tagInfo = $("div#tagInfo");
+  tagInfo.empty();
+
+  tagInfo.append("<p>If you move your cursor over a node you can see the tag's contents.");
+}
+
+function displayTag(node) {
+  tagInfo = $("div#tagInfo");
+  tagInfo.empty();
+
+  console.log(node);
+
+  content = "Tag " + node.tag + " which points to " + capitalize(node.type) + " " + node.book_id;
+  if (node.tagName != "")
+    content += " and it is called " + node.tagName;
+  content += "<br>It is contained in the file " + node.file + ".tex";
+
+  tagInfo.append(content);
+}
 
 d3.select(window)
     .on("mousemove", mousemove)

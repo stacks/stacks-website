@@ -50,3 +50,11 @@ function disableContextMenu() {
     return false;
   }); 
 }
+
+function openTag(node, type) {
+  window.location.href = type + ".php?tag=" + node.tag; // TODO change this to the correct URL naming scheme eventually, probably something like tag/0123/force
+}
+function openTagNew(node, type) {
+  window.open(type + ".php?tag=" + node.tag);
+}
+
