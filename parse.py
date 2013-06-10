@@ -187,6 +187,33 @@ def mapTags():
 
 mapTags()
 
+# get tag contents from database
+tagContents = {}
+
+def getTagContents(tag):
+  try:
+    query = "SELECT value FROM tags WHERE tag = ?"
+    cursor = connection.execute(query, [tag])
+
+    result = cursor.fetchone()
+    if result != None and result[0] != None:
+      tagContents[tag] = result[0]
+    else:
+      tagContents[tag] = ""
+
+  except sqlite3.Error, e:
+    print "An error occurred:", e.args[0]
+
+def getAllTags():
+  for tag, label in tags:
+    getTagContents(tag)
+
+def removeProof(content):
+  return content.split("\\begin{proof}")[0]
+
+# TODO not necessary
+#getAllTags()
+
 # dictionary for easy label access
 tags_labels = dict((v, k) for k, v in label_tags.iteritems())
 
@@ -222,25 +249,27 @@ def generateGraph(tag, depth = 0):
 
 
 def generateTree(tag, depth = 0, cutoff = 4):
+  tagType = split_label(tags_labels[tag])[1]
+
   # child node
   if tags_refs[tag] == [] or depth == cutoff:
     return {
       "tag": tag,
-      "type": split_label(tags_labels[tag])[1],
+      "type": tagType,
       "size": 2000,
       "book_id" : tagToID[tag],
       "file" : split_label(tags_labels[tag])[0],
-      "tagName": names[tag]
+      "tagName": names[tag],
     }
   else:
     return {
       "tag": tag,
-      "type": split_label(tags_labels[tag])[1],
+      "type": tagType,
       "size": 2000,
       "book_id" : tagToID[tag],
       "tagName": names[tag],
       "file" : split_label(tags_labels[tag])[0],
-      "children": [generateTree(child, depth + 1, cutoff) for child in set(tags_refs[tag])]
+      "children": [generateTree(child, depth + 1, cutoff) for child in set(tags_refs[tag])],
     }
         
 def countTree(tree):
@@ -320,6 +349,7 @@ def generateGraphs():
 
 # treeview (or clusterview)
 maximum = 150
+maximumCutoff = 6
 def optimizeTree(tag):
   cutoffValue = 1
   tree = generateTree(tag, cutoff = cutoffValue)
@@ -328,7 +358,7 @@ def optimizeTree(tag):
     candidate = generateTree(tag, cutoff = cutoffValue + 1)
 
     # three reasons to stop: too big a tree, all nodes reached or too deep a tree
-    if countTree(candidate) > maximum or countTree(candidate) == countTree(tree) or cutoffValue > 6:
+    if countTree(candidate) > maximum or countTree(candidate) == countTree(tree) or cutoffValue >= maximumCutoff:
       return tree
     else:
       tree = candidate
