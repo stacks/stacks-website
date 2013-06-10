@@ -14,7 +14,7 @@ svg#graph {
   padding: 2px;
 }
 
-div#controls, div.legend {
+div#controls, div.legend, div#tagInfo {
   position: fixed;
   padding: 2px;
   border: 1px solid #d9d8d1;
@@ -43,4 +43,13 @@ div.legend {
 div#controls {
   top: 10px;
   left: 10px;
+}
+
+div#tagInfo {
+  width: 300px;
+  top: 40px;
+  left: 10px;
+}
+div#tagInfo p {
+  margin: 0;
 }
