@@ -6,7 +6,7 @@ function capitalize(s) {
 function displayTooltip(node, content) {
   // element exists, so we show it, while updating its position
   if ($("#" + node.tag + "-tooltip").length) {
-    $("#" + node.tag + "-tooltip").css({top: node.y - 10 + "px", left: node.x + 20 + "px"}).fadeIn(100);
+    $("#" + node.tag + "-tooltip").css({top: node.y - 10 + "px", left: node.x + 20 + "px"}).stop().fadeIn(100);
   }
   // otherwise we create a new tooltip
   else {
@@ -29,7 +29,7 @@ function displayTagInfo(node) {
 }
       
 function hideInfo(node) {
-  $("#" + node.tag + "-tooltip").fadeOut(200);
+  $("#" + node.tag + "-tooltip").stop().fadeOut(200);
 }
 
 function centerViewport() {
@@ -105,3 +105,4 @@ function namedClass(node) {
   else
     return "unnamed";
 }
+
