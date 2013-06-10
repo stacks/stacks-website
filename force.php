@@ -193,7 +193,7 @@
         $("div#legendType").append("Legend for the type mapping");
         $("div#legendType").append("<ul>");
         for (type in types) {
-          $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + type).appendTo($("div#legendType ul"));
+          $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + capitalize(type)).appendTo($("div#legendType ul"));
         }
 
         // add legend for the heat coloring
@@ -211,6 +211,7 @@
         for (chapter in chapters) {
           $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + chapterMap(chapters[chapter]) + "'/></svg>").append(" " + chapter).appendTo($("div#legendChapters ul"));
         }
+        // TODO it would be awesome if the chapters legend had mouseOvers to indicate which results are in which chapter: making all the other chapters slightly lighter for instance
 
         toggleLegend();
       });
