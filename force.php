@@ -149,13 +149,6 @@
           .enter().append("line")
           .attr("class", "link")
 
-        function openTag(node) {
-          window.location.href = "force.php?tag=" + node.tag;
-        }
-        function openTagNew(node) {
-          window.open("force.php?tag=" + node.tag);
-        }
-
         var node = svg.selectAll(".node")
           .data(graph.nodes)
           .enter().append("circle")
@@ -165,8 +158,8 @@
           .style("fill", function(d) { colorMapping = colorHeat; return colorHeat(d); })
           .on("mouseover", displayTagInfo)
           .on("mouseout", hideInfo)
-          .on("click", openTag)
-          .on("contextmenu", openTagNew)
+          .on("click", function(node) { openTag(node, "force"); })
+          .on("contextmenu", function(node) { openTagNew(node, "force"); })
           .call(force.drag);
 
         global["node"] = node;
