@@ -222,6 +222,17 @@ result = {"nodes": [], "links": []}
 mapping = {}
 n = 0
 
+def updateGraph(tag, depth):
+  global mapping, n, result
+
+  if depth <= result["nodes"][mapping[tag]]["depth"]:
+    return
+
+  result["nodes"][mapping[tag]]["depth"] = depth
+
+  for child in tags_refs[tag]:
+    updateGraph(child, depth + 1)
+
 def generateGraph(tag, depth = 0):
   global mapping, n, result
 
@@ -245,7 +256,7 @@ def generateGraph(tag, depth = 0):
   else:
     # overwrite depth if necessary
     result["nodes"][mapping[tag]]["depth"] = max(depth, result["nodes"][mapping[tag]]["depth"])
-    # TODO this code is not correct
+    updateGraph(tag, depth)
 
 
 def generateTree(tag, depth = 0, cutoff = 4):
@@ -396,6 +407,6 @@ def generatePackeds():
     f.close()
 
 
-#generateGraphs()
+generateGraphs()
 generateTrees()
-#generatePackeds()
+generatePackeds()
