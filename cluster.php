@@ -1,5 +1,4 @@
 <?php
-
 require_once("../../stacks-website-new/php/general.php"); # TODO fix path
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -17,9 +16,12 @@ print printMathJax();
     <link rel='stylesheet' type='text/css' href='style.css'>
     <link rel='stylesheet' type='text/css' href='../../stacks-website-new/css/tag.css'> <!-- TODO fix URL -->
     <style type="text/css">
+      body {
+        width: 1100px;
+      }
+
       div#graph {
         cursor: default;
-        border: 1px solid #d9d8d1;
       }
       
       path.arc {

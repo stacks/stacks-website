@@ -1,13 +1,15 @@
 body {
   font-family: Arial, sans-serif;
-  border: solid #d9d8d1;
-  border-width: 1px;
-  width: 1100px;
-  margin: 10px;
-  margin-bottom: 50px;
   background-color: #fff;
   color: #000;
   font-size: 15px;
+  margin: 0;
+}
+
+div#graph {
+  border: solid #d9d8d1;
+  border-width: 1px;
+  margin: 10px;
 }
 
 .tooltip p {

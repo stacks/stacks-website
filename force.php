@@ -1,5 +1,5 @@
 <?php
-  // TODO check for inexisting file
+  // TODO get a node count from the database
   $filename = "data/" . $_GET["tag"] . "-force.json";
   $filesize = filesize($filename);
   $size = 500 + 10 * $filesize / 1000;
@@ -92,11 +92,12 @@
         .linkDistance(10)
         .gravity(.5)
         .size([width, height]);
+
+      d3.select("body").append("div").attr("id", "graph");
       
-      var svg = d3.select("body").append("svg")
+      var svg = d3.select("div#graph").append("svg")
         .attr("width", width)
         .attr("height", height)
-        .attr("id", "graph");
 
       var global = Array(); // this catches some things that need to be available globally
       

@@ -1,4 +1,9 @@
-
+<?php
+  // TODO get a node count from the database
+  $filename = "data/" . $_GET["tag"] . "-force.json";
+  $filesize = filesize($filename);
+  $size = 500 + 10 * $filesize / 1000;
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,6 +14,10 @@ circle.node {
   cursor: pointer;
   stroke: #000;
   stroke-width: .5px;
+}
+
+div#graph {
+    width: <?php print $size; ?>px;
 }
 
 line.link {
@@ -40,12 +49,11 @@ line.link {
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <link rel='stylesheet' type='text/css' href='style.css'>
     <script type="text/javascript">
-
-var w = 1000, // TODO dynamic size
-    h = 1000,
-    node,
-    link,
-    root;
+      var width = <?php print $size; ?>,
+        height = <?php print $size; ?>,
+        node,
+        link,
+        root;
 
 function distance(d) {
   switch(d.target.nodeType) {
@@ -64,12 +72,17 @@ var force = d3.layout.force()
     .on("tick", tick)
     .charge(-30)
     .linkDistance(distance)
-    .size([w, h - 160]);
+    .size([width, height - 160]);
 
-var vis = d3.select("body").append("svg")
-    .attr("width", w)
-    .attr("height", h)
-    .attr("id", "graph");
+d3.select("body").append("div")
+  .attr("id", "graph")
+  .attr("width", width)
+  .attr("height", height);
+
+var vis = d3.select("div#graph")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
 function displaySectionInfo(node) {
   displayTooltip(node, "Section " + node.book_id + ": " + node.tagName);
@@ -83,8 +96,8 @@ function displayChapterInfo(node) {
 d3.json("data/<?php print $_GET["tag"]; ?>-packed.json", function(json) {
   root = json;
   root.fixed = true;
-  root.x = w / 2;
-  root.y = h / 2 - 80;
+  root.x = width / 2;
+  root.y = height / 2 - 80;
   update();
 });
 
