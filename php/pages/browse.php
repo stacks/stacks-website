@@ -44,23 +44,18 @@ class BrowsePage extends Page {
     $value .= "<th>view pdf</th> ";
     $value .= "</tr>";
 
-    try {
-      $sql = $this->db->prepare("SELECT number, title, filename FROM sections WHERE number NOT LIKE '%.%' ORDER BY CAST(number AS INTEGER)");
-      if ($sql->execute()) {
-        while ($row = $sql->fetch()) {
-          // check whether it's the first chapter, insert row with part if necessary
-          if (array_key_exists($row["title"], $this->parts)) {
-            $value .= $this->printPart($this->parts[$row["title"]]);
-          }
-
-          // change LaTeX escaping to HTML escaping
-          $value .= $this->printChapter($row["title"], $row["filename"], $row["number"]);
-          $number = $row["number"];
+    $sql = $this->db->prepare("SELECT number, title, filename FROM sections WHERE number NOT LIKE '%.%' ORDER BY CAST(number AS INTEGER)");
+    if ($sql->execute()) {
+      while ($row = $sql->fetch()) {
+        // check whether it's the first chapter, insert row with part if necessary
+        if (array_key_exists($row["title"], $this->parts)) {
+          $value .= $this->printPart($this->parts[$row["title"]]);
         }
+
+        // change LaTeX escaping to HTML escaping
+        $value .= $this->printChapter($row["title"], $row["filename"], $row["number"]);
+        $number = $row["number"];
       }
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
     }
 
     $value .= "</table>";

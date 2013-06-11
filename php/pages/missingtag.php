@@ -6,17 +6,13 @@ require_once("php/pages/taglookup.php");
 
 function getLastTag() {
   global $database;
-  try {
-    $sql = $database->prepare('SELECT tag FROM tags ORDER BY tag DESC');
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
+  $sql = $database->prepare('SELECT tag FROM tags ORDER BY tag DESC');
 
-    return null;
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
+
+  return null;
 }
 
 // we do not use the NotFoundPage as a missing tag will eventually be filled in and we don't want to confuse crawlers

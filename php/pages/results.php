@@ -102,31 +102,26 @@ class SearchResultsPage extends Page {
   private function search($options) {
     $results = array();
 
-    try {
-      // FTS queries don't work with PDO (or maybe: a) I didn't try hard enough, b) did something stupid)
-      $query = "SELECT tags.tag, tags.label, tags.type, tags.book_id, tags_search.text, tags_search.text_without_proofs, tags.book_page, tags.name, tags.file, tags.position FROM tags_search, tags WHERE tags_search.tag = tags.tag AND tags.active = 'TRUE'";
-      // the user doesn't want tags of the type section or subsection (which contain all the tags from that section)
-      switch ($options["limit"]) {
-        case "statements":
-          $query .= " AND tags_search.text_without_proofs MATCH " . $this->db->quote($options["keywords"]);
-          break;
-        case "sections":
-          $query .= " AND tags.TYPE IN ('section', 'subsection')";
-          $query .= " AND tags_search.text MATCH " . $this->db->quote($options["keywords"]);
-          break;
-        case "all":
-          $query .= " AND tags_search.text MATCH " . $this->db->quote($options["keywords"]);
-          break;
-      }
-
-      $query .= " ORDER BY tags.position";
-
-      foreach ($this->db->query($query) as $row)
-        $results[] = $row;
+    // FTS queries don't work with PDO (or maybe: a) I didn't try hard enough, b) did something stupid)
+    $query = "SELECT tags.tag, tags.label, tags.type, tags.book_id, tags_search.text, tags_search.text_without_proofs, tags.book_page, tags.name, tags.file, tags.position FROM tags_search, tags WHERE tags_search.tag = tags.tag AND tags.active = 'TRUE'";
+    // the user doesn't want tags of the type section or subsection (which contain all the tags from that section)
+    switch ($options["limit"]) {
+      case "statements":
+        $query .= " AND tags_search.text_without_proofs MATCH " . $this->db->quote($options["keywords"]);
+        break;
+      case "sections":
+        $query .= " AND tags.TYPE IN ('section', 'subsection')";
+        $query .= " AND tags_search.text MATCH " . $this->db->quote($options["keywords"]);
+        break;
+      case "all":
+        $query .= " AND tags_search.text MATCH " . $this->db->quote($options["keywords"]);
+        break;
     }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
+
+    $query .= " ORDER BY tags.position";
+
+    foreach ($this->db->query($query) as $row)
+      $results[] = $row;
 
     // remove duplicates if requested
     $tags = array();

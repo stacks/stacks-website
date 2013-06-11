@@ -8,32 +8,22 @@ $config["comments cutoff"] = 100;
 
 // move these inside the class?
 function countComments($db) {
-  try {
-    $sql = $db->prepare("SELECT COUNT(*) FROM comments");
+  $sql = $db->prepare("SELECT COUNT(*) FROM comments");
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
 
   return 0;
 }
 
 function getComments($db, $start, $number) {
-  try {
-    $sql = $db->prepare("SELECT id, tag, author, site, date, comment FROM comments ORDER BY date DESC LIMIT :start, :stop");
-    $sql->bindParam(":start", $start);
-    $stop = $start + $number;
-    $sql->bindParam(":stop", $stop);
+  $sql = $db->prepare("SELECT id, tag, author, site, date, comment FROM comments ORDER BY date DESC LIMIT :start, :stop");
+  $sql->bindParam(":start", $start);
+  $stop = $start + $number;
+  $sql->bindParam(":stop", $stop);
 
-    if ($sql->execute())
-      return $sql->fetchAll();
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchAll();
 }
 
 function printComment($comment) {

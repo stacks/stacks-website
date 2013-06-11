@@ -119,18 +119,11 @@ class TagViewPage extends Page {
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    try {
-      $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page, label, file, value, begin, end FROM tags WHERE tag = :tag");
-      $sql->bindParam(":tag", $tag);
+    $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page, label, file, value, begin, end FROM tags WHERE tag = :tag");
+    $sql->bindParam(":tag", $tag);
 
-      if ($sql->execute())
-        $this->tag = $sql->fetch();
-      // else
-      // TODO error handling
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
+    if ($sql->execute())
+      $this->tag = $sql->fetch();
 
     // phantom is actually a chapter
     if (isPhantom($this->tag["label"]))
@@ -228,19 +221,12 @@ class TagViewPage extends Page {
   private function getComments() {
     $comments = array();
 
-    try {
-      $sql = $this->db->prepare("SELECT id, tag, author, date, comment, site FROM comments WHERE tag = :tag ORDER BY date");
-      $sql->bindParam(':tag', $this->tag["tag"]);
+    $sql = $this->db->prepare("SELECT id, tag, author, date, comment, site FROM comments WHERE tag = :tag ORDER BY date");
+    $sql->bindParam(':tag', $this->tag["tag"]);
 
-      if ($sql->execute()) {
-        while ($row = $sql->fetch())
-          array_push($comments, $row);
-      }
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-
-      return array();
+    if ($sql->execute()) {
+      while ($row = $sql->fetch())
+        array_push($comments, $row);
     }
 
     return $comments;

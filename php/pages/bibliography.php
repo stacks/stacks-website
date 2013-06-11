@@ -108,30 +108,26 @@ class BibliographyPage extends Page {
   }
 
   private function getItems() {
-    try {
-      $sql = $this->db->prepare('SELECT bibliography_items.name, bibliography_items.type, bibliography_values.key, bibliography_values.value FROM bibliography_items, bibliography_values WHERE bibliography_items.name = bibliography_values.name ORDER BY bibliography_items.name COLLATE NOCASE');
-      // TODO when the database has been sanitized and all author values are of the form "last name, first name" we can sort on the last name
+    $sql = $this->db->prepare('SELECT bibliography_items.name, bibliography_items.type, bibliography_values.key, bibliography_values.value FROM bibliography_items, bibliography_values WHERE bibliography_items.name = bibliography_values.name ORDER BY bibliography_items.name COLLATE NOCASE');
+    // TODO when the database has been sanitized and all author values are of the form "last name, first name" we can sort on the last name
 
-      if ($sql->execute()) {
-        $rows = $sql->fetchAll();
+    if ($sql->execute()) {
+      $rows = $sql->fetchAll();
 
-        // this output is a mess, so we sanitize it
-        $result = array();
-        foreach ($rows as $row) {
-          $result[$row['name']]['type'] = $row['type'];
-          $result[$row['name']][$row['key']] = $row['value'];
-        }
-
-        // we don't want FDL in the bibliography
-        unset($result["FDL"]);
-
-        return $result;
+      // this output is a mess, so we sanitize it
+      $result = array();
+      foreach ($rows as $row) {
+        $result[$row['name']]['type'] = $row['type'];
+        $result[$row['name']][$row['key']] = $row['value'];
       }
-      return null;
+
+      // we don't want FDL in the bibliography
+      unset($result["FDL"]);
+
+      return $result;
     }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
+
+    return null;
   }
 }
 
@@ -215,15 +211,10 @@ class BibliographyItemPage extends Page {
   private function getReferencingTags() {
     $results = array();
 
-    try {
-      $query = 'SELECT tag, type, book_id, name FROM tags WHERE tags.value LIKE ' . $this->db->quote('%\cite{' . $this->item["name"] . '}%') . ' OR tags.value LIKE ' . $this->db->quote('%\cite[%]{' . $this->item["name"] . '}%') . ' ORDER BY position';
+    $query = 'SELECT tag, type, book_id, name FROM tags WHERE tags.value LIKE ' . $this->db->quote('%\cite{' . $this->item["name"] . '}%') . ' OR tags.value LIKE ' . $this->db->quote('%\cite[%]{' . $this->item["name"] . '}%') . ' ORDER BY position';
 
-      foreach ($this->db->query($query) as $row)
-        $results[] = $row;
-    }
-    catch (PDOException $e) {
-      echo $e->getMessage();
-    }
+    foreach ($this->db->query($query) as $row)
+      $results[] = $row;
 
     return $results;
   }
@@ -231,27 +222,17 @@ class BibliographyItemPage extends Page {
   private function getNeighbouringItems() {
     $results = array();
 
-    try {
-      $sql = $this->db->prepare("SELECT name FROM bibliography_items WHERE UPPER(name) < UPPER(:name) ORDER BY name COLLATE NOCASE DESC LIMIT 1");
-      $sql->bindParam(":name", $this->item["name"]);
+    $sql = $this->db->prepare("SELECT name FROM bibliography_items WHERE UPPER(name) < UPPER(:name) ORDER BY name COLLATE NOCASE DESC LIMIT 1");
+    $sql->bindParam(":name", $this->item["name"]);
 
-      if ($sql->execute())
-        $results["previous"] = $sql->fetchColumn();
-    }
-    catch (PDOException $e) {
-      echo $e->getMessage();
-    }
+    if ($sql->execute())
+      $results["previous"] = $sql->fetchColumn();
 
-    try {
-      $sql = $this->db->prepare("SELECT name FROM bibliography_items WHERE UPPER(name) > UPPER(:name) ORDER BY name COLLATE NOCASE LIMIT 1");
-      $sql->bindParam(":name", $this->item["name"]);
+    $sql = $this->db->prepare("SELECT name FROM bibliography_items WHERE UPPER(name) > UPPER(:name) ORDER BY name COLLATE NOCASE LIMIT 1");
+    $sql->bindParam(":name", $this->item["name"]);
 
-      if ($sql->execute())
-        $results["next"] = $sql->fetchColumn();
-    }
-    catch (PDOException $e) {
-      echo $e->getMessage();
-    }
+    if ($sql->execute())
+      $results["next"] = $sql->fetchColumn();
 
     return $results;
   }

@@ -251,49 +251,32 @@ function convertLaTeX($tag, $file, $code) {
 function getEnclosingSection($position) {
   global $database;
   
-  try {
-    $sql = $database->prepare("SELECT tag, book_id, name, type FROM tags WHERE position <= :position AND type = 'section' ORDER BY position DESC LIMIT 1");
-    $sql->bindParam(":position", $position);
+  $sql = $database->prepare("SELECT tag, book_id, name, type FROM tags WHERE position <= :position AND type = 'section' ORDER BY position DESC LIMIT 1");
+  $sql->bindParam(":position", $position);
 
-    if ($sql->execute())
-      return $sql->fetch();
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetch();
 }
 
 function getEnclosingChapter($position) {
   global $database;
   
-  try {
-    $sql = $database->prepare("SELECT tag, book_id, name, type FROM tags WHERE position <= :position AND type = 'section' AND label LIKE '%phantom' ORDER BY position DESC LIMIT 1");
-    $sql->bindParam(":position", $position);
+  $sql = $database->prepare("SELECT tag, book_id, name, type FROM tags WHERE position <= :position AND type = 'section' AND label LIKE '%phantom' ORDER BY position DESC LIMIT 1");
+  $sql->bindParam(":position", $position);
 
-    if ($sql->execute())
-      return $sql->fetch();
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetch();
 }
 
 function getEnclosingTag($position) {
   assert(positionExists($position));
-
   global $database;
 
-  try {
-    $sql = $database->prepare("SELECT tag, type, book_id FROM tags WHERE position < :position AND active = 'TRUE' AND type != 'item' AND TYPE != 'equation' ORDER BY position DESC LIMIT 1");
-    $sql->bindParam(":position", $position);
+  $sql = $database->prepare("SELECT tag, type, book_id FROM tags WHERE position < :position AND active = 'TRUE' AND type != 'item' AND TYPE != 'equation' ORDER BY position DESC LIMIT 1");
+  $sql->bindParam(":position", $position);
 
-    if ($sql->execute())
-      return $sql->fetch();
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetch();
 
   // TODO this should do more
   return "ZZZZ";
@@ -301,75 +284,53 @@ function getEnclosingTag($position) {
 
 function getID($tag) {
   assert(isValidTag($tag));
-
   global $database;
-  try {
-    $sql = $database->prepare('SELECT book_id FROM tags WHERE tag = :tag');
-    $sql->bindParam(':tag', $tag);
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  $sql = $database->prepare('SELECT book_id FROM tags WHERE tag = :tag');
+  $sql->bindParam(':tag', $tag);
+
+  if ($sql->execute())
+    return $sql->fetchColumn();
 
   return "";
 }
 
 function getIDWithLabel($label) {
   assert(labelExists($label));
-
   global $database;
-  try {
-    $sql = $database->prepare('SELECT book_id FROM tags WHERE label = :label AND active = "TRUE"');
-    $sql->bindParam(':label', $label);
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  $sql = $database->prepare('SELECT book_id FROM tags WHERE label = :label AND active = "TRUE"');
+  $sql->bindParam(':label', $label);
+
+  if ($sql->execute())
+    return $sql->fetchColumn();
 
   return "ZZZZ";
 }
 
 function getTag($tag) {
   assert(isValidTag($tag));
-
   global $database;
-  try {
-    $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position FROM tags WHERE tag = :tag');
-    $sql->bindParam(':tag', $tag);
 
-    if ($sql->execute()) {
-      // return first (= only) row of the result
-      while ($row = $sql->fetch()) return $row;
-    }
-    return null;
+  $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position FROM tags WHERE tag = :tag');
+  $sql->bindParam(':tag', $tag);
+
+  if ($sql->execute()) {
+    // return first (= only) row of the result
+    while ($row = $sql->fetch()) return $row;
   }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  return null;
 }
 
 function getTagAtPosition($position) {
   assert(positionExists($position));
-
   global $database;
 
-  try {
-    $sql = $database->prepare("SELECT tag, label FROM tags WHERE position = :position AND active = 'TRUE'");
-    $sql->bindParam(":position", $position);
+  $sql = $database->prepare("SELECT tag, label FROM tags WHERE position = :position AND active = 'TRUE'");
+  $sql->bindParam(":position", $position);
 
-    if ($sql->execute())
-      return $sql->fetch();
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetch();
 
   // TODO more
   return "ZZZZ";
@@ -377,18 +338,13 @@ function getTagAtPosition($position) {
 
 function getTagWithLabel($label) {
   assert(labelExists($label));
-
   global $database;
-  try {
-    $sql = $database->prepare('SELECT tag FROM tags WHERE label = :label AND active = "TRUE"');
-    $sql->bindParam(':label', $label);
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  $sql = $database->prepare('SELECT tag FROM tags WHERE label = :label AND active = "TRUE"');
+  $sql->bindParam(':label', $label);
+
+  if ($sql->execute())
+    return $sql->fetchColumn();
 
   return "ZZZZ";
 }
@@ -399,16 +355,12 @@ function isValidTag($tag) {
 
 function labelExists($label) {
   global $database;
-  try {
-    $sql = $database->prepare('SELECT COUNT(*) FROM tags WHERE label = :label');
-    $sql->bindParam(':label', $label);
 
-    if ($sql->execute())
-      return intval($sql->fetchColumn()) > 0;
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  $sql = $database->prepare('SELECT COUNT(*) FROM tags WHERE label = :label');
+  $sql->bindParam(':label', $label);
+
+  if ($sql->execute())
+    return intval($sql->fetchColumn()) > 0;
 
   return false;
 }
@@ -416,53 +368,37 @@ function labelExists($label) {
 function positionExists($position) {
   global $database;
 
-  try {
-    $sql = $database->prepare("SELECT COUNT(*) FROM tags WHERE position = :position AND active = 'TRUE'");
-    $sql->bindParam(":position", $position);
+  $sql = $database->prepare("SELECT COUNT(*) FROM tags WHERE position = :position AND active = 'TRUE'");
+  $sql->bindParam(":position", $position);
 
-    if ($sql->execute())
-      return intval($sql->fetchColumn()) > 0;
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return intval($sql->fetchColumn()) > 0;
 
   return false;
 }
 
 function tagExists($tag) {
   assert(isValidTag($tag));
-
   global $database;
-  try {
-    $sql = $database->prepare("SELECT COUNT(*) FROM tags WHERE tag = :tag");
-    $sql->bindParam(":tag", $tag);
 
-    if ($sql->execute())
-      return intval($sql->fetchColumn()) > 0;
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  $sql = $database->prepare("SELECT COUNT(*) FROM tags WHERE tag = :tag");
+  $sql->bindParam(":tag", $tag);
+
+  if ($sql->execute())
+    return intval($sql->fetchColumn()) > 0;
 
   return false;
 }
 
 function tagIsActive($tag) {
   assert(isValidTag($tag));
-
   global $database;
-  try {
-    $sql = $database->prepare("SELECT active FROM tags WHERE tag = :tag");
-    $sql->bindParam(":tag", $tag);
 
-    if ($sql->execute())
-      return $sql->fetchColumn() == "TRUE";
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  $sql = $database->prepare("SELECT active FROM tags WHERE tag = :tag");
+  $sql->bindParam(":tag", $tag);
+
+  if ($sql->execute())
+    return $sql->fetchColumn() == "TRUE";
 
   return false;
 }

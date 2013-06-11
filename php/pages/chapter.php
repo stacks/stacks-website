@@ -11,16 +11,12 @@ class ChapterPage extends Page {
     assert(sectionExists($chapter));
 
     $this->db = $database;
-    try {
-      $sql = $this->db->prepare("SELECT sections.title, sections.filename, sections.number, tags.tag FROM sections, tags WHERE sections.number = :number AND sections.number = tags.book_id AND type = 'section'");
-      $sql->bindParam(":number", $chapter);
-  
-      if ($sql->execute())
-        $this->chapter = $sql->fetch();
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
+
+    $sql = $this->db->prepare("SELECT sections.title, sections.filename, sections.number, tags.tag FROM sections, tags WHERE sections.number = :number AND sections.number = tags.book_id AND type = 'section'");
+    $sql->bindParam(":number", $chapter);
+
+    if ($sql->execute())
+      $this->chapter = $sql->fetch();
   }
 
   public function getHead() {
@@ -132,17 +128,10 @@ class ChapterPage extends Page {
     $value = "";
     $tags = array();
 
-    try {
-      $sql = $this->db->prepare("SELECT tag, label, book_id, type, book_page, file, name FROM tags WHERE active = 'TRUE' AND book_id LIKE '" . $this->chapter["number"] . ".%' ORDER BY position");
-      
-      if ($sql->execute())
-        $tags = $sql->fetchAll();
-      else
-        print $this->db->errorInfo();
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
+    $sql = $this->db->prepare("SELECT tag, label, book_id, type, book_page, file, name FROM tags WHERE active = 'TRUE' AND book_id LIKE '" . $this->chapter["number"] . ".%' ORDER BY position");
+    
+    if ($sql->execute())
+      $tags = $sql->fetchAll();
 
     // start global list
     $value .= "<ul>";

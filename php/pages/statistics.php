@@ -9,18 +9,11 @@ class StatisticsPage extends Page {
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    try {
-      $sql = $this->db->prepare("SELECT tag, creation_date, creation_commit, modification_date, modification_commit, label FROM tags WHERE tag = :tag");
-      $sql->bindParam(":tag", $tag);
+    $sql = $this->db->prepare("SELECT tag, creation_date, creation_commit, modification_date, modification_commit, label FROM tags WHERE tag = :tag");
+    $sql->bindParam(":tag", $tag);
 
-      if ($sql->execute())
-        $this->tag = $sql->fetch();
-      // else
-      // TODO error handling
-    }
-    catch(PDOException $e) {
-      echo $e->getMessage();
-    }
+    if ($sql->execute())
+      $this->tag = $sql->fetch();
 
     // phantom is actually a chapter
     if (isPhantom($this->tag["label"]))
