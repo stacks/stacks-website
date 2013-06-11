@@ -8,7 +8,7 @@ class ChapterPage extends Page {
   private $chapter;
 
   public function __construct($database, $chapter) {
-    assert(section_exists($chapter));
+    assert(sectionExists($chapter));
 
     $this->db = $database;
     try {
@@ -87,8 +87,8 @@ class ChapterPage extends Page {
 
     $value .= "<p class='navigation'>";
     // back
-    if (section_exists(intval($this->chapter["number"]) - 1)) {
-      $previousChapter = get_chapter(intval($this->chapter["number"]) - 1);
+    if (sectionExists(intval($this->chapter["number"]) - 1)) {
+      $previousChapter = getChapter(intval($this->chapter["number"]) - 1);
       if ($displayTitle) {
         $value .= "<span class='left'><a href='" . href("chapter/" . (intval($this->chapter["number"]) - 1)) . "'>";
         $value .= "&lt;&lt; Chapter " . (intval($this->chapter["number"]) - 1) . ": " . parseAccents($previousChapter["title"]);
@@ -100,8 +100,8 @@ class ChapterPage extends Page {
       $value .= "</a></span>";
     }
     // forward
-    if (section_exists(intval($this->chapter["number"]) + 1)) {
-      $nextChapter = get_chapter(intval($this->chapter["number"]) + 1);
+    if (sectionExists(intval($this->chapter["number"]) + 1)) {
+      $nextChapter = getChapter(intval($this->chapter["number"]) + 1);
       if ($displayTitle) {
         $value .= "<span class='right'><a href='" . href("chapter/" . (intval($this->chapter["number"]) + 1)) . "'>";
         $value .= "Chapter " . (intval($this->chapter["number"]) + 1) . ": " . parseAccents($nextChapter["title"]) . " &gt;&gt;";

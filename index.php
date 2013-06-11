@@ -45,9 +45,11 @@ switch($page) {
   case "about":
     $page = new AboutPage($database);
     break;
+
   case "acknowledgements":
     $page = new AcknowledgementsPage($database);
     break;
+
   case "bibliography":
     if(!empty($_GET["key"])) {
       if (bibliographyItemExists($_GET["key"]))
@@ -58,24 +60,31 @@ switch($page) {
     else
       $page = new BibliographyPage($database);
     break;
+
   case "browse":
     $page = new BrowsePage($database);
     break;
+
   case "chapter":
-    // TODO some checking of this value
-    if (section_exists($_GET["chapter"])) {
-      $page = new ChapterPage($database, $_GET["chapter"]);
+    if (!is_numeric($_GET["chapter"]) or strstr($_GET["chapter"], ".") or intval($_GET["chapter"]) <= 0) {
+      $page = new NotFoundPage("<p>The keys for a chapter should be (strictly) positive integers, but <var>" . htmlentities($_GET["chapter"]) . "</var> was provided.");
+      break;
     }
-    else {
-      $page = new AboutPage($database); // TODO an appropriate error page
-    }
+
+    if (sectionExists($_GET["chapter"]))
+      $page = new ChapterPage($database, intval($_GET["chapter"]));
+    else
+      $page = new NotFoundPage("<p>The chapter with the key <var>" . htmlentities($_GET["chapter"]) . "</var> does not exist.");
     break;
+
   case "contribute":
     $page = new ContributePage($database);
     break;
+
   case "index":
     $page = new IndexPage($database);
     break;
+
   case "recent-comments":
     if (empty($_GET["number"]))
       $number = 1;
@@ -84,11 +93,11 @@ switch($page) {
 
     $page = new RecentCommentsPage($database, $number);
     break;
+
   case "search":
     if (!isset($_GET["keywords"]))
-      $page = new SearchPage($database); // this page doesn't need the database? maybe change the structure of the Page object?
+      $page = new SearchPage($database);
     else {
-      // TODO some preprocessing / checking / pagination
       // TODO set options in new form
       $options = array();
       $options["keywords"] = $_GET["keywords"];
@@ -101,6 +110,7 @@ switch($page) {
       $page = new SearchResultsPage($database, $options);
     }
     break;
+
   case "statistics":
     // TODO some checking of this value
     if(!empty($_GET["tag"])) {
@@ -116,6 +126,7 @@ switch($page) {
     else
       $page = new TagLookupPage($database);
     break;
+
   case "tag":
     // TODO some checking of this value
     if(!empty($_GET["tag"])) {
@@ -132,9 +143,11 @@ switch($page) {
     else
       $page = new TagLookupPage($database);
     break;
+
   case "tags":
     $page = new TagsPage($database);
     break;
+
   case "todo":
     $page = new TodoPage($database);
     break;

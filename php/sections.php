@@ -1,7 +1,7 @@
 <?php
 
-function get_chapter($chapter_id) {
-  assert(section_exists($chapter_id));
+function getChapter($chapter_id) {
+  assert(sectionExists($chapter_id));
 
   global $database;
   try {
@@ -18,7 +18,7 @@ function get_chapter($chapter_id) {
   return '';
 }
 
-function section_exists($number) {
+function sectionExists($number) {
   assert(is_numeric($number));
 
   global $database;
