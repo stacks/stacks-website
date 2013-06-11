@@ -1,6 +1,10 @@
 <?php
+$config = parse_ini_file("../../config.ini");
+
+require_once("../general.php");
+
   // TODO get a node count from the database
-  $filename = "data/" . $_GET["tag"] . "-force.json";
+  $filename = "../../data/" . $_GET["tag"] . "-force.json";
   $filesize = filesize($filename);
   $size = 500 + 10 * $filesize / 1000;
 ?>
@@ -28,7 +32,9 @@ line.link {
 
     </style>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="graphs.js"></script>
+    <script src="<?php print href("js/graphs.js"); ?>"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
     <script type="text/javascript">
       $(document).ready(function () {
         // scroll to where the graph will be created
@@ -46,8 +52,6 @@ line.link {
     </script>
   </head>
   <body>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <link rel='stylesheet' type='text/css' href='style.css'>
     <script type="text/javascript">
       var width = <?php print $size; ?>,
         height = <?php print $size; ?>,
@@ -92,7 +96,7 @@ function displayChapterInfo(node) {
   displayTooltip(node, "Chapter " + node.book_id + ": " + node.tagName);
 }
 
-d3.json("data/<?php print $_GET["tag"]; ?>-packed.json", function(json) {
+d3.json("<?php print href("data/tag/" . $_GET['tag'] . "/graph/collapsible"); ?>", function(json) {
   root = json;
   root.fixed = true;
   root.x = width / 2;

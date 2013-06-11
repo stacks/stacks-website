@@ -1,20 +1,22 @@
 <?php
-require_once("../../stacks-website-new/php/general.php"); # TODO fix path
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+$config = parse_ini_file("../../config.ini");
+
+require_once("../general.php");
+
+$filename = href("data/tag/" . $_GET['tag'] . "/graph/cluster");
 ?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="graphs.js"></script> <!-- TODO fix path -->
+    <script src="<?php print href("js/graphs.js"); ?>"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <?php
 print printMathJax();
 ?>
-    <link rel='stylesheet' type='text/css' href='style.css'>
-    <link rel='stylesheet' type='text/css' href='../../stacks-website-new/css/tag.css'> <!-- TODO fix URL -->
+    <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
+    <link rel='stylesheet' type='text/css' href='<?php print href("css/tag.css"); ?>'>
     <style type="text/css">
       body {
         width: 1100px;
@@ -50,7 +52,6 @@ print printMathJax();
       $(document).ready(function () {
         disableContextMenu();
         createControls("<?php print $_GET["tag"]; ?>", "cluster");
-
       });
 
 
@@ -92,7 +93,7 @@ vis.append("path")
     .attr("d", d3.svg.arc().innerRadius(ry - 120).outerRadius(ry).startAngle(0).endAngle(2 * Math.PI))
     .on("mousedown", mousedown);
 
-d3.json("data/<?php print $_GET['tag']; ?>-tree.json", function(json) {
+d3.json("<?php print $filename; ?>", function(json) {
   var nodes = cluster.nodes(json);
 
   var link = vis.selectAll("path.link")
@@ -173,8 +174,8 @@ function displayTag(node) {
 
     tagInfo.append("<blockquote class='rendered' id='" + id + "-content'>");
     if (node.type != "section" && node.type != "subsection") {
-      url = "/new/stacks-graphs/tag.php?tag=" + node.tag + "&type=statement";
-      $("blockquote#" + id + "-content").load(url, function() { MathJax.Hub.Queue(["Typeset",MathJax.Hub]); }); // TODO change URL
+      url = "<?php print href("data/tag/"); ?>" + node.tag + "/content/statement";
+      $("blockquote#" + id + "-content").load(url, function() { MathJax.Hub.Queue(["Typeset",MathJax.Hub]); }); 
     }
     else {
       $("blockquote#" + id + "-content").text("Sections and subsections are not displayed in this preview due to size constraints.");

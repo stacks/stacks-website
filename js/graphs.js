@@ -41,13 +41,12 @@ function centerViewport() {
 
 function getLinkTo(tag, type) {
   switch (type) {
-    // TODO fix URLs
     case "cluster":
-      return "<a href='cluster.php?tag=" + tag + "'>view clustered</a>";
+      return "<a href='cluster'>view clustered</a>";
     case "collapsible":
-      return "<a href='collapsible.php?tag=" + tag + "'>view collapsible</a>";
+      return "<a href='collapsible'>view collapsible</a>";
     case "force":
-      return "<a href='force.php?tag=" + tag + "'>view force-directed</a>";
+      return "<a href='force'>view force-directed</a>";
   }
 }
 

@@ -1,6 +1,10 @@
 <?php
+$config = parse_ini_file("../../config.ini");
+
+require_once("../general.php");
+
   // TODO get a node count from the database
-  $filename = "data/" . $_GET["tag"] . "-force.json";
+  $filename = "../../data/" . $_GET["tag"] . "-force.json";
   $filesize = filesize($filename);
   $size = 500 + 10 * $filesize / 1000;
 ?>
@@ -20,13 +24,13 @@
       }
   
     </style>
-    <link rel='stylesheet' type='text/css' href='style.css'>
+    <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
-    <script src="graphs.js"></script>
+    <script src="<?php print href("js/graphs.js"); ?>"></script>
     <script type="text/javascript">
       var colorMapping;
   
@@ -101,7 +105,7 @@
 
       var global = Array(); // this catches some things that need to be available globally
       
-      result = d3.json("<?php print $filename; ?>", function(error, graph) {
+      result = d3.json("<?php print href("data/tag/" . $_GET["tag"] . "/graph/force"); ?>", function(error, graph) {
         var depth = 0
         for (var i = 0; i < graph.nodes.length; i++)
           depth = Math.max(depth, graph.nodes[i].depth);

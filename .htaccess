@@ -2,6 +2,7 @@ Options +Indexes
 
 RewriteEngine On
 
+
 RewriteRule about$ index.php?page=about [L]
 RewriteRule acknowledgements$ index.php?page=acknowledgements [L]
 RewriteRule bibliography$ index.php?page=bibliography [L]
@@ -9,6 +10,12 @@ RewriteRule bibliography/(.+)$ index.php?page=bibliography&key=$1 [L]
 RewriteRule browse$ index.php?page=browse [L]
 RewriteRule chapter/(.+)$ index.php?page=chapter&chapter=$1 [L]
 RewriteRule contribute$ index.php?page=contribute [L]
+RewriteRule data/tag/(.+)/content/(.+)/(.+)$ php/tag.php?tag=$1&statement=2&format=$3 [L]
+RewriteRule data/tag/(.+)/content/(.+)$ php/tag.php?tag=$1&statement=$2 [L]
+RewriteRule data/tag/(.+)/graph/cluster$ data/$1-tree.json [L]
+RewriteRule data/tag/(.+)/graph/collapsible$ data/$1-packed.json [L]
+RewriteRule data/tag/(.+)/graph/force$ data/$1-force.json [L]
+# TODO make data/ directory inaccessible
 RewriteRule markdown$ index.php?page=markdown [L]
 RewriteRule recent-comments$ index.php?page=recent-comments
 RewriteRule recent-comments/(.+)$ index.php?page=recent-comments&number=$1 [L]
@@ -17,6 +24,10 @@ RewriteRule lookup$ php/redirects/lookup.php [L]
 RewriteRule tag$ index.php?page=tag [L]
 RewriteRule tag/tag/(.+)$ tag/$1 [L,R=301]
 RewriteRule tag/(.+)/statistics$ index.php?page=statistics&tag=$1 [L]
+RewriteRule tag/(.+)/graph/collapsible$ php/graphs/collapsible.php?tag=$1 [L]
+RewriteRule tag/(.+)/graph/cluster$ php/graphs/cluster.php?tag=$1 [L]
+RewriteRule tag/(.+)/graph/force$ php/graphs/force.php?tag=$1 [L]
 RewriteRule tag/(.+)$ index.php?page=tag&tag=$1 [L]
+
 RewriteRule tags$ index.php?page=tags [L]
 RewriteRule todo$ index.php?page=todo [L]
