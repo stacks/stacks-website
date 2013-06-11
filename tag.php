@@ -42,19 +42,42 @@ function removeProofs($content) {
   return $output;
 }
 
-$tag = getTag($_GET["tag"]);
 
-if (!array_key_exists("type", $_GET))
+if (isset($_GET["statement"]))
   $type = "statement";
 else
-  $type = $_GET["type"];
+  $type = $_GET["statement"];
 
-switch ($_GET["type"]) {
-  case "full":
-    print convertLaTeX($_GET["tag"], $tag["file"], $tag["value"]);
-    break;
-  case "statement":
-    print convertLaTeX($_GET["tag"], $tag["file"], removeProofs($tag["value"]));
-    break;
+if (!isValidTag($_GET["tag"])) {
+  print "This tag is not valid.";
+  exit;
+}
+
+if (!tagExists($_GET["tag"])) {
+  print "This tag does not exist.";
+  exit;
+}
+
+$tag = getTag($_GET["tag"]);
+
+if (isset($_GET["raw"]) and $_GET["raw"]) {
+  switch ($type) {
+    case "full":
+      print $tag["value"];
+      break;
+    case "statement":
+      print removeProofs($tag["value"]);
+      break;
+  }
+}
+else {
+  switch ($type) {
+    case "full":
+      print convertLaTeX($_GET["tag"], $tag["file"], $tag["value"]);
+      break;
+    case "statement":
+      print convertLaTeX($_GET["tag"], $tag["file"], removeProofs($tag["value"]));
+      break;
+  }
 }
 ?>
