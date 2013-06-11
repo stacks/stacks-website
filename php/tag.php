@@ -1,5 +1,7 @@
 <?php
 
+print_r($_GET);
+
 # TODO add .htaccess to remove this from indexing!
 
 # TODO fix path
@@ -43,7 +45,7 @@ function removeProofs($content) {
 }
 
 
-if (isset($_GET["statement"]))
+if (!isset($_GET["statement"]))
   $type = "statement";
 else
   $type = $_GET["statement"];
@@ -60,7 +62,7 @@ if (!tagExists($_GET["tag"])) {
 
 $tag = getTag($_GET["tag"]);
 
-if (isset($_GET["raw"]) and $_GET["raw"]) {
+if (isset($_GET["format"]) and $_GET["format"]) {
   switch ($type) {
     case "full":
       print $tag["value"];
