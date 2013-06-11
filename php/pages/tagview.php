@@ -172,7 +172,7 @@ class TagViewPage extends Page {
 
     $value .= $this->printView();
 
-    $comments = $this->getComments(); // TODO initialize in constructor?
+    $comments = $this->getComments(); 
     $value .= "<h2 id='comments-header'>Comments (" . count($comments) . ")</h2>";
     $value .= "<div id='comments'>";
     if (count($comments) == 0) {
@@ -233,7 +233,7 @@ class TagViewPage extends Page {
   }
 
   private function getSiblingTags() {
-    // check whether result is already cached (TODO initialize in constructor?)
+    // check whether result is already cached
     if ($this->siblingTags != null)
       return $this->siblingTags;
 
@@ -352,7 +352,6 @@ class TagViewPage extends Page {
   }
 
   private function printNavigation() {
-    // TODO cache this?
     $value = "";
 
     switch ($this->tag["type"]) {
@@ -432,7 +431,7 @@ class TagViewPage extends Page {
       $value .= "<p>The tag corresponds to the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a>, or equivalently to the whole of <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>. No code preview is provided here.</p>";
     }
     else {
-      $value .= "<p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a> and is located in <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> (see <a href='#'>updates</a> for more information)."; // TODO line references, and a page on the updating process
+      $value .= "<p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a> and is located in <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> (see <a href='#'>updates</a> for more information)."; // a page on the updating process
       $value .= "<pre><code>";
       $value .= preprocessCode($this->tag["value"]);
       $value .= "</code></pre>";

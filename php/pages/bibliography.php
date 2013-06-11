@@ -160,7 +160,6 @@ class BibliographyItemPage extends Page {
 
     $output .= "<h2>BibTeX code</h2>";
     $output .= "<p>You can use the following code to cite this item yourself.</p>";
-    // TODO add copy code
     $output .= "<pre><code>";
     $output .= "@" . $this->item["type"] . "{" . $this->item["name"] . ",\n";
     foreach ($keys as $key) {

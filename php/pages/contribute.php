@@ -59,7 +59,7 @@ class ContributePage extends Page {
   private function getContributors() {
     global $config;
 
-    $file = file($config["project"] . "/CONTRIBUTORS"); // TODO fix configuration
+    $file = file($config["project"] . "/CONTRIBUTORS");
     return  array_slice($file, 4);
   }
 }

@@ -24,12 +24,12 @@ class IndexPage extends Page {
     $value .= "<p>The entire project in <a href='#'>one pdf file</a>. You can also <a href='" . href("browse") . "'>browse the project online</a>, and there is a tree view which starts at <a href='" . href("chapter/1") . "'>Chapter 1</a>. To download the source files there is <a href='https://github.com/stacks/stacks-project/'>stacks/stacks-project</a> at GitHub.</p>";
     // TODO fix URL of the pdf
 
-    $value .= "<h2><a href='#'>Looking up tags</a></h2>";
+    $value .= "<h2><a href='" . href("tag") . "'>Looking up tags</a></h2>";
     $value .= "<p>You can search the Stacks project by keywords:";
     $value .= getSimpleSearchForm();
     $value .= "<p>If you on the other hand have a tag for an item (which can be anything, from section, lemma, theorem, etc.) in the Stacks project, you can <a href='" . href("tag") . "'>look up the tag's page</a>.</p>";
 
-    $value .= "<h2><a href='#'>Referencing the Stacks project</a></h2>";
+    $value .= "<h2><a href='" . href("tags") . "'>Referencing the Stacks project</a></h2>";
     $value .= "<p>Items (sections, lemmas, theorems, etc.) in the Stacks project are referenced by their tag. See the <a href='" . href("tags") . "'>tags explained page</a> to learn more about tags and how to reference them in a LaTeX document.</p>";
 
     $value .= "<h2>Leaving comments</h2>";

@@ -47,16 +47,7 @@ class SearchResultsPage extends Page {
   public function getSidebar() {
     $output = "";
 
-    $output .= "<h2>Tips</h2>";
-    $output .= "<ul>";
-    $output .= "<li>use wildcards, <code>ideal</code> doesn't match <code>ideals</code>, but <code>ideal*</code> matches both;";
-    $output .= "<li>strings like <code>quasi-compact</code> should be enclosed by double quotes, otherwise you are looking for tags containing <code>quasi</code> but not <code>compact</code>;";
-    $output .= "</ul>";
-    $output .= "<h2>Remarks</h2>";
-    $output .= "<ul>";
-    $output .= "<li>if a search result corresponds to a (sub)section no preview option is given";
-    $output .= "</ul>";
-      // TODO more remarks?
+    $output .= SearchPage::getSidebar();
 
     return $output;
   }

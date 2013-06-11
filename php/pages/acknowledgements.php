@@ -22,6 +22,13 @@ class AcknowledgementsPage extends Page {
     }
     $output .= "</ol>";
 
+    $output .= "<h2>Open-source software</h2>";
+    $output .= "<p>The Stacks project is built using open-source: LaTeX, Python, PHP, ...";
+    $output .= "<p>Besides these usual suspects, the website also uses several libraries. These are";
+    $output .= "<ul>";
+    $output .= "<li><a href='http://d3js.org/'>D3.js</a>";
+    $output .= "</ul>";
+
     return $output;
   }
   public function getSidebar() {
