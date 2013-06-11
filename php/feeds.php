@@ -15,7 +15,7 @@ function getFeed($url, $length) {
   $feed->handle_content_type();
 
   foreach ($feed->get_items(0, 5) as $item)
-    $value .= "<li>" . $item->get_date() . ":<br> <a href='" . $item->get_link() . "'>" . $item->get_title() . "</a></li>"; // TODO better output possible?
+    $value .= "<li>" . $item->get_date() . ":<br> <a href='" . $item->get_link() . "'>" . $item->get_title() . "</a></li>";
 
   $value .= "</ul>";
   

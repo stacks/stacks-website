@@ -3,8 +3,9 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// read configuration file
-$config = parse_ini_file("config.ini");
+// read configuration files
+require_once("php/config.php");
+$config = array_merge($config, parse_ini_file("config.ini"));
 
 // initialize the global database object
 try {
@@ -33,7 +34,6 @@ require_once("php/pages/tags.php");
 require_once("php/pages/tagview.php");
 require_once("php/pages/todo.php");
 
-// TODO some error code
 // TODO "index" is default, no, should be an error message (but "index" == "")
 
 if (empty($_GET["page"]))

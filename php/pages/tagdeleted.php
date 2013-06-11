@@ -15,8 +15,7 @@ class TagDeletedPage extends Page {
     $output = "";
 
     $output .= "<h2>Inactive tag: <var>" . $this->tag . "</var></h2>";
-    $output .= "<p>The tag you requested did at some point in time belong to the Stacks project, but it was removed.</p>";
-    // TODO get reason etc.
+    $output .= "<p>The tag you requested did at some point in time belong to the Stacks project, but it was removed. You might be able to find a clue in the <a href='https://github.com/stacks/stacks-project/blob/master/tags/tags'>tags file</a>.</p>";
     
     $output .= "<h2>Look for a tag</h2>";
     $output .= printTagLookup();
@@ -24,7 +23,7 @@ class TagDeletedPage extends Page {
 
     $output .= "<h2><a href='" . href("search") . "'>Search</a></h2>";
     $output .= "<p>Are you instead looking for the search functionality?</p>";
-    $output .= get_simple_search_form();
+    $output .= getSimpleSearchForm();
 
     return $output;
   }
