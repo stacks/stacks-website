@@ -410,3 +410,5 @@ def generatePackeds():
 generateGraphs()
 generateTrees()
 generatePackeds()
+
+# TODO the book_id of an item is horribly wrong, which yields bad results in the packed version

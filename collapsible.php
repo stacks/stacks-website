@@ -91,7 +91,6 @@ function displaySectionInfo(node) {
 function displayChapterInfo(node) {
   displayTooltip(node, "Chapter " + node.book_id + ": " + node.tagName);
 }
-// TODO on drag we should not display tooltips
 
 d3.json("data/<?php print $_GET["tag"]; ?>-packed.json", function(json) {
   root = json;
@@ -227,4 +226,3 @@ function depthLegend(types) {
     </script>
   </body>
 </html>
-
