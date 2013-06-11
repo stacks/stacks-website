@@ -28,9 +28,7 @@ class ContributePage extends Page {
     $output .= "<h2>Instructions in using the Makefile (slightly geeky)</h2>";
     $output .= "<p>Download and unpack the archive as above. Change directory to where you unpacked the files and on the command line type";
     $output .= "<pre><code>make pdfs </code></pre>";
-    $output .= "to automatically generate all the pdf files. Similarly, type";
-    $output .= "<pre><code>make dvis </code></pre>";
-    $output .= "to create the dvi files instead.</p>";
+    $output .= "to automatically generate all the pdf files.";
 
     $output .= "<h2 id='geeks'>Instructions on using a version control system (for major geeks)</h2>";
     $output .= "<p>We are using the <a href='http://git-scm.com'>git</a> version control system. To clone the project type";
