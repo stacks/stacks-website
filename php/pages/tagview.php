@@ -204,8 +204,12 @@ class TagViewPage extends Page {
 
     $value .= "<h2>Extras</h2>";
     $value .= "<ul>";
-    $value .= "<li><a href='#'>dependency graph</a></li>";
     $value .= "<li><a href='" . href("tag/" . $this->tag["tag"] . "/statistics") . "'>statistics</a></li>";
+    $value .= "<li>dependency graphs:<br><br>";
+    $value .= "<a style='display: table;' href='" . href("tag/" . $this->tag["tag"] . "/graph/cluster") . "'><img width='75' src='" . href("images/cluster.png") . "' alt='cluster dependency graph'><span style='padding-left: 1em; display: table-cell; vertical-align: middle;'>cluster</span></a><br>";
+    $value .= "<a style='display: table;' href='" . href("tag/" . $this->tag["tag"] . "/graph/force") . "'><img width='75' src='" . href("images/force.png") . "' alt='force-directed dependency graph'><span style='padding-left: 1em; display: table-cell; vertical-align: middle;'>force-directed</span></a><br>";
+    $value .= "<a style='display: table;' href='" . href("tag/" . $this->tag["tag"] . "/graph/collapsible") . "'><img width='75' src='" . href("images/collapsible.png") . "' alt='collapsible dependency graph'><span style='padding-left: 1em; display: table-cell; vertical-align: middle;'>collapsible</span></a><br>";
+    $value .= "</li>";
     $value .= "</ul>";
 
     return $value;
