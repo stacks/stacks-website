@@ -1,0 +1,82 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  color: #000;
+  font-size: 15px;
+  margin: 0;
+}
+
+div#graph {
+  border: solid #d9d8d1;
+  border-width: 1px;
+  margin: 10px;
+}
+
+.tooltip p {
+  font-size: .9em;
+  border-radius: 5px;
+  border: 1px solid black;
+  background-color: white;
+  padding: 2px;
+}
+
+div#controls, div.legend, div#information {
+  position: fixed;
+  padding: 4px;
+  border: 1px solid #d9d8d1;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, .8);
+}
+
+div#controls ul {
+  margin: 0;
+}
+
+div.legend ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+div.legend ul li {
+  margin: 0;
+  padding: 0;
+}
+
+div.legend {
+  bottom: 15px;
+  left: 15px;
+}
+
+div#controls {
+  top: 15px;
+  left: 15px;
+}
+
+div#information {
+  width: 500px;
+  top: 50px;
+  left: 15px;
+}
+
+div#information p {
+  margin: 0;
+}
+
+div#information blockquote.rendered {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.named {
+  stroke-width: 1.5px;
+  stroke: black;
+}
+
+#root {
+  stroke-width: 2px;
+  stroke-dasharray: 2, 2;
+  stroke: black;
+}
+

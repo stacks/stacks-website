@@ -1,0 +1,7 @@
+Options +Indexes
+
+RewriteEngine On
+
+RewriteRule tagtest/(.+)/content/(.+)/(.+)$ tag.php?tag=$1&statement=2&format=$3 [L]
+RewriteRule tagtest/(.+)/content/(.+)$ tag.php?tag=$1&statement=$2 [L]
+RewriteRule tagtest/(.+)/content$ tag.php?tag=$1 [L]
