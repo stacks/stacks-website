@@ -20,6 +20,7 @@ require_once("php/pages/bibliography.php");
 require_once("php/pages/browse.php");
 require_once("php/pages/chapter.php");
 require_once("php/pages/contribute.php");
+require_once("php/pages/error.php");
 require_once("php/pages/index.php");
 require_once("php/pages/missingtag.php");
 require_once("php/pages/recentcomments.php");
@@ -48,9 +49,12 @@ switch($page) {
     $page = new AcknowledgementsPage($database);
     break;
   case "bibliography":
-    // TODO some checking of this value
-    if(!empty($_GET["key"]))
-      $page = new BibliographyItemPage($database, $_GET["key"]);
+    if(!empty($_GET["key"])) {
+      if (bibliographyItemExists($_GET["key"]))
+        $page = new BibliographyItemPage($database, $_GET["key"]);
+      else
+        $page = new NotFoundPage("<p>The bibliography item with the key <var>" . htmlentities($_GET["key"]) . "</var> does not exist.");
+    }
     else
       $page = new BibliographyPage($database);
     break;

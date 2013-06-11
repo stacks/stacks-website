@@ -66,7 +66,6 @@ function parseTeX($value) {
 }
 
 function printMathJax() {
-    global $jQuery;
     $value = "";
 
     $value .= "<script type='text/javascript' src='" . href("js/MathJax/MathJax.js?config=default'") . "></script>";
