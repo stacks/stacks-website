@@ -37,8 +37,11 @@ class TagsPage extends Page {
     $value .= "<pre><code>01MB,constructions-lemma-proj-scheme</code></pre>";
     $value .= "<p>Here the tag is <var>01MB</var> and the identifier is <var>constructions-lemma-proj-scheme</var>. This means that the tag points to a lemma from the file <var>constructions.tex</var>. It currently has the label <var>lemma-proj-scheme</var>. If we ever change the lemma's  label, or move the lemma to a different file, then we will change the corresponding line in the file tags by changing the identifier correspondingly. But we will <strong>never change the tag</strong>.</p>";
 
-    $value .= "<p>New tags are assigned by the maintainer of the project every once in a while using a script. A tag is a four character string made up out of digits and capital letters. They are ordered lexicographically between <var>0000</var> and <var>ZZZZ</var> giving 1679616 possible tags.";
-    $value .= "<p>But as there might arise confusion from the similarities between <var>0</var> and <var>O</var> the letter <var>O</var> is no longer in use. This means that from <a href='" . href('tag/04E6') . "'>tag <var>04E6</var></a> on there are only 35 values per position. The 298 tags assigned before this new guideline will remain, as tags are constant. A little exercise for the reader: how many possible tags are there really?";
+    $value .= "<p>A tag is a four character string made up out of digits and capital letters. They are ordered lexicographically between <var>0000</var> and <var>ZZZZ</var> originally giving 1679616 possible tags. But as there might arise confusion from the similarities between <var>0</var> and <var>O</var> it was decided to stop using the letter <var>O</var>. The last tag using <var>O</var> is <a href='" . href('tag/04DO') . "'>tag <var>04DO</var></a>. Thus from <var>04DP</var> on there are only 35 values per position. The 302 tags assigned before this new guideline will remain, as tags are constant.";
+
+    $value .= "<h2>Stacks epoch</h2>";
+    $value .= "<p>The first roughly 3000 tags were introduced in the Stacks project on May 16, 2009. New tags are assigned by the maintainer of the Stacks project every once in a while using a script. As the Stacks project is always under construction the available tags on the website, in the git repository, and the available results in the Stacks project can sometimes be a little bit out of sync.";
+
     // TODO explain the "Stacks epoch", May 16 2009
 
     return $value;
