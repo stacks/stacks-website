@@ -16,6 +16,7 @@ require_once("php/pages/chapter.php");
 require_once("php/pages/contribute.php");
 require_once("php/pages/error.php");
 require_once("php/pages/index.php");
+require_once("php/pages/markdown.php");
 require_once("php/pages/missingtag.php");
 require_once("php/pages/recentcomments.php");
 require_once("php/pages/results.php");
@@ -88,6 +89,10 @@ try {
   
     case "index":
       $page = new IndexPage($database);
+      break;
+
+    case "markdown":
+      $page = new MarkdownPage($database);
       break;
   
     case "recent-comments":
