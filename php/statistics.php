@@ -1,134 +1,70 @@
 <?php
 // get the line count for a file (the total line count has filename total)
 function getLineCount($db, $filename) {
-  try {
-    $sql = $db->prepare("SELECT value FROM statistics WHERE key = :key");
-    $sql->bindValue(":key", "linecount " . $filename);
+  $sql = $db->prepare("SELECT value FROM statistics WHERE key = :key");
+  $sql->bindValue(":key", "linecount " . $filename);
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
 }
 
 function getPageCount($db, $filename) {
-  try {
-    $sql = $db->prepare("SELECT value FROM statistics WHERE key = :key");
-    $sql->bindValue(":key", "pagecount " . $filename);
+  $sql = $db->prepare("SELECT value FROM statistics WHERE key = :key");
+  $sql->bindValue(":key", "pagecount " . $filename);
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
 }
 
 function getBibliographyItemCount($db) {
-  try {
-    $sql = $db->prepare("SELECT COUNT(*) FROM bibliography_items");
+  $sql = $db->prepare("SELECT COUNT(*) FROM bibliography_items");
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
 }
 
 function getTagsInFileCount($db, $filename) {
-  try {
-    $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE file = :filename");
-    $sql->bindValue(":filename", $filename);
+  $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE file = :filename");
+  $sql->bindValue(":filename", $filename);
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
 }
 
 function getSectionsInFileCount($db, $filename) {
-  try {
-    $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE file = :filename AND type = 'section'");
-    $sql->bindValue(":filename", $filename);
+  $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE file = :filename AND type = 'section'");
+  $sql->bindValue(":filename", $filename);
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
 }
 
 function getInactiveTagCount($db) {
-  try {
-    $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE active = 'FALSE'");
+  $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE active = 'FALSE'");
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
 }
 
 function getSectionCount($db) {
-  try {
-    $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE type = 'section'");
+  $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE type = 'section'");
 
-    if ($sql->execute())
-      return $sql->fetchColumn();
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn();
 }
 
 function getChapterCount($db) {
-  try {
-    $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE label LIKE '%phantom'");
+  $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE label LIKE '%phantom'");
 
-    if ($sql->execute())
-      return $sql->fetchColumn() - 1;
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn() - 1;
 }
 
-
 function getTagCount($db) {
-  try {
-    $sql = $db->prepare("SELECT COUNT(*) FROM tags");
+  $sql = $db->prepare("SELECT COUNT(*) FROM tags");
 
-    if ($sql->execute())
-      return $sql->fetchColumn() - getChapterCount($db);
-    // else
-    // TODO error handling
-  }
-  catch(PDOException $e) {
-    echo $e->getMessage();
-  }
+  if ($sql->execute())
+    return $sql->fetchColumn() - getChapterCount($db);
 }
 
 function getStatisticsSidebar($db) {

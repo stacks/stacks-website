@@ -7,14 +7,7 @@ error_reporting(E_ALL);
 require_once("php/config.php");
 $config = array_merge($config, parse_ini_file("config.ini"));
 
-// initialize the global database object
-try {
-  $database = new PDO("sqlite:" . $config["database"]);
-}
-catch(PDOException $e) {
-  echo $e->getMessage();
-}
-
+// all the pages
 require_once("php/pages/about.php");
 require_once("php/pages/acknowledgements.php");
 require_once("php/pages/bibliography.php");
@@ -34,137 +27,165 @@ require_once("php/pages/tags.php");
 require_once("php/pages/tagview.php");
 require_once("php/pages/todo.php");
 
-// TODO "index" is default, no, should be an error message (but "index" == "")
+// we try to construct the page object
+try {
+  // initialize the global database object
+  try {
+    $database = new PDO("sqlite:" . $config["database"]);
+    $database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  }
+  catch(PDOException $e) {
+    print "error"; // TODO
+    exit();
+  }
 
-if (empty($_GET["page"]))
-  $page = "index";
-else
-  $page = $_GET["page"];
-
-switch($page) {
-  case "about":
-    $page = new AboutPage($database);
-    break;
-
-  case "acknowledgements":
-    $page = new AcknowledgementsPage($database);
-    break;
-
-  case "bibliography":
-    if(!empty($_GET["key"])) {
-      if (bibliographyItemExists($_GET["key"]))
-        $page = new BibliographyItemPage($database, $_GET["key"]);
-      else
-        $page = new NotFoundPage("<p>The bibliography item with the key <var>" . htmlentities($_GET["key"]) . "</var> does not exist.");
-    }
-    else
-      $page = new BibliographyPage($database);
-    break;
-
-  case "browse":
-    $page = new BrowsePage($database);
-    break;
-
-  case "chapter":
-    if (!is_numeric($_GET["chapter"]) or strstr($_GET["chapter"], ".") or intval($_GET["chapter"]) <= 0) {
-      $page = new NotFoundPage("<p>The keys for a chapter should be (strictly) positive integers, but <var>" . htmlentities($_GET["chapter"]) . "</var> was provided.");
+  // TODO "index" is default, no, should be an error message (but "index" == "")
+  if (empty($_GET["page"]))
+    $page = "index";
+  else
+    $page = $_GET["page"];
+  
+  // all the possible page building scenarios
+  switch($page) {
+    case "about":
+      $page = new AboutPage($database);
       break;
-    }
-
-    if (sectionExists($_GET["chapter"]))
-      $page = new ChapterPage($database, intval($_GET["chapter"]));
-    else
-      $page = new NotFoundPage("<p>The chapter with the key <var>" . htmlentities($_GET["chapter"]) . "</var> does not exist.");
-    break;
-
-  case "contribute":
-    $page = new ContributePage($database);
-    break;
-
-  case "index":
-    $page = new IndexPage($database);
-    break;
-
-  case "recent-comments":
-    if (empty($_GET["number"]))
-      $number = 1;
-    else
-      $number = $_GET["number"];
-
-    $page = new RecentCommentsPage($database, $number);
-    break;
-
-  case "search":
-    if (!isset($_GET["keywords"]))
-      $page = new SearchPage($database);
-    else {
-      // TODO set options in new form
-      $options = array();
-      $options["keywords"] = $_GET["keywords"];
-      if (isset($_GET["limit"]))
-        $options["limit"] = $_GET["limit"];
-      else
-        $options["limit"] = "all";
-      if (isset($_GET["exclude-duplicates"]))
-        $options["exclude-duplicates"] = "on";
-      $page = new SearchResultsPage($database, $options);
-    }
-    break;
-
-  case "statistics":
-    // TODO some checking of this value
-    if(!empty($_GET["tag"])) {
-      if (tagExists($_GET["tag"])) {
-        if (tagIsActive($_GET["tag"]))
-          $page = new StatisticsPage($database, $_GET["tag"]);
+  
+    case "acknowledgements":
+      $page = new AcknowledgementsPage($database);
+      break;
+  
+    case "bibliography":
+      if(!empty($_GET["key"])) {
+        if (bibliographyItemExists($_GET["key"]))
+          $page = new BibliographyItemPage($database, $_GET["key"]);
         else
-          $page = new TagDeletedPage($database, $_GET["tag"]); // TODO something more reasonable
+          $page = new NotFoundPage("<p>The bibliography item with the key <var>" . htmlentities($_GET["key"]) . "</var> does not exist.");
       }
       else
-        $page = new MissingTagPage($database, $_GET["tag"]); // TODO something more reasonable
-    }
-    else
-      $page = new TagLookupPage($database);
-    break;
-
-  case "tag":
-    // TODO some checking of this value
-    if(!empty($_GET["tag"])) {
-      if (tagExists($_GET["tag"])) {
-        if (tagIsActive($_GET["tag"]))
-          $page = new TagViewPage($database, $_GET["tag"]);
+        $page = new BibliographyPage($database);
+      break;
+  
+    case "browse":
+      $page = new BrowsePage($database);
+      break;
+  
+    case "chapter":
+      if (!is_numeric($_GET["chapter"]) or strstr($_GET["chapter"], ".") or intval($_GET["chapter"]) <= 0) {
+        $page = new NotFoundPage("<p>The keys for a chapter should be (strictly) positive integers, but <var>" . htmlentities($_GET["chapter"]) . "</var> was provided.");
+        break;
+      }
+  
+      if (sectionExists($_GET["chapter"]))
+        $page = new ChapterPage($database, intval($_GET["chapter"]));
+      else
+        $page = new NotFoundPage("<p>The chapter with the key <var>" . htmlentities($_GET["chapter"]) . "</var> does not exist.");
+      break;
+  
+    case "contribute":
+      $page = new ContributePage($database);
+      break;
+  
+    case "index":
+      $page = new IndexPage($database);
+      break;
+  
+    case "recent-comments":
+      if (empty($_GET["number"]))
+        $number = 1;
+      else
+        $number = $_GET["number"];
+  
+      $page = new RecentCommentsPage($database, $number);
+      break;
+  
+    case "search":
+      if (!isset($_GET["keywords"]))
+        $page = new SearchPage($database);
+      else {
+        // TODO set options in new form
+        $options = array();
+        $options["keywords"] = $_GET["keywords"];
+        if (isset($_GET["limit"]))
+          $options["limit"] = $_GET["limit"];
         else
-          $page = new TagDeletedPage($database, $_GET["tag"]);
+          $options["limit"] = "all";
+        if (isset($_GET["exclude-duplicates"]))
+          $options["exclude-duplicates"] = "on";
+        $page = new SearchResultsPage($database, $options);
+      }
+      break;
+  
+    case "statistics":
+      // TODO some checking of this value
+      if(!empty($_GET["tag"])) {
+        if (tagExists($_GET["tag"])) {
+          if (tagIsActive($_GET["tag"]))
+            $page = new StatisticsPage($database, $_GET["tag"]);
+          else
+            $page = new TagDeletedPage($database, $_GET["tag"]); // TODO something more reasonable
+        }
+        else
+          $page = new MissingTagPage($database, $_GET["tag"]); // TODO something more reasonable
       }
       else
-        $page = new MissingTagPage($database, $_GET["tag"]);
+        $page = new TagLookupPage($database);
+      break;
+  
+    case "tag":
+      // TODO some checking of this value
+      if(!empty($_GET["tag"])) {
+        if (tagExists($_GET["tag"])) {
+          if (tagIsActive($_GET["tag"]))
+            $page = new TagViewPage($database, $_GET["tag"]);
+          else
+            $page = new TagDeletedPage($database, $_GET["tag"]);
+        }
+        else
+          $page = new MissingTagPage($database, $_GET["tag"]);
+  
+      }
+      else
+        $page = new TagLookupPage($database);
+      break;
+  
+    case "tags":
+      $page = new TagsPage($database);
+      break;
+  
+    case "todo":
+      $page = new TodoPage($database);
+      break;
+  }
 
-    }
-    else
-      $page = new TagLookupPage($database);
-    break;
+  // we request these now so that exceptions are thrown
+  $title = $page->getTitle();
+  $head = $page->getHead();
+  $main = $page->getMain();
+  $sidebar = $page->getSidebar();
+}
+catch(PDOException $e) {
+  $page = new ErrorPage($e);
 
-  case "tags":
-    $page = new TagsPage($database);
-    break;
-
-  case "todo":
-    $page = new TodoPage($database);
-    break;
+  // we request these now so that exceptions are thrown
+  $title = $page->getTitle();
+  $head = $page->getHead();
+  $main = $page->getMain();
+  $sidebar = $page->getSidebar();
 }
 
 ?>
 <!doctype html>
 <html>
   <head>
-    <title>Stacks Project<?php print $page->getTitle(); ?></title>
+    <title>Stacks Project<?php print $title; ?></title>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/main.css"); ?>'>
 
     <link rel='icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
     <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
     <meta charset='utf-8'>
 
-    <?php print $page->getHead(); ?>
+    <?php print $head; ?>
   </head>
 
   <body>
@@ -184,11 +205,11 @@ switch($page) {
     <br style='clear: both;'>
 
     <div id='main'>
-      <?php print $page->getMain(); ?>
+      <?php print $main; ?>
     </div>
 
     <div id='sidebar'>
-      <?php print $page->getSidebar(); ?>
+      <?php print $sidebar; ?>
     </div>
 
     <br style='clear: both;'>
