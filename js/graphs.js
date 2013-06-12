@@ -53,7 +53,7 @@ function getLinkTo(tag, type) {
 function createControls(tag, type) {
   // the controls for the graph
   $("body").append("<div id='controls'></div>");
-  var text = "Tag " + tag + " (<a href='/tag/" + tag + "'>show tag</a>, ";
+  var text = "Tag " + tag + " (<a href='../../" + tag + "'>show tag</a>, ";
   switch (type) {
     case "cluster":
       text += getLinkTo(tag, "collapsible") + ", " + getLinkTo(tag, "force");
@@ -78,10 +78,10 @@ function disableContextMenu() {
 }
 
 function openTag(node, type) {
-  window.location.href = type + ".php?tag=" + node.tag; // TODO change this to the correct URL naming scheme eventually, probably something like tag/0123/force
+  window.location.href = "../../" + node.tag + "/graph/" + type;
 }
 function openTagNew(node, type) {
-  window.open(type + ".php?tag=" + node.tag);
+  window.open("../../" + node.tag + "/graph/" + type)
 }
 
 var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
