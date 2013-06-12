@@ -21,9 +21,14 @@ class AboutPage extends Page {
     $value .= "<h2><a href='" . href("acknowledgements") . "'>Acknowledgements</a></h2>";
     $value .= "<p>We have a page <a href='" . href("acknowledgements") . "'>acknowledging support</a>.";
 
-    $value .= "<h2><a href='https://github.com/pbelmans/stacks-website'>Stacks project website</a></h2>";
-    $value .= "<p>This website is maintained and developed as a <a href='https://github.com/pbelmans/stacks-website'>separate project</a>. If you wish to start your own project, inspired by the Stacks project the combination of <a href='https://github.com/stacks/stacks-project'><code>stacks-project</code></a> and <a href='https://github.com/pbelmans/stacks-website'><code>stacks-website</code></a> can serve as a starting point. If you have any questions about this, send an email to <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>.";
-    // TODO fix this text: 3 projects
+    $value .= "<h2>The Stacks project, its website, and tools</h2>";
+    $value .= "<p>There are currently three open source repositories tracking development for the Stacks project and its website:</p>.";
+    $value .= "<ol>";
+    $value .= "<li>The LaTeX files making up the Stacks project itself can be found <a href='https://github.com/stacks/stacks-project'>here</a>.";
+    $value .= "<li>The website is being developed as a <a href='https://github.com/stacks/stacks-website'>separate project</a>. It is currently maintained by <a href='http://pbelmans.wordpress.com/'>Pieter Belmans</a>.";
+    $value .= "<li>There is a <a href='https://github.com/stacks/stacks-tools'>repository</a> containing tools and infrastructure used by both the project and the website.";
+    $value .= "</ol>";
+    $value .= "<p>If you wish to start your own project, inspired by the Stacks project we hope the combination of these projects can serve as a starting point. If you have any questions about this, please do not hesitate to send an email to <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>.";
 
     return $value;
   }
