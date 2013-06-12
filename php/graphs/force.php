@@ -111,8 +111,9 @@ require_once("../general.php");
           depth = Math.max(depth, graph.nodes[i].depth);
         // heat scale
         var heatMap = d3.scale.linear()
-          .domain([0, depth])
-          .range(["red", "blue"]);
+          .domain([0, depth / 2.0, depth])
+          .range(["red", "yellow", "blue"]);
+
 
         var chapters = {};
         for (var i = 0; i < graph.nodes.length; i++) 
