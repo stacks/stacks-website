@@ -30,6 +30,23 @@ function parseFootnotes($string) {
   return $result;
 }
 
+function getMacros() {
+  global $database;
+
+  $sql = $database->prepare('SELECT name, value FROM macros');
+
+  if ($sql->execute()) {
+    $rows = $sql->fetchAll();
+
+    $result = array();
+    foreach ($rows as $row)
+      $result[$row["name"]] = $row["value"];
+    return $result;
+  }
+
+  return array();
+}
+
 function preprocessCode($code) {
   // remove irrelevant new lines at the end
   $code = trim($code);
@@ -230,18 +247,7 @@ function convertLaTeX($tag, $file, $code) {
   }
 
   // fix macros
-  $macros = array(
-    // TODO check \mathop in output
-    "\\lim" => "\mathop{\\rm lim}\\nolimits",
-    "\\colim" => "\mathop{\\rm colim}\\nolimits",
-    "\\Spec" => "\mathop{\\rm Spec}",
-    "\\Hom" => "\mathop{\\rm Hom}\\nolimits",
-    "\\SheafHom" => "\mathop{\mathcal{H}\!{\it om}}\\nolimits",
-    "\\Sch" => "\\textit{Sch}",
-    "\\Mor" => "\mathop{\\rm Mor}\\nolimits",
-    "\\Ob" => "\mathop{\\rm Ob}\\nolimits",
-    "\\Sh" => "\mathop{\\textit{Sh}}\\nolimits",
-    "\\NL" => "\mathop{N\!L}\\nolimits");
+  $macros = getMacros();
   $code = str_replace(array_keys($macros), array_values($macros), $code);
 
   return $code;
