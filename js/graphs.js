@@ -86,6 +86,14 @@ function openTagNew(node, type) {
 
 var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
 
+function bordersLegend() {
+  legend = $("<ul></ul>");
+  legend.append("<li><svg height='12' width='12'><circle cx='6' cy='6' r='5' fill='white' class='named' '/></svg> this tag has a name");
+  legend.append("<li><svg height='12' width='12'><circle cx='6' cy='6' r='5' fill='white' id='root' '/></svg> root");
+
+  return legend;
+}
+
 function typeLegend(types) {
   $("body").append("<div class='legend' id='legendType'></div>");
   $("div#legendType").append("Legend for the type mapping");
@@ -93,6 +101,9 @@ function typeLegend(types) {
   for (type in types) {
     $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + capitalize(type)).appendTo($("div#legendType ul"));
   }
+
+  $("div#legendType").append("<br>");
+  $("div#legendType").append(bordersLegend());
 }
 
 function namedClass(node) {

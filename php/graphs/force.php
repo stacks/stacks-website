@@ -185,6 +185,9 @@ require_once("../general.php");
           $("<svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + heatMap(i) + "'/></svg>").appendTo($("div#legendHeat"));
         $("div#legendHeat").append("&nbsp;&nbsp;children");
 
+        $("div#legendHeat").append("<br><br>");
+        $("div#legendHeat").append(bordersLegend());
+
         // add legend for the chapter coloring
         $("body").append("<div class='legend' id='legendChapters'></div>");
         $("div#legendChapters").append("<p>Legend for the chapter mapping</p>");
