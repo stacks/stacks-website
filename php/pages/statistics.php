@@ -25,9 +25,9 @@ class StatisticsPage extends Page {
 
     $output .= "<dl>";
     $output .= "<dt>Creation of this tag</dt>";
-    $output .= "<dd>" . date("F j, Y g:i a", $this->tag["creation_date"]) . " in <a href='https://github.com/stacks/stacks-project/commit/" . $this->tag["creation_commit"] . "'>commit " . substr($this->tag["creation_commit"], 0, 7) . "</a></dd>";
+    $output .= "<dd>" . $this->tag["creation_date"] . " in <a href='https://github.com/stacks/stacks-project/commit/" . $this->tag["creation_commit"] . "'>commit " . substr($this->tag["creation_commit"], 0, 7) . "</a></dd>";
     $output .= "<dt>Last modification</dt>";
-    $output .= "<dd>" . date("F j, Y g:i a", $this->tag["modification_date"]) . " in <a href='https://github.com/stacks/stacks-project/commit/" . $this->tag["modification_commit"] . "'>commit " . substr($this->tag["modification_commit"], 0, 7) . "</a></dd>";
+    $output .= "<dd>" . $this->tag["modification_date"] . " in <a href='https://github.com/stacks/stacks-project/commit/" . $this->tag["modification_commit"] . "'>commit " . substr($this->tag["modification_commit"], 0, 7) . "</a></dd>";
     $output .= "</dl>";
 
     return $output;
