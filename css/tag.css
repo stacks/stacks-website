@@ -100,15 +100,15 @@ ul#citation-options li a {
   display: block;
 }
 
-ul#extras li#dependency-graphs a {
+a#graph-link {
   display: table;
 }
 
-ul#extras li#dependency-graphs a img {
+a#graph-link img {
   width: 75px;
 }
 
-ul#extras li#dependency-graphs a span {
+a#graph-link span {
   padding-left: 1em;
   display: table-cell;
   vertical-align: middle;
