@@ -82,14 +82,14 @@ function parseReferences($string) {
     $target = substr($reference, 5, -1);
   
     // we're referring to a tag
-    if (is_valid_tag($target)) {
+    if (isValidTag($target)) {
       // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
       $string = str_replace($reference, '[`' . $target . '`](' . full_url('tag/' . $target) . ')', $string);
     }
     // the user might be referring to a label
     else {
       // might it be that he is referring to a "local" label, i.e. in the same chapter as the tag?
-      if (!label_exists($target)) {
+      if (!labelExists($target)) {
         $label = get_label(strtoupper($_GET['tag']));
         $parts = explode('-', $label);
         // let's try it with the current chapter in front of the label
@@ -98,7 +98,7 @@ function parseReferences($string) {
   
       // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
       // if he declared a \label{} in his string with this particular label value he's out of luck
-      if (label_exists($target)) {
+      if (labelExists($target)) {
         $tag = get_tag_referring_to($target);
         $string = str_replace($reference, '[`' . $tag . '`](' . full_url('tag/' . $tag) . ')', $string);
       }
@@ -203,12 +203,12 @@ class TagViewPage extends Page {
     $value .= $this->printCitation();
 
     $value .= "<h2>Extras</h2>";
-    $value .= "<ul>";
+    $value .= "<ul id='extras'>";
     $value .= "<li><a href='" . href("tag/" . $this->tag["tag"] . "/statistics") . "'>statistics</a></li>";
-    $value .= "<li>dependency graphs:<br><br>";
-    $value .= "<a style='display: table;' href='" . href("tag/" . $this->tag["tag"] . "/graph/cluster") . "'><img width='75' src='" . href("images/cluster.png") . "' alt='cluster dependency graph'><span style='padding-left: 1em; display: table-cell; vertical-align: middle;'>cluster</span></a><br>";
-    $value .= "<a style='display: table;' href='" . href("tag/" . $this->tag["tag"] . "/graph/force") . "'><img width='75' src='" . href("images/force.png") . "' alt='force-directed dependency graph'><span style='padding-left: 1em; display: table-cell; vertical-align: middle;'>force-directed</span></a><br>";
-    $value .= "<a style='display: table;' href='" . href("tag/" . $this->tag["tag"] . "/graph/collapsible") . "'><img width='75' src='" . href("images/collapsible.png") . "' alt='collapsible dependency graph'><span style='padding-left: 1em; display: table-cell; vertical-align: middle;'>collapsible</span></a><br>";
+    $value .= "<li id='dependency-graphs'>dependency graphs:<br><br>";
+    $value .= printGraphLink($this->tag["tag"], "cluster", "cluster") . "<br>";
+    $value .= printGraphLink($this->tag["tag"], "force", "force-directed") . "<br>";
+    $value .= printGraphLink($this->tag["tag"], "collapsible", "collapsible") . "<br>";
     $value .= "</li>";
     $value .= "</ul>";
 

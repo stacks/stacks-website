@@ -100,3 +100,16 @@ ul#citation-options li a {
   display: block;
 }
 
+ul#extras li#dependency-graphs a {
+  display: table;
+}
+
+ul#extras li#dependency-graphs a img {
+  width: 75px;
+}
+
+ul#extras li#dependency-graphs a span {
+  padding-left: 1em;
+  display: table-cell;
+  vertical-align: middle;
+}

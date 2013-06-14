@@ -81,5 +81,8 @@ function printMathJax() {
     return $value;
 }
 
+function printGraphLink($tag, $type, $text) {
+  return "<a href='" . href("tag/" . $tag . "/graph/" . $type) . "'><img src='" . href("images/" . $type . ".png") . "' alt='" . $text . " dependency graph'><span>" . $text . "</span></a>";
+}
 
 ?>
