@@ -35,7 +35,7 @@ class BrowsePage extends Page {
     $value .= "<h2>Browse chapters</h2>";
     $number = 0;
 
-    $value .= "<table id='browse'>";
+    $value .= "<table class='alternating' id='browse'>";
     $value .= "<tr>";
     $value .= "<th>Part</th>";
     $value .= "<th>Chapter</th>";
@@ -119,7 +119,6 @@ class BrowsePage extends Page {
 
     $value .= "<tr id='" . partToIdentifier($part) . "'>";
     $value .= "<td>" . parseAccents($part) . "</td>";
-    $value .= "<td></td>";
     $value .= "<td></td>";
     $value .= "<td></td>";
     $value .= "<td></td>";

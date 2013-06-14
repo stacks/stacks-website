@@ -254,3 +254,34 @@ div#sidebar ol {
 div#sidebar form {
   margin: 0;
 }
+
+table.alternating {
+  border-spacing: 0;
+  border: 1px solid #d9d8d1;
+}
+
+table.alternating th {
+  text-align: left;
+  padding: 2px 5px;
+}
+
+table.alternating td {
+  padding: 2px 5px;
+}
+
+table.alternating tr:nth-child(0):hover {
+  background-color: white;
+}
+
+table.alternating tr:nth-child(odd) {
+  background-color: #f6f6f0;
+}
+
+table.alternating tr:nth-child(odd):hover {
+  background-color: #edece6;
+}
+
+table.alternating tr:nth-child(even):hover {
+  background-color: #edece6;
+}
+

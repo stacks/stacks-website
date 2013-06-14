@@ -113,3 +113,13 @@ a#graph-link span {
   display: table-cell;
   vertical-align: middle;
 }
+
+ul#using {
+  list-style-type: none;
+}
+
+ul#using li {
+  width: auto;
+  float: left;
+  padding-right: 10px;
+}

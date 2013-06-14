@@ -43,6 +43,24 @@ class StatisticsPage extends Page {
     $output .= "<dt>Last modification to this label (not its contents)</dt>";
     $output .= "<dd>" . $this->tag["modification_date"] . " in <a href='https://github.com/stacks/stacks-project/commit/" . $this->tag["modification_commit"] . "'>commit " . substr($this->tag["modification_commit"], 0, 7) . "</a>.</dd>";
     $output .= "</dl>";
+
+    $output .= "<h3>Numbers</h3>";
+    $output .= "<p>The dependency graph has the following properties";
+    $output .= "<table class='alternating' id='numbers'>";
+    $output .= "<tr><td>number of nodes</td><td>125</td><td></td>"; // TODO
+    $output .= "<tr><td>number of edges</td><td>3325</td><td>(without multiples)</tr>"; // TODO
+    $output .= "<tr><td></td><td>325</td><td>(with multiples)</tr>"; // TODO
+    $output .= "<tr><td>number of chapters used</td><td>7</td><td></tr>"; // TODO
+    $output .= "<tr><td>number of tags using this tag</td><td>5</td><td>(directly)</td>";
+    $output .= "<tr><td></td><td>235</td><td>(both directly and indirectly)</td>";
+    $output .= "</table>";
+
+    // TODO only if there are actually results using this tag
+    $output .= "<h3>Tags using this result</h3>";
+    $output .= "<ul id='using'>";
+    $output .= "<li><a href='" . href("tag/" . "0123") . "'><var>0123</var></a>";
+    $output .= "</ul>";
+
     # TODO this page needs more stuff, and a sidebar
 
     return $output;
