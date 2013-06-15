@@ -3,6 +3,19 @@
 require_once("php/page.php");
 require_once("php/general.php");
 
+function printStatisticsRow($name, &$value, $remark = "") {
+  $output = "";
+
+  $output .= "<tr><td>" . $name . "</td><td>";
+  if (isset($value))
+    $output .= $value;
+  else
+    $output .= "<span style='text-style: italic'>?</span>";
+  $output .= "</td><td>" . $remark . "</td>";
+
+  return $output;
+}
+
 class StatisticsPage extends Page {
   private $statistics;
   private $tag;
@@ -57,12 +70,14 @@ class StatisticsPage extends Page {
     $output .= "<h3>Numbers</h3>";
     $output .= "<p>The dependency graph has the following properties";
     $output .= "<table class='alternating' id='numbers'>";
-    $output .= "<tr><td>number of nodes</td><td>" . $this->statistics["node count"] . "</td><td></td>";
-    $output .= "<tr><td>number of edges</td><td>" . $this->statistics["edge count"] . "</td><td>(ignoring multiplicity)</tr>";
-    $output .= "<tr><td></td><td>" . ($this->statistics["total edge count"] - 1) . "</td><td>(with multiplicity)</tr>";
-    $output .= "<tr><td>number of chapters used</td><td>" . $this->statistics["chapter count"] . "</td><td></tr>";
-    $output .= "<tr><td>number of tags using this tag</td><td><em>5</em></td><td>(directly)</td>";
-    $output .= "<tr><td></td><td><em>235</em></td><td>(both directly and indirectly)</td>";
+
+    $output .= printStatisticsRow("number of nodes", $this->statistics["node count"]);
+    $output .= printStatisticsRow("number of edges", $this->statistics["edge count"], "(ignoring multiplicity)");
+    $output .= printStatisticsRow("", $this->statistics["total edge count"], "(with multiplicity)");
+    $output .= printStatisticsRow("number of chapters used", $this->statistics["chapter count"]);
+    $output .= printStatisticsRow("number of sections used", $this->statistics["section count"]);
+    $output .= printStatisticsRow("number of tags using this tag", $this->statistics["use count"], "(directly)"); // TODO if any, link to next section
+    $output .= printStatisticsRow("", $this->statistics["indirect use count"], "(both directly and indirectly)");
     $output .= "</table>";
 
     // TODO only if there are actually results using this tag
@@ -77,6 +92,8 @@ class StatisticsPage extends Page {
   }
   public function getSidebar() {
     $output = "";
+
+    // TODO some go to tag link
 
     $output .= "<h2>Navigating results</h2>";
     $siblingTags = getSiblingTags($this->tag["position"]);
