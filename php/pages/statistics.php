@@ -16,6 +16,18 @@ function printStatisticsRow($name, &$value, $remark = "") {
   return $output;
 }
 
+function getReferencingTags($target) {
+  global $database;
+
+  $sql = $database->prepare("SELECT source, name FROM dependencies, tags WHERE target = :target AND source = tag");
+  $sql->bindParam(":target", $target);
+
+  if ($sql->execute())
+    return $sql->fetchAll();
+
+  return array();
+}
+
 class StatisticsPage extends Page {
   private $statistics;
   private $tag;
@@ -71,22 +83,28 @@ class StatisticsPage extends Page {
     $output .= "<p>The dependency graph has the following properties";
     $output .= "<table class='alternating' id='numbers'>";
 
+    $referencingTags = getReferencingTags($this->tag["tag"]);
+
     $output .= printStatisticsRow("number of nodes", $this->statistics["node count"]);
     $output .= printStatisticsRow("number of edges", $this->statistics["edge count"], "(ignoring multiplicity)");
     $output .= printStatisticsRow("", $this->statistics["total edge count"], "(with multiplicity)");
     $output .= printStatisticsRow("number of chapters used", $this->statistics["chapter count"]);
     $output .= printStatisticsRow("number of sections used", $this->statistics["section count"]);
-    $output .= printStatisticsRow("number of tags using this tag", $this->statistics["use count"], "(directly)"); // TODO if any, link to next section
+    if (count($referencingTags) > 0)
+      $output .= printStatisticsRow("number of tags using this tag", $this->statistics["use count"], "(directly, see <a href='#referencing'>tags referencing this result</a>)");
+    else
+      $output .= printStatisticsRow("number of tags using this tag", $this->statistics["use count"], "(directly)");
     $output .= printStatisticsRow("", $this->statistics["indirect use count"], "(both directly and indirectly)");
     $output .= "</table>";
 
-    // TODO only if there are actually results using this tag
-    $output .= "<h3>Tags using this result</h3>";
-    $output .= "<ul id='using'>";
-    $output .= "<li><a href='" . href("tag/" . "0123") . "'><var>0123</var></a>";
-    $output .= "</ul>";
-
-    # TODO this page needs more stuff, and a sidebar
+    if (count($referencingTags) > 0) {
+      $output .= "<h3 id='referencing'>Tags using this result</h3>";
+      $output .= "<ul id='using'>";
+      $referencingTags = getReferencingTags($this->tag["tag"]);
+      foreach ($referencingTags as $referencingTag)
+        $output .= "<li><a href='" . href("tag/" . $referencingTag["source"]) . "'><var>" . $referencingTag["source"] . "</var></a>";
+      $output .= "</ul>";
+    }
 
     return $output;
   }
