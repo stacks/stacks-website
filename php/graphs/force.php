@@ -1,6 +1,8 @@
 <?php
 $config = parse_ini_file("../../config.ini");
 
+// TODO would it be interesting to have a special "section" view, in which the tags inside a section are immediate child nodes of the root node, thus making these graphs more interesting?
+
 require_once("../general.php");
 
   // TODO get a node count from the database
@@ -38,8 +40,11 @@ require_once("../general.php");
         $("div.legend").hide();
 
         switch (colorMapping) {
-          case global["colorHeat"]:
-            $("div#legendHeat").show();
+          case global["colorHeatMax"]:
+            $("div#legendHeatMax").show();
+            return;
+          case global["colorHeatMin"]:
+            $("div#legendHeatMin").show();
             return;
           case global["colorType"]:
             $("div#legendType").show();
@@ -50,10 +55,17 @@ require_once("../general.php");
         }
       }
 
-      function toggleHeat() {
-        global["node"].style("fill", global["colorHeat"]);
+      function toggleHeatMin() {
+        global["node"].style("fill", global["colorHeatMin"]);
 
-        colorMapping = global["colorHeat"];
+        colorMapping = global["colorHeatMin"];
+        toggleLegend();
+      }
+      
+      function toggleHeatMax() {
+        global["node"].style("fill", global["colorHeatMax"]);
+
+        colorMapping = global["colorHeatMax"];
         toggleLegend();
       }
 
@@ -79,7 +91,8 @@ require_once("../general.php");
 
         createControls("<?php print $_GET["tag"]; ?>", "force");
         $("div#controls").append("<ul>");
-        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeat();'>view as heatmap</a><br>");
+        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeatMax();'>view as heatmap (depth)</a><br>");
+        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeatMin();'>view as heatmap (height)</a><br>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
         //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
         $("div#controls").append("</ul>");
@@ -106,13 +119,21 @@ require_once("../general.php");
       var global = Array(); // this catches some things that need to be available globally
       
       result = d3.json("<?php print href("data/tag/" . $_GET["tag"] . "/graph/force"); ?>", function(error, graph) {
-        var depth = 0
-        for (var i = 0; i < graph.nodes.length; i++)
-          depth = Math.max(depth, graph.nodes[i].depth);
-        // heat scale
-        var heatMap = d3.scale.linear()
-          .domain([0, depth / 2.0, depth])
+        var heatMaxSize = 0; // this corresponds to the depth variable, and starts with 0 at the root node
+        var heatMinSize = 0; // this corresponds to the size variable, and starts with 0 at a leaf node, taking the maximum over the children + 1 as the value for a parent
+
+        for (var i = 0; i < graph.nodes.length; i++) {
+          heatMaxSize = Math.max(heatMaxSize, graph.nodes[i].depth);
+          heatMinSize = Math.max(heatMinSize, graph.nodes[i].size);
+          console.log(graph.nodes[i].depth + graph.nodes[i].size);
+        }
+        // heat scales
+        var heatMapMax = d3.scale.linear()
+          .domain([0, heatMaxSize / 2.0, heatMaxSize])
           .range(["red", "yellow", "blue"]);
+        var heatMapMin = d3.scale.linear()
+          .domain([0, heatMinSize / 2.0, heatMinSize])
+          .range(["red", "yellow", "blue"]); // this one goes in the opposite direction TODO
 
 
         var chapters = {};
@@ -124,11 +145,13 @@ require_once("../general.php");
 
         var chapterMap = d3.scale.linear().domain([0, Object.keys(chapters).length]).range(["green", "yellow"]);
 
-        function colorHeat(node) { return heatMap(node.depth); }
+        function colorHeatMax(node) { return heatMapMax(node.depth); }
+        function colorHeatMin(node) { return heatMapMin(heatMinSize - node.size); }
         function colorType(node) { return typeMap(node.type); }
         function colorChapters(node) { return chapterMap(chapters[node.file]); }
 
-        global["colorHeat"] = colorHeat;
+        global["colorHeatMax"] = colorHeatMax;
+        global["colorHeatMin"] = colorHeatMin;
         global["colorType"] = colorType;
         global["colorChapters"] = colorChapters;
 
@@ -148,7 +171,7 @@ require_once("../general.php");
           .attr("class", namedClass)
           .attr("id", function(d) { if (d.depth == 0) { return "root"; } })
           .attr("r", function(d) { return 4 * Math.pow(parseInt(d.size) + 1, 1 / 3); })
-          .style("fill", function(d) { colorMapping = colorHeat; return colorHeat(d); })
+          .style("fill", function(d) { colorMapping = colorHeatMax; return colorHeatMax(d); })
           .on("mouseover", displayTagInfo)
           .on("mouseout", hideInfo)
           .on("click", function(node) { openTag(node, "force"); })
@@ -178,16 +201,27 @@ require_once("../general.php");
         // add legend for type coloring
         typeLegend(types);
 
-        // add legend for the heat coloring
-        $("body").append("<div class='legend' id='legendHeat'></div>");
-        $("div#legendHeat").append("Legend for the heat mapping<br>");
-        $("div#legendHeat").append("root node&nbsp;&nbsp;");
-        for (var i = 0; i <= depth; i++) 
-          $("<svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + heatMap(i) + "'/></svg>").appendTo($("div#legendHeat"));
-        $("div#legendHeat").append("&nbsp;&nbsp;children");
+        // add legend for the heatMax coloring
+        $("body").append("<div class='legend' id='legendHeatMax'></div>");
+        $("div#legendHeatMax").append("Legend for the heat mapping (depth from root)<br>");
+        $("div#legendHeatMax").append("root node&nbsp;&nbsp;");
+        for (var i = 0; i <= heatMaxSize; i++) 
+          $("<svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + heatMapMax(i) + "'/></svg>").appendTo($("div#legendHeatMax"));
+        $("div#legendHeatMax").append("&nbsp;&nbsp;children");
 
-        $("div#legendHeat").append("<br><br>");
-        $("div#legendHeat").append(bordersLegend());
+        $("div#legendHeatMax").append("<br><br>");
+        $("div#legendHeatMax").append(bordersLegend());
+
+        // add legend for the heatMin coloring
+        $("body").append("<div class='legend' id='legendHeatMin'></div>");
+        $("div#legendHeatMin").append("Legend for the heat mapping (height from leaf)<br>");
+        $("div#legendHeatMin").append("root node&nbsp;&nbsp;");
+        for (var i = 0; i <= heatMinSize; i++) 
+          $("<svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + heatMapMin(i) + "'/></svg>").appendTo($("div#legendHeatMin"));
+        $("div#legendHeatMin").append("&nbsp;&nbsp;children");
+
+        $("div#legendHeatMin").append("<br><br>");
+        $("div#legendHeatMin").append(bordersLegend());
 
         // add legend for the chapter coloring
         $("body").append("<div class='legend' id='legendChapters'></div>");
