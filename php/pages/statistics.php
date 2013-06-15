@@ -4,12 +4,13 @@ require_once("php/page.php");
 require_once("php/general.php");
 
 class StatisticsPage extends Page {
+  private $statistics;
   private $tag;
 
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    $sql = $this->db->prepare("SELECT tag, creation_date, creation_commit, modification_date, modification_commit, label FROM tags WHERE tag = :tag");
+    $sql = $this->db->prepare("SELECT tag, creation_date, creation_commit, modification_date, modification_commit, label, position FROM tags WHERE tag = :tag");
     $sql->bindParam(":tag", $tag);
 
     if ($sql->execute())
@@ -18,6 +19,15 @@ class StatisticsPage extends Page {
     // phantom is actually a chapter
     if (isPhantom($this->tag["label"]))
       $this->tag["type"] = "chapter";
+
+    $sql = $this->db->prepare("SELECT key, value FROM statistics WHERE key LIKE :tag");
+    $sql->bindValue(":tag", $tag . "%");
+
+    if ($sql->execute())
+      $result = $sql->fetchAll();
+
+    foreach ($result as $row)
+      $this->statistics[substr($row["key"], 5)] = $row["value"];
   }
 
   public function getHead() {
@@ -47,12 +57,12 @@ class StatisticsPage extends Page {
     $output .= "<h3>Numbers</h3>";
     $output .= "<p>The dependency graph has the following properties";
     $output .= "<table class='alternating' id='numbers'>";
-    $output .= "<tr><td>number of nodes</td><td>125</td><td></td>"; // TODO
-    $output .= "<tr><td>number of edges</td><td>3325</td><td>(without multiples)</tr>"; // TODO
-    $output .= "<tr><td></td><td>325</td><td>(with multiples)</tr>"; // TODO
-    $output .= "<tr><td>number of chapters used</td><td>7</td><td></tr>"; // TODO
-    $output .= "<tr><td>number of tags using this tag</td><td>5</td><td>(directly)</td>";
-    $output .= "<tr><td></td><td>235</td><td>(both directly and indirectly)</td>";
+    $output .= "<tr><td>number of nodes</td><td>" . $this->statistics["node count"] . "</td><td></td>";
+    $output .= "<tr><td>number of edges</td><td>" . $this->statistics["edge count"] . "</td><td>(ignoring multiplicity)</tr>";
+    $output .= "<tr><td></td><td>" . ($this->statistics["total edge count"] - 1) . "</td><td>(with multiplicity)</tr>";
+    $output .= "<tr><td>number of chapters used</td><td>" . $this->statistics["chapter count"] . "</td><td></tr>";
+    $output .= "<tr><td>number of tags using this tag</td><td><em>5</em></td><td>(directly)</td>";
+    $output .= "<tr><td></td><td><em>235</em></td><td>(both directly and indirectly)</td>";
     $output .= "</table>";
 
     // TODO only if there are actually results using this tag
@@ -67,6 +77,17 @@ class StatisticsPage extends Page {
   }
   public function getSidebar() {
     $output = "";
+
+    $output .= "<h2>Navigating results</h2>";
+    $siblingTags = getSiblingTags($this->tag["position"]);
+    if (!empty($siblingTags)) {
+      $output .= "<p class='navigation'>";
+      if (isset($siblingTags["previous"]))
+        $output .= "<span class='left'><a title='" . $siblingTags["previous"]["tag"] . " " . $siblingTags["previous"]["label"] . "' href='" . href("tag/" . $siblingTags["previous"]["tag"]) . "/statistics'>&lt;&lt; Previous tag</a></span>";
+      if (isset($siblingTags["next"]))
+        $output .= "<span class='right'><a title='" . $siblingTags["next"]["tag"] . " " . $siblingTags["next"]["label"] . "' href='" . href("tag/" . $siblingTags["next"]["tag"]) . "/statistics'>Next tag &gt;&gt;</a></span>";
+      $output .= "</p>";
+    }
 
     $output .= "<h2>Dependency graphs</h2>";
     $output .= "<p style='margin-left: 1em'>" . printGraphLink($this->tag["tag"], "cluster", "cluster") . "<br>";

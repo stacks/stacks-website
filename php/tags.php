@@ -175,6 +175,7 @@ function convertLaTeX($tag, $file, $code) {
 
 
   // handle citations
+  // TODO in 08XH there is a \cite{R+D} which doesn't work
   $count = preg_match_all("/\\\cite\{([\.\w,\-\_]*)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $keys = explode(",", $matches[1][$i]);
@@ -408,5 +409,17 @@ function tagIsActive($tag) {
 
   return false;
 }
+
+function getSiblingTags($position) {
+  $siblingTags = array();
+
+  if (positionExists($position - 1))
+    $siblingTags["previous"] = getTagAtPosition($position - 1);
+  if (positionExists($position + 1))
+    $siblingTags["next"] = getTagAtPosition($position + 1);
+
+  return $siblingTags;
+}
+
 
 ?>

@@ -238,13 +238,8 @@ class TagViewPage extends Page {
 
   private function getSiblingTags() {
     // check whether result is already cached
-    if ($this->siblingTags != null)
-      return $this->siblingTags;
-
-    if (positionExists($this->tag["position"] - 1))
-      $this->siblingTags["previous"] = getTagAtPosition($this->tag["position"] - 1);
-    if (positionExists($this->tag["position"] + 1))
-      $this->siblingTags["next"] = getTagAtPosition($this->tag["position"] + 1);
+    if ($this->siblingTags == null)
+      $this->siblingTags = getSiblingTags($this->tag["position"]);
 
     return $this->siblingTags;
   }
