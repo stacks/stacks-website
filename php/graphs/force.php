@@ -125,15 +125,14 @@ require_once("../general.php");
         for (var i = 0; i < graph.nodes.length; i++) {
           heatMaxSize = Math.max(heatMaxSize, graph.nodes[i].depth);
           heatMinSize = Math.max(heatMinSize, graph.nodes[i].size);
-          console.log(graph.nodes[i].depth + graph.nodes[i].size);
         }
         // heat scales
         var heatMapMax = d3.scale.linear()
-          .domain([0, heatMaxSize / 2.0, heatMaxSize])
-          .range(["red", "yellow", "blue"]);
+          .domain([0, heatMaxSize / 2.0, 3.0 * heatMaxSize / 4.0, heatMaxSize])
+          .range(["red", "yellow", "green", "blue"]);
         var heatMapMin = d3.scale.linear()
-          .domain([0, heatMinSize / 2.0, heatMinSize])
-          .range(["red", "yellow", "blue"]); // this one goes in the opposite direction TODO
+          .domain([0, heatMaxSize / 2.0, 3.0 * heatMinSize / 4.0, heatMaxSize])
+          .range(["red", "yellow", "green", "blue"]);
 
 
         var chapters = {};
