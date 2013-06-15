@@ -131,7 +131,7 @@ require_once("../general.php");
           .domain([0, heatMaxSize / 2.0, 3.0 * heatMaxSize / 4.0, heatMaxSize])
           .range(["red", "yellow", "green", "blue"]);
         var heatMapMin = d3.scale.linear()
-          .domain([0, heatMaxSize / 2.0, 3.0 * heatMinSize / 4.0, heatMaxSize])
+          .domain([0, heatMaxSize / 2.0, 3.0 * heatMinSize / 4.0, heatMinSize])
           .range(["red", "yellow", "green", "blue"]);
 
 
