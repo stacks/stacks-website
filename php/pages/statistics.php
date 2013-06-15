@@ -19,7 +19,7 @@ function printStatisticsRow($name, &$value, $remark = "") {
 function getReferencingTags($target) {
   global $database;
 
-  $sql = $database->prepare("SELECT source, name FROM dependencies, tags WHERE target = :target AND source = tag");
+  $sql = $database->prepare("SELECT source, type, book_id, name FROM dependencies, tags WHERE target = :target AND source = tag ORDER BY position");
   $sql->bindParam(":target", $target);
 
   if ($sql->execute())
@@ -101,8 +101,13 @@ class StatisticsPage extends Page {
       $output .= "<h3 id='referencing'>Tags using this result</h3>";
       $output .= "<ul id='using'>";
       $referencingTags = getReferencingTags($this->tag["tag"]);
-      foreach ($referencingTags as $referencingTag)
-        $output .= "<li><a href='" . href("tag/" . $referencingTag["source"]) . "'><var>" . $referencingTag["source"] . "</var></a>";
+      foreach ($referencingTags as $referencingTag) {
+        $title = ucfirst($referencingTag["type"]) . " " . $referencingTag["book_id"];
+        if ($referencingTag["name"] != "")
+          $title .= ": " . parseAccents($referencingTag["name"]);
+        
+        $output .= "<li><a title=\"" . $title . "\" href='" . href("tag/" . $referencingTag["source"]) . "'><var>" . $referencingTag["source"] . "</var></a>";
+      }
       $output .= "</ul>";
     }
 
