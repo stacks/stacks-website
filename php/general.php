@@ -68,7 +68,6 @@ function parseTeX($value) {
 function printMathJax() {
     $value = "";
 
-    $value .= "<script type='text/javascript' src='" . href("js/MathJax/MathJax.js?config=default'") . "></script>";
     $value .= "<script type='text/x-mathjax-config'>";
     $value .= "  MathJax.Hub.Config({";
     $value .= "    extensions: ['tex2jax.js', 'fp.js'],";
@@ -77,6 +76,7 @@ function printMathJax() {
     $value .= "    'HTML-CSS': { scale: 85 }";
     $value .= "  });";
     $value .= "</script>";
+    $value .= "<script type='text/javascript' src='" . href("js/MathJax/MathJax.js?config=default'") . "></script>";
 
     return $value;
 }
