@@ -138,27 +138,34 @@ class TagViewPage extends Page {
     $value .= "<script type='text/javascript' src='" . href("js/tag.js") . "'></script>";
     $value .= "<link rel='stylesheet' type='text/css' href='" . href("css/tag.css") . "'>";
 
-    $value .= "<script type='text/javascript' src='" . href("js/sfm.js") . "'></script>";
-    $value .= "<script type='text/javascript' src='" . href("js/EpicEditor/epiceditor/js/epiceditor.js") . "'></script>";
-    $value .= "<script type='text/javascript'>";
-    $value .= "  var options = {";
-    $value .= "    basePath: '" . href("js/EpicEditor/epiceditor") . "',";
-    $value .= "    file: {";
-    $value .= "      name: '" . $this->tag["tag"] . "',";
-    $value .= "      defaultContent: 'You can type your comment here, use the preview option to see what it will look like.',";
-    $value .= "    },";
-    $value .= "    theme: {";
-    $value .= "      editor: '/themes/editor/stacks-editor.css',";
-    $value .= "      preview: '/themes/preview/stacks-preview.css',";
-    $value .= "    },";
-    $value .= "    parser : sfm,";
-    $value .= "    shortcut : {";
-    $value .= "      modifier : 0,";
-    $value .= "    } ";
-    $value .= "  }";
-    $value .= "</script>";
+    if ($this->tag["type"] == "chapter") {
+      $value .= "<script type='text/javascript' src='" . $config["jQuery"] . "'></script>";
+      $value .= "<script type='text/javascript' src='" . href('js/jquery-treeview/jquery.treeview.js') . "'></script>";
+      $value .= "<link rel='stylesheet' href='" . href('js/jquery-treeview/jquery.treeview.css') . "' />";
+    }
+    else {
+      $value .= "<script type='text/javascript' src='" . href("js/sfm.js") . "'></script>";
+      $value .= "<script type='text/javascript' src='" . href("js/EpicEditor/epiceditor/js/epiceditor.js") . "'></script>";
+      $value .= "<script type='text/javascript'>";
+      $value .= "  var options = {";
+      $value .= "    basePath: '" . href("js/EpicEditor/epiceditor") . "',";
+      $value .= "    file: {";
+      $value .= "      name: '" . $this->tag["tag"] . "',";
+      $value .= "      defaultContent: 'You can type your comment here, use the preview option to see what it will look like.',";
+      $value .= "    },";
+      $value .= "    theme: {";
+      $value .= "      editor: '/themes/editor/stacks-editor.css',";
+      $value .= "      preview: '/themes/preview/stacks-preview.css',";
+      $value .= "    },";
+      $value .= "    parser : sfm,";
+      $value .= "    shortcut : {";
+      $value .= "      modifier : 0,";
+      $value .= "    } ";
+      $value .= "  }";
+      $value .= "</script>";
 
-    $value .= printMathJax();
+      $value .= printMathJax();
+    }
 
     return $value;
   }
@@ -321,7 +328,7 @@ class TagViewPage extends Page {
 
         break;
 
-      case "phantom":
+      case "chapter":
         $chapter = getChapter(getChapterFromID($this->tag["book_id"]));
         $value .= "<li>Chapter&nbsp;" . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["book_page"] . "</a> of the book";
         break;
@@ -340,10 +347,10 @@ class TagViewPage extends Page {
         break;
     }
     
-    if ($this->tag["type"] != "phantom")
+    if ($this->tag["type"] != "chapter")
       $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> of <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
     else
-      $value .= "<li>in <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
+      $value .= "<li>which corresponds to the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
 
     $value .= "</ul>";
 
@@ -417,7 +424,17 @@ class TagViewPage extends Page {
     $value .= "<blockquote class='rendered'>";
     if ($this->tag["type"] == "chapter") {
       $value .= "<h3>Chapter " . $this->tag["book_id"] . ": " . $this->tag["name"] . "</h3>";
-      $value .= "<p>This tag corresponds to <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>, and contains no further text. To view the contents of the chapter, go to the next tag.</p>";
+      $value .= "<p>This tag corresponds to <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>, and contains no further text. To view the contents of the first section in this chapter, go to the next tag.</p>";
+      $value .= "<p>This chapter contains the following tags</p>";
+      $value .= "<div id='control'>";
+      $value .= "<p><a href='#'><img src='" . href("js/jquery-treeview/images/minus.gif") . "'> Collapse all</a>";
+      $value .= " ";
+      $value .= "<a href='#'><img src='" . href("js/jquery-treeview/images/plus.gif") . "'> Expand all</a>";
+      $value .= "</div>";
+      $value .= "<div id='treeview'>";
+      $value .= printToC($this->tag["book_id"]);
+      $value .= "</div>";
+      $value .= "<script type='text/javascript' src='" . href("js/chapter.js") . "'></script>";
     }
     else {
       $value .= convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["value"]);
