@@ -28,6 +28,18 @@ function getReferencingTags($target) {
   return array();
 }
 
+function getReferredTags($source) {
+  global $database;
+
+  $sql = $database->prepare("SELECT target, type, book_id, name FROM dependencies, tags WHERE source = :source AND target = tag ORDER BY position");
+  $sql->bindParam(":source", $source);
+
+  if ($sql->execute())
+    return $sql->fetchAll();
+
+  return array();
+}
+
 class StatisticsPage extends Page {
   private $statistics;
   private $tag;
@@ -65,7 +77,9 @@ class StatisticsPage extends Page {
 
   public function getMain() {
     $output = "";
+
     $output .= "<h2>Tag <var>" . $this->tag["tag"] . "</var></h2>";
+    $output .= "<p>Go to the <a href='" . href("tag/" . $this->tag["tag"]) . "'>corresponding tag page</a>.</p>";
 
     $output .= "<h3>Information on the label</h3>";
     $output .= "<p>This tag currently has the label <var>" . $this->tag["label"] . "</var>.";
@@ -84,12 +98,14 @@ class StatisticsPage extends Page {
     $output .= "<table class='alternating' id='numbers'>";
 
     $referencingTags = getReferencingTags($this->tag["tag"]);
+    $referredTags = getReferredTags($this->tag["tag"]);
 
     $output .= printStatisticsRow("number of nodes", $this->statistics["node count"]);
     $output .= printStatisticsRow("number of edges", $this->statistics["edge count"], "(ignoring multiplicity)");
     $output .= printStatisticsRow("", $this->statistics["total edge count"], "(with multiplicity)");
     $output .= printStatisticsRow("number of chapters used", $this->statistics["chapter count"]);
     $output .= printStatisticsRow("number of sections used", $this->statistics["section count"]);
+    $output .= printStatisticsRow("number of tags directly used", count($referredTags));
     if (count($referencingTags) > 0)
       $output .= printStatisticsRow("number of tags using this tag", $this->statistics["use count"], "(directly, see <a href='#referencing'>tags referencing this result</a>)");
     else
@@ -118,7 +134,7 @@ class StatisticsPage extends Page {
 
     // TODO some go to tag link
 
-    $output .= "<h2>Navigating results</h2>";
+    $output .= "<h2>Navigating statistics</h2>";
     $siblingTags = getSiblingTags($this->tag["position"]);
     if (!empty($siblingTags)) {
       $output .= "<p class='navigation'>";
