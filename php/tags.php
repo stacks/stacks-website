@@ -234,7 +234,7 @@ function convertLaTeX($tag, $file, $code) {
       $line = str_replace('&lt;', '<', $line);
       $line = str_replace('&amp;', '&', $line);
       
-      $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-]+)<\/a>}/', $line, $matches);
+      $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $line, $matches);
       for ($j = 0; $j < $count; $j++) {
         $line = str_replace($matches[0][$j], getID(substr($matches[1][$j], -4)), $line);
       }
@@ -242,7 +242,7 @@ function convertLaTeX($tag, $file, $code) {
   }
   $code = implode("\n", $lines);
   
-  $count = preg_match_all('/\\\ref{&lt;a href=\"([\w\/]+)\"&gt;([\w-]+)&lt;\/a&gt;}/', $code, $references);
+  $count = preg_match_all('/\\\ref{&lt;a href=\"([\w\/]+)\"&gt;([\w-\*]+)&lt;\/a&gt;}/', $code, $references);
   for ($i = 0; $i < $count; ++$i) {
     $code = str_replace($references[0][$i], "<a href='" . href($references[1][$i]) . "'>" . getID(substr($references[1][$i], -4, 4)) . "</a>", $code);
   }
