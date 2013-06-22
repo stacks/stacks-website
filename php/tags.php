@@ -131,7 +131,10 @@ function convertLaTeX($tag, $file, $code) {
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . $information["name"] . " " . getIDWithLabel($label) . " <span class='named'>(" . $matches[1][$i] . ")</span>.</a>", $code);
       else
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . " <span class='named'>(" . $matches[1][$i] . ")</span>.</span>", $code);
+
     }
+    // workaround for tag 01YC (and maybe others)
+    $code = str_replace("\\begin{" . $environment . "}", "<div class='" . $information["type"] . "'>", $code);
 
     $code = str_replace("\\end{" . $environment . "}", "</div>", $code);
   }
