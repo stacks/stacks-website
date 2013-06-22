@@ -3,14 +3,14 @@
 require_once("bibliography.php");
 require_once("general.php");
 
-function parseFootnotes($string) {
-  $parts = explode("\\footnote", $string);
-
+function parseBrackets($string, $split, $callback, $start = 0) {
+  $parts = explode($split, $string);
+  
   $result = $parts[0];
 
-  // each of these strings contains a footnote at the beginning
+  // each of these strings contains a $split at the beginning
   foreach (array_slice($parts, 1) as $part) {
-    $number = 0;
+    $number = $start;
     foreach (str_split($part) as $i => $character) {
       if ($character == "{") $number++;
 
@@ -18,9 +18,8 @@ function parseFootnotes($string) {
         $number--;
 
         if ($number == 0) {
-          $part[0] = "(";
-          $part[$i] = ")";
-          $result = $result . " " . $part;
+          // callback function gets string and position of closing bracket
+          $result = $result . call_user_func($callback, $part, $i);
           break;
         }
       }
@@ -28,6 +27,34 @@ function parseFootnotes($string) {
   }
 
   return $result;
+}
+
+function encapsulateFootnote($string, $position) {
+  $string[0] = "(";
+  $string[$position] = ")";
+  $string = " " . $string;
+
+  return $string;
+}
+
+function encapsulateBoldface($string, $position) {
+  return "<strong>" . substr($string, 0, $position) . "</strong>" . substr($string, $position + 1);
+}
+
+function encapsulateItalics($string, $position) {
+  return "<em>" . substr($string, 0, $position) . "</em>" . substr($string, $position + 1);
+}
+
+function parseBoldface($string) {
+  return parseBrackets($string, "{\\bf ", "encapsulateBoldface", 1);
+}
+
+function parseFootnotes($string) {
+  return parseBrackets($string, "\\footnote", "encapsulateFootnote");
+}
+
+function parseItalics($string) {
+  return parseBrackets($string, "{\\it ", "encapsulateItalics", 1);
 }
 
 function getMacros() {
@@ -164,8 +191,8 @@ function convertLaTeX($tag, $file, $code) {
   $code = preg_replace("/\\\url\{(.*)\}/", "<a href=\"$1\">$1</a>", $code);
 
   // emphasis
-  $code = preg_replace("/\{\\\it (" . $regex . ")\}/u", "<em>$1</em>", $code);
-  $code = preg_replace("/\{\\\bf (" . $regex . ")\}/u", "<strong>$1</strong>", $code);
+  $code = parseBoldface($code);
+  $code = parseItalics($code);
   $code = preg_replace("/\{\\\em (" . $regex . ")\}/u", "<em>$1</em>", $code);
   $code = preg_replace("/\\\emph\{(" . $regex . ")\}/u", "<em>$1</em>", $code);
 
