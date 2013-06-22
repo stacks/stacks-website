@@ -6,7 +6,9 @@ body {
   margin-bottom: 50px;
   background-color: #fff;
   color: #000;
-  max-width: 1000px;
+  max-width: 975px;
+  width: 975px;
+  min-width: 975px;
   font-size: 15px;
 }
 
@@ -26,10 +28,11 @@ a.rss, a[href*="rss"] {
   background-position: center right;
   padding-right: 18px;
   min-height: 16px;
+  background-size: 16px;
 }
 
 a[href^="https://github.com"] {
-  background-image: url('../images/github-16-black.png');
+  background-image: url('../images/github.png');
 }
 
 a.rss, a[href*="pdf"] {
@@ -170,7 +173,7 @@ div#main, div#sidebar {
 }
 
 div#main {
-  width: 725px;
+  width: 700px;
   border-color: #d9d8d1;
   border-style: solid;
   border-width: 1px 1px 1px 0;
@@ -216,6 +219,10 @@ div#sidebar h2 {
 div#sidebar ul {
   margin: 5px 0 15px 5px;
   padding-left: 15px;
+}
+
+div#sidebar blockquote {
+  margin-left: 15px;
 }
 
 div#sidebar ul li {
