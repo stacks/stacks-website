@@ -1,5 +1,4 @@
 <?php
   include("../general.php");
-  
-  header("Location: " . href("tag/") . $_POST["tag"]);
+  header("Location: " . $_SERVER["HTTP_REFERER"] . "/" . $_POST["tag"]);
 ?>
