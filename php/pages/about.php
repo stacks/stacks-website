@@ -22,7 +22,7 @@ class AboutPage extends Page {
     $value .= "<p>We have a page <a href='" . href("acknowledgements") . "'>acknowledging support</a>.";
 
     $value .= "<h2>The Stacks project, its website, and tools</h2>";
-    $value .= "<p>There are currently three open source repositories tracking development for the Stacks project and its website:</p>.";
+    $value .= "<p>There are currently three open source repositories tracking development for the Stacks project and its website:</p>";
     $value .= "<ol>";
     $value .= "<li>The LaTeX files making up the Stacks project itself can be found <a href='https://github.com/stacks/stacks-project'>here</a>.";
     $value .= "<li>The website is being developed as a <a href='https://github.com/stacks/stacks-website'>separate project</a>. It is currently maintained by <a href='http://pbelmans.wordpress.com/'>Pieter Belmans</a>.";
