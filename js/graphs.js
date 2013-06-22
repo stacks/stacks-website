@@ -23,6 +23,7 @@ function displayTagInfo(node) {
   if (node.tagName != "" && (node.type != "equation" && node.type != "item"))
     content += " and it is called " + node.tagName;
   content += "<br>It is contained in the file " + node.file + ".tex";
+  content += "<br>It has " + node.numberOfChildren + " descendant tags";
   // TODO possibly improve this with real chapter name (change parse.py)
 
   displayTooltip(node, content);

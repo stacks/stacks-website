@@ -171,6 +171,7 @@ function displayTag(node) {
     tagInfo.append("Tag " + node.tag + " points to " + capitalize(node.type) + " " + node.book_id);
     if (node.tagName != "")
       tagInfo.append(": " + node.tagName);
+    tagInfo.append("<br>It has " + node.numberOfChildren + " descendant tags");
 
     tagInfo.append("<blockquote class='rendered' id='" + id + "-content'>");
     if (node.type != "section" && node.type != "subsection") {
