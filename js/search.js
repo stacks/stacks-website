@@ -3,9 +3,8 @@ $(document).ready(function() {
   $("input#keywords").focus();
 
   // insert collapse / expand all links
-  // TODO this should somehow always point to the correct files
-  $("#results").before("<a href='javascript:void(0)' onclick='$(\"#results pre\").hide();'> <img src='/new/js/jquery-treeview/images/minus.gif'> Collapse all</a>");
-  $("#results").before(" <a href='javascript:void(0)' onclick='$(\"#results pre\").show();'><img src='/new/js/jquery-treeview/images/plus.gif'> Expand all</a>");
+  $("#results").before("<a href='javascript:void(0)' onclick='$(\"#results pre\").hide();'> <img src='js/jquery-treeview/images/minus.gif'> Collapse all</a>");
+  $("#results").before(" <a href='javascript:void(0)' onclick='$(\"#results pre\").show();'><img src='js/jquery-treeview/images/plus.gif'> Expand all</a>");
 
   // insert toggle links for each result
   pre = $("#results pre");
