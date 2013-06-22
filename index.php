@@ -194,7 +194,7 @@ catch(PDOException $e) {
   </head>
 
   <body>
-  <h1><a href='<?php print href(''); ?>'>The Stacks Project</a></h1>
+    <h1><a href='<?php print href(''); ?>'>The Stacks Project</a></h1>
 
     <ul id='menu'>
       <li><a href='<?php print href(""); ?>'>home</a>
