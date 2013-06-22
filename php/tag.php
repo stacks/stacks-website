@@ -1,17 +1,14 @@
 <?php
 
-print_r($_GET);
-
 # TODO add .htaccess to remove this from indexing!
 
-# TODO fix path
-require_once("../../stacks-website-new/php/tags.php");
+require_once("tags.php");
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // read configuration file
-$config = parse_ini_file("../../stacks-website-new/config.ini"); # TODO config
+$config = parse_ini_file("../config.ini");
 
 // initialize the global database object
 try {
