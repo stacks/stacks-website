@@ -57,7 +57,7 @@ print printMathJax();
 
 
 var w = 1280,
-    h = 800,
+    h = 900,
     rx = w / 2,
     ry = h / 2,
     m0,
