@@ -8,7 +8,7 @@ require_once("../general.php");
   // TODO get a node count from the database
   $filename = "../../data/" . $_GET["tag"] . "-force.json";
   $filesize = filesize($filename);
-  $size = 500 + 10 * $filesize / 1000;
+  $size = 800 + 10 * $filesize / 1000;
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,10 +27,14 @@ require_once("../general.php");
   
     </style>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
+    <link rel='stylesheet' type='text/css' href='<?php print href("css/tag.css"); ?>'>
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<?php
+print printMathJax();
+?>
 
     <script src="<?php print href("js/graphs.js"); ?>"></script>
     <script type="text/javascript">
@@ -96,6 +100,8 @@ require_once("../general.php");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
         //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
         $("div#controls").append("</ul>");
+
+        $("div#information").css("top", "135px");
       });
     </script>
   </head>
@@ -171,8 +177,8 @@ require_once("../general.php");
           .attr("id", function(d) { if (d.depth == 0) { return "root"; } })
           .attr("r", function(d) { return 4 * Math.pow(parseInt(d.size) + 1, 1 / 3); })
           .style("fill", function(d) { colorMapping = colorHeatMax; return colorHeatMax(d); })
-          .on("mouseover", displayTagInfo)
-          .on("mouseout", hideInfo)
+          .on("mouseover", displayTagInformation)
+          .on("mouseout", hideTagInformation)
           .on("click", function(node) { openTag(node, "force"); })
           .on("contextmenu", function(node) { openTagNew(node, "force"); })
           .call(force.drag);

@@ -1,4 +1,6 @@
 <?php
+// TODO bug: in the collapsible view for 0968, 096C (and others) the tag itself is also present in the view
+// TODO titles for all three graphs
 $config = parse_ini_file("../../config.ini");
 
 require_once("../general.php");
@@ -6,7 +8,7 @@ require_once("../general.php");
   // TODO get a node count from the database
   $filename = "../../data/" . $_GET["tag"] . "-force.json";
   $filesize = filesize($filename);
-  $size = 500 + 10 * $filesize / 1000;
+  $size = 800 + 10 * $filesize / 1000;
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,10 +22,6 @@ circle.node {
   stroke-width: .5px;
 }
 
-div#graph {
-    width: <?php print $size; ?>px;
-}
-
 line.link {
   fill: none;
   stroke: #9ecae1;
@@ -35,6 +33,10 @@ line.link {
     <script src="<?php print href("js/graphs.js"); ?>"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
+    <link rel='stylesheet' type='text/css' href='<?php print href("css/tag.css"); ?>'>
+<?php
+print printMathJax();
+?>
     <script type="text/javascript">
       $(document).ready(function () {
         // scroll to where the graph will be created
@@ -43,9 +45,9 @@ line.link {
         disableContextMenu();
 
         createControls("<?php print $_GET["tag"]; ?>", "collapsible");
-        $("div#controls").append("<ul>");
-        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='expand(root);update()'>expand all nodes</a><br>");
-        $("div#controls").append("</ul>");
+        $("div#controls").append("<a href='javascript:void(0)' onclick='expand(root);update()'>expand all nodes</a><br>");
+        // we move the information div because the controls have more content
+        $("div#information").css("top", "100px");
 
         depthLegend();
       });
@@ -53,7 +55,7 @@ line.link {
   </head>
   <body>
     <script type="text/javascript">
-      var width = <?php print $size; ?>,
+      var width = <?php print $size; ?> + 500,
         height = <?php print $size; ?>,
         node,
         link,
@@ -62,11 +64,11 @@ line.link {
 function distance(d) {
   switch(d.target.nodeType) {
     case "chapter":
-      return 150;
+      return 40;
     case "section":
-      return 10;
-    case "tag":
       return 5;
+    case "tag":
+      return 2;
   }
 }
 
@@ -74,9 +76,10 @@ var global;
 
 var force = d3.layout.force()
     .on("tick", tick)
-    .charge(-30)
+    .charge(-50)
+    .gravity(0.01)
     .linkDistance(distance)
-    .size([width, height - 160]);
+    .size([width, height]);
 
 d3.select("body").append("div")
   .attr("id", "graph")
@@ -88,19 +91,11 @@ var vis = d3.select("div#graph")
     .attr("width", width)
     .attr("height", height);
 
-function displaySectionInfo(node) {
-  displayTooltip(node, "Section " + node.book_id + ": " + node.tagName);
-}
-
-function displayChapterInfo(node) {
-  displayTooltip(node, "Chapter " + node.book_id + ": " + node.tagName);
-}
-
 d3.json("<?php print href("data/tag/" . $_GET['tag'] . "/graph/collapsible"); ?>", function(json) {
   root = json;
   root.fixed = true;
-  root.x = width / 2;
-  root.y = height / 2 - 80;
+  root.x = width / 2 + 50;
+  root.y = height / 2 + 50;
   update();
 });
 
@@ -137,18 +132,6 @@ function update() {
   node.transition()
     .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.size) / 10; });
 
-  function displayInfo(node) {
-    switch (node.nodeType) {
-      case "root":
-      case "tag":
-        return displayTagInfo(node);
-      case "section":
-        return displaySectionInfo(node);
-      case "chapter":
-        return displayChapterInfo(node);
-    }
-  }
-
   // Enter any new nodes.
   node.enter().append("svg:circle")
       .attr("class", "node")
@@ -157,8 +140,9 @@ function update() {
       .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.size) / 10; })
       .style("fill", color)
       .on("click", click)
-      .on("mouseover", displayInfo)
-      .on("mouseout", hideInfo)
+      .on("contextmenu", function(node) { if (node.nodeType == "tag") { openTag(node, "collapsible"); } })
+      .on("mouseover", displayTagInformation)
+      .on("mouseout", hideTagInformation)
       .call(force.drag);
 
   // Exit any old nodes.

@@ -3,6 +3,10 @@ function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+/**
+ * these functions are part of the "light" tooltip functionality
+ */
+// general code to display a tooltip
 function displayTooltip(node, content) {
   // element exists, so we show it, while updating its position
   if ($("#" + node.tag + "-tooltip").length) {
@@ -18,20 +22,143 @@ function displayTooltip(node, content) {
   }
 }
 
+// generic tooltip for a tag
 function displayTagInfo(node) {
   content = "Tag " + node.tag + " which points to " + capitalize(node.type) + " " + node.book_id;
   if (node.tagName != "" && (node.type != "equation" && node.type != "item"))
     content += " and it is called " + node.tagName;
   content += "<br>It is contained in the file " + node.file + ".tex";
-  content += "<br>It has " + node.numberOfChildren + " descendant tags";
+  content += "<br>It has " + (node.numberOfChildren - 1) + " descendant tags";
   // TODO possibly improve this with real chapter name (change parse.py)
 
   displayTooltip(node, content);
 }
-      
+
+// in the collapsible graph we have 4 types
+function displayNodeInfo(node) {
+  switch (node.nodeType) {
+    case "root":
+    case "tag":
+      return displayTagInfo(node);
+    case "section":
+      return displaySectionInfo(node);
+    case "chapter":
+      return displayChapterInfo(node);
+  }
+}
+
+function displaySectionInfo(node) {
+  displayTooltip(node, "Section " + node.book_id + ": " + node.tagName);
+}
+
+function displayChapterInfo(node) {
+  displayTooltip(node, "Chapter " + node.book_id + ": " + node.tagName);
+}
+
 function hideInfo(node) {
   $("#" + node.tag + "-tooltip").stop().fadeOut(200);
 }
+
+/**
+ * these functions relate to the "full" tooltip functionality, with previewing
+ */
+// replace 
+function hidePreview() {
+  // hide all the preview divs
+  $("div#information div.tagPreview").stop().hide();
+}
+
+function displayPreviewExplanation() {
+  // only show the one explaining the system
+  if ($("div#information div#general").length == 0)
+    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in collapsible)<li>(right)click on nodes to see subgraphs or collapse</ul>");
+  else {
+    $("div#information div#general").text("Use the mouse, Luke");
+    $("div#information div#general").css("height", "18px");
+    $("div#information div#general").stop().show(100);
+  }
+}
+
+// the full-blown preview
+function displayPreview(node) {
+  // hide all the divs
+  $("div#information div.tagPreview").stop().hide(100);
+
+  // the id used for the tag information
+  id = "tagPreview-" + node.tag;
+
+  // check whether there is already a parsed version
+  if ($("div#" + id).length > 0) {
+    $("div#" + id).toggle(50);
+  }
+  else {
+    $("div#information").append("<div class='tagPreview' id='" + id + "'></div>");
+    tagPreview = $("div#" + id);
+    
+    tagPreview.append("Tag " + node.tag + " points to " + capitalize(node.type) + " " + node.book_id);
+    if (node.tagName != "")
+      tagPreview.append(": " + node.tagName);
+    tagPreview.append("<br>It has " + (node.numberOfChildren - 1) + " descendant tags");
+
+    tagPreview.append("<blockquote class='rendered' id='" + id + "-content'>");
+    if (node.type != "section" && node.type != "subsection") {
+      url = "../../../data/tag/" + node.tag + "/content/statement";
+      $("blockquote#" + id + "-content").load(url, function() { MathJax.Hub.Queue(["Typeset",MathJax.Hub]); }); 
+    }
+    else {
+      $("blockquote#" + id + "-content").text("Sections and subsections are not displayed in this preview due to size constraints.");
+    }
+  }
+}
+
+/**
+ * these functions delegate mouseover events to the correct handler
+ */
+function displayTagInformation(node) {
+  switch ($("input[type='radio']:checked").attr('id')) {
+    case "full":
+      if (node.nodeType) { // we are in the collapsible case
+        if (node.nodeType == "tag") // we want to preview the tag
+          displayPreview(node);
+        else
+          displayNodeInfo(node);
+      }
+      else 
+        displayPreview(node);
+      break;
+
+    case "light":
+      if (node.nodeType)
+        displayNodeInfo(node);
+      else
+        displayTagInfo(node);
+      break;
+  }
+}
+
+function hideTagInformation(node) {
+  switch ($("input[type='radio']:checked").attr('id')) {
+    case "full":
+      if (node.nodeType) { // we are in the collapsible case
+        if (node.nodeType == "tag") { // we are currently displaying a tag preview
+          hidePreview(node);
+          displayPreviewExplanation();
+        }
+        else
+          hideInfo(node);
+      }
+      else {
+        hidePreview(node);
+        displayPreviewExplanation();
+      }
+      break;
+
+    case "light":
+      hideInfo(node);
+      break;
+  }
+}
+
 
 function centerViewport() {
   x = ($(document).width() - $(window).width()) / 2;
@@ -68,7 +195,16 @@ function createControls(tag, type) {
   }
   text += ")<br>";
 
+  text += "action for tooltip: <form id='tooltipToggle'>";
+  text += "<label for='full'><input type='radio' checked='checked' name='tooltipChoice' id='full'>preview tag</label>&nbsp&nbsp;&nbsp&nbsp;";
+  text += "<label for='light'><input type='radio' name='tooltipChoice' id='light'>only tag information</label>";
+  text += "</form>";
+
   $("div#controls").append(text);
+
+  // for the tag preview
+  $("body").append("<div id='information'>");
+  displayPreviewExplanation();
 }
 
 function disableContextMenu() {
