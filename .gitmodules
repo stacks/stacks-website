@@ -1,18 +1,18 @@
 [submodule "js/MathJax"]
 	path = js/MathJax
-	url = git://github.com/mathjax/MathJax.git
+	url = git://github.com/mathjax/MathJax
 [submodule "js/XyJax"]
 	path = js/XyJax
-	url = git://github.com/sonoisa/XyJax.git
+	url = git://github.com/sonoisa/XyJax
 [submodule "js/jquery-treeview"]
 	path = js/jquery-treeview
-	url = git://github.com/jzaefferer/jquery-treeview.git
+	url = git://github.com/jzaefferer/jquery-treeview
 [submodule "php/simplepie"]
 	path = php/simplepie
-	url = git://github.com/simplepie/simplepie.git
+	url = git://github.com/simplepie/simplepie
 [submodule "php/markdown"]
 	path = php/markdown
-	url = git://github.com/drdrang/php-markdown-extra-math.git
+	url = git://github.com/drdrang/php-markdown-extra-math
 [submodule "js/EpicEditor"]
 	path = js/EpicEditor
-	url = git@github.com:OscarGodson/EpicEditor
+	url = git://github.com/OscarGodson/EpicEditor
