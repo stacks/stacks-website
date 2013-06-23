@@ -10,8 +10,8 @@ Below you will find rough instructions to create a local copy of the Stacks proj
 
 1. apache with mod-rewrite and php enabled
 2. unix command line tools, in particular make, python, and git
-2. a directory `base`
-3. `http://localhost:8080` points to `base/stacks-website`
+3. a directory `base`
+4. the url `http://localhost:8080` points to `base/stacks-website`
 
 Here are the instructions:
 
@@ -29,12 +29,13 @@ Here are the instructions:
 
 7. change directories to `stacks-tools` and create the database by calling `python create.py`
 
-8. back in the `base` directory excute the following commands:
+8. back in the `base` directory execute the following commands:
 	mkdir stacks-website/database
 	chmod 0777 stacks-website/database
 	mv stacks-tools/stacks.sqlite stacks-website/database
 	chmod 0777 stacks-website/database/stacks.sqlite
-This will create a directory with the database in it with the correct permissions for the webserver.
+This will create a directory with the database in it with the correct permissions for the webserver. To set permissions for the cache correctly execute
+	chmod 0777 stacks-website/php/cache
 
 9. change directory into stacks-website and edit the file `conf.ini` setting database = "database/stacks.sqlite", directory = "", and project = "/path/to/base/stacks-website/tex"
 
