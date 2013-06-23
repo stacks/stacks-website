@@ -2,7 +2,7 @@
 
 function href($path) {
   global $config;
-  return "/" . $config["directory"] . "/" . $path;
+  return $config["directory"] . "/" . $path;
 }
 
 function parseAccents($text) {
