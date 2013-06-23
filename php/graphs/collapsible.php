@@ -8,7 +8,7 @@ require_once("../general.php");
   // TODO get a node count from the database
   $filename = "../../data/" . $_GET["tag"] . "-force.json";
   $filesize = filesize($filename);
-  $size = 800 + 10 * $filesize / 1000;
+  $size = 900 + 5 * $filesize / 1000;
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,6 +32,7 @@ line.link {
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="<?php print href("js/graphs.js"); ?>"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <title>Stacks Project &mdash; Collapsible dependency graph for tag <?php print htmlentities($_GET["tag"]); ?></title>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/tag.css"); ?>'>
 <?php
@@ -46,16 +47,13 @@ print printMathJax();
 
         createControls("<?php print $_GET["tag"]; ?>", "collapsible");
         $("div#controls").append("<a href='javascript:void(0)' onclick='expand(root);update()'>expand all nodes</a><br>");
-        // we move the information div because the controls have more content
-        $("div#information").css("top", "100px");
-
         depthLegend();
       });
     </script>
   </head>
   <body>
     <script type="text/javascript">
-      var width = <?php print $size; ?> + 500,
+      var width = <?php print $size; ?>,
         height = <?php print $size; ?>,
         node,
         link,
@@ -83,8 +81,8 @@ var force = d3.layout.force()
 
 d3.select("body").append("div")
   .attr("id", "graph")
-  .attr("width", width)
-  .attr("height", height);
+  .style("width", width + "px")
+  .style("height", height + "px");
 
 var vis = d3.select("div#graph")
     .append("svg")

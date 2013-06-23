@@ -17,6 +17,7 @@ print printMathJax();
 ?>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/tag.css"); ?>'>
+    <title>Stacks Project &mdash; Cluster graph for tag <?php print htmlentities($_GET["tag"]); ?></title>
     <style type="text/css">
       body {
         width: 1100px;

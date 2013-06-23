@@ -8,7 +8,7 @@ require_once("../general.php");
   // TODO get a node count from the database
   $filename = "../../data/" . $_GET["tag"] . "-force.json";
   $filesize = filesize($filename);
-  $size = 800 + 10 * $filesize / 1000;
+  $size = 900 + 10 * $filesize / 1000;
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,6 +28,7 @@ require_once("../general.php");
     </style>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/tag.css"); ?>'>
+    <title>Stacks Project &mdash; Force-directed graph for tag <?php print htmlentities($_GET["tag"]); ?></title>
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -100,8 +101,6 @@ print printMathJax();
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
         //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
         $("div#controls").append("</ul>");
-
-        $("div#information").css("top", "135px");
       });
     </script>
   </head>
@@ -119,8 +118,8 @@ print printMathJax();
       d3.select("body").append("div").attr("id", "graph");
       
       var svg = d3.select("div#graph").append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", width + "px")
+        .attr("height", height + "px")
 
       var global = Array(); // this catches some things that need to be available globally
       

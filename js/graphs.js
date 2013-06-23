@@ -71,7 +71,7 @@ function hidePreview() {
 function displayPreviewExplanation() {
   // only show the one explaining the system
   if ($("div#information div#general").length == 0)
-    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in collapsible)<li>(right)click on nodes to see subgraphs or collapse</ul>");
+    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in the cluster layout)<li>(right)click on nodes to see subgraphs or collapse</ul>");
   else {
     $("div#information div#general").text("Use the mouse, Luke");
     $("div#information div#general").css("height", "18px");
@@ -181,7 +181,7 @@ function getLinkTo(tag, type) {
 function createControls(tag, type) {
   // the controls for the graph
   $("body").append("<div id='controls'></div>");
-  var text = "Tag " + tag + " (<a href='../../" + tag + "'>show tag</a>, ";
+  var text = "<p>Tag " + tag + " (<a href='../../" + tag + "'>show tag</a>, ";
   switch (type) {
     case "cluster":
       text += getLinkTo(tag, "collapsible") + ", " + getLinkTo(tag, "force");
@@ -193,9 +193,9 @@ function createControls(tag, type) {
       text += getLinkTo(tag, "cluster") + ", " + getLinkTo(tag, "collapsible");
       break;
   }
-  text += ")<br>";
+  text += ")</p>";
 
-  text += "action for tooltip: <form id='tooltipToggle'>";
+  text += "Action for tooltip: <form id='tooltipToggle'>";
   text += "<label for='full'><input type='radio' checked='checked' name='tooltipChoice' id='full'>preview tag</label>&nbsp&nbsp;&nbsp&nbsp;";
   text += "<label for='light'><input type='radio' name='tooltipChoice' id='light'>only tag information</label>";
   text += "</form>";
