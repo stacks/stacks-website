@@ -59,6 +59,14 @@ if (!tagExists($_GET["tag"])) {
 
 $tag = getTag($_GET["tag"]);
 
+// if a tag is an equation we remove its number
+function isNotLineWithLabel($line) {
+  return strncmp($line, "\label", 6);
+}
+if ($tag["type"] == "equation") {
+  $tag["value"] = implode("\n", array_filter(explode("\n", $tag["value"]), "isNotLineWithLabel"));
+}
+
 if (isset($_GET["format"]) and $_GET["format"]) {
   switch ($type) {
     case "full":
