@@ -51,8 +51,16 @@ from the `stacks-website` directory
 	ln -s ../../../js/XyJax/extensions/fp.js js/MathJax/extensions/fp.js
 from the `stacks-website` directory
 
+13. change directories to `stacks-tools` and update the database by calling `python update.py` as well as `python macros.py`
+
+14. create a directory `stacks-website/data` by executing `mkdir stacks-website/data`, change directories to `stacks-tools`, and create the graph files by calling `python graphs.py`
+
+Please contact the maintainer or create an issue if you encounter problems.
+
+
 Updating the website
 --------------------
-1. Update the `tex/` folder using `git pull` in `tex/`
 
-2. Run steps 4 and 8 of the above
+1. Update the `stacks-website/tex` folder using `git pull`
+2. run `make tags` as in step 5 above
+3. Run steps 13 and 14 above
