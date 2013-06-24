@@ -12,7 +12,7 @@ $config = parse_ini_file("../config.ini");
 
 // initialize the global database object
 try {
-  $database = new PDO("sqlite:" . $config["database"]);
+  $database = new PDO("sqlite:../" . $config["database"]);
 }
 catch(PDOException $e) {
   echo $e->getMessage();
