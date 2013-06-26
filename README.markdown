@@ -9,9 +9,11 @@ Configuration
 Below you will find rough instructions to create a local copy of the Stacks project website on your system. Requirements:
 
 1. apache with mod-rewrite and php enabled
-2. unix command line tools, in particular make, python, and git
-3. a directory `base`
-4. the url `http://localhost:8080` points to `base/stacks-website`
+2. php-sqlite
+3. unix command line tools, in particular make, python, and git
+4. a recent version of texlive (2012 or later is fine)
+5. a directory `base`
+6. the url `http://localhost:8080` points to `base/stacks-website`
 
 Here are the instructions:
 
