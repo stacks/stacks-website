@@ -57,14 +57,11 @@ class StatisticsPage extends Page {
     if (isPhantom($this->tag["label"]))
       $this->tag["type"] = "chapter";
 
-    $sql = $this->db->prepare("SELECT key, value FROM statistics WHERE key LIKE :tag");
-    $sql->bindValue(":tag", $tag . "%");
+    $sql = $this->db->prepare("SELECT tag, node_count, edge_count, total_edge_count, chapter_count, section_count, use_count, indirect_use_count FROM graphs WHERE tag = :tag");
+    $sql->bindParam(":tag", $tag);
 
     if ($sql->execute())
-      $result = $sql->fetchAll();
-
-    foreach ($result as $row)
-      $this->statistics[substr($row["key"], 5)] = $row["value"];
+      $this->graphs = $sql->fetch();
   }
 
   public function getHead() {
@@ -100,17 +97,17 @@ class StatisticsPage extends Page {
     $referencingTags = getReferencingTags($this->tag["tag"]);
     $referredTags = getReferredTags($this->tag["tag"]);
 
-    $output .= printStatisticsRow("number of nodes", $this->statistics["node count"]);
-    $output .= printStatisticsRow("number of edges", $this->statistics["edge count"], "(ignoring multiplicity)");
-    $output .= printStatisticsRow("", $this->statistics["total edge count"], "(with multiplicity)");
-    $output .= printStatisticsRow("number of chapters used", $this->statistics["chapter count"]);
-    $output .= printStatisticsRow("number of sections used", $this->statistics["section count"]);
+    $output .= printStatisticsRow("number of nodes", $this->graphs["node_count"]);
+    $output .= printStatisticsRow("number of edges", $this->graphs["edge_count"], "(ignoring multiplicity)");
+    $output .= printStatisticsRow("", $this->graphs["total_edge_count"], "(with multiplicity)");
+    $output .= printStatisticsRow("number of chapters used", $this->graphs["chapter_count"]);
+    $output .= printStatisticsRow("number of sections used", $this->graphs["section_count"]);
     $output .= printStatisticsRow("number of tags directly used", count($referredTags));
     if (count($referencingTags) > 0)
-      $output .= printStatisticsRow("number of tags using this tag", $this->statistics["use count"], "(directly, see <a href='#referencing'>tags referencing this result</a>)");
+      $output .= printStatisticsRow("number of tags using this tag", $this->graphs["use_count"], "(directly, see <a href='#referencing'>tags referencing this result</a>)");
     else
-      $output .= printStatisticsRow("number of tags using this tag", $this->statistics["use count"], "(directly)");
-    $output .= printStatisticsRow("", $this->statistics["indirect use count"], "(both directly and indirectly)");
+      $output .= printStatisticsRow("number of tags using this tag", $this->graphs["use_count"], "(directly)");
+    $output .= printStatisticsRow("", $this->graphs["indirect_use_count"], "(both directly and indirectly)");
     $output .= "</table>";
 
     if (count($referencingTags) > 0) {
