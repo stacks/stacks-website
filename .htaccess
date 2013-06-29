@@ -16,6 +16,8 @@ RewriteRule data/tag/(.+)/graph/cluster$ data/$1-tree.json [L]
 RewriteRule data/tag/(.+)/graph/collapsible$ data/$1-packed.json [L]
 RewriteRule data/tag/(.+)/graph/force$ data/$1-force.json [L]
 # TODO make data/ directory inaccessible
+RewriteRule download/(.+)$ tex/tags/tmp/$1 [L]
+# TODO make sure this is what we want
 RewriteRule markdown$ index.php?page=markdown [L]
 RewriteRule recent-comments$ index.php?page=recent-comments
 RewriteRule recent-comments/(.+)$ index.php?page=recent-comments&number=$1 [L]

@@ -21,8 +21,7 @@ class IndexPage extends Page {
     $value .= "<p>The Stacks project is a collaborative effort. There is a <a href='https://github.com/stacks/stacks-project/blob/master/CONTRIBUTORS'>list of people who have contributed so far</a>. If you would like to know how to participate more can be found at the <a href='" . href("contribute") . "'>contribute page</a>. To informally comment on the Stacks project visit the <a href='" . $config["blog"] . "'>blog</a>.</p>";
 
     $value .= "<h2><a href='" . href("browse") . "'>Browsing and downloads</a></h2>";
-    $value .= "<p>The entire project in <a href='#'>one pdf file</a>. You can also <a href='" . href("browse") . "'>browse the project online</a>, and there is a tree view which starts at <a href='" . href("chapter/1") . "'>Chapter 1</a>. To download the source files there is <a href='https://github.com/stacks/stacks-project/'>stacks/stacks-project</a> at GitHub.</p>";
-    // TODO fix URL of the pdf
+    $value .= "<p>The entire project in <a href='download/book.pdf'>one pdf file</a>. You can also <a href='" . href("browse") . "'>browse the project online</a>, and there is a tree view which starts at <a href='" . href("chapter/1") . "'>Chapter 1</a>. To download the source files there is <a href='https://github.com/stacks/stacks-project/'>stacks/stacks-project</a> at GitHub.</p>";
 
     $value .= "<h2><a href='" . href("tag") . "'>Looking up tags</a></h2>";
     $value .= "<p>You can search the Stacks project by keywords:";
