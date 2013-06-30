@@ -20,7 +20,7 @@ print printMathJax();
     <title>Stacks Project &mdash; Cluster graph for tag <?php print htmlentities($_GET["tag"]); ?></title>
     <style type="text/css">
       body {
-        width: 1100px;
+        width: 1300px;
       }
 
       div#graph {
@@ -56,7 +56,7 @@ print printMathJax();
       });
 
 
-var w = 1280,
+var w = 1600,
     h = 900,
     rx = w / 2,
     ry = h / 2,
