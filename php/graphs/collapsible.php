@@ -30,8 +30,8 @@ line.link {
 
     </style>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="<?php print href("js/graphs.js"); ?>"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="<?php print href("js/graphs.js"); ?>"></script>
     <title>Stacks Project &mdash; Collapsible dependency graph for tag <?php print htmlentities($_GET["tag"]); ?></title>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/tag.css"); ?>'>
@@ -84,10 +84,13 @@ d3.select("body").append("div")
   .style("width", width + "px")
   .style("height", height + "px");
 
-var vis = d3.select("div#graph")
+var svg = d3.select("div#graph")
     .append("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .call(zoom);
+
+var vis = svg.append("svg:g");
 
 d3.json("<?php print href("data/tag/" . $_GET['tag'] . "/graph/collapsible"); ?>", function(json) {
   root = json;

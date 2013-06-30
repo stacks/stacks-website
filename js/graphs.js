@@ -253,3 +253,13 @@ function namedClass(node) {
     return "unnamed";
 }
 
+// zoom event for force-directed and collapsible
+var zoom = d3.behavior.zoom()
+  .scaleExtent([0.2, 2])
+  .on("zoom", redraw);
+
+// redraw the svg (or rather the <g> inside <svg>) on a zoom event
+function redraw() {
+  vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+}
+

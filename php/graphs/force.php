@@ -116,10 +116,13 @@ print printMathJax();
         .size([width, height]);
 
       d3.select("body").append("div").attr("id", "graph");
-      
+
       var svg = d3.select("div#graph").append("svg")
         .attr("width", width + "px")
         .attr("height", height + "px")
+        .call(zoom)
+
+      var vis = svg.append("svg:g");
 
       var global = Array(); // this catches some things that need to be available globally
       
@@ -164,12 +167,12 @@ print printMathJax();
           .links(graph.links)
           .start();
 
-        var link = svg.selectAll(".link")
+        var link = vis.selectAll(".link")
           .data(graph.links)
           .enter().append("line")
           .attr("class", "link")
 
-        var node = svg.selectAll(".node")
+        var node = vis.selectAll(".node")
           .data(graph.nodes)
           .enter().append("circle")
           .attr("class", namedClass)
