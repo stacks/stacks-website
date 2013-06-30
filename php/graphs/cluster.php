@@ -18,6 +18,8 @@ print printMathJax();
     <link rel='stylesheet' type='text/css' href='<?php print href("css/graphs.css"); ?>'>
     <link rel='stylesheet' type='text/css' href='<?php print href("css/tag.css"); ?>'>
     <title>Stacks Project &mdash; Cluster graph for tag <?php print htmlentities($_GET["tag"]); ?></title>
+    <link rel='icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
+    <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
     <style type="text/css">
       body {
         width: 1300px;
