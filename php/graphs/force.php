@@ -97,6 +97,7 @@ print printMathJax();
         disableContextMenu();
 
         createControls("<?php print $_GET["tag"]; ?>", "force");
+        $("div#controls").append(createTooltipToggle());
         $("div#controls").append("<ul>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeatMax();'>view as heatmap (depth)</a><br>");
         $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeatMin();'>view as heatmap (height)</a><br>");

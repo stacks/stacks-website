@@ -196,16 +196,21 @@ function createControls(tag, type) {
   }
   text += ")</p>";
 
-  text += "Action for tooltip: <form id='tooltipToggle'>";
-  text += "<label for='full'><input type='radio' checked='checked' name='tooltipChoice' id='full'>preview tag</label>&nbsp&nbsp;&nbsp&nbsp;";
-  text += "<label for='light'><input type='radio' name='tooltipChoice' id='light'>only tag information</label>";
-  text += "</form>";
-
   $("div#controls").append(text);
 
   // for the tag preview
   $("body").append("<div id='information'>");
   displayPreviewExplanation();
+}
+
+function createTooltipToggle() {
+  text = "";
+  text += "Action for tooltip: <form id='tooltipToggle'>";
+  text += "<label for='full'><input type='radio' checked='checked' name='tooltipChoice' id='full'>preview tag</label>&nbsp&nbsp;&nbsp&nbsp;";
+  text += "<label for='light'><input type='radio' name='tooltipChoice' id='light'>only tag information</label>";
+  text += "</form>";
+
+  return text;
 }
 
 function disableContextMenu() {

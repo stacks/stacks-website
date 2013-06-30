@@ -48,6 +48,7 @@ print printMathJax();
         disableContextMenu();
 
         createControls("<?php print $_GET["tag"]; ?>", "collapsible");
+        $("div#controls").append(createTooltipToggle());
         $("div#controls").append("<a href='javascript:void(0)' onclick='expand(root);update()'>expand all nodes</a><br>");
         depthLegend();
       });
