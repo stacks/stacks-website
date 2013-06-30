@@ -109,7 +109,8 @@ function parseReferences($string) {
 }
 
 function stripChapter($id) {
-  return implode(array_splice(explode(".", $id), 1), ".");
+  $pieces = explode(".", $id);
+  return implode(array_splice($pieces, 1), ".");
 }
 
 class TagViewPage extends Page {
