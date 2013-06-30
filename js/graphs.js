@@ -16,7 +16,7 @@ function displayTooltip(node, content) {
   else {
     var tooltip = $("<div>", {class: "tooltip", id: node.tag + "-tooltip"})
       .append("<p>" + content)
-      .css({position: "absolute", top: node.y - 10 + "px", left: node.x + 20 + "px"});
+      .css({position: "absolute", top: node.y - 10 + "px", left: node.x + 20 + "px", with: "auto"});
 
     $('body').append(tooltip);
   }
@@ -71,7 +71,7 @@ function hidePreview() {
 function displayPreviewExplanation() {
   // only show the one explaining the system
   if ($("div#information div#general").length == 0)
-    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in the cluster layout)<li>(right)click on nodes to see subgraphs or collapse</ul>");
+    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in the cluster layout)<li>(right)click on nodes to see subgraphs or collapse<li>zoom and move around by scrolling and dragging</ul>");
   else {
     $("div#information div#general").text("Use the mouse, Luke");
     $("div#information div#general").css("height", "18px");
