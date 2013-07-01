@@ -104,7 +104,7 @@ function displayPreview(node) {
     if (node.type != "section" && node.type != "subsection") {
       $("blockquote#" + id + "-content").append("<p class='loading'>loading the tag preview</p>");
       url = "../../../data/tag/" + node.tag + "/content/statement";
-      $("blockquote#" + id + "-content").append("<div>").load(url, function() { MathJax.Hub.Queue(["Typeset", MathJax.Hub]); }); 
+      $("blockquote#" + id + "-content").append("<div>").load(url, function() { MathJax.Hub.Queue(["Typeset", MathJax.Hub]); $("blockquote#" + id + "-content").height("auto"); }); 
     }
     else {
       $("blockquote#" + id + "-content").text("Sections and subsections are not displayed in this preview due to size constraints.");
@@ -117,7 +117,15 @@ function displayPreview(node) {
  */
 function displayTagInformation(node) {
   switch ($("input[type='radio']:checked").attr('id')) {
+    case "light":
+      if (node.nodeType)
+        displayNodeInfo(node);
+      else
+        displayTagInfo(node);
+      break;
+
     case "full":
+    default:
       if (node.nodeType) { // we are in the collapsible case
         if (node.nodeType == "tag") // we want to preview the tag
           displayPreview(node);
@@ -128,18 +136,16 @@ function displayTagInformation(node) {
         displayPreview(node);
       break;
 
-    case "light":
-      if (node.nodeType)
-        displayNodeInfo(node);
-      else
-        displayTagInfo(node);
-      break;
   }
 }
 
 function hideTagInformation(node) {
   switch ($("input[type='radio']:checked").attr('id')) {
+    case "light":
+      hideInfo(node);
+      break;
     case "full":
+    default:
       if (node.nodeType) { // we are in the collapsible case
         if (node.nodeType == "tag") { // we are currently displaying a tag preview
           hidePreview(node);
@@ -152,10 +158,6 @@ function hideTagInformation(node) {
         hidePreview(node);
         displayPreviewExplanation();
       }
-      break;
-
-    case "light":
-      hideInfo(node);
       break;
   }
 }
