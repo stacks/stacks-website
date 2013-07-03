@@ -8,15 +8,18 @@ function capitalize(s) {
  */
 // general code to display a tooltip
 function displayTooltip(node, content) {
+  var position = {top: d3.event.y + document.body.scrollTop - 10 + "px", left: d3.event.x + document.body.scrollLeft + 20 + "px"};
+
   // element exists, so we show it, while updating its position
   if ($("#" + node.tag + "-tooltip").length) {
-    $("#" + node.tag + "-tooltip").css({top: node.y - 10 + "px", left: node.x + 20 + "px"}).stop().fadeIn(100);
+    $("#" + node.tag + "-tooltip").css(position).stop().fadeIn(100);
   }
   // otherwise we create a new tooltip
   else {
     var tooltip = $("<div>", {class: "tooltip", id: node.tag + "-tooltip"})
       .append("<p>" + content)
-      .css({position: "absolute", top: node.y - 10 + "px", left: node.x + 20 + "px", with: "auto"});
+      .css({position: "absolute", width: "auto"})
+      .css(position);
 
     $('body').append(tooltip);
   }
