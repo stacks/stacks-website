@@ -74,14 +74,29 @@ function getMacros() {
   return array();
 }
 
+/* This function is only used to
+  (1) parse the value of a tag entry in the tags database table
+  (2) spit out LaTeX code to viewable online in html on tagview page
+  (3) to be further parsed by convertLaTeX for rendering with xyjax/mathjax
+*/
 function preprocessCode($code) {
   // remove irrelevant new lines at the end
   $code = trim($code);
-  // escape stuff
+
+  /* escape stuff; this does the following:
+    '&' (ampersand) becomes '&amp;'
+    '"' (double quote) becomes '&quot;' when ENT_NOQUOTES is not set.
+    "'" (single quote) becomes '&#039;' (or &apos;) only when ENT_QUOTES is set.
+    '<' (less than) becomes '&lt;'
+    '>' (greater than) becomes '&gt;'
+  */
   $code = htmlentities($code);
 
-  // but links should work: tag links are made up from alphanumeric characters, slashes, dashes and underscores, while the LaTeX label contains only alphanumeric characters and dashes
-  $code = preg_replace('/&lt;a href=&quot;\/([A-Za-z0-9\/\-]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . href("") . '$1">$2</a>', $code);
+  /* but links should work:
+    tag links use alphanumeric characters, slashes, dashes and underscores,
+    LaTeX label contains only alphanumeric characters and dashes
+  */
+  $code = preg_replace('/&lt;a href=&quot;([A-Za-z0-9\/\-]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/', '<a href="' . href("") . '$1">$2</a>', $code);
 
   return $code;
 }
@@ -133,8 +148,6 @@ function convertLaTeX($tag, $file, $code) {
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . " <span class='named'>(" . $matches[1][$i] . ")</span>.</span>", $code);
 
     }
-    // workaround for tag 01YC (and maybe others)
-    $code = str_replace("\\begin{" . $environment . "}", "<div class='" . $information["type"] . "'>", $code);
 
     $code = str_replace("\\end{" . $environment . "}", "</div>", $code);
   }
@@ -227,16 +240,16 @@ function convertLaTeX($tag, $file, $code) {
 
   // enumerates etc.
   $code = str_replace("\\begin{enumerate}\n", "<ol>", $code);
-  $code = str_replace("\\end{enumerate}", "</ol>", $code);
+  $code = str_replace("\\end{enumerate}", "</ol><p>", $code);
   $code = str_replace("\\begin{itemize}\n", "<ul>", $code);
-  $code = str_replace("\\end{itemize}", "</ul>", $code);
+  $code = str_replace("\\end{itemize}", "</ul><p>", $code);
   $code = preg_replace("/\\\begin{list}(.*)\n/", "<ul>", $code); // unfortunately I have to ignore information in here
   $code = str_replace("\\end{list}", "</ul>", $code);
   $code = preg_replace("/\\\item\[(" . $regex . ")\]/u", "<li>", $code);
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
-  $code = str_replace("\n\n", "<p>", $code);
+  $code = str_replace("\n\n", "\n<p>", $code);
   $code = str_replace("\\smallskip", "", $code);
   $code = str_replace("\\medskip", "", $code);
   $code = str_replace("\\noindent", "", $code);
@@ -263,7 +276,8 @@ function convertLaTeX($tag, $file, $code) {
       $line = str_replace('&gt;', '>', $line);
       $line = str_replace('&lt;', '<', $line);
       $line = str_replace('&amp;', '&', $line);
-      
+     
+      // We replace links in math mode by plain text as mathjax cannot handle <a href=""></a>
       $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $line, $matches);
       for ($j = 0; $j < $count; $j++) {
         $line = str_replace($matches[0][$j], getID(substr($matches[1][$j], -4)), $line);
@@ -271,10 +285,11 @@ function convertLaTeX($tag, $file, $code) {
     }
   }
   $code = implode("\n", $lines);
-  
-  $count = preg_match_all('/\\\ref{&lt;a href=\"([\w\/]+)\"&gt;([\w-\*]+)&lt;\/a&gt;}/', $code, $references);
+ 
+  // We replace the text in a link (definition-strict) by its ID (Definition 11.13.3)
+  $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $code, $references);
   for ($i = 0; $i < $count; ++$i) {
-    $code = str_replace($references[0][$i], "<a href='" . href($references[1][$i]) . "'>" . getID(substr($references[1][$i], -4, 4)) . "</a>", $code);
+    $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . getID(substr($references[1][$i], -4)) . "</a>", $code);
   }
 
   // fix macros
