@@ -456,7 +456,6 @@ class TagViewPage extends Page {
       $value .= "<p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a> and is located in <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> (see <a href='#'>updates</a> for more information)."; // a page on the updating process
       $value .= "<pre><code>";
       $code = preprocessCode($this->tag["value"]);
-      $code = preg_replace("/&lt;a href=&quot;tag\/([A-Za-z0-9\/\-]+)&quot;&gt;([A-Za-z0-9\-]+)&lt;\/a&gt;/", '<a href="' . href("tag/") . '$1">$2</a>', $code);
       $value .= $code;
       $value .= "</code></pre>";
     }
