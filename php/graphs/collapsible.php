@@ -41,6 +41,13 @@ line.link {
 print printMathJax();
 ?>
     <script type="text/javascript">
+      function expandNodes(e) {
+        expand(root);
+        update();
+
+        return false; // prevent event propagation
+      }
+
       $(document).ready(function () {
         // scroll to where the graph will be created
         setTimeout(centerViewport, 100);
@@ -49,7 +56,9 @@ print printMathJax();
 
         createControls("<?php print $_GET["tag"]; ?>", "collapsible");
         $("div#controls").append(createTooltipToggle());
-        $("div#controls").append("<a href='javascript:void(0)' onclick='expand(root);update()'>expand all nodes</a><br>");
+        $("div#controls").append("<a href='javascript:void(0)' id='expandNodes'>expand all nodes</a><br>");
+        $("div#controls a#expandNodes").click(expandNodes);
+
         depthLegend();
       });
     </script>

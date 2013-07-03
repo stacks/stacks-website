@@ -77,7 +77,7 @@ function displayPreviewExplanation() {
     $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in the cluster layout)<li>(right)click on nodes to see subgraphs or collapse<li>zoom and move around by scrolling and dragging</ul>");
   else {
     $("div#information div#general").text("Use the mouse, Luke");
-    $("div#information div#general").css("height", "18px");
+    $("div#information div#general").height("18px");
     $("div#information div#general").stop().show(100);
   }
 }
@@ -143,8 +143,8 @@ function displayTagInformation(node) {
       else 
         displayPreview(node);
       break;
-
   }
+  return false;
 }
 
 function hideTagInformation(node) {
@@ -191,7 +191,7 @@ function getLinkTo(tag, type) {
 
 function createControls(tag, type) {
   // the controls for the graph
-  $("body").append("<div id='controls'></div>");
+  $("body").append("<div id='controls' style='overflow: hidden; min-height: 20px'></div>");
   var text = "<p>Tag " + tag + " (<a href='../../" + tag + "'>show tag</a>, ";
   switch (type) {
     case "cluster":
@@ -207,6 +207,14 @@ function createControls(tag, type) {
   text += ")</p>";
 
   $("div#controls").append(text);
+
+  // add event listener to minimize the controls
+  $("div#controls").click(function(e) {
+    if ($("div#controls").height() == "20")
+      $("div#controls").height("auto");
+    else
+      $("div#controls").height("20px");
+  });
 
   // for the tag preview
   $("body").append("<div id='information'>");

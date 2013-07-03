@@ -62,25 +62,31 @@ print printMathJax();
         }
       }
 
-      function toggleHeatMin() {
+      function toggleHeatMin(e) {
         global["node"].style("fill", global["colorHeatMin"]);
 
         colorMapping = global["colorHeatMin"];
         toggleLegend();
+
+        e.stopPropagation();
       }
       
-      function toggleHeatMax() {
+      function toggleHeatMax(e) {
         global["node"].style("fill", global["colorHeatMax"]);
 
         colorMapping = global["colorHeatMax"];
         toggleLegend();
+
+        e.stopPropagation();
       }
 
-      function toggleType() {
+      function toggleType(e) {
         global["node"].style("fill", global["colorType"]);
 
         colorMapping = global["colorType"];
         toggleLegend();
+
+        e.stopPropagation();
       }
 
       function toggleChapters() {
@@ -99,9 +105,9 @@ print printMathJax();
         createControls("<?php print $_GET["tag"]; ?>", "force");
         $("div#controls").append(createTooltipToggle());
         $("div#controls").append("<ul>");
-        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeatMax();'>view as heatmap (depth)</a><br>");
-        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleHeatMin();'>view as heatmap (height)</a><br>");
-        $("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleType();'>view types</a>");
+        $("div#controls ul").append($("<li>").append($("<li><a href='javascript:void(0)'>view as heatmap (depth)</a>").click(toggleHeatMax)));
+        $("div#controls ul").append($("<li>").append($("<a href='javascript:void(0)'>view as heatmap (height)</a>").click(toggleHeatMin)));
+        $("div#controls ul").append($("<li>").append($("<a href='javascript:void(0)'>view types</a>").click(toggleType)));
         //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
         $("div#controls").append("</ul>");
       });
