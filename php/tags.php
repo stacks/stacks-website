@@ -234,7 +234,7 @@ function convertLaTeX($tag, $file, $code) {
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
-  $code = str_replace("\n\n", "<p>", $code);
+  $code = str_replace("\n\n", "\n<p>", $code);
   $code = str_replace("\\smallskip", "", $code);
   $code = str_replace("\\medskip", "", $code);
   $code = str_replace("\\noindent", "", $code);
