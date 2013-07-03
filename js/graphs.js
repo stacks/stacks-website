@@ -104,7 +104,12 @@ function displayPreview(node) {
     if (node.type != "section" && node.type != "subsection") {
       $("blockquote#" + id + "-content").append("<p class='loading'>loading the tag preview</p>");
       url = "../../../data/tag/" + node.tag + "/content/statement";
-      $("blockquote#" + id + "-content").append("<div>").load(url, function() { MathJax.Hub.Queue(["Typeset", MathJax.Hub]); $("blockquote#" + id + "-content").height("auto"); }); 
+      $("blockquote#" + id + "-content").append("<div>").load(url,
+        function() {
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+          $("div#" + id).height("auto");
+          $("blockquote#" + id + "-content").height("auto");
+      }); 
     }
     else {
       $("blockquote#" + id + "-content").text("Sections and subsections are not displayed in this preview due to size constraints.");
