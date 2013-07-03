@@ -282,8 +282,19 @@ var zoom = d3.behavior.zoom()
   .scaleExtent([0.2, 2])
   .on("zoom", redraw);
 
+var numberOfDrags = 0;
+
 // redraw the svg (or rather the <g> inside <svg>) on a zoom event
 function redraw() {
-  vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+  // only do drag when dragging on the background
+  console.log(d3.event.sourceEvent.srcElement.tagName);
+  if (d3.event.sourceEvent.srcElement.tagName == "svg") {
+    numberOfDrags++;
+
+    if (numberOfDrags > 10)
+      vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+  }
+  else
+    numberOfDrags = 0;
 }
 
