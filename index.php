@@ -124,14 +124,15 @@ try {
     case "statistics":
       // TODO some checking of this value
       if(!empty($_GET["tag"])) {
-        if (tagExists($_GET["tag"])) {
-          if (tagIsActive($_GET["tag"]))
-            $page = new StatisticsPage($database, $_GET["tag"]);
+	$tag = strtoupper($_GET['tag']);
+        if (tagExists($tag)) {
+          if (tagIsActive($tag))
+            $page = new StatisticsPage($database, $tag);
           else
-            $page = new TagDeletedPage($database, $_GET["tag"]); // TODO something more reasonable
+            $page = new TagDeletedPage($database, $tag); // TODO something more reasonable
         }
         else
-          $page = new MissingTagPage($database, $_GET["tag"]); // TODO something more reasonable
+          $page = new MissingTagPage($database, $tag); // TODO something more reasonable
       }
       else
         $page = new TagLookupPage($database);
@@ -140,14 +141,15 @@ try {
     case "tag":
       // TODO some checking of this value
       if(!empty($_GET["tag"])) {
-        if (tagExists($_GET["tag"])) {
-          if (tagIsActive($_GET["tag"]))
-            $page = new TagViewPage($database, $_GET["tag"]);
+	$tag = strtoupper($_GET['tag']);
+        if (tagExists($tag)) {
+          if (tagIsActive($tag))
+            $page = new TagViewPage($database, $tag);
           else
-            $page = new TagDeletedPage($database, $_GET["tag"]);
+            $page = new TagDeletedPage($database, $tag);
         }
         else
-          $page = new MissingTagPage($database, $_GET["tag"]);
+          $page = new MissingTagPage($database, $tag);
   
       }
       else
