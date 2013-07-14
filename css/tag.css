@@ -115,11 +115,8 @@ a#graph-link span {
 }
 
 ul#using {
-  list-style-type: none;
 }
 
 ul#using li {
-  width: auto;
-  float: left;
-  padding-right: 10px;
+  margin-bottom: .5em;
 }

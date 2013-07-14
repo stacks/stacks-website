@@ -19,7 +19,7 @@ function printStatisticsRow($name, &$value, $remark = "") {
 function getReferencingTags($target) {
   global $database;
 
-  $sql = $database->prepare("SELECT source, type, book_id, name FROM dependencies, tags WHERE target = :target AND source = tag ORDER BY position");
+  $sql = $database->prepare("SELECT source, type, book_id, name, position FROM dependencies, tags WHERE target = :target AND source = tag ORDER BY position");
   $sql->bindParam(":target", $target);
 
   if ($sql->execute())
@@ -105,7 +105,8 @@ class StatisticsPage extends Page {
     $output .= printStatisticsRow("", $this->statistics["total edge count"], "(with multiplicity)");
     $output .= printStatisticsRow("number of chapters used", $this->statistics["chapter count"]);
     $output .= printStatisticsRow("number of sections used", $this->statistics["section count"]);
-    $output .= printStatisticsRow("number of tags directly used", count($referredTags));
+    $count = count($referredTags);
+    $output .= printStatisticsRow("number of tags directly used", $count);
     if (count($referencingTags) > 0)
       $output .= printStatisticsRow("number of tags using this tag", $this->statistics["use count"], "(directly, see <a href='#referencing'>tags referencing this result</a>)");
     else
@@ -118,11 +119,16 @@ class StatisticsPage extends Page {
       $output .= "<ul id='using'>";
       $referencingTags = getReferencingTags($this->tag["tag"]);
       foreach ($referencingTags as $referencingTag) {
-        $title = ucfirst($referencingTag["type"]) . " " . $referencingTag["book_id"];
         if ($referencingTag["name"] != "")
-          $title .= ": " . parseAccents($referencingTag["name"]);
+          $output .= "<li><a href='" . href("tag/" . $referencingTag["source"]) . "'>" . ucfirst($referencingTag["type"]) . " " . $referencingTag["book_id"] . ": " . parseAccents($referencingTag["name"]) . "</a>";
+        else
+          $output .= "<li><a href='" . href("tag/" . $referencingTag["source"]) . "'>" . ucfirst($referencingTag["type"]) . " " . $referencingTag["book_id"] . "</a>";
         
-        $output .= "<li><a title=\"" . $title . "\" href='" . href("tag/" . $referencingTag["source"]) . "'><var>" . $referencingTag["source"] . "</var></a>";
+        $section = getEnclosingSection($referencingTag["position"]);
+        $chapter = getEnclosingChapter($referencingTag["position"]);
+        $output .= ", in " . parseAccents($section["name"]);
+        $output .= " of Chapter " . $chapter["book_id"] . ": " . parseAccents($chapter["name"]);
+        $output .= "<br>(go to <a href='" . href("tag/" . $referencingTag["source"] . "/statistics") . "'>statistics</a>)";
       }
       $output .= "</ul>";
     }
@@ -133,6 +139,7 @@ class StatisticsPage extends Page {
     $output = "";
 
     // TODO some go to tag link
+    // TODO navigate this page too
 
     $output .= "<h2>Navigating statistics</h2>";
     $siblingTags = getSiblingTags($this->tag["position"]);
