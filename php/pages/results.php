@@ -42,8 +42,9 @@ class SearchResultsPage extends Page {
       $currentChapter = implode(".", array_slice(explode(".", $result["book_id"]), 0, 1));
       if ($result["type"] != "item" and $chapter != $currentChapter) {
         $chapter = $currentChapter;
+        $chapterInformation = getChapter($currentChapter);
         $output .= "</ul>";
-        $output .= "<h3>Chapter " . $currentChapter . "</h3>";
+        $output .= "<h3>Chapter " . $currentChapter . ": " . $chapterInformation["title"] . "</h3>";
         $output .= "<ul class='results'>";
       }
       $output .= $this->printResult($result, false); // we never show the proofs in the preview, although it would be possible
@@ -127,10 +128,12 @@ class SearchResultsPage extends Page {
     if (isset($options["exclude-duplicates"])) {
       foreach ($results as $result) {
         // there is already a parent tag in the result list, so we have to remove this one
-        $parentTag = implode(".", array_splice(explode(".", $result["book_id"]), 0, 2));
+        $parts = explode(".", $result["book_id"]);
+        $parentTag = implode(".", array_splice($parts, 0, 2));
 
         if (in_array($parentTag, $tags))
           $tags = array_diff($tags, array($parentTag));
+
         array_push($tags, $result["book_id"]);
       }
 
