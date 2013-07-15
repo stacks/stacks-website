@@ -23,7 +23,7 @@ class SearchResultsPage extends Page {
   }
 
   public function getHead() {
-    return SearchPage::getHead();
+    return getSearchPageHead();
   }
 
   public function getMain() {
@@ -47,7 +47,7 @@ class SearchResultsPage extends Page {
   public function getSidebar() {
     $output = "";
 
-    $output .= SearchPage::getSidebar();
+    $output .= getSearchPageSidebar();
 
     return $output;
   }
