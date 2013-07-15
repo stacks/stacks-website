@@ -36,11 +36,19 @@ class SearchResultsPage extends Page {
 
     $output .= "<p>There are " . sizeof($results) . " results</p>";
 
-    $output .= "<ul id='results'>";
+    $output .= "<div id='allResults'><ul class='results'>";
+    $chapter = 0;
     foreach ($results as $result) {
+      $currentChapter = implode(".", array_slice(explode(".", $result["book_id"]), 0, 1));
+      if ($result["type"] != "item" and $chapter != $currentChapter) {
+        $chapter = $currentChapter;
+        $output .= "</ul>";
+        $output .= "<h3>Chapter " . $currentChapter . "</h3>";
+        $output .= "<ul class='results'>";
+      }
       $output .= $this->printResult($result, false); // we never show the proofs in the preview, although it would be possible
     }
-    $output .= "</ul>";
+    $output .= "</div>";
 
     return $output;
   }
