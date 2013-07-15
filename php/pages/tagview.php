@@ -376,7 +376,7 @@ class TagViewPage extends Page {
         if ($sql->execute()) {
           // at most one will be selected
           while ($row = $sql->fetch()) {
-            $value .= "<span class='left'><a title='" . $row["number"] . " " . $row["title"] . "' href='" . href("tag/" . $row["tag"]) . "'>&lt;&lt; Previous section</a></span>";
+            $value .= "<span class='left'><a title='" . $row["number"] . " " . parseAccents($row["title"]) . "' href='" . href("tag/" . $row["tag"]) . "'>&lt;&lt; Previous section</a></span>";
           }
         }
         // next section
@@ -385,7 +385,7 @@ class TagViewPage extends Page {
 
         if ($sql->execute()) {
           while ($row = $sql->fetch()) {
-            $value .= "<span class='right'><a title='" . $row["number"] . " " . $row["title"] . "' href='" . href("tag/" . $row["tag"]) . "'>Next section &gt;&gt;</a></span>";
+            $value .= "<span class='right'><a title='" . $row["number"] . " " . parseAccents($row["title"]) . "' href='" . href("tag/" . $row["tag"]) . "'>Next section &gt;&gt;</a></span>";
           }
         }
         $value .= "</p>";
