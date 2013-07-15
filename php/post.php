@@ -4,47 +4,57 @@
 
   // read configuration file
   $config = parse_ini_file("../config.ini");
-  
+
   // initialize the global database object
   try {
-    $database = new PDO("sqlite:" . $config["database"]);
+    $database = new PDO("sqlite:../" . $config["database"]);
   }
   catch(PDOException $e) {
     echo $e->getMessage();
   }
 
+  function printBackLink() {
+    print("<br><a href='#' onclick='history.go(-2);'>go back</a>");
+  }
+
   // if this triggers the user is messing with the POST request
   if (!isValidTag($_POST['tag'])) {
     print('The tag your browser supplied in the request is not in a valid format.');
+    printBackLink();
     exit();
   }
 
   if ($_POST['tag'] !== $_POST['check']) {
     print('You did not pass the captcha. Please go back and fill in the correct tag to prove you are not a computer.');
+    printBackLink();
     exit();
   }
 
   // the tag is not present in the database, when we start handling removed tags this will have to change
   if (!tagExists($_POST['tag'])) {
     print('The tag you are trying to post a comment on does not exist.');
+    printBackLink();
     exit();
   }
 
   // empty author
   if (empty($_POST['name'])) {
     print('You must supply your name.');
+    printBackLink();
     exit();
   }
 
   // empty email
   if (empty($_POST['email'])) {
     print('You must supply your email address. Remark that it will not be posted.');
+    printBackLink();
     exit();
   }
 
   // nonempty email, but the format is wrong
   if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
     print('You must supply a correctly formatted email address. Your current input is ' . $_POST['email']);
+    printBackLink();
     exit();
   }
 
@@ -57,9 +67,17 @@
     // nonempty site, but the format is wrong
       if (!filter_var($site, FILTER_VALIDATE_URL)) {
         print('You supplied a site but the format is wrong. Your current input is ' . $_POST['site']);
+        printBackLink();
         exit();
       }
     }
+  }
+
+  // if the text is the default text we assume the commenter didn't intend to post this
+  if ($_POST["comment"] == "You can type your comment here, use the preview option to see what it will look like.") {
+    print("Your comment text is the default text.");
+    printBackLink();
+    exit();
   }
 
   // from here on it's safe to ignore the fact that it's user input
