@@ -3,6 +3,7 @@
 // TODO titles for all three graphs
 $config = parse_ini_file("../../config.ini");
 
+require_once("../config.php");
 require_once("../general.php");
 
   // TODO get a node count from the database
@@ -29,8 +30,8 @@ line.link {
 }
 
     </style>
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="<?php print $config["D3"];?>"></script>
+    <script src="<?php print $config["jQuery"];?>"></script>
     <script src="<?php print href("js/graphs.js"); ?>"></script>
     <link rel='icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
     <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
@@ -191,6 +192,9 @@ function expand(node) {
 
 // Toggle children on click.
 function click(d) {
+  if (d.nodeType == "tag")
+    openTag(d, "collapsible");
+
   if (d.children) { // collapsing
     d._children = d.children;
     d.children = null;

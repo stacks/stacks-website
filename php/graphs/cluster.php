@@ -1,6 +1,7 @@
 <?php
 $config = parse_ini_file("../../config.ini");
 
+require_once("../config.php");
 require_once("../general.php");
 
 $filename = href("data/tag/" . $_GET['tag'] . "/graph/cluster");

@@ -191,6 +191,7 @@ print printMathJax();
           .on("mouseover", displayTagInformation)
           .on("mouseout", hideTagInformation)
           .on("contextmenu", function(node) { openTag(node, "force"); })
+          .on("dblclick", function(node) { openTag(node, "force"); })
           .call(force.drag);
 
         global["node"] = node;

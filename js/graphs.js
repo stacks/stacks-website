@@ -74,7 +74,7 @@ function hidePreview() {
 function displayPreviewExplanation() {
   // only show the one explaining the system
   if ($("div#information div#general").length == 0)
-    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in the cluster layout)<li>(right)click on nodes to see subgraphs or collapse<li>zoom and move around by scrolling and dragging</ul>");
+    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in the cluster layout)<li>(double) click on nodes to see subgraphs or collapse<li>zoom and move around by scrolling and dragging (especially if the preview is bothering you)</ul>");
   else {
     $("div#information div#general").text("Use the mouse, Luke");
     $("div#information div#general").height("18px");
@@ -239,10 +239,10 @@ function disableContextMenu() {
 }
 
 function openTag(node, type) {
-  window.location.href = "../../" + node.tag + "/graph/" + type;
-}
-function openTagNew(node, type) {
-  window.open("../../" + node.tag + "/graph/" + type)
+  if (!d3.event.ctrlKey)
+    window.location.href = "../../" + node.tag + "/graph/" + type;
+  else
+    window.open("../../" + node.tag + "/graph/" + type, "_blank")
 }
 
 var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
@@ -287,7 +287,6 @@ var numberOfDrags = 0;
 // redraw the svg (or rather the <g> inside <svg>) on a zoom event
 function redraw() {
   // only do drag when dragging on the background
-  console.log(d3.event.sourceEvent.srcElement.tagName);
   if (d3.event.sourceEvent.srcElement.tagName == "svg") {
     numberOfDrags++;
 
