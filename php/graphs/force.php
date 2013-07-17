@@ -3,6 +3,7 @@ $config = parse_ini_file("../../config.ini");
 
 // TODO would it be interesting to have a special "section" view, in which the tags inside a section are immediate child nodes of the root node, thus making these graphs more interesting?
 
+require_once("../config.php");
 require_once("../general.php");
 
   // TODO get a node count from the database
@@ -32,9 +33,8 @@ require_once("../general.php");
     <link rel='icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
     <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='<?php print href("stacks.ico"); ?>'> 
 
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="<?php print $config["D3"];?>"></script>
+    <script src="<?php print $config["jQuery"];?>"></script>
 <?php
 print printMathJax();
 ?>
@@ -190,8 +190,7 @@ print printMathJax();
           .style("fill", function(d) { colorMapping = colorHeatMax; return colorHeatMax(d); })
           .on("mouseover", displayTagInformation)
           .on("mouseout", hideTagInformation)
-          .on("click", function(node) { openTag(node, "force"); })
-          .on("contextmenu", function(node) { openTagNew(node, "force"); })
+          .on("contextmenu", function(node) { openTag(node, "force"); })
           .call(force.drag);
 
         global["node"] = node;

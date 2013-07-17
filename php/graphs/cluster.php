@@ -9,9 +9,9 @@ $filename = href("data/tag/" . $_GET['tag'] . "/graph/cluster");
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="<?php print $config["D3"];?>"></script>
     <script src="<?php print href("js/graphs.js"); ?>"></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="<?php print $config["jQuery"];?>"></script>
 <?php
 print printMathJax();
 ?>
