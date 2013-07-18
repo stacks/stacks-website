@@ -1,9 +1,10 @@
 <?php
-$config = parse_ini_file("../../config.ini");
 
 // TODO would it be interesting to have a special "section" view, in which the tags inside a section are immediate child nodes of the root node, thus making these graphs more interesting?
 
 require_once("../config.php");
+$config = array_merge($config, parse_ini_file("../../config.ini"));
+
 require_once("../general.php");
 
   // TODO get a node count from the database

@@ -1,9 +1,10 @@
 <?php
 // TODO bug: in the collapsible view for 0968, 096C (and others) the tag itself is also present in the view
 // TODO titles for all three graphs
-$config = parse_ini_file("../../config.ini");
 
 require_once("../config.php");
+$config = array_merge($config, parse_ini_file("../../config.ini"));
+
 require_once("../general.php");
 
   // TODO get a node count from the database
