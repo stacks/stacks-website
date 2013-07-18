@@ -67,7 +67,7 @@ function getMacros() {
 
     $result = array();
     foreach ($rows as $row)
-      $result[$row["name"]] = $row["value"];
+      $result["/" . addslashes($row["name"]) . "([^a-zA-Z])/"] = $row["value"] . "$1";
     return $result;
   }
 
@@ -294,7 +294,7 @@ function convertLaTeX($tag, $file, $code) {
 
   // fix macros
   $macros = getMacros();
-  $code = str_replace(array_keys($macros), array_values($macros), $code);
+  $code = preg_replace(array_keys($macros), array_values($macros), $code);
 
   return $code;
 }
