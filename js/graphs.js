@@ -31,7 +31,7 @@ function displayTagInfo(node) {
   if (node.tagName != "" && (node.type != "equation" && node.type != "item"))
     content += " and it is called " + node.tagName;
   content += "<br>It is contained in the file " + node.file + ".tex";
-  content += "<br>It has " + (node.numberOfChildren - 1) + " descendant tags";
+  content += "<br>It has " + (node.numberOfChildren - 1) + " descendant tag(s)";
   // TODO possibly improve this with real chapter name (change parse.py)
 
   displayTooltip(node, content);
@@ -99,7 +99,7 @@ function displayPreview(node) {
     tagPreview = $("div#" + id);
     
     tagPreview.append("Tag " + node.tag + " points to " + capitalize(node.type) + " " + node.book_id);
-    if (node.tagName != "")
+    if (node.tagName != "" && node.type != "equation" && node.type != "item")
       tagPreview.append(": " + node.tagName);
     tagPreview.append("<br>It has " + (node.numberOfChildren - 1) + " descendant tags");
 
