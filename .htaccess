@@ -21,6 +21,8 @@ RewriteRule download/(.+)$ tex/tags/tmp/$1 [L]
 RewriteRule markdown$ index.php?page=markdown [L]
 RewriteRule recent-comments$ index.php?page=recent-comments
 RewriteRule recent-comments/(.+)$ index.php?page=recent-comments&number=$1 [L]
+RewriteRule recent-comments.xml$ php/pages/commentsfeed.php [L]
+RewriteRule recent-comments.rss$ php/pages/commentsfeed.php [L]
 RewriteRule search$ index.php?page=search [L,QSA]
 RewriteRule lookup$ php/redirects/lookup.php [L]
 RewriteRule tag$ index.php?page=tag [L]
