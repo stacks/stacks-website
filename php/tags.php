@@ -209,8 +209,8 @@ function convertLaTeX($tag, $file, $code) {
   // emphasis
   $code = parseBoldface($code);
   $code = parseItalics($code);
-  $code = preg_replace("/\{\\\em (" . $regex . ")\}/u", "<em>$1</em>", $code);
-  $code = preg_replace("/\\\emph\{(" . $regex . ")\}/u", "<em>$1</em>", $code);
+  $code = preg_replace("/\{\\\\em (" . $regex . ")\}/u", "<em>$1</em>", $code);
+  $code = preg_replace("/\\\\emph\{(" . $regex . ")\}/u", "<em>$1</em>", $code);
 
   // footnotes
   $code = parseFootnotes($code);
