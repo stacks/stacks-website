@@ -106,7 +106,7 @@ print printMathJax();
         createControls("<?php print $_GET["tag"]; ?>", "force");
         $("div#controls").append(createTooltipToggle());
         $("div#controls").append("<ul>");
-        $("div#controls ul").append($("<li>").append($("<li><a href='javascript:void(0)'>view as heatmap (depth)</a>").click(toggleHeatMax)));
+        $("div#controls ul").append($("<li>").append($("<a href='javascript:void(0)'>view as heatmap (depth)</a>").click(toggleHeatMax)));
         $("div#controls ul").append($("<li>").append($("<a href='javascript:void(0)'>view as heatmap (height)</a>").click(toggleHeatMin)));
         $("div#controls ul").append($("<li>").append($("<a href='javascript:void(0)'>view types</a>").click(toggleType)));
         //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
