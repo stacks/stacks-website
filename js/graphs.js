@@ -220,7 +220,7 @@ function createControls(tag, type) {
 
   // add event listener to minimize the controls
   $("div#controls").click(function(e) {
-    if (e.target.tagName != "P" && e.target.tagName != "FORM" && e.target.tagName != "DIV") {
+    if (["P", "FORM", "LI", "DIV"].indexOf(e.target.tagName) < 0) {
       e.stopPropagation();
       return;
     }
