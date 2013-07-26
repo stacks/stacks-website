@@ -10,7 +10,7 @@ function sfm(text) {
   var lines = text.split(/\r?\n/);
   for (var i = 0; i < lines.length; i++) {
     if (lines[i].substring(0, 4) != '    ')
-      lines[i] = lines[i].replace(/\\ref\{(\w{4})\}/g, "[$1](http://math.columbia.edu/tag/$1)");
+      lines[i] = lines[i].replace(/\\ref\{(\w{4})\}/g, "[$1](http://stacks.math.columbia.edu/tag/$1)");
   }
   text = lines.join("\n");
 
