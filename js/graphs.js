@@ -220,13 +220,17 @@ function createControls(tag, type) {
 
   // add event listener to minimize the controls
   $("div#controls").click(function(e) {
-    if (e.target.tagName == "INPUT")
+    if (e.target.tagName != "P" && e.target.tagName != "FORM" && e.target.tagName != "DIV") {
       e.stopPropagation();
+      return;
+    }
 
     if ($("div#controls").height() == "20")
       $("div#controls").height("auto");
     else
       $("div#controls").height("20px");
+    
+    e.stopPropagation();
   });
 
   // for the tag preview
