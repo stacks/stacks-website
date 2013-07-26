@@ -64,8 +64,6 @@ function parseComment($comment) {
   $comment = str_replace("\\\\", "\\\\\\\\", $comment);
   // apply Markdown (i.e. we get an almost finished HTML string)
   $comment = Markdown($comment);
-  // Google Chrome somehow adds this character so let's remove it
-  $comment = str_replace("\xA0", ' ', $comment);
   // Firefox liked to throw in some &nbsp;'s, but I believe this particular fix is redundant now
   $comment = str_replace("&nbsp;", ' ', $comment);
 
