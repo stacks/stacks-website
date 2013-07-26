@@ -30,9 +30,13 @@ function displayTagInfo(node) {
   content = "Tag " + node.tag + " which points to " + capitalize(node.type) + " " + node.book_id;
   if (node.tagName != "" && (node.type != "equation" && node.type != "item"))
     content += " and it is called " + node.tagName;
-  content += "<br>It is contained in the file " + node.file + ".tex";
+
+  content += "<br>in ";
+  if (node.type != "section")
+    content += node.section + ", ";
+  content += node.chapter;
+
   content += "<br>It has " + (node.numberOfChildren - 1) + " descendant tag(s)";
-  // TODO possibly improve this with real chapter name (change parse.py)
 
   displayTooltip(node, content);
 }
@@ -101,6 +105,12 @@ function displayPreview(node) {
     tagPreview.append("Tag " + node.tag + " points to " + capitalize(node.type) + " " + node.book_id);
     if (node.tagName != "" && node.type != "equation" && node.type != "item")
       tagPreview.append(": " + node.tagName);
+
+    tagPreview.append("<br>It is contained in ");
+    if (node.type != "section")
+      tagPreview.append(node.section + ", ");
+    tagPreview.append(node.chapter);
+
     tagPreview.append("<br>It has " + (node.numberOfChildren - 1) + " descendant tags");
 
     tagPreview.append("<blockquote class='rendered' id='" + id + "-content'>");
@@ -210,6 +220,9 @@ function createControls(tag, type) {
 
   // add event listener to minimize the controls
   $("div#controls").click(function(e) {
+    if (e.target.tagName == "INPUT")
+      e.stopPropagation();
+
     if ($("div#controls").height() == "20")
       $("div#controls").height("auto");
     else
