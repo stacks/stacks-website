@@ -27,13 +27,15 @@ function displayTooltip(node, content) {
 
 // generic tooltip for a tag
 function displayTagInfo(node) {
-  content = "Tag " + node.tag + " which points to " + capitalize(node.type) + " " + node.book_id;
+  content = "Tag " + node.tag + " pointing to " + capitalize(node.type) + " " + node.book_id;
   if (node.tagName != "" && (node.type != "equation" && node.type != "item"))
     content += " and it is called " + node.tagName;
 
-  content += "<br>in ";
+  content += "<br>It is contained in ";
   if (node.type != "section")
     content += node.section + ", ";
+  if (node.type != "item")
+    content += "Chapter " + node.book_id.split(".")[0] + ": ";
   content += node.chapter;
 
   content += "<br>It has " + (node.numberOfChildren - 1) + " descendant tag(s)";
@@ -109,9 +111,11 @@ function displayPreview(node) {
     tagPreview.append("<br>It is contained in ");
     if (node.type != "section")
       tagPreview.append(node.section + ", ");
+    if (node.type != "item")
+      tagPreview.append("Chapter " + node.book_id.split(".")[0] + ": ");
     tagPreview.append(node.chapter);
 
-    tagPreview.append("<br>It has " + (node.numberOfChildren - 1) + " descendant tags");
+    tagPreview.append("<br>It has " + (node.numberOfChildren - 1) + " descendant tag(s)");
 
     tagPreview.append("<blockquote class='rendered' id='" + id + "-content'>");
     if (node.type != "section" && node.type != "subsection") {
