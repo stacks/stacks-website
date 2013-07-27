@@ -218,8 +218,7 @@ function convertLaTeX($tag, $file, $code) {
 
 
   // handle citations
-  // TODO in 08XH there is a \cite{R+D} which doesn't work
-  $count = preg_match_all("/\\\cite\{([\.\w,\-\_]*)\}/", $code, $matches);
+  $count = preg_match_all("/\\\cite\{([\.\w,\-+\_]*)\}/", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $keys = explode(",", $matches[1][$i]);
     $matchings = explode(",", $matches[0][$i]);
@@ -233,7 +232,6 @@ function convertLaTeX($tag, $file, $code) {
     $item = getBibliographyItem($matches[2][$i]);
     $code = str_replace($matches[0][$i], '[<a title="' . parseTeX($item['author']) . ', ' . parseTeX($item['title']) . '" href="' . href('bibliography/' . $matches[2][$i]) . '">' . $matches[2][$i] . "</a>, " . $matches[1][$i] . "]", $code);
   }
-  // TODO the use of the parseTeX routine should be checked
 
   // filter \input{chapters}
   $code = str_replace("\\input{chapters}", "", $code);

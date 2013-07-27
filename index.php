@@ -123,7 +123,6 @@ try {
       break;
   
     case "statistics":
-      // TODO some checking of this value
       if(!empty($_GET["tag"])) {
 	$tag = strtoupper($_GET['tag']);
         if (!isValidTag($tag)) {
