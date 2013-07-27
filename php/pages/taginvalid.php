@@ -3,7 +3,7 @@
 require_once("php/page.php");
 require_once("php/general.php");
 
-class TagDeletedPage extends Page {
+class InvalidTagPage extends Page {
   private $tag;
 
   public function __construct($database, $tag) {
@@ -14,8 +14,8 @@ class TagDeletedPage extends Page {
   public function getMain() {
     $output = "";
 
-    $output .= "<h2>Inactive tag: <var>" . $this->tag . "</var></h2>";
-    $output .= "<p>The tag you requested did at some point in time belong to the Stacks project, but it was removed. You might be able to find a clue in the <a href='https://github.com/stacks/stacks-project/blob/master/tags/tags'>tags file</a>.</p>";
+    $output .= "<h2>Invalid tag: <var>" . htmlentities($this->tag) . "</var></h2>";
+    $output .= "<p>This is not a well-formed tag. Tags are 4 symbols long and consist of letters and digits.</p>";
     
     $output .= "<h2>Look for a tag</h2>";
     $output .= printTagLookup();
@@ -35,7 +35,7 @@ class TagDeletedPage extends Page {
     return $output;
   }
   public function getTitle() {
-    return " &mdash; The tag " . $this->tag . " has been deleted";
+    return " &mdash; The tag " . htmlentities($this->tag) . " is invalid";
   }
 }
 

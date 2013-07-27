@@ -23,6 +23,7 @@ require_once("php/pages/results.php");
 require_once("php/pages/search.php");
 require_once("php/pages/statistics.php");
 require_once("php/pages/tagdeleted.php");
+require_once("php/pages/taginvalid.php");
 require_once("php/pages/taglookup.php");
 require_once("php/pages/tags.php");
 require_once("php/pages/tagview.php");
@@ -36,11 +37,11 @@ try {
     $database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
   catch(PDOException $e) {
-    print "error"; // TODO
+    print "Something went wrong with the database. If the problem persists, please contact us at <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>.";
+    // if there is actually a persistent error: add output code here to check it
     exit();
   }
 
-  // TODO "index" is default, no, should be an error message (but "index" == "")
   if (empty($_GET["page"]))
     $page = "index";
   else
@@ -125,24 +126,29 @@ try {
       // TODO some checking of this value
       if(!empty($_GET["tag"])) {
 	$tag = strtoupper($_GET['tag']);
+        if (!isValidTag($tag)) {
+          $page = new InvalidTagPage($database, $tag);
+        }
         if (tagExists($tag)) {
           if (tagIsActive($tag))
             $page = new StatisticsPage($database, $tag);
           else
-            $page = new TagDeletedPage($database, $tag); // TODO something more reasonable
+            $page = new TagDeletedPage($database, $tag);
         }
         else
-          $page = new MissingTagPage($database, $tag); // TODO something more reasonable
+          $page = new MissingTagPage($database, $tag);
       }
       else
         $page = new TagLookupPage($database);
       break;
   
     case "tag":
-      // TODO some checking of this value
       if(!empty($_GET["tag"])) {
 	$tag = strtoupper($_GET['tag']);
-        if (tagExists($tag)) {
+        if (!isValidTag($tag)) {
+          $page = new InvalidTagPage($database, $tag);
+        }
+        else if (tagExists($tag)) {
           if (tagIsActive($tag))
             $page = new TagViewPage($database, $tag);
           else
