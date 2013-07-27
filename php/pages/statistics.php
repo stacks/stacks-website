@@ -107,7 +107,7 @@ class StatisticsPage extends Page {
       $output .= printStatisticsRow("number of tags using this tag", $this->graphs["use_count"], "(directly, see <a href='#referencing'>tags referencing this result</a>)");
     else
       $output .= printStatisticsRow("number of tags using this tag", $this->graphs["use_count"], "(directly)");
-    $output .= printStatisticsRow("", $this->graphs["indirect_use_count"], "(both directly and indirectly)");
+    $output .= printStatisticsRow("", $this->graphs["indirect_use_count"] - 1, "(both directly and indirectly)");
     $output .= "</table>";
 
     if (count($referencingTags) > 0) {
