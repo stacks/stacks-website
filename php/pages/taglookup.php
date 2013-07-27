@@ -33,9 +33,11 @@ class TagLookupPage extends Page {
   public function getSidebar() {
     $value = "";
     $value .= "<h2><a href='" . href("tags") . "'>Reminder</a></h2>";
-    $value .= "<p>Tags are identifiers, ...</p>";
+    $value .= "<p>Tags are unique identifiers of a specific result. Instead of using a reference like \"Lemma 12.8.4\" which is likely to change when results are added a tag is a <em>stable</em> way of referring to a result.</p>";
+    $value .= "<p>Tags are 4 symbols long, using letters and digits.</p>";
     $value .= "<p>Some examples:</p>";
-    $value .= "<pre><code>01ER</code></pre>";
+    $value .= "<pre><code><a href='" . href("tag/01ER") . "'>01ER</a></code>\n";
+    $value .= "<code><a href='" . href("tag/02LS") . "'>02LS</a></code></pre>";
     $value .= "<p>For more information see <a href='" . href('tags') . "'>tags explained</a>.";
 
     return $value;

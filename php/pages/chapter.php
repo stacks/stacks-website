@@ -151,7 +151,7 @@ class ChapterPage extends Page {
     $value .= "<h2>Permalink</h2>";
     $value .= "<p>The number of chapters in the Stacks project is likely to change. So this URL is <em>not stable</em>.</p>";
     $value .= "<p>To provide a truly stable link, use the <a href='" . href("tag/" . $this->chapter["tag"]) . "'>corresponding tag lookup page for tag " . $this->chapter["tag"] . "</a>. This identifier will never change.</p>";
-    $value .= "<p>When referring to this chapter of the Stacks project, it is better to say<blockquote>&quot;Tag " . $this->chapter["tag"] . "&quot;</blockquote> or refer to the name of the chapter.</p>";
+    $value .= "<p>When referring to this chapter of the Stacks project, it is better to say<blockquote>Tag " . $this->chapter["tag"] . "<br>Chapter " . $this->chapter["tag"] . "</blockquote> or refer to the full name of the chapter.</p>";
 
     $value .= "<h2>Statistics</h2>";
     $value .= "<ul>";
