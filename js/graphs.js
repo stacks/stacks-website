@@ -47,6 +47,7 @@ function displayTagInfo(node) {
 function displayNodeInfo(node) {
   switch (node.nodeType) {
     case "root":
+      return ;
     case "tag":
       return displayTagInfo(node);
     case "section":
