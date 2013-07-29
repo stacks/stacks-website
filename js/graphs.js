@@ -66,7 +66,7 @@ function displayChapterInfo(node) {
 }
 
 function hideInfo(node) {
-  $("#" + node.tag + "-tooltip").stop().show(200);
+  $("#" + node.tag + "-tooltip").stop().hide(200);
 }
 
 /**
