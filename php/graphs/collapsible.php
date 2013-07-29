@@ -155,7 +155,8 @@ function update() {
       .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.size) / 10; })
       .style("fill", color)
       .on("click", click)
-      .on("contextmenu", function(node) { if (node.nodeType == "tag") { openTag(node, "collapsible"); } })
+      .on("dblclick", function(node) { if (node.nodeType == "tag") { openTag(node, "collapsible"); } })
+      .on("contextmenu", function(node) { if (node.nodeType == "tag") { openTagNew(node, "collapsible"); } })
       .on("mouseover", displayTagInformation)
       .on("mouseout", hideTagInformation)
       .call(force.drag);
@@ -185,7 +186,7 @@ function expand(node) {
   if (node._children)
     click(node);
   
-  if ("children" in node) {
+  if (node.children) {
     for (var i = 0; i < node.children.length; i++)
       expand(node.children[i]);
   }
@@ -193,9 +194,6 @@ function expand(node) {
 
 // Toggle children on click.
 function click(d) {
-  if (d.nodeType == "tag")
-    openTag(d, "collapsible");
-
   if (d.children) { // collapsing
     d._children = d.children;
     d.children = null;

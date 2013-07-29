@@ -267,6 +267,10 @@ function openTag(node, type) {
     window.open("../../" + node.tag + "/graph/" + type, "_blank")
 }
 
+function openTagNew(node, type) {
+  window.open("../../" + node.tag + "/graph/" + type, "_blank")
+}
+
 var typeMap = d3.scale.category10().domain(["definition", "lemma", "item", "section", "remark", "proposition", "theorem", "example"])
 
 function bordersLegend() {

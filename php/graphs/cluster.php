@@ -121,7 +121,7 @@ d3.json("<?php print $filename; ?>", function(json) {
       .attr("class", namedClass)
       .attr("id", function(d) { if (d.depth == 0) { return "root"; } })
       .on("click", function(node) { openTag(node, "cluster"); })
-      .on("contextmenu", function(node) { openTagNew(node, "cluster"); })
+      .on("contextmenu", function(node) { openTagNewNew(node, "cluster"); })
 
   nodeEnter
       .append("svg:text")
@@ -133,6 +133,7 @@ d3.json("<?php print $filename; ?>", function(json) {
       .on("mouseover", displayTagInformation)
       .on("mouseout", hideTagInformation)
       .on("click", function(node) { openTag(node, "cluster"); })
+      .on("dblclick", function(node) { openTag(node, "cluster"); })
       .on("contextmenu", function(node) { openTagNew(node, "cluster"); })
       .attr("xml:space", "preserve")
       .text(function(d) { return "  " + d.tag; })

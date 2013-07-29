@@ -191,8 +191,8 @@ print printMathJax();
           .style("fill", function(d) { colorMapping = colorHeatMax; return colorHeatMax(d); })
           .on("mouseover", displayTagInformation)
           .on("mouseout", hideTagInformation)
-          .on("contextmenu", function(node) { openTag(node, "force"); })
           .on("dblclick", function(node) { openTag(node, "force"); })
+          .on("contextmenu", function(node) { openTagNew(node, "force"); })
           .call(force.drag);
 
         global["node"] = node;
