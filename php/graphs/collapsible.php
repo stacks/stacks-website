@@ -84,7 +84,9 @@ function distance(d) {
   }
 }
 
-var global;
+var global = Array();
+
+global["mouseDownOnNode"] = false;
 
 var force = d3.layout.force()
     .on("tick", tick)
@@ -154,6 +156,8 @@ function update() {
       .attr("cy", function(d) { return d.y; })
       .attr("r", function(d) { return d.children ? 4.5 : Math.sqrt(d.size) / 10; })
       .style("fill", color)
+      .on("mousedown", function(d) { global["mouseDownOnNode"] = true; })
+      .on("mouseup", function(d) { global["mouseDownOnNode"] = false; })
       .on("click", click)
       .on("dblclick", function(node) { if (node.nodeType == "tag") { openTag(node, "collapsible"); } })
       .on("contextmenu", function(node) { if (node.nodeType == "tag") { openTagNew(node, "collapsible"); } })

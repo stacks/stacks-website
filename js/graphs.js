@@ -312,20 +312,7 @@ var numberOfDrags = 0;
 
 // redraw the svg (or rather the <g> inside <svg>) on a zoom event
 function redraw() {
-  var element;
-  if (d3.event.sourceEvent.srcElement)
-    element = d3.event.sourceEvent.srcElement.tagName;
-  else
-    element = d3.event.sourceEvent.originalTarget.tagName;
-
-  // only do drag when dragging on the background
-  if (element == "svg") {
-    numberOfDrags++;
-
-    if (numberOfDrags > 10)
-      vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
-  }
-  else
-    numberOfDrags = 0;
+  if (!global["mouseDownOnNode"])
+    vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
 }
 

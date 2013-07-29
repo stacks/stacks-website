@@ -135,6 +135,7 @@ print printMathJax();
       var vis = svg.append("svg:g");
 
       var global = Array(); // this catches some things that need to be available globally
+      global["mouseDownOnNode"] = false;
       
       result = d3.json("<?php print href("data/tag/" . $_GET["tag"] . "/graph/force"); ?>", function(error, graph) {
         var heatMaxSize = 0; // this corresponds to the depth variable, and starts with 0 at the root node
@@ -189,6 +190,8 @@ print printMathJax();
           .attr("id", function(d) { if (d.depth == 0) { return "root"; } })
           .attr("r", function(d) { return 4 * Math.pow(parseInt(d.size) + 1, 1 / 3); })
           .style("fill", function(d) { colorMapping = colorHeatMax; return colorHeatMax(d); })
+          .on("mousedown", function(d) { global["mouseDownOnNode"] = true; })
+          .on("mouseup", function(d) { global["mouseDownOnNode"] = false; })
           .on("mouseover", displayTagInformation)
           .on("mouseout", hideTagInformation)
           .on("dblclick", function(node) { openTag(node, "force"); })
