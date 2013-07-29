@@ -111,6 +111,8 @@ print printMathJax();
         $("div#controls ul").append($("<li>").append($("<a href='javascript:void(0)'>view types</a>").click(toggleType)));
         //$("div#controls ul").append("<li><a href='javascript:void(0)' onclick='toggleChapters();'>view chapters</a>");
         $("div#controls").append("</ul>");
+
+        $("form#tooltipToggle input[type='radio']").change(displayPreviewExplanation);
       });
     </script>
   </head>

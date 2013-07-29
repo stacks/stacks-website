@@ -12,7 +12,7 @@ function displayTooltip(node, content) {
 
   // element exists, so we show it, while updating its position
   if ($("#" + node.tag + "-tooltip").length) {
-    $("#" + node.tag + "-tooltip").css(position).stop().fadeIn(100);
+    $("#" + node.tag + "-tooltip").css(position).stop().show(100);
   }
   // otherwise we create a new tooltip
   else {
@@ -66,7 +66,7 @@ function displayChapterInfo(node) {
 }
 
 function hideInfo(node) {
-  $("#" + node.tag + "-tooltip").stop().fadeOut(200);
+  $("#" + node.tag + "-tooltip").stop().show(200);
 }
 
 /**
@@ -80,8 +80,9 @@ function hidePreview() {
 
 function displayPreviewExplanation() {
   // only show the one explaining the system
-  if ($("div#information div#general").length == 0)
-    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in the cluster layout)<li>(double) click on nodes to see subgraphs or collapse<li>zoom and move around by scrolling and dragging (especially if the preview is bothering you)</ul>");
+  if ($("div#information div#general").length == 0) {
+    $("div#information").append("<div id='general' class='tagPreview'>Use the mouse, Luke (touch devices are not completely supported). You can <ul><li>hover over nodes to see information<li>drag things around (except in the cluster layout)<li>(double) click on nodes to see subgraphs or collapse<li>zoom and move around by scrolling and dragging (especially if the preview is bothering you)</ul>").click(displayPreviewExplanation);
+  }
   else {
     $("div#information div#general").text("Use the mouse, Luke");
     $("div#information div#general").height("18px");
@@ -140,6 +141,9 @@ function displayPreview(node) {
  */
 function displayTagInformation(node) {
   switch ($("input[type='radio']:checked").attr('id')) {
+    case "none":
+      break;
+
     case "light":
       if (node.nodeType)
         displayNodeInfo(node);
@@ -164,6 +168,8 @@ function displayTagInformation(node) {
 
 function hideTagInformation(node) {
   switch ($("input[type='radio']:checked").attr('id')) {
+    case "none":
+      break;
     case "light":
       hideInfo(node);
       break;
@@ -247,7 +253,8 @@ function createTooltipToggle() {
   text = "";
   text += "Action for tooltip: <form id='tooltipToggle'>";
   text += "<label for='full'><input type='radio' checked='checked' name='tooltipChoice' id='full'>preview tag</label>&nbsp&nbsp;&nbsp&nbsp;";
-  text += "<label for='light'><input type='radio' name='tooltipChoice' id='light'>only tag information</label>";
+  text += "<label for='light'><input type='radio' name='tooltipChoice' id='light'>only tag information</label>&nbsp&nbsp;&nbsp&nbsp;";
+  text += "<label for='none'><input type='radio' name='tooltipChoice' id='none'>none</label>";
   text += "</form>";
 
   return text;

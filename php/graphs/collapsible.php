@@ -61,6 +61,8 @@ print printMathJax();
         $("div#controls").append("<a href='javascript:void(0)' id='expandNodes'>expand all nodes</a><br>");
         $("div#controls a#expandNodes").click(expandNodes);
 
+        $("form#tooltipToggle input[type='radio']").change(displayPreviewExplanation);
+
         depthLegend();
       });
     </script>
