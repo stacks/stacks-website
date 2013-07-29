@@ -15,6 +15,10 @@ div#graph {
   overflow: hidden;
 }
 
+.tooltip {
+  display: table;
+}
+
 .tooltip p {
   font-size: .9em;
   border-radius: 5px;
