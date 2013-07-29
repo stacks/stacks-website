@@ -12,6 +12,7 @@ body {
 div#graph {
   border: solid #d9d8d1;
   border-width: 1px;
+  overflow: hidden;
 }
 
 .tooltip p {
