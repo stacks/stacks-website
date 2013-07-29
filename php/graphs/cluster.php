@@ -143,6 +143,15 @@ d3.json("<?php print $filename; ?>", function(json) {
   for (var i = 0; i < nodes.length; i++) 
     types[nodes[i].type] = true;
   typeLegend(types);
+
+
+  function minimizeLegend() {
+    if ($("div.legend").height() == "18")
+      $("div.legend").each(function() { $(this).height("auto");  });
+    else
+      $("div.legend").each(function() { $(this).height("18px").css("overflow", "hidden");});
+  }
+  $("div.legend").each(function() { $(this).click(minimizeLegend); } );
 });
 
 d3.select(window)

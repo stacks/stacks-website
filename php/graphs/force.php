@@ -113,6 +113,7 @@ print printMathJax();
         $("div#controls").append("</ul>");
 
         $("form#tooltipToggle input[type='radio']").change(displayPreviewExplanation);
+        //$("div.legend").click(function() { console.log($("div.legend").height()); if ($("div.legend").height() == "20px") { $("div.legend").height(20); } else { $("div.legend").height("auto"); } });
       });
     </script>
   </head>
@@ -225,7 +226,7 @@ print printMathJax();
 
         // add legend for the heatMax coloring
         $("body").append("<div class='legend' id='legendHeatMax'></div>");
-        $("div#legendHeatMax").append("Legend for the heat mapping (depth from root)<br>");
+        $("div#legendHeatMax").append("<p>Legend for the heat mapping (depth from root)</p>");
         $("div#legendHeatMax").append("root node&nbsp;&nbsp;");
         for (var i = 0; i <= heatMaxSize; i++) 
           $("<svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + heatMapMax(i) + "'/></svg>").appendTo($("div#legendHeatMax"));
@@ -236,7 +237,7 @@ print printMathJax();
 
         // add legend for the heatMin coloring
         $("body").append("<div class='legend' id='legendHeatMin'></div>");
-        $("div#legendHeatMin").append("Legend for the heat mapping (height from leaf)<br>");
+        $("div#legendHeatMin").append("<p>Legend for the heat mapping (height from leaf)</p>");
         $("div#legendHeatMin").append("root node&nbsp;&nbsp;");
         for (var i = 0; i <= heatMinSize; i++) 
           $("<svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + heatMapMin(i) + "'/></svg>").appendTo($("div#legendHeatMin"));
@@ -253,6 +254,14 @@ print printMathJax();
           $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + chapterMap(chapters[chapter]) + "'/></svg>").append(" " + chapter).appendTo($("div#legendChapters ul"));
         }
         // TODO it would be awesome if the chapters legend had mouseOvers to indicate which results are in which chapter: making all the other chapters slightly lighter for instance
+
+        function minimizeLegend() {
+          if ($("div.legend").height() == "18")
+            $("div.legend").each(function() { $(this).height("auto");  });
+          else
+            $("div.legend").each(function() { $(this).height("18px").css("overflow", "hidden");});
+        }
+        $("div.legend").each(function() { $(this).click(minimizeLegend); } );
 
         toggleLegend();
       });

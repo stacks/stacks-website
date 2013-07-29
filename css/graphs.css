@@ -42,6 +42,10 @@ div#controls p {
   padding: 0;
 }
 
+div.legend p {
+  margin: 0 0 2px 0;
+}
+
 div.legend ul {
   padding: 0;
   margin: 0;

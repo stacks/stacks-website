@@ -227,11 +227,19 @@ function flatten(root) {
 
 function depthLegend(types) {
   $("body").append("<div class='legend' id='legendDepth'></div>");
-  $("div#legendDepth").append("Legend");
+  $("div#legendDepth").append("<p>Legend</p>");
   $("div#legendDepth").append("<ul>");
   for (type in depthMap) {
     $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + depthMap[type] + "'/></svg>").append(" " + capitalize(type)).appendTo($("div#legendDepth ul"));
   }
+
+  function minimizeLegend() {
+    if ($("div.legend").height() == "18")
+      $("div.legend").each(function() { $(this).height("auto");  });
+    else
+      $("div.legend").each(function() { $(this).height("18px").css("overflow", "hidden");});
+  }
+  $("div.legend").each(function() { $(this).click(minimizeLegend); } );
 }
     </script>
   </body>

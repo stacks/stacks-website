@@ -290,7 +290,7 @@ function bordersLegend() {
 
 function typeLegend(types) {
   $("body").append("<div class='legend' id='legendType'></div>");
-  $("div#legendType").append("Legend for the type mapping");
+  $("div#legendType").append("<p>Legend for the type mapping</p>");
   $("div#legendType").append("<ul>");
   for (type in types) {
     $("<li><svg height='10' width='10'><circle cx='5' cy='5' r='5' fill='" + typeMap(type) + "'/></svg>").append(" " + capitalize(type)).appendTo($("div#legendType ul"));
