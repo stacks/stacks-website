@@ -8,7 +8,7 @@ function capitalize(s) {
  */
 // general code to display a tooltip
 function displayTooltip(node, content) {
-  var position = {top: d3.event.screenY + 60 + "px", left: d3.event.screenX + document.body.scrollLeft + 20 + "px"};
+  var position = {top: (d3.event.pageY + 20) + "px", left: (d3.event.pageX + 20) + "px", position: "absolute"};
 
   // element exists, so we show it, while updating its position
   if ($("#" + node.tag + "-tooltip").length) {
