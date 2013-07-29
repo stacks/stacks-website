@@ -1,4 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
 
 body {
   font-family: "Droid Sans", Arial, sans-serif;
@@ -112,7 +113,7 @@ form.simple label span {
 
 var {
   font-style: normal;
-  font-family: monospace;
+  font-family: "Droid Sans Mono", monospace;
 }
 
 pre {
@@ -121,6 +122,7 @@ pre {
 }
 
 code {
+  font-family: "Droid Sans Mono", monospace;
   font-size: .95em;
 }
 
