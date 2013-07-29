@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Droid Sans", Arial, sans-serif;
   border: solid #d9d8d1;
   border-width: 1px;
   margin: 10px auto;
@@ -231,6 +231,7 @@ div#sidebar ul li {
 div#sidebar p {
   margin-top: 0;
   margin-bottom: 10px;
+  margin-left: 3px;
 }
 
 div#sidebar dl {
