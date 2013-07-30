@@ -82,7 +82,7 @@ function parseReferences($string) {
     // we're referring to a tag
     if (isValidTag($target)) {
       // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
-      $string = str_replace($reference, '[`' . $target . '`](' . full_url('tag/' . $target) . ')', $string);
+      $string = str_replace($reference, '[`' . $target . '`](' . href('tag/' . $target) . ')', $string);
     }
     // the user might be referring to a label
     else {
@@ -98,7 +98,7 @@ function parseReferences($string) {
       // if he declared a \label{} in his string with this particular label value he's out of luck
       if (labelExists($target)) {
         $tag = get_tag_referring_to($target);
-        $string = str_replace($reference, '[`' . $tag . '`](' . full_url('tag/' . $tag) . ')', $string);
+        $string = str_replace($reference, '[`' . $tag . '`](' . href('tag/' . $tag) . ')', $string);
       }
     }
   }
