@@ -87,8 +87,9 @@ function parseReferences($string) {
     // the user might be referring to a label
     else {
       // might it be that he is referring to a "local" label, i.e. in the same chapter as the tag?
+      // TODO: Is it worth it to do this?
       if (!labelExists($target)) {
-        $label = get_label(strtoupper($_GET['tag']));
+        $label = getTag(strtoupper($_GET['tag']))["label"];
         $parts = explode('-', $label);
         // let's try it with the current chapter in front of the label
         $target = $parts[0] . '-' . $target;
