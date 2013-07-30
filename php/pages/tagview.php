@@ -99,7 +99,7 @@ function parseReferences($string) {
       // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
       // if he declared a \label{} in his string with this particular label value he's out of luck
       if (labelExists($target)) {
-        $tag = get_tag_referring_to($target);
+        $tag = getTagWithLabel($target);
         $string = str_replace($reference, '[`' . $tag . '`](' . href('tag/' . $tag) . ')', $string);
       }
     }
