@@ -11,8 +11,7 @@ class TagsPage extends Page {
     $value .= "<p>Each tag refers to a unique item (section, lemma, theorem, etc.) in order for this project to be referenceable. These tags don't change even if the item moves within the text.";
 
     $value .= "<h2>How to use it?</h2>";
-    $value .= "<p>To find the tag for an item, hover/click on the item in the <a href='#'>pdf file</a> or find the item in the tree view starting at <a href='" . href("chapter/1") . "'>Chapter 1</a>. See below for LaTeX instructions on how to reference a tag.";
-    // TODO fix reference to pdf
+    $value .= "<p>To find the tag for an item, hover/click on the item in the <a href='download/book.pdf'>pdf file</a> or find the item in the tree view starting at <a href='" . href("chapter/1") . "'>Chapter 1</a>. See below for LaTeX instructions on how to reference a tag.";
     $value .= "<p>To find an item using a tag, <a href='" . href('tag') . "'>search for the tag's page</a>. The tag's page contains the location for the item referenced by the tag. It also contains its LaTeX code and a section for leaving comments.";
 
     $value .= "<h2>More information</h2>";
