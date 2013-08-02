@@ -199,6 +199,16 @@ function convertLaTeX($tag, $file, $code) {
 
   // proof environment
   $code = str_replace("\\begin{proof}\n", "<p><strong>Proof.</strong> ", $code);
+  $lines = explode("\n", $code);
+  foreach ($lines as &$line) {
+    // we have a named proof
+    if (strpos($line, "\begin{proof}[") === 0) {
+      $start = strpos($line, "[") + 1;
+      $end = strrpos($line, "]");
+      $line = "<p><strong>" . substr($line, $start, $end - $start) . ".</strong>";
+    }
+  }
+  $code = implode("\n", $lines);
   $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/u", "<p><strong>$1</strong> ", $code);
   $code = str_replace("\\end{proof}", "<span style='float: right;'>$\square$</span>", $code);
 
