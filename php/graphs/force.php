@@ -6,9 +6,12 @@ require_once("../config.php");
 $config = array_merge($config, parse_ini_file("../../config.ini"));
 
 require_once("../general.php");
+require_once("general.php");
+
+tagForGraphCheck($_GET["tag"], "force");
 
   // TODO get a node count from the database
-  $filename = "../../data/" . $_GET["tag"] . "-force.json";
+  $filename = "../../data/" . strtoupper($_GET["tag"]) . "-force.json";
   $filesize = filesize($filename);
   $size = 900 + 10 * $filesize / 1000;
 ?>

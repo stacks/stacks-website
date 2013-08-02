@@ -4,8 +4,11 @@ require_once("../config.php");
 $config = array_merge($config, parse_ini_file("../../config.ini"));
 
 require_once("../general.php");
+require_once("general.php");
 
-$filename = href("data/tag/" . $_GET['tag'] . "/graph/cluster");
+tagForGraphCheck($_GET["tag"], "tree");
+
+$filename = href("data/tag/" . strtoupper($_GET['tag']) . "/graph/cluster");
 ?>
 <!DOCTYPE html>
 <html>
