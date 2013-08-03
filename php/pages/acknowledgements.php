@@ -27,6 +27,14 @@ class AcknowledgementsPage extends Page {
     $output .= "<p>Besides these usual suspects, the website also uses several libraries. These are";
     $output .= "<ul>";
     $output .= "<li><a href='http://d3js.org/'>D3.js</a>";
+    $output .= "<li><a href='http://jquery.com'>JQuery</a>";
+    $output .= "<li><a href='http://mathjax.org'>MathJax</a>";
+    $output .= "<li><a href='https://github.com/sonoisa/XyJax'>XyJax</a>";
+    $output .= "<li><a href='http://epiceditor.com'>EpicEditor</a>";
+    $output .= "<li><a href='http://jquery.com'>JQuery</a>";
+    $output .= "<li><a href='https://github.com/jzaefferer/jquery-treeview'>jquery-treeview</a>";
+    $output .= "<li><a href='http://simplepie.org'>SimplePie</a>";
+    $output .= "<li><a href='https://github.com/drdrang/php-markdown-extra-math'>php-markdown-extra-math</a>";
     $output .= "</ul>";
 
     return $output;
