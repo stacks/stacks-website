@@ -143,7 +143,7 @@ print printMathJax();
       var global = Array(); // this catches some things that need to be available globally
       global["mouseDownOnNode"] = false;
       
-      result = d3.json("<?php print href("data/tag/" . $_GET["tag"] . "/graph/force"); ?>", function(error, graph) {
+      result = d3.json("<?php print href("data/tag/" . strtoupper($_GET["tag"]) . "/graph/force"); ?>", function(error, graph) {
         var heatMaxSize = 0; // this corresponds to the depth variable, and starts with 0 at the root node
         var heatMinSize = 0; // this corresponds to the size variable, and starts with 0 at a leaf node, taking the maximum over the children + 1 as the value for a parent
 

@@ -11,7 +11,7 @@ require_once("general.php");
 tagForGraphCheck($_GET["tag"], "tree");
 
   // TODO get a node count from the database
-  $filename = "../../data/" . $_GET["tag"] . "-force.json";
+  $filename = "../../data/" . strtoupper($_GET["tag"]) . "-force.json";
   $filesize = filesize($filename);
   $size = 900 + 5 * $filesize / 1000;
 ?>
@@ -113,7 +113,7 @@ var svg = d3.select("div#graph")
 
 var vis = svg.append("svg:g");
 
-d3.json("<?php print href("data/tag/" . $_GET['tag'] . "/graph/collapsible"); ?>", function(json) {
+d3.json("<?php print href("data/tag/" . strtoupper($_GET['tag']) . "/graph/collapsible"); ?>", function(json) {
   root = json;
   root.fixed = true;
   root.x = width / 2 + 50;
