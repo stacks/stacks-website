@@ -37,3 +37,8 @@ RewriteRule tag/(.+)$ index.php?page=tag&tag=$1 [L]
 
 RewriteRule tags$ index.php?page=tags [L]
 RewriteRule todo$ index.php?page=todo [L]
+
+# some 404's
+RewriteRule tag/$ index.php?page=tag [L]
+RewriteRule browse/$ index.php?page=browse [L]
+RewriteRule downloads$ index.php?page=browse [L]
