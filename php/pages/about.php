@@ -18,16 +18,6 @@ class AboutPage extends Page {
     $value .= "<li>The Stacks project is meant to be read online, and therefore we do not worry about length of the chapters, etc. Moreover, with hyperlinks it is possible to quickly browse through the chapters to find the lemmas, theorems, etc. that a given result depends on.";
     $value .= "</ol>";
 
-    $value .= "<h2><a href='" . href("api") . "'>API</a></h2>";
-    $value .= "<p>You can query the Stacks project through an <a href='" . href("api") . "'><abbr title='Application Programming Interface'>API</abbr></a>. Possible uses are:";
-    $value .= "<ul>";
-    $value .= "<li>developing smartphone apps / mobile versions;";
-    $value .= "<li>extracting meta-information about the Stacks project;";
-    $value .= "<li>creating your own graphs;";
-    $value .= "<li>... (please do make suggestions!)";
-    $value .= "</ul>";
-    $value .= "<p>If you intend to use this <abbr>API</abbr>, please contact us at <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>. <strong>This interface is not stable yet, please get in touch to discuss this with us</strong>.";
-
     $value .= "<h2><a href='" . href("acknowledgements") . "'>Acknowledgements</a></h2>";
     $value .= "<p>We have a page <a href='" . href("acknowledgements") . "'>acknowledging support</a>.";
 
@@ -39,6 +29,9 @@ class AboutPage extends Page {
     $value .= "<li>There is a <a href='https://github.com/stacks/stacks-tools'>repository</a> containing tools and infrastructure used by both the project and the website.";
     $value .= "</ol>";
     $value .= "<p>If you wish to start your own project, inspired by the Stacks project we hope the combination of these projects can serve as a starting point. If you have any questions about this, please do not hesitate to send an email to <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>.";
+
+    $value .= "<h2><a href='" . href("api") . "'>API</a></h2>";
+    $value .= "<p>You can query the Stacks project through an <a href='" . href("api") . "'><abbr title='Application Programming Interface'>API</abbr></a>.";
 
     return $value;
   }
