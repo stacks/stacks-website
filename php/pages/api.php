@@ -8,14 +8,14 @@ class APIPage extends Page {
   public function getMain() {
     $value = "";
 
-    $value .= "<h2>Overview</h2>";
-    $value .= "<p>It is possible to query the Stacks project yourself through an <abbr title='Application Programming Interface'>API</abbr>. This way you don't have to scrape the information from the <abbr title='HyperText Markup Language'>HTML</abbr> pages, because we want the content of the Stacks project to be as open as possible.";
-    $value .= "<p>We think about several applications of this:";
+    $value .= "<h2>API Overview</h2>";
+    $value .= "<p>It is possible to query the Stacks project yourself through an <abbr title='Application Programming Interface'>API</abbr>. This way you don't have to scrape the information from the <abbr title='HyperText Markup Language'>HTML</abbr> pages and it is consistent with our goal that the content of the Stacks project be as open as possible.";
+    $value .= "<p>We can think of several applications:";
     $value .= "<ul>";
     $value .= "<li>developing smartphone apps / mobile versions;";
     $value .= "<li>extracting meta-information about the Stacks project;";
     $value .= "<li>creating your own graphs;";
-    $value .= "<li>... (please do make suggestions!)";
+    $value .= "<li>... (please make suggestions!)";
     $value .= "</ul>";
     $value .= "<p>If you intend to use this <abbr>API</abbr>, please contact us at <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>. <strong>This interface is not stable yet, please get in touch to discuss this with us</strong>.";
     $value .= "<p>At this moment there are two main ways of interfacing with the Stacks project:";
