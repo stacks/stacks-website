@@ -10,6 +10,7 @@ $config = array_merge($config, parse_ini_file("config.ini"));
 // all the pages
 require_once("php/pages/about.php");
 require_once("php/pages/acknowledgements.php");
+require_once("php/pages/api.php");
 require_once("php/pages/bibliography.php");
 require_once("php/pages/browse.php");
 require_once("php/pages/chapter.php");
@@ -55,6 +56,10 @@ try {
   
     case "acknowledgements":
       $page = new AcknowledgementsPage($database);
+      break;
+
+    case "api":
+      $page = new APIPage($database);
       break;
   
     case "bibliography":
