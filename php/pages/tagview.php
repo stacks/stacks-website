@@ -269,7 +269,7 @@ class TagViewPage extends Page {
     $value .= "<li><a href='javascript:copyToClipboard(\"\\\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{Tag " . $this->tag["tag"] . "}\")'>Tag " . $this->tag["tag"] . "</a>";
     $value .= "<li><a href='javascript:copyToClipboard(\"\\\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{" . ucfirst($this->tag["type"]) . " " . $this->tag["tag"] . "}\")'>" . ucfirst($this->tag["type"]) . " " . $this->tag["tag"] . "</a>";
     $value .= "</ul>";
-    $value .= "<p>For more information, see <a href='#'>How to reference tags</a>.</p>";
+    $value .= "<p>For more information, see <a href='" . href("tags") . "'>How to reference tags</a>.</p>";
 
     return $value;
   }
@@ -453,7 +453,7 @@ class TagViewPage extends Page {
       $value .= "<p>The tag corresponds to the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a>, or equivalently to the whole of <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>. No code preview is provided here.</p>";
     }
     else {
-      $value .= "<p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a> and is located in <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> (see <a href='#'>updates</a> for more information)."; // a page on the updating process
+      $value .= "<p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a> and is located in <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> (see <a href='" . href("tags#stacks-epoch") . "'>updates</a> for more information).";
       $value .= "<pre><code>";
       $code = preprocessCode($this->tag["value"]);
       $value .= $code;
