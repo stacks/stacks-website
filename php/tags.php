@@ -191,14 +191,13 @@ function convertLaTeX($tag, $file, $code) {
   $code = preg_replace("/\%[\w.]+/", "", $code);
 
   // these do not fit into the system above
-  $code = str_replace("\\begin{center}\n", "<center>", $code);
+  $code = str_replace("\\begin{center}", "<center>", $code);
   $code = str_replace("\\end{center}", "</center>", $code);
   
   $code = str_replace("\\begin{quote}", "<blockquote>", $code);
   $code = str_replace("\\end{quote}", "</blockquote>", $code);
 
   // proof environment
-  $code = str_replace("\\begin{proof}\n", "<p><strong>Proof.</strong> ", $code);
   $lines = explode("\n", $code);
   foreach ($lines as &$line) {
     // we have a named proof
@@ -209,7 +208,7 @@ function convertLaTeX($tag, $file, $code) {
     }
   }
   $code = implode("\n", $lines);
-  $code = preg_replace("/\\\begin\{proof\}\[(" . $regex . ")\]/u", "<p><strong>$1</strong> ", $code);
+  $code = str_replace("\\begin{proof}", "<p><strong>Proof.</strong>", $code);
   $code = str_replace("\\end{proof}", "<span style='float: right;'>$\square$</span>", $code);
 
   // hyperlinks
@@ -247,20 +246,20 @@ function convertLaTeX($tag, $file, $code) {
   $code = str_replace("\\input{chapters}", "", $code);
 
   // enumerates etc.
-  $code = str_replace("\\begin{enumerate}\n", "<ol>", $code);
-  $code = str_replace("\\end{enumerate}", "</ol><p>", $code);
-  $code = str_replace("\\begin{itemize}\n", "<ul>", $code);
-  $code = str_replace("\\end{itemize}", "</ul><p>", $code);
-  $code = preg_replace("/\\\begin{list}(.*)\n/", "<ul>", $code); // unfortunately I have to ignore information in here
+  $code = str_replace("\\begin{enumerate}", "<ol>", $code);
+  $code = str_replace("\\end{enumerate}", "</ol>", $code);
+  $code = str_replace("\\begin{itemize}", "<ul>", $code);
+  $code = str_replace("\\end{itemize}", "</ul>", $code);
+  $code = preg_replace("/\\\begin{list}(.*)\n/", "<ul>\n", $code); // unfortunately I have to ignore information in here
   $code = str_replace("\\end{list}", "</ul>", $code);
-  $code = preg_replace("/\\\item\[(" . $regex . ")\]/u", "<li>", $code);
+  $code = preg_replace("/\\\item\[(" . $regex . ")\]/u", "<li>", $code); // TODO: Correctly use the label here
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
-  $code = str_replace("\n\n", "\n<p>", $code);
+  #$code = str_replace("\n\n", "\n", $code);
   $code = str_replace("\\smallskip", "", $code);
   $code = str_replace("\\medskip", "", $code);
-  $code = str_replace("\\noindent", "", $code);
+  $code = str_replace("\\noindent", "<p>", $code);
 
   // parse references
   //$code = preg_replace('/\\\ref\{(.*)\}/', "$1", $code);
@@ -269,10 +268,22 @@ function convertLaTeX($tag, $file, $code) {
   // don't escape in math mode because XyJax doesn't like that, and fix URLs too
   $lines = explode("\n", $code);
   $math_mode = false;
+  // variable tracking what level of nesting of lists we are at
+  $list_mode = 0;
   foreach ($lines as &$line) {
     // $$ is a toggle
     if ($line == "$$")
       $math_mode = !$math_mode;
+
+    // after the end of a nested set of lists, we need to start a new paragraph.
+    // TODO: Use this code to get numbering of paragraphs correct (mimick what latex does)
+    if ($line == '<ol>' || $line == '<ul>')
+      $list_mode = $list_mode + 1;
+    if ($line == '</ol>' || $line == '</ul>') {
+      $list_mode = $list_mode - 1;
+      if ($list_mode == 0)
+        $line = $line . "\n<p>";
+    }
 
     $environments = array('equation', 'align', 'align*', 'eqnarray', 'eqnarray*');
     foreach ($environments as $environment) {
