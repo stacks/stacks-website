@@ -66,6 +66,9 @@ function parseComment($comment) {
   $comment = Markdown($comment);
   // Firefox liked to throw in some &nbsp;'s, but I believe this particular fix is redundant now
   $comment = str_replace("&nbsp;", ' ', $comment);
+  // Markdown messes up { and }, replace the ASCII codes by the actual characters for MathJax to pick it up
+  $comment = str_replace("&#123;", "\{", $comment);
+  $comment = str_replace("&#125;", "\}", $comment);
 
   return $comment;
 }
