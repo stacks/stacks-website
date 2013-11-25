@@ -40,7 +40,7 @@ function parseComment($comment) {
   }
   $comment = implode($lines, "\n");
 
-  // fix underscores (all underscores in math mode will be escaped
+  // fix underscores and asterisks (all underscores in math mode will be escaped
   $result = '';
   $mathmode = false;
   foreach (str_split($comment) as $position => $character) {
@@ -54,6 +54,8 @@ function parseComment($comment) {
     // replace unescaped underscores in math mode, the accessed position always exists because we had to enter math mode first
     if ($mathmode && $character == "_" && $comment[$position - 1] != "\\")
       $result .= "\\_";
+    elseif ($mathmode && $character == "*" && $comment[$position - 1] != "\\")
+      $result .= "\\*";
     else
       $result .= $character;
   }
@@ -93,10 +95,8 @@ function parseReferences($string) {
       // TODO: Is it worth it to do this?
       if (!labelExists($target)) {
         $tag = getTag(strtoupper($_GET['tag']));
-        $label = $tag["label"];
-        $parts = explode('-', $label);
         // let's try it with the current chapter in front of the label
-        $target = $parts[0] . '-' . $target;
+        $target = $tag["file"] . '-' . $target;
       }
   
       // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
