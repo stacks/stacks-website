@@ -25,7 +25,6 @@ function sfm(text) {
         mathmode = !mathmode;
     }
 
-    console.log(text[window.parseInt(c) - 1] + text[c]);
     // replace unescaped underscores in math mode, the accessed position always exists because we had to enter math mode first
     if (mathmode && text[c] == "_" && text[window.parseInt(c) - 1] != "\\")
       result += "\\_";
