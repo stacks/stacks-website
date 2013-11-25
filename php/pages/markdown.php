@@ -23,10 +23,10 @@ Some math: \$\\varphi\\colon X\\to Y$, see Tag \\ref{04FW}.
     $output .= "<p>You can use the preview option (if Javascript is enabled) when writing a comment to check your comment before submit. Or if you use the fullscreen option you can see what your comment will look like in realtime.";
 
     $output .= "<h2>LaTeX and Markdown</h2>";
-    $output .= "<p>Here at the Stacks project we try to merge Markdown and LaTeX for the comments system. You can write mathematics just like you're used in LaTeX, i.e. stuff like <code>$\pi$</code> and";
-    $output .= "<pre><code>\begin{equation}
+    $output .= "<p>Here at the Stacks project we try to merge Markdown and LaTeX for the comments system. You can write mathematics just like you're used in LaTeX, i.e. stuff like <code>$\\pi$</code> and";
+    $output .= "<pre><code>\\begin{equation}
   a^2+b^2=c^2
-\end{equation}
+\\end{equation}
 </code></pre>";
     $output .= "<p>just works. This is done using <a href='http://mathjax.org'>MathJax</a> (so you need to enable Javascript).</p>";
 
@@ -38,9 +38,9 @@ Some math: \$\\varphi\\colon X\\to Y$, see Tag \\ref{04FW}.
     $output .= "<ol>";
     $output .= "<li>As discussed before you can use LaTeX-style mathematics the way you are used to.</li>";
 
-    $output .= "<li>You can refer to tags by using <code>\ref{tag}</code>. So <code>\ref{0001}</code> will automatically be converted to <a href='" . href('tag/0001') ."'><var>0001</var></a>. For this to trigger you just need <code>tag</code> to be a valid tag, it doesn't necessarily have to exist in the database.";
+    $output .= "<li>You can refer to tags by using <code>\\ref{tag}</code>. So <code>\\ref{0001}</code> will automatically be converted to <a href='" . href('tag/0001') ."'><var>0001</var></a>. For this to trigger you just need <code>tag</code> to be a valid tag, it doesn't necessarily have to exist in the database.";
 
-    $output .= "<li>It is also possible to refer to labels, as used in the Stacks project. This means that <code>\ref{topology-lemma-quasi-compact-closed-point}</code> gets parsed to <a href='" . href('tag/005E') . "'><var>005E</var></a>. And if you write <code>\ref{lemma-quasi-compact-closed-point}</code> (i.e. without a chapter in front of the label) on a comment within the same chapter the system will understand you are referring to a \"local\" result and act accordingly.";
+    $output .= "<li>It is also possible to refer to labels, as used in the Stacks project. This means that <code>\\ref{topology-lemma-quasi-compact-closed-point}</code> gets parsed to <a href='" . href('tag/005E') . "'><var>005E</var></a>. And if you write <code>\\ref{lemma-quasi-compact-closed-point}</code> (i.e. without a chapter in front of the label) on a comment within the same chapter the system will understand you are referring to a \"local\" result and act accordingly.";
 
     $output .= "<p>Remark that it is <em>not encouraged</em> to use this type of referencing: tags are stable, labels are not.";
     $output .= "</ol>";
