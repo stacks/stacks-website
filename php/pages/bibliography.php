@@ -79,7 +79,7 @@ class BibliographyPage extends Page {
     $output .= "<h2>Bibliography</h2>";
     $firstLetter = "";
 
-    foreach ($this->items as $name => $item) {
+    foreach ($this->items as $item) {
       // output headers per letter
       if (isset($item["author"]))
         $author = $item["author"];
@@ -96,7 +96,7 @@ class BibliographyPage extends Page {
         $firstLetter = strtoupper($author[0]);
       }
 
-      $output .= printItem($name, $item);
+      $output .= printItem($item['name'], $item);
     }
     $output .= "</ul>";
 
@@ -131,13 +131,14 @@ class BibliographyPage extends Page {
       $result = array();
       foreach ($rows as $row) {
         $result[$row['name']]['type'] = $row['type'];
+        $result[$row['name']]['name'] = $row['name'];
         $result[$row['name']][$row['key']] = $row['value'];
       }
 
       // we don't want FDL in the bibliography
       unset($result["FDL"]);
 
-	  usort($result, "compareItems");
+      usort($result, "compareItems");
 
       return $result;
     }
@@ -233,6 +234,7 @@ class BibliographyItemPage extends Page {
     return $results;
   }
 
+  // TODO: use ordering by author names
   private function getNeighbouringItems() {
     $results = array();
 
