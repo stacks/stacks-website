@@ -305,7 +305,7 @@ function convertLaTeX($tag, $file, $code) {
   }
   $code = implode("\n", $lines);
  
-  // We replace the text in a link (definition-strict) by its ID (Definition 11.13.3)
+  // we replace the text in a link (definition-strict) by its ID (Definition 11.13.3)
   $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $code, $references);
   for ($i = 0; $i < $count; ++$i) {
     $code = str_replace($references[0][$i], "<a href='" . $references[1][$i] . "'>" . getID(substr($references[1][$i], -4)) . "</a>", $code);
