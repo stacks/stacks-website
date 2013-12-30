@@ -164,7 +164,8 @@ function convertLaTeX($tag, $file, $code) {
   }
 
   // sections etc.
-  $count = preg_match_all("/\\\section\{(" . $regex . ")\}\n\\\label\{([\w\-]+)\}/u", $code, $matches);
+  $regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$]+";
+  $count = preg_match_all("/\\\section\{(" . substr($regex, 0, -2) . "\\\{\\\}]+)\}\n\\\label\{([\w\-]+)\}/u", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[2][$i];
 
@@ -175,7 +176,7 @@ function convertLaTeX($tag, $file, $code) {
       $code = str_replace($matches[0][$i], "<h3>" . $matches[1][$i] . "</h3>", $code);
   }
 
-  $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/u", $code, $matches);
+  $count = preg_match_all("/\\\subsection\{(" . substr($regex, 0, -2) . "\\\{\\\}]+)\}\n\\\label\{([\w-]+)\}/u", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[2][$i];
     $code = str_replace($matches[0][$i], "<h4><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . getIDWithLabel($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
