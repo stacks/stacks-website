@@ -3,6 +3,12 @@
 require_once("php/page.php");
 require_once("php/general.php");
 
+function compareItems($a, $b) {
+  if (!isset($a["author"])) return 1;
+  if (!isset($b["author"])) return 1;
+  return (strtoupper($a["author"]) < strtoupper($b["author"])) ? -1 : 1;
+}
+
 function printItem($name, $item) {
   if (!isset($item["author"]))
     $item["author"] = "<em>no author known</em>";
@@ -51,8 +57,10 @@ class BibliographyPage extends Page {
     $this->db = $database;
 
     $this->items = $this->getItems();
-    foreach (array_keys($this->items) as $name)
-      array_push($this->letters, strtoupper($name[0]));
+    foreach ($this->items as $item) {
+      if (isset($item["author"]))
+        array_push($this->letters, strtoupper($item["author"][0]));
+    }
     $this->letters = array_unique($this->letters);
   }
 
@@ -71,19 +79,24 @@ class BibliographyPage extends Page {
     $output .= "<h2>Bibliography</h2>";
     $firstLetter = "";
 
-    foreach ($this->items as $name => $item) {
+    foreach ($this->items as $item) {
       // output headers per letter
-      if ($firstLetter != strtoupper($name[0])) {
+      if (isset($item["author"]))
+        $author = $item["author"];
+	  else
+        $author = $item["editor"];
+
+      if ($firstLetter != strtoupper($author[0])) {
         if ($firstLetter != "") {
           $output .= "</ul>";
           $output .= "<p class='up'><a href='#'>go back up</a></p>";
         }
 
-        $output .= "<h3 id='" . strtoupper($name[0]) . "'>" . strtoupper($name[0]) . "</h3><ul class='bibliography'>";
-        $firstLetter = strtoupper($name[0]);
+        $output .= "<h3 id='" . strtoupper($author[0]) . "'>" . strtoupper($author[0]) . "</h3><ul class='bibliography'>";
+        $firstLetter = strtoupper($author[0]);
       }
 
-      $output .= printItem($name, $item);
+      $output .= printItem($item['name'], $item);
     }
     $output .= "</ul>";
 
@@ -118,11 +131,14 @@ class BibliographyPage extends Page {
       $result = array();
       foreach ($rows as $row) {
         $result[$row['name']]['type'] = $row['type'];
+        $result[$row['name']]['name'] = $row['name'];
         $result[$row['name']][$row['key']] = $row['value'];
       }
 
       // we don't want FDL in the bibliography
       unset($result["FDL"]);
+
+      usort($result, "compareItems");
 
       return $result;
     }
@@ -218,6 +234,7 @@ class BibliographyItemPage extends Page {
     return $results;
   }
 
+  // TODO: use ordering by author names
   private function getNeighbouringItems() {
     $results = array();
 

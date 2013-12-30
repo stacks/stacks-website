@@ -458,7 +458,14 @@ class TagViewPage extends Page {
     else {
       $value .= "<p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a> and is located in <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> (see <a href='" . href("tags#stacks-epoch") . "'>updates</a> for more information).";
       $value .= "<pre><code>";
+
       $code = preprocessCode($this->tag["value"]);
+
+      // link labels to the corresponding tag
+      $count = preg_match_all('/\\\label{([\w-\*]+)}/', $code, $references);
+      for ($i = 0; $i < $count; ++$i)
+        $code = str_replace($references[0][$i], "\\label{<a href='" . getTagWithLabel($this->tag["file"] . "-" . $references[1][$i]) . "'>" . $references[1][$i] . "</a>}", $code);
+      
       $value .= $code;
       $value .= "</code></pre>";
     }
