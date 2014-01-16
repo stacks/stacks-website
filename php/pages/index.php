@@ -48,6 +48,7 @@ class IndexPage extends Page {
 
     $value .= getRecentChanges();
     $value .= getRecentBlogposts();
+    $value .= getCommentsSidebar($this->db);
     $value .= getStatisticsSidebar($this->db);
 
     return $value;

@@ -1,6 +1,7 @@
 <?php
 
 require_once("php/page.php");
+require_once("php/comments.php");
 require_once("php/statistics.php");
 require_once("php/general.php");
 
@@ -40,6 +41,7 @@ class AboutPage extends Page {
 
     $value .= getRecentChanges();
     $value .= getRecentBlogposts();
+    $value .= getStatisticsSidebar($this->db);
     $value .= getStatisticsSidebar($this->db);
 
     return $value;
