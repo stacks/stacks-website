@@ -41,7 +41,7 @@ class AboutPage extends Page {
 
     $value .= getRecentChanges();
     $value .= getRecentBlogposts();
-    $value .= getStatisticsSidebar($this->db);
+    $value .= getCommentsSidebar($this->db);
     $value .= getStatisticsSidebar($this->db);
 
     return $value;
