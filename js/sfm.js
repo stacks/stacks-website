@@ -29,7 +29,7 @@ function sfm(text) {
     if (mathmode && text[c] == "_" && text[window.parseInt(c) - 1] != "\\")
       result += "\\_";
     // replace * in math mode: we are not emphasizing things
-    if (mathmode && text[c] == "*" && text[window.parseInt(c) - 1] != "\\")
+    else if (mathmode && text[c] == "*" && text[window.parseInt(c) - 1] != "\\")
       result += "\\*";
     // escape \{ in math mode to \\{
     else if (mathmode && text[c] == "{" && text[window.parseInt(c) - 1] == "\\")
