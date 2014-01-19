@@ -429,8 +429,6 @@ class TagViewPage extends Page {
 
   private function printView() {
     $value = "";
-    $value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
-    $value .= "<blockquote class='rendered'>";
     if ($this->tag["type"] == "chapter") {
       $value .= "<h3>Chapter " . $this->tag["book_id"] . ": " . $this->tag["name"] . "</h3>";
       $value .= "<p>This tag corresponds to <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>, and contains no further text. To view the contents of the first section in this chapter, go to the next tag.</p>";
@@ -441,21 +439,26 @@ class TagViewPage extends Page {
       $value .= "<a href='#'><img src='" . href("js/jquery-treeview/images/plus.gif") . "'> Expand all</a>";
       $value .= "</div>";
       $value .= "<div id='treeview'>";
+      $value .= "<a href='" . href("tag/" . $this->tag["tag"]) . "'>Tag " . $this->tag["tag"] . "</a> points to Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]);
       $value .= printToC($this->tag["book_id"]);
       $value .= "</div>";
       $value .= "<script type='text/javascript' src='" . href("js/chapter.js") . "'></script>";
     }
     else {
-      $value .= convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["value"]);
-    }
-    $value .= "</blockquote>";
+      // only display for non-chapters
+      $value .= "<p id='code-link' class='toggle'><a href='#code'>code</a></p>";
 
-    $value .= "<p id='rendered-link' class='toggle'><a href='#rendered'>view</a></p>";
-    $value .= "<div id='code'>";
-    if ($this->tag["type"] == "chapter") {
-      $value .= "<p>The tag corresponds to the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a>, or equivalently to the whole of <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>. No code preview is provided here.</p>";
+      $value .= "<blockquote class='rendered'>";
+      $value .= convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["value"]);
+      $value .= "</blockquote>";
     }
-    else {
+
+    // only display for non-chapters
+    if ($this->tag["type"] != "chapter") {
+      $value .= "<p id='rendered-link' class='toggle'><a href='#rendered'>view</a></p>";
+
+      $value .= "<div id='code'>";
+
       $value .= "<p>The code snippet corresponding to this tag is a part of the file <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex'><var>" . $this->tag["file"] . ".tex</var></a> and is located in <a href='https://github.com/stacks/stacks-project/blob/master/" . $this->tag["file"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> (see <a href='" . href("tags#stacks-epoch") . "'>updates</a> for more information).";
       $value .= "<pre><code>";
 
@@ -468,8 +471,8 @@ class TagViewPage extends Page {
       
       $value .= $code;
       $value .= "</code></pre>";
+      $value .= "</div>";
     }
-    $value .= "</div>";
 
     $value .= $this->printNavigation();
 
