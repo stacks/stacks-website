@@ -2,6 +2,7 @@ Options +Indexes
 
 RewriteEngine On
 
+RewriteBase /
 
 RewriteRule about$ index.php?page=about [L]
 RewriteRule acknowledgements$ index.php?page=acknowledgements [L]
