@@ -25,6 +25,17 @@ $(document).ready(function() {
     $("blockquote.rendered, p#code-link, div#code, p#rendered-link").toggle();
   });
 
+  // add toggle for references (text versus list view)
+  $("h2#references-header").append("<a style='float: right;'>list view</a>").click(function(e) {
+    $("div#references-text").toggle();
+    $("ol#citations").toggle();
+
+    if ($("ol#citations").is(":visible"))
+      $("h2#references-header a").text("text view");
+    else
+      $("h2#references-header a").text("list view");
+  });
+
   // make comments header look like link
   $("h2#comments-header").css("cursor", "pointer");
   // hide comment section, and add the correct toggle symbol
