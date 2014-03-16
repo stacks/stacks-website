@@ -111,6 +111,28 @@ function convertLaTeX($tag, $file, $code) {
   // fix special characters (&quot; should be " for \"e)
   $code = parseAccents(str_replace("&quot;", "\"", $code));
 
+  // remove the reference environment (TODO more environments will be used here)
+  $ignoredEnvironments = array("reference");
+
+  foreach ($ignoredEnvironments as $environment) {
+    $lines = explode("\n", $code);
+    $result = "";
+    $ignored = false;
+
+    foreach ($lines as $line) {
+      if ($line == "\\begin{" . $environment . "}")
+        $ignored = true;
+
+      if (!$ignored)
+        $result .= $line . "\n";
+
+      if ($line == "\\end{" . $environment . "}")
+        $ignored = false;
+    }
+
+    $code = $result;
+  }
+
   // all big environments with their corresponding markup
   $environments = array(
     "lemma"       => array("name" => "Lemma",       "type" => "plain"),
