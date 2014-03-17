@@ -123,7 +123,7 @@ class TagViewPage extends Page {
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page, label, file, value, begin, end FROM tags WHERE tag = :tag");
+    $sql = $this->db->prepare("SELECT tag, name, position, reference, type, book_id, chapter_page, book_page, label, file, value, begin, end FROM tags WHERE tag = :tag");
     $sql->bindParam(":tag", $tag);
 
     if ($sql->execute())
@@ -210,6 +210,23 @@ class TagViewPage extends Page {
     $value .= "<h2>Your location</h2>";
     $value .= $this->printLocation();
 
+    if (!empty($this->tag["reference"])) {
+      $value .= "<h2 id='references-header'>References</h2>";
+      $value .= "<div id='references'>";
+
+      // plaintext view of the reference
+      $value .= "<div id='references-text'><p>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["reference"]) . "</div>";
+
+      // list view of the reference
+      $citations = $this->getCitations();
+      $value .= "<ol id='citations'>";
+      foreach ($citations as $citation) {
+        $value .= "<li>" . parseCitations("\cite" . (empty($citation["text"]) ? "" : "[" . $citation["text"] . "]") . "{" . $citation["name"] . "}");
+      }
+      $value .= "</ol>";
+      $value .= "</div>";
+    }
+
     $value .= "<h2>How can you cite this tag?</h2>";
     $value .= $this->printCitation();
 
@@ -242,6 +259,20 @@ class TagViewPage extends Page {
     $comments = array();
 
     $sql = $this->db->prepare("SELECT id, tag, author, date, comment, site FROM comments WHERE tag = :tag ORDER BY date");
+    $sql->bindParam(':tag', $this->tag["tag"]);
+
+    if ($sql->execute()) {
+      while ($row = $sql->fetch())
+        array_push($comments, $row);
+    }
+
+    return $comments;
+  }
+
+  private function getCitations() {
+    $comments = array();
+
+    $sql = $this->db->prepare("SELECT name, text FROM citations WHERE tag = :tag");
     $sql->bindParam(':tag', $this->tag["tag"]);
 
     if ($sql->execute()) {

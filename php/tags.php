@@ -3,6 +3,9 @@
 require_once("bibliography.php");
 require_once("general.php");
 
+// this is the regex for all (sufficiently nice) text that can occur in things like \emph
+$regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$]+";
+
 function parseBrackets($string, $split, $callback, $start = 0) {
   $parts = explode($split, $string);
   
@@ -57,6 +60,27 @@ function parseItalics($string) {
   return parseBrackets($string, "{\\it ", "encapsulateItalics", 1);
 }
 
+function parseCitations($code) {
+  global $regex;
+
+  $count = preg_match_all("/\\\cite\{([\.\w,\-+\_]*)\}/", $code, $matches);
+  for ($i = 0; $i < $count; $i++) {
+    $keys = explode(",", $matches[1][$i]);
+    $matchings = explode(",", $matches[0][$i]);
+    foreach ($keys as $index => $key) {
+      $item = getBibliographyItem($key);
+      $code = str_replace($matchings[$index], '[<a title="' . parseTeX($item['author']) . ', ' . parseTeX($item['title']) . '" href="' . href('bibliography/' . $key) . '">' . $key . "</a>]", $code);
+    }
+  }
+  $count = preg_match_all("/\\\cite\[(" . $regex . ")\]\{([\w-]*)\}/", $code, $matches);
+  for ($i = 0; $i < $count; $i++) {
+    $item = getBibliographyItem($matches[2][$i]);
+    $code = str_replace($matches[0][$i], '[<a title="' . parseTeX($item['author']) . ', ' . parseTeX($item['title']) . '" href="' . href('bibliography/' . $matches[2][$i]) . '">' . $matches[2][$i] . "</a>, " . $matches[1][$i] . "]", $code);
+  }
+
+  return $code;
+}
+
 function getMacros() {
   global $database;
 
@@ -105,11 +129,32 @@ function convertLaTeX($tag, $file, $code) {
   // get rid of things that should be HTML
   $code = preprocessCode($code);
 
-  // this is the regex for all (sufficiently nice) text that can occur in things like \emph
-  $regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$]+";
+  global $regex;
 
   // fix special characters (&quot; should be " for \"e)
   $code = parseAccents(str_replace("&quot;", "\"", $code));
+
+  // remove the reference environment (TODO more environments will be used here)
+  $ignoredEnvironments = array("reference");
+
+  foreach ($ignoredEnvironments as $environment) {
+    $lines = explode("\n", $code);
+    $result = "";
+    $ignored = false;
+
+    foreach ($lines as $line) {
+      if ($line == "\\begin{" . $environment . "}")
+        $ignored = true;
+
+      if (!$ignored)
+        $result .= $line . "\n";
+
+      if ($line == "\\end{" . $environment . "}")
+        $ignored = false;
+    }
+
+    $code = $result;
+  }
 
   // all big environments with their corresponding markup
   $environments = array(
@@ -225,22 +270,8 @@ function convertLaTeX($tag, $file, $code) {
   $code = parseFootnotes($code);
   $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/u", " ($1)", $code);
 
-
-  // handle citations
-  $count = preg_match_all("/\\\cite\{([\.\w,\-+\_]*)\}/", $code, $matches);
-  for ($i = 0; $i < $count; $i++) {
-    $keys = explode(",", $matches[1][$i]);
-    $matchings = explode(",", $matches[0][$i]);
-    foreach ($keys as $index => $key) {
-      $item = getBibliographyItem($key);
-      $code = str_replace($matchings[$index], '[<a title="' . parseTeX($item['author']) . ', ' . parseTeX($item['title']) . '" href="' . href('bibliography/' . $key) . '">' . $key . "</a>]", $code);
-    }
-  }
-  $count = preg_match_all("/\\\cite\[(" . $regex . ")\]\{([\w-]*)\}/", $code, $matches);
-  for ($i = 0; $i < $count; $i++) {
-    $item = getBibliographyItem($matches[2][$i]);
-    $code = str_replace($matches[0][$i], '[<a title="' . parseTeX($item['author']) . ', ' . parseTeX($item['title']) . '" href="' . href('bibliography/' . $matches[2][$i]) . '">' . $matches[2][$i] . "</a>, " . $matches[1][$i] . "]", $code);
-  }
+  // parse \cite commands
+  $code = parseCitations($code);
 
   // filter \input{chapters}
   $code = str_replace("\\input{chapters}", "", $code);

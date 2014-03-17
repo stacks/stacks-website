@@ -120,3 +120,18 @@ ul#using {
 ul#using li {
   margin-bottom: .5em;
 }
+
+h2#references-header a {
+  font-weight: normal;
+  text-decoration: underline;
+  color: #0000cc;
+}
+
+h2#references-header a:hover, h2#references-header a:visited, h2#references-header a:active {
+  color: #880000;
+  cursor: pointer;
+}
+
+div#references ol#citations {
+  display: none;
+}
