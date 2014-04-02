@@ -123,7 +123,7 @@ class TagViewPage extends Page {
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    $sql = $this->db->prepare("SELECT tag, name, position, type, book_id, chapter_page, book_page, label, file, value, begin, end FROM tags WHERE tag = :tag");
+    $sql = $this->db->prepare("SELECT tag, name, position, reference, type, book_id, chapter_page, book_page, label, file, value, begin, end FROM tags WHERE tag = :tag");
     $sql->bindParam(":tag", $tag);
 
     if ($sql->execute())
@@ -210,7 +210,24 @@ class TagViewPage extends Page {
     $value .= "<h2>Your location</h2>";
     $value .= $this->printLocation();
 
-    $value .= "<h2>How can you cite this tag?</h2>";
+    if (!empty($this->tag["reference"])) {
+      $value .= "<h2 id='references-header' class='more'>References</h2>";
+      $value .= "<div id='references'>";
+
+      // plaintext view of the reference
+      $value .= "<div id='references-text'><p>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["reference"]) . "</div>";
+
+      // list view of the reference
+      $citations = $this->getCitations();
+      $value .= "<ol id='citations'>";
+      foreach ($citations as $citation) {
+        $value .= "<li>" . parseCitations("\cite" . (empty($citation["text"]) ? "" : "[" . $citation["text"] . "]") . "{" . $citation["name"] . "}");
+      }
+      $value .= "</ol>";
+      $value .= "</div>";
+    }
+
+    $value .= "<h2 id='citation-header' class='more'>How can you cite this tag?</h2>";
     $value .= $this->printCitation();
 
     $value .= "<h2>Extras</h2>";
@@ -252,6 +269,20 @@ class TagViewPage extends Page {
     return $comments;
   }
 
+  private function getCitations() {
+    $comments = array();
+
+    $sql = $this->db->prepare("SELECT name, text FROM citations WHERE tag = :tag");
+    $sql->bindParam(':tag', $this->tag["tag"]);
+
+    if ($sql->execute()) {
+      while ($row = $sql->fetch())
+        array_push($comments, $row);
+    }
+
+    return $comments;
+  }
+
   private function getSiblingTags() {
     // check whether result is already cached
     if ($this->siblingTags == null)
@@ -264,7 +295,8 @@ class TagViewPage extends Page {
     $value = "";
 
     $value .= "<p>Use:";
-    $value .= "<pre><code>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
+    $value .= "<pre style='margin: -.2em 0 .4em 0'><code style='font-size: 90%'>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
+    $value .= "<div id='citation-text-more'>";
     $value .= "or one of the following (click to see and copy the code)";
     $value .= "<ul id='citation-options'>";
     $value .= "<li><a href='javascript:copyToClipboard(\"\\\\cite[\\\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{Tag " . $this->tag["tag"] . "}]{stacks-project}\")'>[Tag " . $this->tag["tag"] . ", Stacks]</a>";
@@ -273,6 +305,7 @@ class TagViewPage extends Page {
     $value .= "<li><a href='javascript:copyToClipboard(\"\\\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{" . ucfirst($this->tag["type"]) . " " . $this->tag["tag"] . "}\")'>" . ucfirst($this->tag["type"]) . " " . $this->tag["tag"] . "</a>";
     $value .= "</ul>";
     $value .= "<p>For more information, see <a href='" . href("tags") . "'>How to reference tags</a>.</p>";
+    $value .= "</div>";
 
     return $value;
   }
