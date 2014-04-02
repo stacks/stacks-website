@@ -211,7 +211,7 @@ class TagViewPage extends Page {
     $value .= $this->printLocation();
 
     if (!empty($this->tag["reference"])) {
-      $value .= "<h2 id='references-header'>References</h2>";
+      $value .= "<h2 id='references-header' class='more'>References</h2>";
       $value .= "<div id='references'>";
 
       // plaintext view of the reference
@@ -227,7 +227,7 @@ class TagViewPage extends Page {
       $value .= "</div>";
     }
 
-    $value .= "<h2>How can you cite this tag?</h2>";
+    $value .= "<h2 id='citation-header' class='more'>How can you cite this tag?</h2>";
     $value .= $this->printCitation();
 
     $value .= "<h2>Extras</h2>";
@@ -295,7 +295,8 @@ class TagViewPage extends Page {
     $value = "";
 
     $value .= "<p>Use:";
-    $value .= "<pre><code>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
+    $value .= "<pre style='margin: -.2em 0 .4em 0'><code style='font-size: 90%'>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
+    $value .= "<div id='citation-text-more'>";
     $value .= "or one of the following (click to see and copy the code)";
     $value .= "<ul id='citation-options'>";
     $value .= "<li><a href='javascript:copyToClipboard(\"\\\\cite[\\\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{Tag " . $this->tag["tag"] . "}]{stacks-project}\")'>[Tag " . $this->tag["tag"] . ", Stacks]</a>";
@@ -304,6 +305,7 @@ class TagViewPage extends Page {
     $value .= "<li><a href='javascript:copyToClipboard(\"\\\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{" . ucfirst($this->tag["type"]) . " " . $this->tag["tag"] . "}\")'>" . ucfirst($this->tag["type"]) . " " . $this->tag["tag"] . "</a>";
     $value .= "</ul>";
     $value .= "<p>For more information, see <a href='" . href("tags") . "'>How to reference tags</a>.</p>";
+    $value .= "</div>";
 
     return $value;
   }
