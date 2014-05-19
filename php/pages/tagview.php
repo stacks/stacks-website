@@ -500,7 +500,7 @@ class TagViewPage extends Page {
       // link labels to the corresponding tag
       $count = preg_match_all('/\\\label{([\w-\*]+)}/', $code, $references);
       for ($i = 0; $i < $count; ++$i)
-        $code = str_replace($references[0][$i], "\\label{<a href='" . getTagWithLabel($this->tag["file"] . "-" . $references[1][$i]) . "'>" . $references[1][$i] . "</a>}", $code);
+        $code = str_replace($references[0][$i], "\\label{<a href='" . href("tag/" . getTagWithLabel($this->tag["file"] . "-" . $references[1][$i])) . "'>" . $references[1][$i] . "</a>}", $code);
       
       $value .= $code;
       $value .= "</code></pre>";

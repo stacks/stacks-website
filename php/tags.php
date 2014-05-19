@@ -176,7 +176,7 @@ function convertLaTeX($tag, $file, $code) {
       
       // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
       if (labelExists($label))
-        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . $information["name"] . " " . getIDWithLabel($label) . ".</a>", $code);
+        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . href("tag/" . getTagWithLabel($label)) . "'>" . $information["name"] . " " . getIDWithLabel($label) . ".</a>", $code);
       else
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . ".</span>", $code);
     }
@@ -188,7 +188,7 @@ function convertLaTeX($tag, $file, $code) {
       
       // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
       if (labelExists($label))
-        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . $information["name"] . " " . getIDWithLabel($label) . " <span class='named'>(" . $matches[1][$i] . ")</span>.</a>", $code);
+        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . href("tag/" . getTagWithLabel($label)) . "'>" . $information["name"] . " " . getIDWithLabel($label) . " <span class='named'>(" . $matches[1][$i] . ")</span>.</a>", $code);
       else
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . " <span class='named'>(" . $matches[1][$i] . ")</span>.</span>", $code);
 
@@ -223,7 +223,7 @@ function convertLaTeX($tag, $file, $code) {
   $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/u", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[2][$i];
-    $code = str_replace($matches[0][$i], "<h4><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . getIDWithLabel($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
+    $code = str_replace($matches[0][$i], "<h4><a class='environment-identification' href='" . href("tag/" . getTagWithLabel($label)) . "'>" . getIDWithLabel($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
   }
 
   // remove remaining labels
