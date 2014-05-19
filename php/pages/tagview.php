@@ -366,7 +366,7 @@ class TagViewPage extends Page {
       case "item":
         $containingTag = getEnclosingTag($this->tag["position"]);
         $chapter = getChapter(getChapterFromID($containingTag["book_id"]));
-        $value .= "<li>Item&nbsp;" . $this->tag["book_id"] . " of the enumeration in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . "&nbsp;" . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("downloads/" . $chapter["filename"] . ".pdf#nameddest=" . $containingTag["tag"]) . "'>page&nbsp;" . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter&nbsp;" . $chapter["number"] . ": " . parseAccents($chapter["title"]) . "</a>";
+        $value .= "<li>Item&nbsp;" . $this->tag["book_id"] . " of the enumeration in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . "&nbsp;" . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("download/" . $chapter["filename"] . ".pdf#nameddest=" . $containingTag["tag"]) . "'>page&nbsp;" . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter&nbsp;" . $chapter["number"] . ": " . parseAccents($chapter["title"]) . "</a>";
 
         break;
 
@@ -378,7 +378,7 @@ class TagViewPage extends Page {
       case "equation":
         $containingTag = getEnclosingTag($this->tag["position"]);
         $chapter = getChapter(getChapterFromID($containingTag["book_id"]));
-        $value .= "<li>Equation&nbsp;" . stripChapter($this->tag["book_id"]) . " in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . "&nbsp;" . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("downloads/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter&nbsp;" . $chapter["number"] . ": " . parseAccents($chapter["title"]) . "</a>";
+        $value .= "<li>Equation&nbsp;" . stripChapter($this->tag["book_id"]) . " in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . "&nbsp;" . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("download/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter&nbsp;" . $chapter["number"] . ": " . parseAccents($chapter["title"]) . "</a>";
         $value .= "<li>Equation&nbsp;" . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["book_page"] . "</a> of the book";
         break;
 
