@@ -86,7 +86,7 @@ class BrowsePage extends Page {
 
     $value .= "<tr>";
     // first column
-    $value .= "<td></td>";
+    $value .= "<td style='width: 8em'></td>";
     // second column
     $value .= "<td>" . $number . ".&nbsp;&nbsp;&nbsp;" . parseAccents($chapter) . "</td>";
     // third column
@@ -118,8 +118,7 @@ class BrowsePage extends Page {
     $value = "";
 
     $value .= "<tr id='" . partToIdentifier($part) . "'>";
-    $value .= "<td>" . parseAccents($part) . "</td>";
-    $value .= "<td></td>";
+    $value .= "<td colspan='2'>" . parseAccents($part) . "</td>";
     $value .= "<td></td>";
     $value .= "<td></td>";
     $value .= "<td></td>";
