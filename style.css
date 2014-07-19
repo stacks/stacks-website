@@ -41,6 +41,21 @@ h1 a:visited {
   color: black;
 }
 
+h2 {
+  font-size: 120%;
+  display: block;
+  padding: 6px 8px;
+  font-weight: bold;
+  background-color: #edece6;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+h2:hover {
+  background-color: #c9c8c1;
+}
+
 blockquote.rendered {
   font-size: 100%;
 }
@@ -110,3 +125,19 @@ form input#submit:hover {
   background-color: #48a83b;
 }
 
+ol#slogans {
+  padding-right: 10px;
+}
+
+ol#slogans li {
+  width: 100%;
+}
+
+ol#slogans cite {
+  display: inline-block;
+  float: right;
+}
+
+p#slogans-disclaimer {
+  margin-left: 10px;
+}
