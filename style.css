@@ -62,10 +62,15 @@ form {
 form label {
   float: left;
   width: 80px;
+  line-height: 1.9;
 }
 
-form input[type="text"] {
+form input[type="text"],
+form input[type="email"] {
   float: left;
+  font-size: 80%;
+  padding: 4px;
+  vertical-align: baseline;
 }
 
 form p {

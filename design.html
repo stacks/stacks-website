@@ -15,9 +15,7 @@
       'HTML-CSS': { scale: 85 }
     });
   </script>
-  <script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default">
-  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 </head>
 
 <body>
@@ -38,25 +36,31 @@
   </div>
 </blockquote>
 
-<form>
+<form data-parsley-validate>
   <p>A slogan should be a human-readable summary of the tag's statement, in a single sentence, without using symbols.</p>
 
   <label for="slogan">Slogan<sup>*</sup>:</label>
-  <input type="text" id="slogan" name="slogan" maxlength="80" size="50">
+  <input type="text" id="slogan" name="slogan" maxlength="80" size="50" required>
   <br style="clear:both">
 
   <hr>
 
   <label for="name">Name<sup>*</sup>:</label>
-  <input type="text" id="name" name="name">
+  <input type="text" id="name" name="name" required>
   <br style="clear:both">
 
   <label for="email">E-mail<sup>*</sup>:</label>
-  <input type="text" id="email" name="email">
+  <input type="email" id="email" name="email" required>
   <br style="clear:both">
 
   <label for="site">Site:</label>
   <input type="text" id="site" name="site">
+  <br style="clear:both">
+
+  <hr>
+
+  <label for="tag">Tag<sup>*</sup>:</label>
+  <input type="text" id="tag" name="tag" size="4" maxlength="4" required>
   <br style="clear:both">
 
   <hr>
