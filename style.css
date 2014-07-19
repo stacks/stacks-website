@@ -11,7 +11,7 @@ body {
   color: #000;
   width: 500px;
   max-width: 800px;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 h1 {
@@ -41,10 +41,66 @@ h1 a:visited {
   color: black;
 }
 
+blockquote.rendered {
+  font-size: 100%;
+}
+
 a img {
   border: none;
 }
 
+hr {
+  color: white;
+  border: none;
+}
+
 form {
+  border-top: 1px solid #d9d8d1;
   padding: 10px;
 }
+
+form label {
+  float: left;
+  width: 80px;
+}
+
+form input[type="text"] {
+  float: left;
+}
+
+form p {
+  margin: 0 0 5px 0;
+}
+
+form input[type="submit"] {
+  color: white;
+  padding: 7px 20px;
+  font-size: 100%;
+  border-radius: 3px;
+	border: 1px solid #124d77;
+	cursor: pointer;
+}
+
+form input[type="submit"]:active {
+	position:relative;
+	top:1px;
+}
+
+form input#skip {
+  background-color: #ff4f5e;
+  float: left;
+}
+
+form input#skip:hover {
+  background-color: #eb1c2b;
+}
+
+form input#submit {
+  background-color: #62c255;
+  float: right;
+}
+
+form input#submit:hover {
+  background-color: #48a83b;
+}
+

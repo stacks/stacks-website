@@ -4,12 +4,12 @@
   <meta charset="utf-8">
 
   <title>The Stacks project sloganerator: design mockup</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" type="text/css" href="http://stacks.math.columbia.edu/css/tag.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 
   <script type='text/x-mathjax-config'>
     MathJax.Hub.Config({
-      extensions: ['tex2jax.js', 'fp.js'],
+      extensions: ['tex2jax.js'],
       tex2jax: {inlineMath: [['$', '$']]},
       TeX: {extensions: ['http://sonoisa.github.io/xyjax_ext/xypic.js', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},
       'HTML-CSS': { scale: 85 }
@@ -22,12 +22,12 @@
 
 <body>
 
-<h1><a href='#'>The Stacks project sloganerator</a></h1>
+<h1><a href="#">The Stacks project sloganerator</a></h1>
 
 <blockquote id="statement" class="rendered">
-  <div class='plain'>
+  <div class="plain">
     <p>
-      <a class='environment-identification' href='/tag/01ZA'>Proposition 31.4.4.</a>
+      <a class="environment-identification" href="http://stacks.math.columbia.edu/tag/01ZA">Proposition 31.4.4.</a>
       Let $S$ be a quasi-compact and quasi-separated scheme. There exist a directed partially ordered set $I$ and an inverse system of schemes $(S_i, f_{ii'})$ over $I$ such that
       <ol>
         <li> the transition morphisms $f_{ii'}$ are affine
@@ -39,8 +39,10 @@
 </blockquote>
 
 <form>
+  <p>A slogan should be a human-readable summary of the tag's statement, in a single sentence, without using symbols.</p>
+
   <label for="slogan">Slogan<sup>*</sup>:</label>
-  <input type="text" id="slogan" name="slogan">
+  <input type="text" id="slogan" name="slogan" maxlength="80" size="50">
   <br style="clear:both">
 
   <hr>
@@ -55,6 +57,12 @@
 
   <label for="site">Site:</label>
   <input type="text" id="site" name="site">
+  <br style="clear:both">
+
+  <hr>
+
+  <input type="submit" id="skip" value="get new tag">
+  <input type="submit" id="submit" value="submit this slogan">
   <br style="clear:both">
 </form>
 
