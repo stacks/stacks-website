@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The Stacks project sloganerator: design mockup</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="http://stacks.math.columbia.edu/css/tag.css">
+
+  <script type='text/x-mathjax-config'>
+    MathJax.Hub.Config({
+      extensions: ['tex2jax.js', 'fp.js'],
+      tex2jax: {inlineMath: [['$', '$']]},
+      TeX: {extensions: ['http://sonoisa.github.io/xyjax_ext/xypic.js', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},
+      'HTML-CSS': { scale: 85 }
+    });
+  </script>
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default">
+  </script>
+</head>
+
+<body>
+
+<h1><a href='#'>The Stacks project sloganerator</a></h1>
+
+<blockquote id="statement" class="rendered">
+  <div class='plain'>
+    <p>
+      <a class='environment-identification' href='/tag/01ZA'>Proposition 31.4.4.</a>
+      Let $S$ be a quasi-compact and quasi-separated scheme. There exist a directed partially ordered set $I$ and an inverse system of schemes $(S_i, f_{ii'})$ over $I$ such that
+      <ol>
+        <li> the transition morphisms $f_{ii'}$ are affine
+        <li> each $S_i$ is of finite type over $\mathbf{Z}$, and
+        <li> $S = \mathop{\rm lim}\nolimits_i S_i$.
+      </ol>
+    <p>
+  </div>
+</blockquote>
+
+<form>
+  <label for="slogan">Slogan<sup>*</sup>:</label>
+  <input type="text" id="slogan" name="slogan">
+  <br style="clear:both">
+
+  <hr>
+
+  <label for="name">Name<sup>*</sup>:</label>
+  <input type="text" id="name" name="name">
+  <br style="clear:both">
+
+  <label for="email">E-mail<sup>*</sup>:</label>
+  <input type="text" id="email" name="email">
+  <br style="clear:both">
+
+  <label for="site">Site:</label>
+  <input type="text" id="site" name="site">
+  <br style="clear:both">
+</form>
+
+</body>
+</html>
