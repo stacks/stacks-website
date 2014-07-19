@@ -66,6 +66,7 @@ form label {
 }
 
 form input[type="text"],
+form input[type="url"],
 form input[type="email"] {
   float: left;
   font-size: 80%;
