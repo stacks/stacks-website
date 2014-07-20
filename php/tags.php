@@ -308,8 +308,9 @@ function convertLaTeX($tag, $file, $code) {
   $list_mode = 0;
   foreach ($lines as &$line) {
     // $$ is a toggle
-    if ($line == "$$")
+    if (startsWith("$$", $line)) {
       $math_mode = !$math_mode;
+    }
 
     // after the end of a nested set of lists, we need to start a new paragraph.
     // TODO: Use this code to get numbering of paragraphs correct (mimick what latex does)
@@ -323,8 +324,10 @@ function convertLaTeX($tag, $file, $code) {
 
     $environments = array('equation', 'align', 'align*', 'eqnarray', 'eqnarray*');
     foreach ($environments as $environment) {
-      if ($line == '\begin{' . $environment . '}') $math_mode = true;
-      if ($line == '\end{' . $environment . '}') $math_mode = false;
+      if (startsWith('\begin{' . $environment . '}', $line))
+        $math_mode = true;
+      if (startsWith('\end{' . $environment . '}', $line))
+        $math_mode = false;
     }
 
     if ($math_mode) {
@@ -332,7 +335,7 @@ function convertLaTeX($tag, $file, $code) {
       $line = str_replace('&lt;', '<', $line);
       $line = str_replace('&amp;', '&', $line);
      
-      // We replace links in math mode by plain text as mathjax cannot handle <a href=""></a>
+      // we replace links in math mode by plain text as mathjax cannot handle <a href=""></a>
       $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $line, $matches);
       for ($j = 0; $j < $count; $j++) {
         $line = str_replace($matches[0][$j], getID(substr($matches[1][$j], -4)), $line);
