@@ -89,6 +89,10 @@ form input[type="email"] {
   vertical-align: baseline;
 }
 
+form input#slogan {
+  width: 350px;
+}
+
 form p {
   margin: 0 0 5px 0;
 }
