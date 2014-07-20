@@ -56,8 +56,8 @@ h2:hover {
   background-color: #c9c8c1;
 }
 
-div#error p {
-  margin: 5px;
+p {
+  margin: 5px 10px;
 }
 
 blockquote.rendered {
@@ -115,7 +115,7 @@ form input[type="submit"] {
 
 form input[type="submit"]:active {
 	position:relative;
-	top:1px;
+	top: 1px;
 }
 
 form input#skip {

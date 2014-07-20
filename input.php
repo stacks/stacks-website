@@ -29,7 +29,7 @@ EOD;
   print "</div>";
 }
 
-function printForm() {
+function printForm($tag) {
   print <<<EOD
 <form action="submit.php" method="post">
   <p>A slogan should be a human-readable summary of the tag's statement, in a single sentence, without using symbols.</p>
@@ -50,7 +50,10 @@ function printForm() {
 
   <hr>
 
-  <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This is tag&nbsp;<var>01ZA</var>.</p>
+  <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>.
+EOD;
+  print "This is tag&nbsp;<var>" . $tag . "</var>.</p>";
+  print <<<EOD
   <label for="tag">Tag<sup>*</sup>:</label>
   <input type="text" id="tag" name="tag" size="4" maxlength="4">
   <br style="clear:both">
@@ -120,8 +123,11 @@ $tag = $_GET["tag"];
 
 $meta = json_decode(file_get_contents($config["site"] . "/data/tag/" . $tag . "/meta"));
 if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
+  print "<p>You can suggest a slogan for <a href='" . $config["site"] . "/tag/" . $tag . "'>tag <var>" . $tag . "</var></a>.</p>";
+  // TODO add information on the location here? name of the chapter and section?
+  print_r($meta);
   printStatement($tag);
-  printForm();
+  printForm($tag);
 
   $slogans = getSlogans($tag);
   if (!empty($slogans))
