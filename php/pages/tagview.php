@@ -72,6 +72,10 @@ function parseComment($comment) {
   $comment = str_replace("&#123;", "\{", $comment);
   $comment = str_replace("&#125;", "\}", $comment);
 
+  // fix macros
+  $macros = getMacros();
+  $comment = preg_replace(array_keys($macros), array_values($macros), $comment);
+
   return $comment;
 }
 
