@@ -10,7 +10,7 @@ $(document).ready(function () {
   if ($("ol#slogans").length == 1) {
     $("h2#slogans-title").append("<span style='float:right'></span>");
     $("h2#slogans-title").click(toggleSlogans);
-    $("h2#slogans-title").after("<p id='slogans-disclaimer' style='display: none'>By default we hide the existing slogans so you can first think for yourself.");
+    $("h2#slogans-title").after("<p id='slogans-disclaimer' style='display: none'>By default we hide the existing slogans so you can first think for yourself. <a href='javascript:void(0)' onclick='toggleSlogans()'>Show the existing slogans</a>.");
 
     toggleSlogans();
   }
