@@ -27,6 +27,8 @@ if (!tagExists($_GET["tag"])) {
 }
 
 $tag = getTag($_GET["tag"]);
+$chapter = getEnclosingChapter($tag["position"]);
+$section = getEnclosingSection($tag["position"]);
 
 $result = array();
 $result["type"] = $tag["type"];
@@ -35,6 +37,8 @@ $result["chapter_page"] = $tag["chapter_page"];
 $result["book_page"] = $tag["book_page"];
 $result["book_id"] = $tag["book_id"];
 $result["value"] = $tag["value"];
+$result["chapter_name"] = $chapter["name"];
+$result["section_name"] = $section["name"];
 
 print json_encode($result);
 
