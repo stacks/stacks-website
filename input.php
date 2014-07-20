@@ -1,9 +1,15 @@
-<!doctype html>
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 $config = array("site" => "http://localhost:10000");
+
+// no specific tag was requested: we get one from the server and forward the user to the specific slogan page
+// TODO make sure that slogan input pages are not indexed by search engines
+if (!isset($_GET["tag"])) {
+  $tag = file_get_contents($config["site"] . "/data/slogan/random");
+  header("Location: input.php?tag=" . $tag);
+}
 
 function getSlogans($tag) {
   return array(); // TODO implement this
@@ -80,6 +86,7 @@ function printStatement($tag) {
 }
 
 ?>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -107,30 +114,12 @@ function printStatement($tag) {
 
 <?php
 
-// a specific tag is requested
-if (isset($_GET["tag"])) {
-  // TODO sanity checks
-  $tag = $_GET["tag"];
-  // TODO check existence, if not error
+// TODO sanity checks
+$tag = $_GET["tag"];
+// TODO check existence, if not error
 
-  $meta = json_decode(file_get_contents($config["site"] . "/data/tag/" . $tag . "/meta"));
-  if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
-    printStatement($tag);
-    printForm();
-
-    $slogans = getSlogans($tag);
-    if (!empty($slogans))
-      printSlogans($slogans);
-  }
-  else {
-    $message = "The tag that was requested (<var>" . $tag . "</var>) is of type <var>" . $meta->type . "</var>, but it is impossible to write slogans for tags of this type.";
-    printError($message);
-  }
-}
-// request a tag for which we want people to write a slogan
-else {
-  $tag = file_get_contents($config["site"] . "/data/slogan/random");
-
+$meta = json_decode(file_get_contents($config["site"] . "/data/tag/" . $tag . "/meta"));
+if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
   printStatement($tag);
   printForm();
 
@@ -138,7 +127,10 @@ else {
   if (!empty($slogans))
     printSlogans($slogans);
 }
-
+else {
+  $message = "The tag that was requested (<var>" . $tag . "</var>) is of type <var>" . $meta->type . "</var>, but it is impossible to write slogans for tags of this type.";
+  printError($message);
+}
 ?>
 
 <script type="text/javascript" src="slogan.js"></script>
