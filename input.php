@@ -1,4 +1,10 @@
 <!doctype html>
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+$config = array("site" => "http://localhost:10000");
+?>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -25,17 +31,16 @@
 <h1><a href="#">The Stacks project sloganerator</a></h1>
 
 <blockquote id="statement" class="rendered">
-  <div class="plain">
-    <p>
-      <a class="environment-identification" href="http://stacks.math.columbia.edu/tag/01ZA">Proposition 31.4.4.</a>
-      Let $S$ be a quasi-compact and quasi-separated scheme. There exist a directed partially ordered set $I$ and an inverse system of schemes $(S_i, f_{ii'})$ over $I$ such that
-      <ol>
-        <li> the transition morphisms $f_{ii'}$ are affine
-        <li> each $S_i$ is of finite type over $\mathbf{Z}$, and
-        <li> $S = \mathop{\rm lim}\nolimits_i S_i$.
-      </ol>
-    <p>
-  </div>
+<?php
+// request a tag for which we want people to write a slogan
+$tag = file_get_contents($config["site"] . "/data/slogan/random");
+// TODO some checks
+
+// request the HTML for this tag
+$statement = file_get_contents($config["site"] . "/data/tag/" . $tag . "/content/statement");
+
+print $statement;
+?>
 </blockquote>
 
 <form action="submit.php" method="post">
