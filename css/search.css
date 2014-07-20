@@ -2,6 +2,7 @@ span.preview a {
   text-decoration: none;
   color: black;
   float: right;
+  display: inline-block;
 }
 span.preview a:hover {
   text-decoration: underline;
