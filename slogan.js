@@ -1,10 +1,13 @@
+var fields = ["name", "email"];
+
 $(document).ready(function () {
   // load the name and email field from local storage, if available
-  var fields = ["name", "email"];
   for (var i = 0; i < fields.length; i++) {
     field = fields[i];
     if (localStorage[field]) $("#" + field).val(localStorage[field]);
   };
+
+  $("input").click(saveValues);
 
   // if there are slogans we hide them by default and display a link
   if ($("ol#slogans").length == 1) {
@@ -21,6 +24,13 @@ $(document).ready(function () {
   // clicking the 'get new tag' button should not use required fields
   $("input#skip").click(toggleRequired);
 });
+
+function saveValues() {
+  for (var i = 0; i < fields.length; i++) {
+    field = fields[i];
+    localStorage[field] = $("#" + field).val();
+  }
+}
 
 $('.stored').keyup(function () {
   localStorage[$(this).attr("name")] = $(this).val();
