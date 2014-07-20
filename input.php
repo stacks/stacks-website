@@ -4,13 +4,88 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 $config = array("site" => "http://localhost:10000");
+
+function getSlogans($tag) {
+  return array(); // TODO implement this
+}
+
+function printError($message) {
+  print "<div id='error'>";
+  print "<p>Something went wrong:";
+  print "<p>";
+  print $message;
+  print <<<EOD
+<form action="submit.php" method="post">
+  <input type="submit" name="skip" id="skip" value="get new tag">
+  <br style="clear:both">
+</form>
+EOD;
+  print "</div>";
+}
+
+function printForm() {
+  print <<<EOD
+<form action="submit.php" method="post">
+  <p>A slogan should be a human-readable summary of the tag's statement, in a single sentence, without using symbols.</p>
+
+  <label for="slogan">Slogan<sup>*</sup>:</label>
+  <textarea name="slogan" id="slogan-input" rows="2" autofocus></textarea>
+  <br style="clear:both">
+
+  <hr>
+
+  <label for="name">Name<sup>*</sup>:</label>
+  <input type="text" id="name" name="name" class="stored" size="30">
+  <br style="clear:both">
+
+  <label for="email">E-mail<sup>*</sup>:</label>
+  <input type="email" id="email" name="email" class="stored" size="30">
+  <br style="clear:both">
+
+  <hr>
+
+  <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This is tag&nbsp;<var>01ZA</var>.</p>
+  <label for="tag">Tag<sup>*</sup>:</label>
+  <input type="text" id="tag" name="tag" size="4" maxlength="4">
+  <br style="clear:both">
+
+  <hr>
+
+  <input type="submit" name="skip" id="skip" value="get new tag">
+  <input type="submit" name="skip" id="submit" value="submit this slogan">
+  <br style="clear:both">
+</form>
+EOD;
+}
+
+function printSlogans($slogans) {
+  print "<h2 id='slogans-title'>Existing slogans for this tag</h2>";
+  print "<ol id='slogans'>";
+
+  foreach ($slogans as $slogan)
+    print "<li><span class='slogan'>" . $slogan["slogan"] . "</span> <cite>" . $slogan["author"] . "</cite>"; // TODO fix escaping here (!!)
+
+  print "</ol>";
+}
+
+function printStatement($tag) {
+  global $config;
+
+  // request the HTML for this tag
+  $statement = file_get_contents($config["site"] . "/data/tag/" . $tag . "/content/statement");
+  
+  print "<blockquote id='statement' class='rendered'>";
+  print $statement;
+  print "</blockquote>";
+}
+
 ?>
 <html lang="en">
 <head>
   <meta charset="utf-8">
 
   <title>The Stacks project sloganerator: design mockup</title>
-  <link rel="stylesheet" type="text/css" href="http://stacks.math.columbia.edu/css/tag.css">
+  <link rel="stylesheet" type="text/css" href="<?php print $config["site"]; ?>/css/tag.css">
   <link rel="stylesheet" type="text/css" href="style.css">
 
   <script type='text/x-mathjax-config'>
@@ -30,55 +105,41 @@ $config = array("site" => "http://localhost:10000");
 
 <h1><a href="#">The Stacks project sloganerator</a></h1>
 
-<blockquote id="statement" class="rendered">
 <?php
+
+// a specific tag is requested
+if (isset($_GET["tag"])) {
+  // TODO sanity checks
+  $tag = $_GET["tag"];
+  // TODO check existence, if not error
+
+  $meta = json_decode(file_get_contents($config["site"] . "/data/tag/" . $tag . "/meta"));
+  if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
+    printStatement($tag);
+    printForm();
+
+    $slogans = getSlogans($tag);
+    if (!empty($slogans))
+      printSlogans($slogans);
+  }
+  else {
+    $message = "The tag that was requested (<var>" . $tag . "</var>) is of type <var>" . $meta->type . "</var>, but it is impossible to write slogans for tags of this type.";
+    printError($message);
+  }
+}
 // request a tag for which we want people to write a slogan
-$tag = file_get_contents($config["site"] . "/data/slogan/random");
-// TODO some checks
+else {
+  $tag = file_get_contents($config["site"] . "/data/slogan/random");
 
-// request the HTML for this tag
-$statement = file_get_contents($config["site"] . "/data/tag/" . $tag . "/content/statement");
+  printStatement($tag);
+  printForm();
 
-print $statement;
+  $slogans = getSlogans($tag);
+  if (!empty($slogans))
+    printSlogans($slogans);
+}
+
 ?>
-</blockquote>
-
-<form action="submit.php" method="post">
-  <p>A slogan should be a human-readable summary of the tag's statement, in a single sentence, without using symbols.</p>
-
-  <label for="slogan">Slogan<sup>*</sup>:</label>
-  <textarea rows="2" autofocus required></textarea>
-  <br style="clear:both">
-
-  <hr>
-
-  <label for="name">Name<sup>*</sup>:</label>
-  <input type="text" id="name" name="name" class="stored" size="30" required>
-  <br style="clear:both">
-
-  <label for="email">E-mail<sup>*</sup>:</label>
-  <input type="email" id="email" name="email" class="stored" size="30" required>
-  <br style="clear:both">
-
-  <hr>
-
-  <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This is tag&nbsp;<var>01ZA</var>.</p>
-  <label for="tag">Tag<sup>*</sup>:</label>
-  <input type="text" id="tag" name="tag" size="4" maxlength="4" required>
-  <br style="clear:both">
-
-  <hr>
-
-  <input type="submit" name="skip" id="skip" value="get new tag">
-  <input type="submit" name="skip" id="submit" value="submit this slogan">
-  <br style="clear:both">
-</form>
-
-<h2 id="slogans-title">Existing slogans for this tag</h2>
-<ol id="slogans">
-  <li><span class="slogan">Absolute noetherian approximation</span> <cite>Pieter Belmans</cite>
-  <li><span class="slogan">Relative artinian approximation</span> <cite>Pieter Belmans</cite>
-</ol>
 
 <script type="text/javascript" src="slogan.js"></script>
 </body>

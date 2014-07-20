@@ -14,6 +14,12 @@ $(document).ready(function () {
 
     toggleSlogans();
   }
+
+  // turn certain inputs into required fields
+  // this seems odd: but we don't know that we can unrequire them when clicking the 'get new tag' button using JS
+  toggleRequired();
+  // clicking the 'get new tag' button should not use required fields
+  $("input#skip").click(toggleRequired);
 });
 
 $('.stored').keyup(function () {
@@ -28,4 +34,15 @@ function toggleSlogans() {
     $("h2#slogans-title span").text("<<<");
   else
     $("h2#slogans-title span").text(">>>");
+}
+
+function toggleRequired() {
+  var fields = ["textarea#slogan-input", "input#name", "input#email", "input#tag"];
+
+  for (var i = 0; i < fields.length; i++) {
+    if ($(fields[i]).prop("required")) // turns undefined into false
+      $(fields[i]).prop("required", false);
+    else
+      $(fields[i]).prop("required", true);
+  }
 }

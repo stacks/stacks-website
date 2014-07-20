@@ -56,6 +56,10 @@ h2:hover {
   background-color: #c9c8c1;
 }
 
+div#error p {
+  margin: 5px;
+}
+
 blockquote.rendered {
   font-size: 100%;
 }
