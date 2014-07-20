@@ -32,10 +32,16 @@ function parseBrackets($string, $split, $callback, $start = 0) {
   return $result;
 }
 
+$footnotes = array();
+
 function encapsulateFootnote($string, $position) {
-  $string[0] = "(";
-  $string[$position] = ")";
-  $string = " " . $string;
+  global $footnotes;
+
+  // add the footnote to the list
+  array_push($footnotes, substr($string, 1, $position - 1));
+  // insert forward link
+  $string = substr($string, $position + 1); // remove the actual footnote
+  $string = "<sup id='fnref:" . (sizeof($footnotes) - 1) . "'><a href='#fn:" . (sizeof($footnotes) - 1) . "' rel='footnote'>" . sizeof($footnotes) . "</a></sup>" . $string;
 
   return $string;
 }
@@ -268,7 +274,6 @@ function convertLaTeX($tag, $file, $code) {
 
   // footnotes
   $code = parseFootnotes($code);
-  $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/u", " ($1)", $code);
 
   // parse \cite commands
   $code = parseCitations($code);

@@ -135,3 +135,7 @@ h2.more a:hover, h2.more a:visited, h2.more a:active {
 div#references ol#citations {
   display: none;
 }
+
+div.footnotes {
+  font-size: 80%;
+}

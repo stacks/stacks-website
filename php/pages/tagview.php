@@ -483,6 +483,17 @@ class TagViewPage extends Page {
 
       $value .= "<blockquote class='rendered'>";
       $value .= convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["value"]);
+
+      // handle footnotes
+      global $footnotes;
+      $value .= "<div class='footnotes'>";
+      $value .= "<ol>";
+      foreach ($footnotes as $i => $footnote) {
+        $value .= "<li class='footnote' id='fn:" . $i . "'>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $footnote) . "<a href='#fnref:" . $i . "' title='return to main text'> &uarr;</a>";
+      }
+      $value .= "</ol>";
+      $value .= "</div>";
+
       $value .= "</blockquote>";
     }
 
