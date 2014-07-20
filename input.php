@@ -123,9 +123,11 @@ $tag = $_GET["tag"];
 
 $meta = json_decode(file_get_contents($config["site"] . "/data/tag/" . $tag . "/meta"));
 if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
-  print "<p>You can suggest a slogan for <a href='" . $config["site"] . "/tag/" . $tag . "'>tag <var>" . $tag . "</var></a>.</p>";
-  // TODO add information on the location here? name of the chapter and section?
-  print_r($meta);
+  print "<p>You can suggest a slogan for <a href='" . $config["site"] . "/tag/" . $tag . "'>tag <var>" . $tag . "</var></a>, located in<br>";
+
+  $id = explode(".", $meta->book_id);
+  print "&nbsp&nbsp;Chapter " . $id[0] . ": " . $meta->chapter_name . "<br>";
+  print "&nbsp&nbsp;Section " . $id[1] . ": " . $meta->section_name;
   printStatement($tag);
   printForm($tag);
 
