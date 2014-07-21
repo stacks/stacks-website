@@ -88,8 +88,12 @@ blockquote.rendered ol li:before {
 }
 
 blockquote.rendered ol ol li:before {
-
   content: "(" counter(list, lower-alpha) ") ";
+}
+
+blockquote.rendered li.custom:before {
+  content: "";
+  margin-right: 0;
 }
 
 ul#citation-options {

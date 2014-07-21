@@ -288,7 +288,7 @@ function convertLaTeX($tag, $file, $code) {
   $code = str_replace("\\end{itemize}", "</ul>", $code);
   $code = preg_replace("/\\\begin{list}(.*)\n/", "<ul>\n", $code); // unfortunately I have to ignore information in here
   $code = str_replace("\\end{list}", "</ul>", $code);
-  $code = preg_replace("/\\\item\[(" . $regex . ")\]/u", "<li>", $code); // TODO: Correctly use the label here
+  $code = preg_replace("/\\\item\[(.*)\]/", "<li class='custom'>$1&nbsp;&nbsp;&nbsp;", $code); // TODO: Correctly use the label here
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
