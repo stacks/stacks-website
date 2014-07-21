@@ -14,6 +14,8 @@ function toggleComments() {
   });
 }
 
+var fields = ["name", "mail", "site"];
+
 $(document).ready(function() {
   // hide code display and the link to the rendered result
   $("div#code, p#rendered-link").toggle();
@@ -24,6 +26,14 @@ $(document).ready(function() {
 
     $("blockquote.rendered, p#code-link, div#code, p#rendered-link").toggle();
   });
+
+  // load the name and email field from local storage, if available
+  for (var i = 0; i < fields.length; i++) {
+    field = fields[i];
+    if (localStorage[field]) $("#" + field).val(localStorage[field]);
+  };
+
+  $("input, textarea").click(saveValues);
 
   /**
    * TODO
@@ -82,6 +92,18 @@ $(document).ready(function() {
       $("h2#comment-input-header").prop("title", "show input form for comments");
     }
   });
+});
+
+function saveValues() {
+  for (var i = 0; i < fields.length; i++) {
+    field = fields[i];
+    localStorage[field] = $("#" + field).val();
+  }
+}
+
+$('.stored').keyup(function () {
+  console.log("stored");
+  localStorage[$(this).attr("name")] = $(this).val();
 });
 
 // function to display a "copy this to the clipboard" message

@@ -333,11 +333,11 @@ class TagViewPage extends Page {
 
     $value .= "<form name='comment' id='comment-form' action='" . href("php/post.php") . "' method='post'>";
     $value .= "<label for='name'>Name<sup>*</sup>:</label>";
-    $value .= "<input type='text' name='name' id='name'><br>";
+    $value .= "<input type='text' name='name' id='name' class='stored'><br>";
     $value .= "<label for='mail'>E-mail<sup>*</sup>:</label>";
-    $value .= "<input type='text' name='email' id='mail'><br>";
+    $value .= "<input type='text' name='email' id='mail' class='stored'><br>";
     $value .= "<label for='site'>Site:</label>";
-    $value .= "<input type='text' name='site' id='site'><br>";
+    $value .= "<input type='text' name='site' id='site' class='stored'><br>";
     $value .= "<label>Comment:</label> <span id='epiceditor-status'></span>";
     $value .= "<textarea name='comment' id='comment-textarea' cols='80' rows='10'></textarea>";
     $value .= "<div id='epiceditor'></div>";
