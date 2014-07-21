@@ -63,8 +63,8 @@ function printForm($tag) {
   <input type="text" id="name" name="name" class="stored" size="30">
   <br style="clear:both">
 
-  <label for="email">E-mail<sup>*</sup>:</label>
-  <input type="email" id="email" name="email" class="stored" size="30">
+  <label for="mail">E-mail<sup>*</sup>:</label>
+  <input type="email" id="mail" name="mail" class="stored" size="30">
   <br style="clear:both">
 
   <label for="site">Site:</label>

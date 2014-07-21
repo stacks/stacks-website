@@ -70,15 +70,15 @@ elseif (isset($_POST["submit"])) {
   }
 
   // empty email
-  if (empty($_POST['email'])) {
+  if (empty($_POST['mail'])) {
     print('You must supply your email address. Remark that it will not be posted.');
     printBackLink();
     exit();
   }
 
   // nonempty email, but the format is wrong
-  if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-    print('You must supply a correctly formatted email address. Your current input is ' . $_POST['email']);
+  if (!filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) {
+    print('You must supply a correctly formatted email address. Your current input is ' . $_POST['mail']);
     printBackLink();
     exit();
   }
@@ -106,7 +106,7 @@ elseif (isset($_POST["submit"])) {
    */
   $tag = $_POST['tag'];
   $author = $_POST['name'];
-  $email = $_POST['email'];
+  $email = $_POST['mail'];
   $site = $_POST['site'];
   $slogan = htmlspecialchars($_POST['slogan']);
   // for some reason Firefox is inserting &nbsp;'s in the input when you have two consecutive spaces, we don't like that
@@ -117,7 +117,7 @@ elseif (isset($_POST["submit"])) {
     $sql->bindParam(':tag', $tag);
     $sql->bindParam(':author', $author);
     $sql->bindParam(':slogan', $slogan);
-    $sql->bindParam(':email', $email);
+    $sql->bindParam(':email', $mail);
     $sql->bindParam(':site', $site);
 
     if(!$sql->execute()) {
@@ -137,7 +137,7 @@ elseif (isset($_POST["submit"])) {
     $sql->bindParam(':author', $author);
     $sql->bindParam(':comment', $suggested);
     $sql->bindParam(':site', $site);
-    $sql->bindParam(':email', $email);
+    $sql->bindParam(':email', $mail);
 
     if(!$sql->execute()) {
       print("Something went wrong with your comment.\n");

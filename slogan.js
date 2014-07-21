@@ -1,4 +1,4 @@
-var fields = ["name", "email", "site"];
+var fields = ["name", "mail", "site"];
 
 $(document).ready(function () {
   // load the name and email field from local storage, if available
@@ -46,7 +46,7 @@ function toggleSlogans() {
 }
 
 function toggleRequired() {
-  var fields = ["textarea#slogan-input", "input#name", "input#email", "input#check"];
+  var fields = ["textarea#slogan-input", "input#name", "input#mail", "input#check"];
 
   for (var i = 0; i < fields.length; i++) {
     if ($(fields[i]).prop("required")) // turns undefined into false
