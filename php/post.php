@@ -18,7 +18,7 @@
   }
 
   // if this triggers the user is messing with the POST request
-  if (!isValidTag($_POST['tag'])) {
+  if (!isset($_POST['tag']) or !isValidTag($_POST['tag'])) {
     print('The tag your browser supplied in the request is not in a valid format.');
     printBackLink();
     exit();

@@ -32,10 +32,16 @@ function parseBrackets($string, $split, $callback, $start = 0) {
   return $result;
 }
 
+$footnotes = array();
+
 function encapsulateFootnote($string, $position) {
-  $string[0] = "(";
-  $string[$position] = ")";
-  $string = " " . $string;
+  global $footnotes;
+
+  // add the footnote to the list
+  array_push($footnotes, substr($string, 1, $position - 1));
+  // insert forward link
+  $string = substr($string, $position + 1); // remove the actual footnote
+  $string = "<sup id='fnref:" . (sizeof($footnotes) - 1) . "'><a href='#fn:" . (sizeof($footnotes) - 1) . "' rel='footnote'>" . sizeof($footnotes) . "</a></sup>" . $string;
 
   return $string;
 }
@@ -176,7 +182,7 @@ function convertLaTeX($tag, $file, $code) {
       
       // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
       if (labelExists($label))
-        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . $information["name"] . " " . getIDWithLabel($label) . ".</a>", $code);
+        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . href("tag/" . getTagWithLabel($label)) . "'>" . $information["name"] . " " . getIDWithLabel($label) . ".</a>", $code);
       else
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . ".</span>", $code);
     }
@@ -188,7 +194,7 @@ function convertLaTeX($tag, $file, $code) {
       
       // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
       if (labelExists($label))
-        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . $information["name"] . " " . getIDWithLabel($label) . " <span class='named'>(" . $matches[1][$i] . ")</span>.</a>", $code);
+        $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . href("tag/" . getTagWithLabel($label)) . "'>" . $information["name"] . " " . getIDWithLabel($label) . " <span class='named'>(" . $matches[1][$i] . ")</span>.</a>", $code);
       else
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><span class='environment-identification'>" . $information["name"] . " <span class='named'>(" . $matches[1][$i] . ")</span>.</span>", $code);
 
@@ -223,7 +229,7 @@ function convertLaTeX($tag, $file, $code) {
   $count = preg_match_all("/\\\subsection\{(" . $regex . ")\}\n\\\label\{([\w-]+)\}/u", $code, $matches);
   for ($i = 0; $i < $count; $i++) {
     $label = $file . '-' . $matches[2][$i];
-    $code = str_replace($matches[0][$i], "<h4><a class='environment-identification' href='" . getTagWithLabel($label) . "'>" . getIDWithLabel($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
+    $code = str_replace($matches[0][$i], "<h4><a class='environment-identification' href='" . href("tag/" . getTagWithLabel($label)) . "'>" . getIDWithLabel($label) . ". " . $matches[1][$i] . "</a></h4>", $code);
   }
 
   // remove remaining labels
@@ -268,7 +274,6 @@ function convertLaTeX($tag, $file, $code) {
 
   // footnotes
   $code = parseFootnotes($code);
-  $code = preg_replace("/\\\\footnote\{(" . $regex . ")\}/u", " ($1)", $code);
 
   // parse \cite commands
   $code = parseCitations($code);
@@ -303,8 +308,9 @@ function convertLaTeX($tag, $file, $code) {
   $list_mode = 0;
   foreach ($lines as &$line) {
     // $$ is a toggle
-    if ($line == "$$")
+    if (startsWith("$$", $line)) {
       $math_mode = !$math_mode;
+    }
 
     // after the end of a nested set of lists, we need to start a new paragraph.
     // TODO: Use this code to get numbering of paragraphs correct (mimick what latex does)
@@ -318,8 +324,10 @@ function convertLaTeX($tag, $file, $code) {
 
     $environments = array('equation', 'align', 'align*', 'eqnarray', 'eqnarray*');
     foreach ($environments as $environment) {
-      if ($line == '\begin{' . $environment . '}') $math_mode = true;
-      if ($line == '\end{' . $environment . '}') $math_mode = false;
+      if (startsWith('\begin{' . $environment . '}', $line))
+        $math_mode = true;
+      if (startsWith('\end{' . $environment . '}', $line))
+        $math_mode = false;
     }
 
     if ($math_mode) {
@@ -327,7 +335,7 @@ function convertLaTeX($tag, $file, $code) {
       $line = str_replace('&lt;', '<', $line);
       $line = str_replace('&amp;', '&', $line);
      
-      // We replace links in math mode by plain text as mathjax cannot handle <a href=""></a>
+      // we replace links in math mode by plain text as mathjax cannot handle <a href=""></a>
       $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $line, $matches);
       for ($j = 0; $j < $count; $j++) {
         $line = str_replace($matches[0][$j], getID(substr($matches[1][$j], -4)), $line);

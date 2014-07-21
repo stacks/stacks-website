@@ -10,7 +10,7 @@ $(document).ready(function() {
   pre = $("ul.results pre");
   for (var i = 0; i < pre.length; i++) {
     el = $(pre[i]);
-    el.prev().before('<span class="preview"><a href="javascript:void(0)" onclick="$(\'#' + pre[i].id + '\').toggle();">preview</a>');
+    el.prev().append('<span class="preview"><a href="javascript:void(0)" onclick="$(\'#' + pre[i].id + '\').toggle();">preview</a>');
   }
 
   // hide all results by default

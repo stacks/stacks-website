@@ -72,6 +72,10 @@ function parseComment($comment) {
   $comment = str_replace("&#123;", "\{", $comment);
   $comment = str_replace("&#125;", "\}", $comment);
 
+  // fix macros
+  $macros = getMacros();
+  $comment = preg_replace(array_keys($macros), array_values($macros), $comment);
+
   return $comment;
 }
 
@@ -211,7 +215,7 @@ class TagViewPage extends Page {
     $value .= $this->printLocation();
 
     if (!empty($this->tag["reference"])) {
-      $value .= "<h2 id='references-header'>References</h2>";
+      $value .= "<h2 id='references-header' class='more'>References</h2>";
       $value .= "<div id='references'>";
 
       // plaintext view of the reference
@@ -227,7 +231,7 @@ class TagViewPage extends Page {
       $value .= "</div>";
     }
 
-    $value .= "<h2>How can you cite this tag?</h2>";
+    $value .= "<h2 id='citation-header' class='more'>How can you cite this tag?</h2>";
     $value .= $this->printCitation();
 
     $value .= "<h2>Extras</h2>";
@@ -295,7 +299,8 @@ class TagViewPage extends Page {
     $value = "";
 
     $value .= "<p>Use:";
-    $value .= "<pre><code>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
+    $value .= "<pre style='margin: -.2em 0 .4em 0'><code style='font-size: 90%'>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
+    $value .= "<div id='citation-text-more'>";
     $value .= "or one of the following (click to see and copy the code)";
     $value .= "<ul id='citation-options'>";
     $value .= "<li><a href='javascript:copyToClipboard(\"\\\\cite[\\\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{Tag " . $this->tag["tag"] . "}]{stacks-project}\")'>[Tag " . $this->tag["tag"] . ", Stacks]</a>";
@@ -304,6 +309,7 @@ class TagViewPage extends Page {
     $value .= "<li><a href='javascript:copyToClipboard(\"\\\\href{http://stacks.math.columbia.edu/tag/" . $this->tag["tag"] . "}{" . ucfirst($this->tag["type"]) . " " . $this->tag["tag"] . "}\")'>" . ucfirst($this->tag["type"]) . " " . $this->tag["tag"] . "</a>";
     $value .= "</ul>";
     $value .= "<p>For more information, see <a href='" . href("tags") . "'>How to reference tags</a>.</p>";
+    $value .= "</div>";
 
     return $value;
   }
@@ -364,7 +370,7 @@ class TagViewPage extends Page {
       case "item":
         $containingTag = getEnclosingTag($this->tag["position"]);
         $chapter = getChapter(getChapterFromID($containingTag["book_id"]));
-        $value .= "<li>Item&nbsp;" . $this->tag["book_id"] . " of the enumeration in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . "&nbsp;" . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("downloads/" . $chapter["filename"] . ".pdf#nameddest=" . $containingTag["tag"]) . "'>page&nbsp;" . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter&nbsp;" . $chapter["number"] . ": " . parseAccents($chapter["title"]) . "</a>";
+        $value .= "<li>Item&nbsp;" . $this->tag["book_id"] . " of the enumeration in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . "&nbsp;" . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("download/" . $chapter["filename"] . ".pdf#nameddest=" . $containingTag["tag"]) . "'>page&nbsp;" . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter&nbsp;" . $chapter["number"] . ": " . parseAccents($chapter["title"]) . "</a>";
 
         break;
 
@@ -376,7 +382,7 @@ class TagViewPage extends Page {
       case "equation":
         $containingTag = getEnclosingTag($this->tag["position"]);
         $chapter = getChapter(getChapterFromID($containingTag["book_id"]));
-        $value .= "<li>Equation&nbsp;" . stripChapter($this->tag["book_id"]) . " in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . "&nbsp;" . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("downloads/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter&nbsp;" . $chapter["number"] . ": " . parseAccents($chapter["title"]) . "</a>";
+        $value .= "<li>Equation&nbsp;" . stripChapter($this->tag["book_id"]) . " in <a href='" . href("tag/" . $containingTag["tag"]) . "'>" . ucfirst($containingTag["type"]) . "&nbsp;" . stripChapter($containingTag["book_id"]) . "</a> on <a href='" . href("download/" . $chapter["filename"] . ".pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["chapter_page"] . "</a> of <a href='" . href("chapter/" . $chapter["number"]) . "'>Chapter&nbsp;" . $chapter["number"] . ": " . parseAccents($chapter["title"]) . "</a>";
         $value .= "<li>Equation&nbsp;" . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["book_page"] . "</a> of the book";
         break;
 
@@ -481,6 +487,17 @@ class TagViewPage extends Page {
 
       $value .= "<blockquote class='rendered'>";
       $value .= convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["value"]);
+
+      // handle footnotes
+      global $footnotes;
+      $value .= "<div class='footnotes'>";
+      $value .= "<ol>";
+      foreach ($footnotes as $i => $footnote) {
+        $value .= "<li class='footnote' id='fn:" . $i . "'>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $footnote) . "<a href='#fnref:" . $i . "' title='return to main text'> &uarr;</a>";
+      }
+      $value .= "</ol>";
+      $value .= "</div>";
+
       $value .= "</blockquote>";
     }
 
@@ -498,7 +515,7 @@ class TagViewPage extends Page {
       // link labels to the corresponding tag
       $count = preg_match_all('/\\\label{([\w-\*]+)}/', $code, $references);
       for ($i = 0; $i < $count; ++$i)
-        $code = str_replace($references[0][$i], "\\label{<a href='" . getTagWithLabel($this->tag["file"] . "-" . $references[1][$i]) . "'>" . $references[1][$i] . "</a>}", $code);
+        $code = str_replace($references[0][$i], "\\label{<a href='" . href("tag/" . getTagWithLabel($this->tag["file"] . "-" . $references[1][$i])) . "'>" . $references[1][$i] . "</a>}", $code);
       
       $value .= $code;
       $value .= "</code></pre>";

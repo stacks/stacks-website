@@ -231,6 +231,6 @@ catch(PDOException $e) {
 
     <br style='clear: both;'>
 
-    <p id='backlink'>Back to the <a href='/'>main page</a>.
+    <p id='backlink'>Back to the <a href='<?php print href(''); ?>'>main page</a>.
   </body>
 </html>
