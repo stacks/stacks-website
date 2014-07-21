@@ -57,6 +57,6 @@ function toggleRequired() {
 }
 
 function success(tag) {
-  // TODO make this a nicer success message
-  alert(tag);
+  // this is a bit hardcoded, sorry
+  $("body").append("<div id='notification'>Thanks for suggesting a slogan to <a href='http://stacks.math.columbia.edu/tag/" + tag + "'>tag <code>" + tag + "</code></a>!<span id='cross'>[x]</span></div>").click(function() { $("div#notification").hide(); });
 }

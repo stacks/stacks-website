@@ -167,6 +167,26 @@ p#footer {
   border-top: 1px solid #d9d8d1;
 }
 
+div#notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20em;
+  border: 1px solid black;
+  margin-left: -10em;
+  background-color: rgba(255, 255, 255, .9);
+  padding: 1em;
+  cursor: pointer;
+}
+
+div#notification span#cross {
+  display: block;
+  right: .2em;
+  top: .2em;
+  position: absolute;
+  font-size: .6em;
+}
+
 @media screen and (min-width: 700px) {
   body {
     width: 40em;

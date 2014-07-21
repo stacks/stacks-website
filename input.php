@@ -139,7 +139,6 @@ function printStatement($tag) {
   </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-
 </head>
 
 <body>
@@ -177,7 +176,7 @@ else {
 
 if (isset($_SESSION["tag"]) && isset($_GET["tag"])) {
   print "<script type='text/javascript'>";
-  print "success('" . $_SESSION["tag"] . "');";
+  print "$(function() { success('" . $_SESSION["tag"] . "'); });";
   print "</script>";
 
   unset($_SESSION["tag"]);
