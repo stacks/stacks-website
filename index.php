@@ -218,6 +218,7 @@ catch(PDOException $e) {
       <li><a href='<?php print href("bibliography"); ?>'>bibliography</a>
       <li><a href='<?php print href("recent-comments"); ?>'>recent comments</a>
       <li><a href='<?php print $config["blog"]; ?>'>blog</a>
+      <li><a href='<?php print href("slogans"); ?>'>add slogans</a>
     </ul>
     <br style='clear: both;'>
 
