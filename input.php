@@ -2,6 +2,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+session_start();
+
 $config = parse_ini_file("config.ini");
 
 // no specific tag was requested: we get one from the server and forward the user to the specific slogan page
@@ -145,8 +147,6 @@ else {
 
 <script type="text/javascript" src="slogan.js"></script>
 <?php
-
-session_start();
 
 if (isset($_SESSION["tag"]) && isset($_GET["tag"])) {
   print "<script type='text/javascript'>";
