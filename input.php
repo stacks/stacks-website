@@ -91,14 +91,21 @@ EOD;
 EOD;
 }
 
-function printSlogans($slogans) {
+function printSlogans($slogans, $existing) {
   print "<h2 id='slogans-title'>Existing slogans for this tag</h2>";
+  print "<div id='existing'>";
+  if ($existing != "") {
+    print "<p>There is already a slogan in use for this tag in the Stacks project:";
+    print "<blockquote>" . $existing;
+  }
+  
   print "<ol id='slogans'>";
 
   foreach ($slogans as $slogan)
     print "<li><span class='slogan'>" . htmlentities($slogan["slogan"]) . "</span> <cite>" . htmlentities($slogan["author"]) . "</cite>";
 
   print "</ol>";
+  print "</div>";
 }
 
 function printStatement($tag) {
@@ -156,8 +163,8 @@ if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "th
   printForm($tag);
 
   $slogans = getSlogans($tag);
-  if (!empty($slogans))
-    printSlogans($slogans);
+  if (!empty($slogans) or $meta->slogan != "")
+    printSlogans($slogans, $meta->slogan);
 }
 else {
   $message = "The tag that was requested (<code>" . $tag . "</code>) is of type <code>" . $meta->type . "</code>, but it is impossible to write slogans for tags of this type.";
