@@ -5,23 +5,23 @@ body {
   font-family: "Droid Sans", Arial, sans-serif;
   border: solid #d9d8d1;
   border-width: 1px;
-  margin: 10px auto;
-  margin-bottom: 50px;
+  margin: .5em auto;
+  margin-bottom: 4em;
   background-color: #fff;
   color: #000;
   width: 470px;
-  max-width: 800px;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 h1 {
   background-image: url('stacks.png');
   background-repeat: no-repeat;
-  background-position: 4px center;
-  height: 25px;
+  background-position: .25em center;
+  background-size: 1.4em;
+  height: 1.4em;
   margin: 0;
-  padding: 8px;
-  font-size: 24px;
+  padding: .2em;
+  font-size: 1.35em;
   font-weight: bold;
   background-color: #d9d8d1;
 }
@@ -34,7 +34,9 @@ h1 a {
   color: black;
   text-decoration: none;
   display: block;
-  padding-left: 40px;
+  padding-left: 1.8em;
+  padding-top: .1em;
+  height: 100%;
 }
 
 h1 a:visited {
@@ -95,7 +97,7 @@ form input[type="email"] {
 
 form textarea {
   font-size: 80%;
-  width: 350px;
+  width: 80%;
   font-family: inherit;
   padding: 4px;
 }
@@ -151,4 +153,24 @@ ol#slogans cite {
 
 p#slogans-disclaimer {
   margin-left: 10px;
+}
+
+@media screen and (min-width: 700px) {
+  body {
+    width: 40em;
+  }
+}
+
+@media (max-width: 470px) {
+  body {
+    font-size: 12px;
+    width: 20em;
+  }
+
+  h1 a {
+    font-size: .85em;
+    padding-left: 2em;
+    padding-top: .3em;
+  }
+
 }
