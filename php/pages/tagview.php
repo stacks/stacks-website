@@ -340,6 +340,7 @@ class TagViewPage extends Page {
     $value .= "<p>Your email address will not be published. Required fields are marked.</p>";
     $value .= "<p>In your comment you can use <a href='" . href("markdown") . "'>Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).</p>";
     $value .= "<noscript>Unfortunately JavaScript is disabled in your browser, so the comment preview function will not work.</noscript>";
+    $value .= "<p>All contributions are licensed under the <a href='https://github.com/stacks/stacks-project/blob/master/COPYING'>GNU Free Documentation License</a>.</p>";
 
     $value .= "<form name='comment' id='comment-form' action='" . href("php/post.php") . "' method='post'>";
     $value .= "<label for='name'>Name<sup>*</sup>:</label>";
