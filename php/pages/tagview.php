@@ -346,7 +346,7 @@ class TagViewPage extends Page {
     $value .= "<label for='name'>Name<sup>*</sup>:</label>";
     $value .= "<input type='text' name='name' id='name' class='stored'><br>";
     $value .= "<label for='mail'>E-mail<sup>*</sup>:</label>";
-    $value .= "<input type='text' name='email' id='mail' class='stored'><br>";
+    $value .= "<input type='text' name='mail' id='mail' class='stored'><br>";
     $value .= "<label for='site'>Site:</label>";
     $value .= "<input type='text' name='site' id='site' class='stored'><br>";
     $value .= "<label>Comment:</label> <span id='epiceditor-status'></span>";
