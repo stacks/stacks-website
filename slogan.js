@@ -56,3 +56,8 @@ function toggleRequired() {
       $(fields[i]).prop("required", true);
   }
 }
+
+function success(tag) {
+  // TODO make this a nicer success message
+  alert(tag);
+}
