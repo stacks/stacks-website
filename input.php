@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$config = array("site" => "http://localhost:10000");
+$config = parse_ini_file("config.ini");
 
 // no specific tag was requested: we get one from the server and forward the user to the specific slogan page
 // TODO make sure that slogan input pages are not indexed by search engines
@@ -53,9 +53,10 @@ function printForm($tag) {
   <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>.
 EOD;
   print "This is tag&nbsp;<var>" . $tag . "</var>.</p>";
+  print "<input type='hidden' name='tag' value='" . $tag . "'>";
   print <<<EOD
   <label for="tag">Tag<sup>*</sup>:</label>
-  <input type="text" id="tag" name="tag" size="4" maxlength="4">
+  <input type="text" id="check" name="check" size="4" maxlength="4">
   <br style="clear:both">
 
   <hr>

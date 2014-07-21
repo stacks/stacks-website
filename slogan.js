@@ -47,7 +47,7 @@ function toggleSlogans() {
 }
 
 function toggleRequired() {
-  var fields = ["textarea#slogan-input", "input#name", "input#email", "input#tag"];
+  var fields = ["textarea#slogan-input", "input#name", "input#email", "input#check"];
 
   for (var i = 0; i < fields.length; i++) {
     if ($(fields[i]).prop("required")) // turns undefined into false
