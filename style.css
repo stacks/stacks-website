@@ -151,8 +151,20 @@ ol#slogans cite {
   float: right;
 }
 
+h2#slogans-title {
+  margin-bottom: 0px;
+}
+
 p#slogans-disclaimer {
   margin-left: 10px;
+}
+
+p#footer {
+  background-color: #eee;
+  padding: 6px 8px;
+  margin: 0;
+  margin-top: 1em;
+  border-top: 1px solid #d9d8d1;
 }
 
 @media screen and (min-width: 700px) {

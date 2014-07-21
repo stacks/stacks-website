@@ -144,7 +144,7 @@ function printStatement($tag) {
 
 <body>
 
-<h1><a href="#">The Stacks project sloganerator</a></h1>
+<h1><a href="<?php print $config["site"]; ?>">The Stacks project sloganerator</a></h1>
 
 <?php
 
@@ -183,5 +183,7 @@ if (isset($_SESSION["tag"]) && isset($_GET["tag"])) {
   unset($_SESSION["tag"]);
 }
 ?>
+
+<p id="footer">All contributions are licensed under the <a href='https://github.com/stacks/stacks-project/blob/master/COPYING'>GNU Free Documentation License</a>.</p>
 </body>
 </html>
