@@ -6,6 +6,16 @@ session_start();
 
 $config = parse_ini_file("config.ini");
 
+try {
+  $database = new PDO("sqlite:" . $config["database"]);
+  $database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e) {
+  print "Something went wrong with the database. If the problem persists, please contact us at <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>.";
+  // if there is actually a persistent error: add output code here to check it
+  exit();
+}
+
 // no specific tag was requested: we get one from the server and forward the user to the specific slogan page
 // TODO make sure that slogan input pages are not indexed by search engines
 if (!isset($_GET["tag"])) {
@@ -15,7 +25,13 @@ if (!isset($_GET["tag"])) {
 }
 
 function getSlogans($tag) {
-  return array(); // TODO implement this
+  global $database;
+  
+  $sql = $database->prepare("SELECT slogan, author FROM slogans WHERE tag = :tag ORDER BY id DESC");
+  $sql->bindParam(":tag", $tag);
+
+  if ($sql->execute())
+    return $sql->fetchAll();
 }
 
 function printError($message) {
@@ -51,6 +67,10 @@ function printForm($tag) {
   <input type="email" id="email" name="email" class="stored" size="30">
   <br style="clear:both">
 
+  <label for="site">Site:</label>
+  <input type="url" id="site" name="site" class="stored" size="30">
+  <br style="clear:both">
+
   <hr>
 
   <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<code>0321</code> you just have to write&nbsp;<code>0321</code>.
@@ -76,7 +96,7 @@ function printSlogans($slogans) {
   print "<ol id='slogans'>";
 
   foreach ($slogans as $slogan)
-    print "<li><span class='slogan'>" . $slogan["slogan"] . "</span> <cite>" . $slogan["author"] . "</cite>"; // TODO fix escaping here (!!)
+    print "<li><span class='slogan'>" . htmlentities($slogan["slogan"]) . "</span> <cite>" . htmlentities($slogan["author"]) . "</cite>";
 
   print "</ol>";
 }
