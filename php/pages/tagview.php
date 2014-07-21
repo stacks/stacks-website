@@ -123,7 +123,7 @@ class TagViewPage extends Page {
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    $sql = $this->db->prepare("SELECT tag, name, position, reference, type, book_id, chapter_page, book_page, label, file, value, begin, end FROM tags WHERE tag = :tag");
+    $sql = $this->db->prepare("SELECT tag, name, position, reference, type, book_id, chapter_page, book_page, label, file, value, begin, end, slogan, history FROM tags WHERE tag = :tag");
     $sql->bindParam(":tag", $tag);
 
     if ($sql->execute())
@@ -180,6 +180,9 @@ class TagViewPage extends Page {
 
     if ($this->tag["type"] != "section" and $this->tag["type"] != "chapter")
       $value .= $this->printBreadcrumb();
+
+    if ($this->tag["slogan"] != "")
+      $value .= "<p style='margin-bottom: .6em; font-size: 16px'><strong>Slogan</strong>: " . $this->tag["slogan"];
 
     $value .= $this->printView();
 

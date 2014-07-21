@@ -134,8 +134,8 @@ function convertLaTeX($tag, $file, $code) {
   // fix special characters (&quot; should be " for \"e)
   $code = parseAccents(str_replace("&quot;", "\"", $code));
 
-  // remove the reference environment (TODO more environments will be used here)
-  $ignoredEnvironments = array("reference");
+  // remove the reference environment
+  $ignoredEnvironments = array("reference", "slogan", "history");
 
   foreach ($ignoredEnvironments as $environment) {
     $lines = explode("\n", $code);
