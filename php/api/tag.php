@@ -18,10 +18,6 @@ catch(PDOException $e) {
   echo $e->getMessage();
 }
 
-function startsWith($haystack, $needle) {
-    return !strncmp($haystack, $needle, strlen($needle));
-}
-
 function removeProofs($content) {
   $lines = explode("\n", $content);
   $output = "";
