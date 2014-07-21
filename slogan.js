@@ -1,4 +1,4 @@
-var fields = ["name", "email"];
+var fields = ["name", "email", "site"];
 
 $(document).ready(function () {
   // load the name and email field from local storage, if available
