@@ -52,7 +52,7 @@ function printForm($tag) {
 
   <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>.
 EOD;
-  print "This is tag&nbsp;<var>" . $tag . "</var>.</p>";
+  print " This is tag&nbsp;<var>" . $tag . "</var>.</p>";
   print "<input type='hidden' name='tag' value='" . $tag . "'>";
   print <<<EOD
   <label for="tag">Tag<sup>*</sup>:</label>
@@ -61,8 +61,8 @@ EOD;
 
   <hr>
 
+  <input type="submit" name="submit" id="submit" value="submit this slogan">
   <input type="submit" name="skip" id="skip" value="get new tag">
-  <input type="submit" name="skip" id="submit" value="submit this slogan">
   <br style="clear:both">
 </form>
 EOD;
