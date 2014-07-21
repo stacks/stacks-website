@@ -153,7 +153,7 @@ $tag = $_GET["tag"];
 
 $meta = json_decode(file_get_contents($config["site"] . "/data/tag/" . $tag . "/meta"));
 if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
-  print "<p>You can suggest a slogan for <a href='" . $config["site"] . "/tag/" . $tag . "'>tag <code>" . $tag . "</code></a>, located in<br>";
+  print "<p>You can suggest a slogan for <a href='" . $config["site"] . "/tag/" . $tag . "'>tag <code>" . $tag . "</code></a> (label: <code style='font-size: .9em'>" . $meta->label . "</code>), located in<br>";
 
   $id = explode(".", $meta->book_id);
   print "&nbsp&nbsp;Chapter " . $id[0] . ": " . $meta->chapter_name . "<br>";
