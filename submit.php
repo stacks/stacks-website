@@ -32,7 +32,7 @@ function tagExists($tag) {
 }
 
 function printBackLink() {
-  print("<br><a href='#' onclick='history.go(-1);'>go back</a>");
+  print("<br><a href='#' onclick='history.go(-2);'>go back</a>");
 }
 
 
