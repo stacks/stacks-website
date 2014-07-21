@@ -52,7 +52,7 @@ function printForm($tag) {
 
   <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>.
 EOD;
-  print "This is tag&nbsp;<var>" . $tag . "</var>.</p>";
+  print " This is tag&nbsp;<var>" . $tag . "</var>.</p>";
   print <<<EOD
   <label for="tag">Tag<sup>*</sup>:</label>
   <input type="text" id="tag" name="tag" size="4" maxlength="4">
