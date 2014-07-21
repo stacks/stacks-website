@@ -27,7 +27,7 @@ function getRandomTag() {
   global $database;
 
   try {
-    $sql = $database->prepare("SELECT tags.tag, tags.type, tags.name, graphs.indirect_use_count FROM tags, graphs WHERE tags.tag = graphs.tag");
+    $sql = $database->prepare("SELECT tags.tag, tags.type, tags.name, graphs.indirect_use_count, tags.slogan FROM tags, graphs WHERE tags.tag = graphs.tag");
   
     if ($sql->execute()) {
       $tags = $sql->fetchAll();
@@ -68,9 +68,12 @@ function getRandomTag() {
         }
 
         // named tags are more important
-        if ($tag["name"] != "") {
+        if ($tag["name"] != "")
           $score = 2.0 * $score;
-        }
+
+        // tags with a slogan should not appear too much
+        if ($tag["slogan"] != "")
+          $score = 0.05 * $score;
 
         $tag["score"] = $score;
 
