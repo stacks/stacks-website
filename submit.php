@@ -109,6 +109,9 @@ elseif (isset($_POST["submit"])) {
     echo $e->getMessage();
   }
 
-  header('Location: ' . href('input.php'));
+  session_start();
+  $_SESSION["tag"] = $tag;
+
+  header('Location: input.php');
 }
 ?>

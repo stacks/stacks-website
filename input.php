@@ -8,6 +8,7 @@ $config = parse_ini_file("config.ini");
 // TODO make sure that slogan input pages are not indexed by search engines
 if (!isset($_GET["tag"])) {
   $tag = file_get_contents($config["site"] . "/data/slogan/random");
+
   header("Location: input.php?tag=" . $tag);
 }
 
@@ -143,5 +144,17 @@ else {
 ?>
 
 <script type="text/javascript" src="slogan.js"></script>
+<?php
+
+session_start();
+
+if (isset($_SESSION["tag"]) && isset($_GET["tag"])) {
+  print "<script type='text/javascript'>";
+  print "success('" . $_SESSION["tag"] . "');";
+  print "</script>";
+
+  unset($_SESSION["tag"]);
+}
+?>
 </body>
 </html>
