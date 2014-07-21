@@ -186,6 +186,13 @@ class TagViewPage extends Page {
 
     $value .= $this->printView();
 
+    if ($this->tag["history"] != "") {
+      $value .= "<h2 id='history-header'>Historical remarks</h2>";
+      $value .= "<div id='history'>";
+      $value .= "<p>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["history"]);
+      $value .= "</div>";
+    }
+
     $comments = $this->getComments(); 
     $value .= "<h2 id='comments-header'>Comments (" . count($comments) . ")</h2>";
     $value .= "<div id='comments'>";

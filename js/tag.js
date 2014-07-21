@@ -14,6 +14,22 @@ function toggleComments() {
   });
 }
 
+function toggleHistory() {
+  $(document).ready(function() {
+    // change <<< into >>> and vice versa
+    if ($("div#history").is(":visible")) {
+      $("h2#history-header span").text('>>>');
+      $("h2#history-header").prop("title", "show historical remarks");
+    }
+    else {
+      $("h2#history-header span").text("<<<");
+      $("h2#history-header").prop("title", "hide historical remarks");
+    }
+
+    $("div#history").toggle();
+  });
+}
+
 var fields = ["name", "mail", "site"];
 
 $(document).ready(function() {
@@ -63,6 +79,14 @@ $(document).ready(function() {
 
   // hide the extra information for citations by default
   $("div#citation-text-more").toggle();
+
+  // make history header look like link
+  $("h2#history-header").css("cursor", "pointer");
+  // hide history section, and add the correct toggle symbol
+  $("h2#history-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
+  $("h2#history-header").prop("title", "hide historical remarks");
+  // make the h2 for the history act like a toggle
+  $("h2#history-header").click(toggleHistory);
 
   // make comments header look like link
   $("h2#comments-header").css("cursor", "pointer");
