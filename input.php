@@ -51,9 +51,9 @@ function printForm($tag) {
 
   <hr>
 
-  <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>.
+  <p>Prove you are human: <em>fill in the name of the current tag</em>. In case this were tag&nbsp;<code>0321</code> you just have to write&nbsp;<code>0321</code>.
 EOD;
-  print " This is tag&nbsp;<var>" . $tag . "</var>.</p>";
+  print " This is tag&nbsp;<code>" . $tag . "</code>.</p>";
   print "<input type='hidden' name='tag' value='" . $tag . "'>";
   print <<<EOD
   <label for="tag">Tag<sup>*</sup>:</label>
@@ -125,7 +125,7 @@ $tag = $_GET["tag"];
 
 $meta = json_decode(file_get_contents($config["site"] . "/data/tag/" . $tag . "/meta"));
 if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
-  print "<p>You can suggest a slogan for <a href='" . $config["site"] . "/tag/" . $tag . "'>tag <var>" . $tag . "</var></a>, located in<br>";
+  print "<p>You can suggest a slogan for <a href='" . $config["site"] . "/tag/" . $tag . "'>tag <code>" . $tag . "</code></a>, located in<br>";
 
   $id = explode(".", $meta->book_id);
   print "&nbsp&nbsp;Chapter " . $id[0] . ": " . $meta->chapter_name . "<br>";
@@ -138,7 +138,7 @@ if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "th
     printSlogans($slogans);
 }
 else {
-  $message = "The tag that was requested (<var>" . $tag . "</var>) is of type <var>" . $meta->type . "</var>, but it is impossible to write slogans for tags of this type.";
+  $message = "The tag that was requested (<code>" . $tag . "</code>) is of type <code>" . $meta->type . "</code>, but it is impossible to write slogans for tags of this type.";
   printError($message);
 }
 ?>
