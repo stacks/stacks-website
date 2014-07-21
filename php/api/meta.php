@@ -37,6 +37,7 @@ $result["chapter_page"] = $tag["chapter_page"];
 $result["book_page"] = $tag["book_page"];
 $result["book_id"] = $tag["book_id"];
 $result["value"] = $tag["value"];
+$result["slogan"] = $tag["slogan"];
 $result["chapter_name"] = $chapter["name"];
 $result["section_name"] = $section["name"];
 

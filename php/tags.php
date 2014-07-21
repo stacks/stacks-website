@@ -414,7 +414,7 @@ function getTag($tag) {
   assert(isValidTag($tag));
   global $database;
 
-  $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position FROM tags WHERE tag = :tag');
+  $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position, slogan FROM tags WHERE tag = :tag');
   $sql->bindParam(':tag', $tag);
 
   if ($sql->execute()) {
