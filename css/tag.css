@@ -83,8 +83,13 @@ blockquote.rendered ol {
 
 blockquote.rendered ol li:before {
   counter-increment: list;
-  content: counter(list) ") ";
+  content: "(" counter(list) ") ";
   margin-right: 15px;
+}
+
+blockquote.rendered ol ol li:before {
+
+  content: "(" counter(list, lower-alpha) ") ";
 }
 
 ul#citation-options {
