@@ -36,7 +36,6 @@ function printBackLink() {
 }
 
 
-
 if (isset($_POST["skip"])) {
   header("Location: input.php");
 }
@@ -84,20 +83,42 @@ elseif (isset($_POST["submit"])) {
     exit();
   }
 
+  // first a little cleanup of the site field
+  $site = $_POST['site'];
+  if (!empty($site)) {
+    // incorrect url, probably missing http:// we prepend it and try again
+    if (!filter_var($site, FILTER_VALIDATE_URL)) {
+      $site = 'http://' . $site;
+    // nonempty site, but the format is wrong
+      if (!filter_var($site, FILTER_VALIDATE_URL)) {
+        print('You supplied a site but the format is wrong. Your current input is ' . $_POST['site']);
+        printBackLink();
+        exit();
+      }
+    }
+  }
+
+
   // from here on it's safe to ignore the fact that it's user input
+ 
+  /**
+   * post slogan to slogans database
+   */
   $tag = $_POST['tag'];
   $author = $_POST['name'];
   $email = $_POST['email'];
+  $site = $_POST['site'];
   $slogan = htmlspecialchars($_POST['slogan']);
   // for some reason Firefox is inserting &nbsp;'s in the input when you have two consecutive spaces, we don't like that
   $slogan = str_replace('&nbsp;', ' ', $slogan);
 
   try {
-    $sql = $database->prepare('INSERT INTO slogans (tag, author, slogan, email) VALUES (:tag, :author, :slogan, :email)');
+    $sql = $database->prepare('INSERT INTO slogans (tag, author, slogan, email, site) VALUES (:tag, :author, :slogan, :email, :site)');
     $sql->bindParam(':tag', $tag);
     $sql->bindParam(':author', $author);
     $sql->bindParam(':slogan', $slogan);
     $sql->bindParam(':email', $email);
+    $sql->bindParam(':site', $site);
 
     if(!$sql->execute()) {
       print("Something went wrong with your slogan.\n");
@@ -109,6 +130,26 @@ elseif (isset($_POST["submit"])) {
     echo $e->getMessage();
   }
 
+  try {
+    $suggested = "Suggested slogan: " . $slogan;
+    $sql = $database->prepare('INSERT INTO comments (tag, author, comment, site, email) VALUES (:tag, :author, :comment, :site, :email)');
+    $sql->bindParam(':tag', $tag);
+    $sql->bindParam(':author', $author);
+    $sql->bindParam(':comment', $suggested);
+    $sql->bindParam(':site', $site);
+    $sql->bindParam(':email', $email);
+
+    if(!$sql->execute()) {
+      print("Something went wrong with your comment.\n");
+      print_r($sql->errorInfo());
+      exit();
+    }
+  }
+  catch(PDOException $e) {
+    echo $e->getMessage();
+  }
+
+  // put the tag into the session, so the input form can display the result
   session_start();
   $_SESSION["tag"] = $tag;
 
