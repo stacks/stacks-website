@@ -9,13 +9,13 @@ function isValidTag($tag) {
 }
 
 try {
-    $database = new PDO("sqlite:" . $config["database"]);
-    $database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  }
-  catch(PDOException $e) {
-    print "Something went wrong with the database. If the problem persists, please contact us at <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>.";
-    // if there is actually a persistent error: add output code here to check it
-    exit();
+  $database = new PDO("sqlite:" . $config["database"]);
+  $database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e) {
+  print "Something went wrong with the database. If the problem persists, please contact us at <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>.";
+  // if there is actually a persistent error: add output code here to check it
+  exit();
 }
 
 function tagExists($tag) {
