@@ -37,6 +37,12 @@ function removeProofs($content) {
   return $output;
 }
 
+function removeLinks($content) {
+  $content = str_replace("</a>", "", $content);
+  $content = preg_replace('/<a href="tag\/.{4}">/', "", $content);
+
+  return $content;
+}
 
 if (!isset($_GET["statement"]))
   $type = "statement";
@@ -66,10 +72,10 @@ if ($tag["type"] == "equation") {
 if (isset($_GET["format"]) and $_GET["format"]) {
   switch ($type) {
     case "full":
-      print $tag["value"];
+      print removeLinks($tag["value"]);
       break;
     case "statement":
-      print removeProofs($tag["value"]);
+      print removeLinks(removeProofs($tag["value"]));
       break;
   }
 }
