@@ -2,6 +2,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+include_once("../php/general.php");
+
 session_start();
 
 $config = parse_ini_file("config.ini");
@@ -156,8 +158,8 @@ if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "th
   print "<p>You can suggest a slogan for <a href='" . $config["site"] . "/tag/" . $tag . "'>tag <code>" . $tag . "</code></a> (label: <code style='font-size: .9em'>" . $meta->label . "</code>), located in<br>";
 
   $id = explode(".", $meta->book_id);
-  print "&nbsp&nbsp;Chapter " . $id[0] . ": " . $meta->chapter_name . "<br>";
-  print "&nbsp&nbsp;Section " . $id[1] . ": " . $meta->section_name;
+  print "&nbsp&nbsp;Chapter " . $id[0] . ": " . parseAccents($meta->chapter_name) . "<br>";
+  print "&nbsp&nbsp;Section " . $id[1] . ": " . parseAccents($meta->section_name);
   printStatement($tag);
   printForm($tag);
 
