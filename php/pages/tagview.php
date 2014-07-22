@@ -186,9 +186,19 @@ class TagViewPage extends Page {
       $value .= $this->printBreadcrumb();
 
     if ($this->tag["slogan"] != "")
-      $value .= "<p style='margin-bottom: .6em; font-size: 16px'><strong>Slogan</strong>: " . $this->tag["slogan"];
+      $value .= "<p id='slogan'><strong>" . $this->tag["slogan"] . "</strong>";
 
     $value .= $this->printView();
+
+    if (!empty($this->tag["reference"])) {
+      $value .= "<h2 id='references-header'>References</h2>";
+      $value .= "<div id='references'>";
+
+      // plaintext view of the reference
+      $value .= "<div id='references-text'><p>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["reference"]) . "</div>";
+
+      $value .= "</div>";
+    }
 
     if ($this->tag["history"] != "") {
       $value .= "<h2 id='history-header'>Historical remarks</h2>";
@@ -223,23 +233,6 @@ class TagViewPage extends Page {
 
     $value .= "<h2>Your location</h2>";
     $value .= $this->printLocation();
-
-    if (!empty($this->tag["reference"])) {
-      $value .= "<h2 id='references-header' class='more'>References</h2>";
-      $value .= "<div id='references'>";
-
-      // plaintext view of the reference
-      $value .= "<div id='references-text'><p>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["reference"]) . "</div>";
-
-      // list view of the reference
-      $citations = $this->getCitations();
-      $value .= "<ol id='citations'>";
-      foreach ($citations as $citation) {
-        $value .= "<li>" . parseCitations("\cite" . (empty($citation["text"]) ? "" : "[" . $citation["text"] . "]") . "{" . $citation["name"] . "}");
-      }
-      $value .= "</ol>";
-      $value .= "</div>";
-    }
 
     $value .= "<h2 id='citation-header' class='more'>How can you cite this tag?</h2>";
     $value .= $this->printCitation();

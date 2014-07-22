@@ -30,6 +30,22 @@ function toggleHistory() {
   });
 }
 
+function toggleReferences() {
+  $(document).ready(function() {
+    // change <<< into >>> and vice versa
+    if ($("div#references").is(":visible")) {
+      $("h2#references-header span").text('>>>');
+      $("h2#references-header").prop("title", "show references");
+    }
+    else {
+      $("h2#references-header span").text("<<<");
+      $("h2#references-header").prop("title", "hide references");
+    }
+
+    $("div#references").toggle();
+  });
+}
+
 var fields = ["name", "mail", "site"];
 
 $(document).ready(function() {
@@ -51,22 +67,6 @@ $(document).ready(function() {
 
   $("input, textarea").click(saveValues);
 
-  /**
-   * TODO
-   * we could use a cookie for these toggles
-   */
-
-  // add toggle for references (text versus list view)
-  $("h2#references-header").append("<a style='float: right;'>list view</a>").click(function(e) {
-    $("div#references-text").toggle();
-    $("ol#citations").toggle();
-
-    if ($("ol#citations").is(":visible"))
-      $("h2#references-header a").text("text view");
-    else
-      $("h2#references-header a").text("list view");
-  });
-
   // add toggle for citations
   $("h2#citation-header").append("<a style='float: right;'>more</a>").click(function(e) {
     $("div#citation-text-more").toggle();
@@ -87,6 +87,14 @@ $(document).ready(function() {
   $("h2#history-header").prop("title", "hide historical remarks");
   // make the h2 for the history act like a toggle
   $("h2#history-header").click(toggleHistory);
+
+  // make references header look like link
+  $("h2#references-header").css("cursor", "pointer");
+  // hide references section, and add the correct toggle symbol
+  $("h2#references-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
+  $("h2#references-header").prop("title", "hide references");
+  // make the h2 for the references act like a toggle
+  $("h2#references-header").click(toggleReferences);
 
   // make comments header look like link
   $("h2#comments-header").css("cursor", "pointer");

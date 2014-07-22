@@ -148,3 +148,20 @@ div#references ol#citations {
 div.footnotes {
   font-size: 80%;
 }
+
+div#main p#slogan {
+  padding: .3em;
+  margin-left: 1em;
+}
+
+div#main p#slogan strong {
+  font-weight: normal;
+  text-decoration: underline;
+}
+
+div#main p#slogan:before {
+  content: "Slogan:";
+  font-weight: bold;
+  margin-right: .3em;
+  /*background-color: #edece6;*/
+}
