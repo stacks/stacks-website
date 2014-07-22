@@ -2,14 +2,14 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$config = parse_ini_file("config.ini");
+$config = parse_ini_file("../config.ini");
 
 function isValidTag($tag) {
   return preg_match_all('/^[[:alnum:]]{4}$/', $tag, $matches) === 1;
 }
 
 try {
-  $database = new PDO("sqlite:" . $config["database"]);
+  $database = new PDO("sqlite:../" . $config["database"]);
   $database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 catch(PDOException $e) {
@@ -117,7 +117,7 @@ elseif (isset($_POST["submit"])) {
     $sql->bindParam(':tag', $tag);
     $sql->bindParam(':author', $author);
     $sql->bindParam(':slogan', $slogan);
-    $sql->bindParam(':email', $mail);
+    $sql->bindParam(':email', $email);
     $sql->bindParam(':site', $site);
 
     if(!$sql->execute()) {

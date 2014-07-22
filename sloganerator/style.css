@@ -14,7 +14,7 @@ body {
 }
 
 h1 {
-  background-image: url('stacks.png');
+  background-image: url('../images/stacks.png');
   background-repeat: no-repeat;
   background-position: .25em center;
   background-size: 1.4em;
@@ -165,6 +165,7 @@ p#footer {
   margin: 0;
   margin-top: 1em;
   border-top: 1px solid #d9d8d1;
+  font-size: .8em;
 }
 
 div#notification {
