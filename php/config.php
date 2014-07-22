@@ -7,6 +7,6 @@
     "blog" => "http://math.columbia.edu/~dejong/wordpress/",
     "blog feed" => "http://math.columbia.edu/~dejong/wordpress/?feed=rss2",
     "GitHub feed" => "https://github.com/stacks/stacks-project/commits/master.atom",
-    "SimplePie cache" => $_SERVER["DOCUMENT_ROOT"] . "/php/cache",
+    "SimplePie cache" => "/home/vhosting/b/vhost0053406/domains/commelin.net/htdocs/www/stacks/stacks-website" . "/php/cache",
   );
 ?>

@@ -1,48 +1,16 @@
-function toggleComments() {
+function toggleSection(name, text) {
   $(document).ready(function() {
     // change <<< into >>> and vice versa
-    if ($("div#comments").is(":visible")) {
-      $("h2#comments-header span").text('>>>');
-      $("h2#comments-header").prop("title", "show comments");
+    if ($("div#" + name).is(":visible")) {
+      $("h2#" + name + "-header span").text('>>>');
+      $("h2#" + name + "-header").prop("title", "show " + text);
     }
     else {
-      $("h2#comments-header span").text("<<<");
-      $("h2#comments-header").prop("title", "hide comments");
+      $("h2#" + name + "-header span").text("<<<");
+      $("h2#" + name + "-header").prop("title", "hide " + text);
     }
 
-    $("div#comments").toggle();
-  });
-}
-
-function toggleHistory() {
-  $(document).ready(function() {
-    // change <<< into >>> and vice versa
-    if ($("div#history").is(":visible")) {
-      $("h2#history-header span").text('>>>');
-      $("h2#history-header").prop("title", "show historical remarks");
-    }
-    else {
-      $("h2#history-header span").text("<<<");
-      $("h2#history-header").prop("title", "hide historical remarks");
-    }
-
-    $("div#history").toggle();
-  });
-}
-
-function toggleReferences() {
-  $(document).ready(function() {
-    // change <<< into >>> and vice versa
-    if ($("div#references").is(":visible")) {
-      $("h2#references-header span").text('>>>');
-      $("h2#references-header").prop("title", "show references");
-    }
-    else {
-      $("h2#references-header span").text("<<<");
-      $("h2#references-header").prop("title", "hide references");
-    }
-
-    $("div#references").toggle();
+    $("div#" + name).toggle();
   });
 }
 
@@ -86,7 +54,7 @@ $(document).ready(function() {
   $("h2#history-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
   $("h2#history-header").prop("title", "hide historical remarks");
   // make the h2 for the history act like a toggle
-  $("h2#history-header").click(toggleHistory);
+  $("h2#history-header").click(function () { toggleSection("history", "historical remarks"); });
 
   // make references header look like link
   $("h2#references-header").css("cursor", "pointer");
@@ -94,7 +62,7 @@ $(document).ready(function() {
   $("h2#references-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
   $("h2#references-header").prop("title", "hide references");
   // make the h2 for the references act like a toggle
-  $("h2#references-header").click(toggleReferences);
+  $("h2#references-header").click(function () { toggleSection("references", "references"); });
 
   // make comments header look like link
   $("h2#comments-header").css("cursor", "pointer");
@@ -102,7 +70,7 @@ $(document).ready(function() {
   $("h2#comments-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
   $("h2#comments-header").prop("title", "hide comments");
   // make the h2 for the comments act like a toggle
-  $("h2#comments-header").click(toggleComments);
+  $("h2#comments-header").click(function () { toggleSection("comments", "comments"); });
 
   // hide comment input section by default
   $('div#comment-input').toggle();
@@ -111,19 +79,7 @@ $(document).ready(function() {
   // make the h2 for the comment input act like a toggle
   $('h2#comment-input-header').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
   $("h2#comment-input-header").prop("title", "show input form for comments");
-  $('h2#comment-input-header').click(function() {
-    $('div#comment-input').toggle();
-
-    // change <<< into >>> and vice versa
-    if ($('div#comment-input').is(':visible')) {
-      $('h2#comment-input-header span').text('<<<');
-      $("h2#comment-input-header").prop("title", "hide input form for comments");
-    }
-    else {
-      $('h2#comment-input-header span').text('>>>');
-      $("h2#comment-input-header").prop("title", "show input form for comments");
-    }
-  });
+  $('h2#comment-input-header').click(function() { toggleSection("comment", "input form for comments"); });
 });
 
 function saveValues() {

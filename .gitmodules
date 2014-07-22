@@ -16,3 +16,6 @@
 [submodule "js/EpicEditor"]
 	path = js/EpicEditor
 	url = git://github.com/OscarGodson/EpicEditor
+[submodule "stacks-sloganerator"]
+	path = stacks-sloganerator
+	url = https://github.com/stacks/stacks-sloganerator.git
