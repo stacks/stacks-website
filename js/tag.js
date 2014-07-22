@@ -68,13 +68,13 @@ $(document).ready(function() {
   $("input, textarea").click(saveValues);
 
   // add toggle for citations
-  $("h2#citation-header").append("<a style='float: right;'>more</a>").click(function(e) {
+  $("h2#citation-header").append("<span style='float: right;'>&gt;&gt;&gt;</span>").click(function(e) {
     $("div#citation-text-more").toggle();
 
     if ($("div#citation-text-more").is(":visible"))
-      $("h2#citation-header a").text("less");
+      $("h2#citation-header span").text("<<<");
     else
-      $("h2#citation-header a").text("more");
+      $("h2#citation-header span").text(">>>");
   });
 
   // hide the extra information for citations by default
