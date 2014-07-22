@@ -44,7 +44,7 @@ class SearchResultsPage extends Page {
         $chapter = $currentChapter;
         $chapterInformation = getChapter($currentChapter);
         $output .= "</ul>";
-        $output .= "<h3>Chapter " . $currentChapter . ": " . $chapterInformation["title"] . "</h3>";
+        $output .= "<h3>Chapter " . $currentChapter . ": " . parseAccents($chapterInformation["title"]) . "</h3>";
         $output .= "<ul class='results'>";
       }
       $output .= $this->printResult($result, false); // we never show the proofs in the preview, although it would be possible
