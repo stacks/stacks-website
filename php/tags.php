@@ -140,8 +140,8 @@ function convertLaTeX($tag, $file, $code) {
   // fix special characters (&quot; should be " for \"e)
   $code = parseAccents(str_replace("&quot;", "\"", $code));
 
-  // remove the reference environment (TODO more environments will be used here)
-  $ignoredEnvironments = array("reference");
+  // remove the reference environment
+  $ignoredEnvironments = array("reference", "slogan", "history");
 
   foreach ($ignoredEnvironments as $environment) {
     $lines = explode("\n", $code);
@@ -288,7 +288,7 @@ function convertLaTeX($tag, $file, $code) {
   $code = str_replace("\\end{itemize}", "</ul>", $code);
   $code = preg_replace("/\\\begin{list}(.*)\n/", "<ul>\n", $code); // unfortunately I have to ignore information in here
   $code = str_replace("\\end{list}", "</ul>", $code);
-  $code = preg_replace("/\\\item\[(" . $regex . ")\]/u", "<li>", $code); // TODO: Correctly use the label here
+  $code = preg_replace("/\\\item\[(.*)\]/", "<li class='custom'>$1&nbsp;&nbsp;&nbsp;", $code); // TODO: Correctly use the label here
   $code = str_replace("\\item", "<li>", $code);
 
   // let HTML be aware of paragraphs
@@ -422,7 +422,7 @@ function getTag($tag) {
   assert(isValidTag($tag));
   global $database;
 
-  $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position FROM tags WHERE tag = :tag');
+  $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position, slogan FROM tags WHERE tag = :tag');
   $sql->bindParam(':tag', $tag);
 
   if ($sql->execute()) {

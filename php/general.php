@@ -72,13 +72,14 @@ function printMathJax() {
 
     $value .= "<script type='text/x-mathjax-config'>";
     $value .= "  MathJax.Hub.Config({";
-    $value .= "    extensions: ['tex2jax.js', 'fp.js'],";
-    $value .= "    tex2jax: {inlineMath: [['$', '$']]},";
-    $value .= "    TeX: {extensions: ['xypic.js', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},";
+    $value .= "    extensions: ['tex2jax.js'],";
+    $value .= "    jax: ['input/TeX','output/HTML-CSS'],";
+    $value .= "    TeX: {extensions: ['" . href("js/XyJax/extensions/TeX/xypic.js") . "', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},";
+    $value .= "    tex2jax: {inlineMath: [['$','$']]},";
     $value .= "    'HTML-CSS': { scale: 85 }";
     $value .= "  });";
     $value .= "</script>";
-    $value .= "<script type='text/javascript' src='" . href("js/MathJax/MathJax.js?config=default'") . "></script>";
+    $value .= "<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js'></script>";
 
     return $value;
 }
