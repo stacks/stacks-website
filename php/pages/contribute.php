@@ -8,7 +8,14 @@ class ContributePage extends Page {
     $output = "";
 
     $output .= "<h2>How to contribute</h2>";
-    $output .= "<p>Any improvements are welcome. If you are reading the material and you find an error you can simply email a small note to the address below. This includes typos, spelling errors, improvements to the web pages, etc. If at all possible edit the relevant TeX file directly and email the result.";
+    $output .= "<p>We welcome any kind of feedback: pointing out typos, mathematical errors, references in the literature, history of results, layout of webpages, spelling errors, improvements to the overall structure, missing lemmas, etc.  In fact, there are several different ways you can help:";
+    $output .= "<ol>";
+    $output .= "<li>If you are reading online and want to quickly point out something, please leave a comment on the webpage (click on the gray bar at the bottom of the page where it says \"Add a comment\").";
+    $output .= "<li>If you prefer, you can simply email a small note to the address below.";
+    $output .= "<li>It is very helpful if you edit the relevant TeX file directly and email the result, or even better: use Git and the <a href='http://github.com/stacks/stacks-project'>stacks-project</a> repository.";
+    $output .= "<li>Take a look at this <a href='/todo'>todo list</a> and tackle one of the issues listed there.";
+    $output .= "<li>You can <a href='/slogans'>suggest slogans for results</a>. Here the idea is that you come up with a sentence or two that describes the result in easily understandable language without using formulas.";
+    $output .= "</ol> Please be aware that all contributions are licensed under the <a href='https://github.com/stacks/stacks-project/blob/master/COPYING'>GNU Free Documentation License</a>.  </p>";
 
     $output .= "<p>Here is a list of tasks you can try: <a href='" . href('todo') . "'>todo list</a>.";
 
@@ -28,7 +35,7 @@ class ContributePage extends Page {
     $output .= "<h2>Instructions in using the Makefile (slightly geeky)</h2>";
     $output .= "<p>Download and unpack the archive as above. Change directory to where you unpacked the files and on the command line type";
     $output .= "<pre><code>make pdfs </code></pre>";
-    $output .= "to automatically generate all the pdf files.";
+    $output .= "<p>to automatically generate all the pdf files.";
 
     $output .= "<h2 id='geeks'>Instructions on using a version control system (for major geeks)</h2>";
     $output .= "<p>We are using the <a href='http://git-scm.com'>git</a> version control system. To clone the project type";
