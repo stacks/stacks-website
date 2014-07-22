@@ -50,11 +50,7 @@ This will create a directory with the database in it with the correct permission
         ln -s ../../../../../css/stacks-preview.css js/EpicEditor/epiceditor/themes/preview/stacks-preview.css
 from the `stacks-website` directory
 
-12. make MathJax aware of XyJax by executing
-
-        ln -s ../../../../js/XyJax/extensions/TeX/xypic.js js/MathJax/extensions/TeX/xypic.js
-        ln -s ../../../js/XyJax/extensions/fp.js js/MathJax/extensions/fp.js
-from the `stacks-website` directory
+12. make XyJax work by editing the last line of `stacks-website/js/XyJax/extensions/TeX/xypic.js` and replacing `MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/xypic.js");` by `MathJax.Ajax.loadComplete("/js/XyJax/extensions/TeX/xypic.js");`
 
 13. change directories to `stacks-tools` and update the database by calling `python update.py` as well as `python macros.py`
 
