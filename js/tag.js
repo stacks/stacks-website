@@ -2,7 +2,7 @@ function toggleSection(name, text) {
   $(document).ready(function() {
     // change <<< into >>> and vice versa
     if ($("div#" + name).is(":visible")) {
-      $("h2#" + name + "-header span").text('>>>');
+      $("h2#" + name + "-header span").text(">>>");
       $("h2#" + name + "-header").prop("title", "show " + text);
     }
     else {
@@ -12,6 +12,23 @@ function toggleSection(name, text) {
 
     $("div#" + name).toggle();
   });
+}
+
+function toggableSection(name, text, defaultHideShow) {
+  if (defaultHideShow == "hide") {
+    $("div#" + name).toggle();
+  }
+  // make section header look like link
+  $("h2#" + name + "-header").css("cursor", "pointer");
+  // make the h2 for the section act like a toggle
+  if (defaultHideShow == "show") {
+    $("h2#" + name + "-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
+    $("h2#" + name + "-header").prop("title", "hide input form for comments");
+  } else if (defaultHideShow == "hide") {
+    $("h2#" + name + "-header").append("<span style='float: right;'>&gt;&gt;&gt;</span>");
+    $("h2#" + name + "-header").prop("title", "show input form for comments");
+  }
+  $("h2#" + name + "-header").click(function() { toggleSection(name, text); });
 }
 
 var fields = ["name", "mail", "site"];
@@ -48,38 +65,10 @@ $(document).ready(function() {
   // hide the extra information for citations by default
   $("div#citation-text-more").toggle();
 
-  // make history header look like link
-  $("h2#history-header").css("cursor", "pointer");
-  // hide history section, and add the correct toggle symbol
-  $("h2#history-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
-  $("h2#history-header").prop("title", "hide historical remarks");
-  // make the h2 for the history act like a toggle
-  $("h2#history-header").click(function () { toggleSection("history", "historical remarks"); });
-
-  // make references header look like link
-  $("h2#references-header").css("cursor", "pointer");
-  // hide references section, and add the correct toggle symbol
-  $("h2#references-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
-  $("h2#references-header").prop("title", "hide references");
-  // make the h2 for the references act like a toggle
-  $("h2#references-header").click(function () { toggleSection("references", "references"); });
-
-  // make comments header look like link
-  $("h2#comments-header").css("cursor", "pointer");
-  // hide comment section, and add the correct toggle symbol
-  $("h2#comments-header").append("<span style='float: right;'>&lt;&lt;&lt;</span>");
-  $("h2#comments-header").prop("title", "hide comments");
-  // make the h2 for the comments act like a toggle
-  $("h2#comments-header").click(function () { toggleSection("comments", "comments"); });
-
-  // hide comment input section by default
-  $('div#comment-input').toggle();
-  // make comment input header look like link
-  $("h2#comment-input-header").css("cursor", "pointer");
-  // make the h2 for the comment input act like a toggle
-  $('h2#comment-input-header').append("<span style='float: right;'>&gt;&gt;&gt;</span>");
-  $("h2#comment-input-header").prop("title", "show input form for comments");
-  $('h2#comment-input-header').click(function() { toggleSection("comment", "input form for comments"); });
+  toggableSection("history", "historical remarks", "show");
+  toggableSection("references", "references", "show");
+  toggableSection("comments", "comments", "show");
+  toggableSection("comment-input", "input form for comments", "hide");
 });
 
 function saveValues() {
