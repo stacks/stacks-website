@@ -17,8 +17,6 @@ class ContributePage extends Page {
     $output .= "<li>You can <a href='/slogans'>suggest slogans for results</a>. Here the idea is that you come up with a sentence or two that describes the result in easily understandable language without using formulas.";
     $output .= "</ol> Please be aware that all contributions are licensed under the <a href='https://github.com/stacks/stacks-project/blob/master/COPYING'>GNU Free Documentation License</a>.  </p>";
 
-    $output .= "<p>Here is a list of tasks you can try: <a href='" . href('todo') . "'>todo list</a>.";
-
     $output .= "<h2>Where to submit</h2>";
     $output .= "<p>Please email contributions to <a href='mailto:stacks.project@gmail.com'>stacks.project@gmail.com</a>. We will review, edit and if suitable update the Stacks project with your changes.</p>";
     $output .= "<p>If you are on the other hand <a href='#geeks'>familiar with Git and GitHub</a> it is also possible to make a pull request.</p>";
