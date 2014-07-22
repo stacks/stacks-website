@@ -135,7 +135,7 @@ function printStatement($tag) {
     MathJax.Hub.Config({
       extensions: ['tex2jax.js'],
       tex2jax: {inlineMath: [['$', '$']]},
-      TeX: {extensions: ['<?php print href("js/XyJax/extensions/xypic.js"); ?>', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},
+      TeX: {extensions: ['<?php print href("js/XyJax/extensions/TeX/xypic.js"); ?>', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},
       'HTML-CSS': { scale: 85 }
     });
   </script>
