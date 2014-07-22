@@ -133,7 +133,7 @@ function printStatement($tag) {
     MathJax.Hub.Config({
       extensions: ['tex2jax.js'],
       tex2jax: {inlineMath: [['$', '$']]},
-      TeX: {extensions: ['http://sonoisa.github.io/xyjax_ext/xypic.js', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},
+      TeX: {extensions: ['<?php print $config["site"] . "/js/XyJax/extensions/xypic.js"; ?>', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},
       'HTML-CSS': { scale: 85 }
     });
   </script>
