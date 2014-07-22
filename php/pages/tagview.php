@@ -186,7 +186,7 @@ class TagViewPage extends Page {
       $value .= $this->printBreadcrumb();
 
     if ($this->tag["slogan"] != "")
-      $value .= "<p style='margin-bottom: .6em; font-size: 16px'><strong>Slogan</strong>: " . $this->tag["slogan"];
+      $value .= "<p id='slogan'><strong>" . $this->tag["slogan"] . "</strong>";
 
     $value .= $this->printView();
 
