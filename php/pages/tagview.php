@@ -302,7 +302,7 @@ class TagViewPage extends Page {
     $value = "";
 
     $value .= "<p>Use:";
-    $value .= "<pre style='margin: -.2em 0 .4em 0'><code style='font-size: 90%'>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
+    $value .= "<pre style='margin: -.2em 0 .8em 0'><code style='font-size: 90%'>\\cite[Tag " . $this->tag["tag"] . "]{stacks-project}</code></pre>";
     $value .= "<div id='citation-text-more'>";
     $value .= "or one of the following (click to see and copy the code)";
     $value .= "<ul id='citation-options'>";
