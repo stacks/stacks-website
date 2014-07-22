@@ -447,7 +447,7 @@ class TagViewPage extends Page {
         $value .= "<span class='left'><a title='" . $siblingTags["previous"]["tag"] . " " . $siblingTags["previous"]["label"] . "' href='" . href("tag/" . $siblingTags["previous"]["tag"]) . "'>&lt;&lt; Previous tag</a></span>";
       if (isset($siblingTags["next"]))
         $value .= "<span class='right'><a title='" . $siblingTags["next"]["tag"] . " " . $siblingTags["next"]["label"] . "' href='" . href("tag/" . $siblingTags["next"]["tag"]) . "'>Next tag &gt;&gt;</a></span>";
-      $value .= "</p>";
+      $value .= "<br style='clear:both'></p>";
     }
 
     return $value;
