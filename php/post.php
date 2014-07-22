@@ -45,15 +45,15 @@
   }
 
   // empty email
-  if (empty($_POST['email'])) {
+  if (empty($_POST['mail'])) {
     print('You must supply your email address. Remark that it will not be posted.');
     printBackLink();
     exit();
   }
 
   // nonempty email, but the format is wrong
-  if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-    print('You must supply a correctly formatted email address. Your current input is ' . $_POST['email']);
+  if (!filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) {
+    print('You must supply a correctly formatted email address. Your current input is ' . $_POST['mail']);
     printBackLink();
     exit();
   }
@@ -83,7 +83,7 @@
   // from here on it's safe to ignore the fact that it's user input
   $tag = $_POST['tag'];
   $author = $_POST['name'];
-  $email = $_POST['email'];
+  $email = $_POST['mail'];
   $comment = $_POST['comment'];
   // for some reason Firefox is inserting &nbsp;'s in the input when you have two consecutive spaces, we don't like that
   $comment = str_replace('&nbsp;', ' ', $comment);

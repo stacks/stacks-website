@@ -28,7 +28,8 @@ function getCommentsSidebar($db) {
     else
       $value .= htmlentities($comment["author"]);
 
-    $section = getEnclosingSection($comment["tag"]);
+    $tag = getTag($comment["tag"]);
+    $section = getEnclosingSection($tag["position"]);
     $value .= " on <a title='in section " . $section["book_id"] ." " . parseAccents($section["name"]) . "' href='" . href("tag/" . $comment["tag"] . "#comment-" . $comment["id"]) . "'>tag " . $comment["tag"] . "</a>";
   }
 

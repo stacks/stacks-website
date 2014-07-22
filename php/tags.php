@@ -140,8 +140,8 @@ function convertLaTeX($tag, $file, $code) {
   // fix special characters (&quot; should be " for \"e)
   $code = parseAccents(str_replace("&quot;", "\"", $code));
 
-  // remove the reference environment (TODO more environments will be used here)
-  $ignoredEnvironments = array("reference");
+  // remove the reference environment
+  $ignoredEnvironments = array("reference", "slogan", "history");
 
   foreach ($ignoredEnvironments as $environment) {
     $lines = explode("\n", $code);
@@ -422,7 +422,7 @@ function getTag($tag) {
   assert(isValidTag($tag));
   global $database;
 
-  $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position FROM tags WHERE tag = :tag');
+  $sql = $database->prepare('SELECT tag, label, file, chapter_page, book_page, book_id, value, name, type, position, slogan FROM tags WHERE tag = :tag');
   $sql->bindParam(':tag', $tag);
 
   if ($sql->execute()) {

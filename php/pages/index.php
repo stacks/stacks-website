@@ -18,7 +18,10 @@ class IndexPage extends Page {
     $value .= "<p>This is the home page of the Stacks project. It is an open source textbook and reference work on algebraic stacks and the algebraic geometry needed to define them. For more general information see our extensive <a href='" . href("about") . "'>about page</a>.</p>";
 
     $value .= "<h2><a href='" . href("contribute") . "'>How to contribute?</a></h2>";
-    $value .= "<p>The Stacks project is a collaborative effort. There is a <a href='https://github.com/stacks/stacks-project/blob/master/CONTRIBUTORS'>list of people who have contributed so far</a>. If you would like to know how to participate more can be found at the <a href='" . href("contribute") . "'>contribute page</a>. To informally comment on the Stacks project visit the <a href='" . $config["blog"] . "'>blog</a>.</p>";
+    $value .= "<p>The Stacks project is a collaborative effort. There is a <a href='https://github.com/stacks/stacks-project/blob/master/CONTRIBUTORS'>list of people who have contributed so far</a>. If you would like to know how to participate more can be found at the <a href='" . href("contribute") . "'>contribute page</a>.";
+    $value .= "<p>To informally comment on the Stacks project visit the <a href='" . $config["blog"] . "'>blog</a>.</p>";
+    $value .= "<p>You can also comment on each tag separately, to signify a mistake, a typo, make a remark, ...</p>";
+    $value .= "<p>And you can <a href='" . href("slogans") . "'>suggest slogans for results</a>!</p>"; // TODO make sure this is the correct URL
 
     $value .= "<h2><a href='" . href("browse") . "'>Browsing and downloads</a></h2>";
     $value .= "<p>The entire project in <a href='download/book.pdf'>one pdf file</a>. You can also <a href='" . href("browse") . "'>browse the project online</a>, and there is a tree view which starts at <a href='" . href("chapter/1") . "'>Chapter 1</a>. To download the source files there is <a href='https://github.com/stacks/stacks-project/'>stacks/stacks-project</a> at GitHub.</p>";

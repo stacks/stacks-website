@@ -18,6 +18,8 @@ RewriteRule data/tag/(.+)/meta$ php/api/meta.php?tag=$1 [L]
 RewriteRule data/tag/(.+)/graph/cluster$ data/$1-tree.json [L]
 RewriteRule data/tag/(.+)/graph/collapsible$ data/$1-packed.json [L]
 RewriteRule data/tag/(.+)/graph/force$ data/$1-force.json [L]
+RewriteRule data/slogan/random php/api/slogan.php [L]
+RewriteRule data/slogan/(.+) php/api/slogan.php?slogan=$1 [L]
 # TODO make data/ directory inaccessible
 RewriteRule download/(.+)$ tex/tags/tmp/$1 [L]
 # TODO make sure this is what we want

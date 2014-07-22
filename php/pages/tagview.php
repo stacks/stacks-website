@@ -127,7 +127,7 @@ class TagViewPage extends Page {
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    $sql = $this->db->prepare("SELECT tag, name, position, reference, type, book_id, chapter_page, book_page, label, file, value, begin, end FROM tags WHERE tag = :tag");
+    $sql = $this->db->prepare("SELECT tag, name, position, reference, type, book_id, chapter_page, book_page, label, file, value, begin, end, slogan, history FROM tags WHERE tag = :tag");
     $sql->bindParam(":tag", $tag);
 
     if ($sql->execute())
@@ -185,7 +185,17 @@ class TagViewPage extends Page {
     if ($this->tag["type"] != "section" and $this->tag["type"] != "chapter")
       $value .= $this->printBreadcrumb();
 
+    if ($this->tag["slogan"] != "")
+      $value .= "<p style='margin-bottom: .6em; font-size: 16px'><strong>Slogan</strong>: " . $this->tag["slogan"];
+
     $value .= $this->printView();
+
+    if ($this->tag["history"] != "") {
+      $value .= "<h2 id='history-header'>Historical remarks</h2>";
+      $value .= "<div id='history'>";
+      $value .= "<p>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $this->tag["history"]);
+      $value .= "</div>";
+    }
 
     $comments = $this->getComments(); 
     $value .= "<h2 id='comments-header'>Comments (" . count($comments) . ")</h2>";
@@ -334,14 +344,15 @@ class TagViewPage extends Page {
     $value .= "<p>Your email address will not be published. Required fields are marked.</p>";
     $value .= "<p>In your comment you can use <a href='" . href("markdown") . "'>Markdown</a> and LaTeX style mathematics (enclose it like <code>$\pi$</code>). A preview option is available if you wish to see how it works out (just click on the eye in the lower-right corner).</p>";
     $value .= "<noscript>Unfortunately JavaScript is disabled in your browser, so the comment preview function will not work.</noscript>";
+    $value .= "<p>All contributions are licensed under the <a href='https://github.com/stacks/stacks-project/blob/master/COPYING'>GNU Free Documentation License</a>.</p>";
 
     $value .= "<form name='comment' id='comment-form' action='" . href("php/post.php") . "' method='post'>";
     $value .= "<label for='name'>Name<sup>*</sup>:</label>";
-    $value .= "<input type='text' name='name' id='name'><br>";
+    $value .= "<input type='text' name='name' id='name' class='stored'><br>";
     $value .= "<label for='mail'>E-mail<sup>*</sup>:</label>";
-    $value .= "<input type='text' name='email' id='mail'><br>";
+    $value .= "<input type='text' name='mail' id='mail' class='stored'><br>";
     $value .= "<label for='site'>Site:</label>";
-    $value .= "<input type='text' name='site' id='site'><br>";
+    $value .= "<input type='text' name='site' id='site' class='stored'><br>";
     $value .= "<label>Comment:</label> <span id='epiceditor-status'></span>";
     $value .= "<textarea name='comment' id='comment-textarea' cols='80' rows='10'></textarea>";
     $value .= "<div id='epiceditor'></div>";
