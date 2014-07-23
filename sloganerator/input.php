@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 include_once("../php/general.php");
+include_once("../php/tags.php");
 
 session_start();
 
@@ -19,7 +20,6 @@ catch(PDOException $e) {
 }
 
 // no specific tag was requested: we get one from the server and forward the user to the specific slogan page
-// TODO make sure that slogan input pages are not indexed by search engines
 if (!isset($_GET["tag"])) {
   $tag = file_get_contents("http://" . $_SERVER["HTTP_HOST"] . href("/data/slogan/random"));
 
@@ -149,27 +149,35 @@ function printStatement($tag) {
 
 <?php
 
-// TODO sanity checks
 $tag = $_GET["tag"];
-// TODO check existence, if not error
 
-$meta = json_decode(file_get_contents("http://" . $_SERVER["HTTP_HOST"] . href("data/tag/" . $tag . "/meta")));
-if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
-  print "<p>You can suggest a slogan for <a href='" . href("tag/" . $tag) . "'>tag <code>" . $tag . "</code></a> (label: <code style='font-size: .9em'>" . $meta->label . "</code>), located in<br>";
-
-  $id = explode(".", $meta->book_id);
-  print "&nbsp&nbsp;Chapter " . $id[0] . ": " . parseAccents($meta->chapter_name) . "<br>";
-  print "&nbsp&nbsp;Section " . $id[1] . ": " . parseAccents($meta->section_name);
-  printStatement($tag);
-  printForm($tag);
-
-  $slogans = getSlogans($tag);
-  if (!empty($slogans) or $meta->slogan != "")
-    printSlogans($slogans, $meta->slogan);
+if (!isValidTag($tag)) {
+  $message = "The tag that was requested (<code>" . htmlentities($tag) . "</code>) is not a valid tag. You can request a new tag.";
+  printError($message);
+}
+elseif (!tagExists($tag)) {
+  $message = "The tag that was requested (<code>" . $tag . "</code>) does not exist in the Stacks project. You can request a new tag.";
+  printError($message);
 }
 else {
-  $message = "The tag that was requested (<code>" . $tag . "</code>) is of type <code>" . $meta->type . "</code>, but it is impossible to write slogans for tags of this type.";
-  printError($message);
+  $meta = json_decode(file_get_contents("http://" . $_SERVER["HTTP_HOST"] . href("data/tag/" . $tag . "/meta")));
+  if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
+    print "<p>You can suggest a slogan for <a href='" . href("tag/" . $tag) . "'>tag <code>" . $tag . "</code></a> (label: <code style='font-size: .9em'>" . $meta->label . "</code>), located in<br>";
+  
+    $id = explode(".", $meta->book_id);
+    print "&nbsp&nbsp;Chapter " . $id[0] . ": " . parseAccents($meta->chapter_name) . "<br>";
+    print "&nbsp&nbsp;Section " . $id[1] . ": " . parseAccents($meta->section_name);
+    printStatement($tag);
+    printForm($tag);
+  
+    $slogans = getSlogans($tag);
+    if (!empty($slogans) or $meta->slogan != "")
+      printSlogans($slogans, $meta->slogan);
+  }
+  else {
+    $message = "The tag that was requested (<code>" . $tag . "</code>) is of type <code>" . $meta->type . "</code>, but it is impossible to write slogans for tags of this type.";
+    printError($message);
+  }
 }
 ?>
 
