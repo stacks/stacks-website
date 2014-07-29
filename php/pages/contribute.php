@@ -15,6 +15,7 @@ class ContributePage extends Page {
     $output .= "<li>It is very helpful if you edit the relevant TeX file directly and email the result, or even better: use Git and the <a href='http://github.com/stacks/stacks-project'>stacks-project</a> repository.";
     $output .= "<li>Take a look at this <a href='/todo'>todo list</a> and tackle one of the issues listed there.";
     $output .= "<li>You can <a href='/slogans'>suggest slogans for results</a>. Here the idea is that you come up with a sentence or two that describes the result in easily understandable language without using formulas.";
+    $output .= "<li>You are encouraged to email expository papers. It is extremely useful to have such a text (no matter how badly written) as the startng point for a new chapter. Please do not worry about coding style, errors, gaps in the exposition, etc as the material will be radically changed anyway.";
     $output .= "</ol> Please be aware that all contributions are licensed under the <a href='https://github.com/stacks/stacks-project/blob/master/COPYING'>GNU Free Documentation License</a>.  </p>";
 
     $output .= "<h2>Where to submit</h2>";
