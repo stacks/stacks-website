@@ -27,7 +27,7 @@ function getRecentBlogPosts() {
   global $config;
   $value = "";
 
-  $value .= "<h2>Recent blog posts</h2>";
+  $value .= "<h2><a href='" . $config["blog feed"] . "' class='rss'>Recent blog posts</a></h2>";
   $value .= getFeed($config["blog feed"], 5);
 
   return $value;
@@ -38,7 +38,7 @@ function getRecentChanges() {
   global $config;
   $value = "";
 
-  $value .= "<h2>Recent changes</h2>";
+  $value .= "<h2><a href='" . $config["GitHub feed"] . "' class='rss'>Recent changes</a></h2>";
   $value .= getFeed($config["GitHub feed"], 5);
 
   return $value;
