@@ -17,7 +17,7 @@ function getCommentsSidebar($db) {
   $value = "";
   $maxAuthorLength = 15;
 
-  $value .= "<h2>Recent comments</h2>";
+  $value .= "<h2><a href='" . href("recent-comments.xml") . "' class='rss'>Recent comments</a></h2>";
   $value .= "<ul>";
 
   foreach ($comments as $comment) {
