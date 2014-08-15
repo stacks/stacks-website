@@ -149,7 +149,7 @@ function printStatement($tag) {
 
 <?php
 
-$tag = $_GET["tag"];
+$tag = isset($_GET["tag"]) ? $_GET["tag"] : '';
 
 if (!isValidTag($tag)) {
   $message = "The tag that was requested (<code>" . htmlentities($tag) . "</code>) is not a valid tag. You can request a new tag.";

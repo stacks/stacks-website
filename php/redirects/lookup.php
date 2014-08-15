@@ -2,5 +2,5 @@
   $config = parse_ini_file("../../config.ini");
 
   require_once("../general.php");
-  header("Location: " . $_SERVER["HTTP_ORIGIN"] . href("tag/" . strtoupper($_POST["tag"])));
+  header("Location: " . (isset($_POST['HTTP_ORIGIN']) ? $_POST['HTTP_ORIGIN'] : '') . href("tag/" . strtoupper(isset($_POST["tag"]) ? $_POST["tag"] : '')));
 ?>
