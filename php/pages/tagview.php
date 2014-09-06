@@ -497,7 +497,7 @@ class TagViewPage extends Page {
       $value .= "<div class='footnotes'>";
       $value .= "<ol>";
       foreach ($footnotes as $i => $footnote) {
-        $value .= "<li class='footnote' id='fn:" . $i . "'>" . convertLaTeX($this->tag["tag"], $this->tag["file"], $footnote) . "<a href='#fnref:" . $i . "' title='return to main text'> &uarr;</a>";
+        $value .= "<li class='footnote' id='fn:" . $i . "'>" . $footnote . "<a href='#fnref:" . $i . "' title='return to main text'> &uarr;</a>";
       }
       $value .= "</ol>";
       $value .= "</div>";

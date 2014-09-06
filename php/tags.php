@@ -272,9 +272,6 @@ function convertLaTeX($tag, $file, $code) {
   $code = preg_replace("/\{\\\\em (" . $regex . ")\}/u", "<em>$1</em>", $code);
   $code = preg_replace("/\\\\emph\{(" . $regex . ")\}/u", "<em>$1</em>", $code);
 
-  // footnotes
-  $code = parseFootnotes($code);
-
   // parse \cite commands
   $code = parseCitations($code);
 
@@ -353,6 +350,12 @@ function convertLaTeX($tag, $file, $code) {
   // fix macros
   $macros = getMacros();
   $code = preg_replace(array_keys($macros), array_values($macros), $code);
+
+  /* the following line removes footnotes if there are any, adds links to
+     suitable targets (html) and stores the footnote contents in the global variable
+     we do this at the end so that everything is already converted suitably
+  */
+  $code = parseFootnotes($code);
 
   return $code;
 }
