@@ -31,7 +31,7 @@ class ContributePage extends Page {
     $output .= "<li>Inspect the result and if OK then email <code>algebra.tex</code> to the address above.";
     $output .= "</ol>";
 
-    $output .= "<h2>Instructions in using the Makefile (slightly geeky)</h2>";
+    $output .= "<h2>Instructions on using the Makefile (slightly geeky)</h2>";
     $output .= "<p>Download and unpack the archive as above. Change directory to where you unpacked the files and on the command line type";
     $output .= "<pre><code>make pdfs </code></pre>";
     $output .= "<p>to automatically generate all the pdf files.";
