@@ -165,3 +165,16 @@ div#main p#slogan:before {
   margin-right: .3em;
   /*background-color: #edece6;*/
 }
+
+table.history {
+  counter-reset: row;
+}
+
+table.history tbody tr {
+  counter-increment: row;
+}
+
+table.history tbody tr td:first-child::before {
+  content: counter(row) ". ";
+  min-width: 6em;
+}

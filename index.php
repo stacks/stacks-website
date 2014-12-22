@@ -17,6 +17,7 @@ require_once("php/pages/chapter.php");
 require_once("php/pages/contribute.php");
 require_once("php/pages/error.php");
 require_once("php/pages/index.php");
+require_once("php/pages/taghistory.php");
 require_once("php/pages/markdown.php");
 require_once("php/pages/missingtag.php");
 require_once("php/pages/recentcomments.php");
@@ -97,6 +98,26 @@ try {
       $page = new IndexPage($database);
       break;
 
+    case "history":
+      if(!empty($_GET["tag"])) {
+        $tag = strtoupper($_GET['tag']);
+
+        if (!isValidTag($tag)) {
+          $page = new InvalidTagPage($database, $tag);
+        }
+        elseif (tagExists($tag)) {
+          if (tagIsActive($tag))
+            $page = new HistoryPage($database, $tag);
+          else
+            $page = new TagDeletedPage($database, $tag);
+        }
+        else
+          $page = new MissingTagPage($database, $tag);
+      }
+      else
+        $page = new TagLookupPage($database);
+      break;
+
     case "markdown":
       $page = new MarkdownPage($database);
       break;
@@ -129,10 +150,12 @@ try {
   
     case "statistics":
       if(!empty($_GET["tag"])) {
-	$tag = strtoupper($_GET['tag']);
+        $tag = strtoupper($_GET['tag']);
+
         if (!isValidTag($tag)) {
           $page = new InvalidTagPage($database, $tag);
         }
+
         if (tagExists($tag)) {
           if (tagIsActive($tag))
             $page = new StatisticsPage($database, $tag);
@@ -148,7 +171,7 @@ try {
   
     case "tag":
       if(!empty($_GET["tag"])) {
-	$tag = strtoupper($_GET['tag']);
+        $tag = strtoupper($_GET['tag']);
         if (!isValidTag($tag)) {
           $page = new InvalidTagPage($database, $tag);
         }
