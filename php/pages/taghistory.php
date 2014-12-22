@@ -15,8 +15,9 @@ function GitHubCommitLinesLink($change) {
 
 # link to a diff
 function GitHubDiffLink($change) {
-  # TODO this is broken at the moment, as I don't understand GitHub's link structure yet
-  return "https://github.com/stacks/stacks-project/commit/" . $change["hash"] . "/" . $change["file"] . ".tex#L" . $change["begin"];
+  # one has to put the md5 hash of the filename in the URL for some reason
+  # observe that at the moment it's impossible to refer to ranges, and we can only refer the line number of the beginning / end, not the whole range, so if the begin / end is out of the diff range not much happens
+  return "https://github.com/stacks/stacks-project/commit/" . $change["hash"] . "/" . $change["file"] . ".tex#diff-" . md5($change["file"] . ".tex") . "L" . $change["begin"];
 }
 
 function printChange($tag, $change) {
