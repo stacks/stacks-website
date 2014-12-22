@@ -28,30 +28,41 @@ function printChange($tag, $change) {
   switch ($change["type"]) {
     case "creation":
       $output .= "<td>created statement";
+      $output .= "<td>in <code>" . $change["file"] . ".tex</code><br>label <code>" . $change["label"] . "</code>";
       $output .= "<td>" . $time;
       $output .= "<td><a href='" . GitHubCommitLinesLink($change) . "'>statement</a>";
       break;
 
     case "label":
       $output .= "<td>changed label";
+      $output .= "<td>label <code>" . $change["label"] . "</code>";
       $output .= "<td>" . $time;
       $output .= "<td><a href='" . GitHubCommitLinesLink($change) . "'>statement</a>";
       break;
 
     case "move":
       $output .= "<td>moved the tag";
+      $output .= "<td>";
+      $output .= "<td>" . $time;
+      break;
+
+    case "move file":
+      $output .= "<td>moved the tag";
+      $output .= "<td>to <code>" . $change["file"] . ".tex</code>";
       $output .= "<td>" . $time;
       break;
 
     case "proof":
     case "statement":
       $output .= "<td>change in " . $change["type"];
+      $output .= "<td>";
       $output .= "<td>" . $time;
       $output .= "<td><a href='" . GitHubDiffLink($change) . "'>diff view</a>";
       break;
 
     case "tag":
-      $output .= "<td>assigned a tag";
+      $output .= "<td>assigned tag";
+      $output .= "<td><var>" . $tag . "</var>";
       $output .= "<td>" . $time;
       $output .= "<td><a href='" . GitHubCommitLink($change["hash"]) . "'>GitHub</a>";
       break;
@@ -109,9 +120,10 @@ class HistoryPage extends Page {
     $output .= "<table class='alternating history' id='numbers'>";
     $output .= "<thead>";
     $output .= "<tr>";
-    $output .= "<td>type";
-    $output .= "<td>time";
-    $output .= "<td>link";
+    $output .= "<th style='width: 30%'>type";
+    $output .= "<th style='width: 35%'>";
+    $output .= "<th>time";
+    $output .= "<th>link";
     $output .= "</tr>";
     $output .= "</thead>";
   

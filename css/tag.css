@@ -176,5 +176,10 @@ table.history tbody tr {
 
 table.history tbody tr td:first-child::before {
   content: counter(row) ". ";
-  min-width: 6em;
+  margin-right: .5em;
+}
+
+table.history thead th {
+  background-color: white;
+  text-align: center;
 }
