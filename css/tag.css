@@ -170,13 +170,17 @@ table.history {
   counter-reset: row;
 }
 
+table.history tr td {
+  padding: .2em;
+}
+
 table.history tbody tr {
   counter-increment: row;
 }
 
 table.history tbody tr td:first-child::before {
   content: counter(row) ". ";
-  margin-right: .5em;
+  margin-right: .2em;
 }
 
 table.history thead th {

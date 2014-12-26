@@ -17,27 +17,33 @@ function GitHubCommitLinesLink($change) {
 function GitHubDiffLink($change) {
   # one has to put the md5 hash of the filename in the URL for some reason
   # observe that at the moment it's impossible to refer to ranges, and we can only refer the line number of the beginning / end, not the whole range, so if the begin / end is out of the diff range not much happens
-  return "https://github.com/stacks/stacks-project/commit/" . $change["hash"] . "/" . $change["file"] . ".tex#diff-" . md5($change["file"] . ".tex") . "L" . $change["begin"];
+  return "https://github.com/stacks/stacks-project/commit/" . $change["hash"] . "/" . $change["file"] . ".tex#diff-" . md5($change["file"] . ".tex") . "R" . $change["begin"];
 }
 
 function printChange($tag, $change) {
   $output = "<tr>";
 
-  $time = time($change["time"]);
+  //$time = time($change["time"]);
+  $time = $change["time"];
+  $time = date_create($change["time"], timezone_open('GMT'));
+  //$time = date_format($time, "F j, Y \a\\t g:i a e");
+  $time = date_format($time, "F j, Y");
 
   switch ($change["type"]) {
     case "creation":
       $output .= "<td>created statement";
-      $output .= "<td>in <code>" . $change["file"] . ".tex</code><br>label <code>" . $change["label"] . "</code>";
+      $output .= "<td>in <code>" . $change["file"] . ".tex</code>";
+      if ($change["label"] != "")
+        $output .= "<br>label <code>" . $change["label"] . "</code>";
       $output .= "<td>" . $time;
-      $output .= "<td><a href='" . GitHubCommitLinesLink($change) . "'>statement</a>";
+      $output .= "<td><a href='" . GitHubCommitLinesLink($change) . "'>link</a>";
       break;
 
     case "label":
       $output .= "<td>changed label";
       $output .= "<td>label <code>" . $change["label"] . "</code>";
       $output .= "<td>" . $time;
-      $output .= "<td><a href='" . GitHubCommitLinesLink($change) . "'>statement</a>";
+      $output .= "<td><a href='" . GitHubCommitLinesLink($change) . "'>diff</a>";
       break;
 
     case "move":
@@ -54,17 +60,18 @@ function printChange($tag, $change) {
 
     case "proof":
     case "statement":
-      $output .= "<td>change in " . $change["type"];
+    case "statement and proof":
+      $output .= "<td>changed " . $change["type"];
       $output .= "<td>";
       $output .= "<td>" . $time;
-      $output .= "<td><a href='" . GitHubDiffLink($change) . "'>diff view</a>";
+      $output .= "<td><a href='" . GitHubDiffLink($change) . "'>diff</a>";
       break;
 
     case "tag":
       $output .= "<td>assigned tag";
       $output .= "<td><var>" . $tag . "</var>";
       $output .= "<td>" . $time;
-      $output .= "<td><a href='" . GitHubCommitLink($change["hash"]) . "'>GitHub</a>";
+      $output .= "<td>";
       break;
   }
 
@@ -120,15 +127,23 @@ class HistoryPage extends Page {
     $output .= "<table class='alternating history' id='numbers'>";
     $output .= "<thead>";
     $output .= "<tr>";
-    $output .= "<th style='width: 30%'>type";
+    $output .= "<th style='width: 40%'>type";
     $output .= "<th style='width: 35%'>";
-    $output .= "<th>time";
-    $output .= "<th>link";
+    $output .= "<th style='width: 25%'>time";
+    $output .= "<th style='width: 10%'>link";
     $output .= "</tr>";
     $output .= "</thead>";
   
-    foreach ($this->changes as $change)
-      $output .= printChange($this->tag["tag"], $change);
+    for ($i = 0; $i < sizeof($this->changes); $i++) {
+      if ($i+1 < sizeof($this->changes) && $this->changes[$i]["hash"] == $this->changes[$i+1]["hash"] && $this->changes[$i]["type"] == "statement" && $this->changes[$i+1]["type"] == "statement") {
+        $this->changes[$i]["type"] = "statement and proof";
+        $output .= printChange($this->tag["tag"], $this->changes[$i]);
+
+        $i++;
+      }
+      else
+        $output .= printChange($this->tag["tag"], $this->changes[$i]);
+    }
 
     $output .= "</table>";
 
