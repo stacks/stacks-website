@@ -174,7 +174,7 @@ class HistoryPage extends Page {
     return $output;
   }
   public function getTitle() {
-    return " &mdash; Statistics for the tag " . $this->tag["tag"];
+    return " &mdash; History for the tag " . $this->tag["tag"];
   }
 }
 
