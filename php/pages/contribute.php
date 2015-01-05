@@ -49,7 +49,7 @@ class ContributePage extends Page {
     $contributors = $this->getContributors();
     
     $output .= "<h2>Contributors</h2>";
-    $output .= "So far contributed " . sizeof($contributors) . " people have contributed to the Stacks project, and these are:";
+    $output .= "So far " . sizeof($contributors) . " people have contributed to the Stacks project, and these are:";
     //$output .= "<p style='margin: .5em; font-size: .8em'>";
     $output .= "<ul>";
     foreach ($contributors as $contributor)
