@@ -17,10 +17,9 @@ function countComments($db) {
 }
 
 function getComments($db, $start, $number) {
-  $sql = $db->prepare("SELECT id, tag, author, site, date, comment FROM comments ORDER BY date DESC LIMIT :start, :stop");
+  $sql = $db->prepare("SELECT id, tag, author, site, date, comment FROM comments ORDER BY date DESC LIMIT :start, :offset");
   $sql->bindParam(":start", $start);
-  $stop = $start + $number;
-  $sql->bindParam(":stop", $stop);
+  $sql->bindParam(":offset", $number);
 
   if ($sql->execute())
     return $sql->fetchAll();
