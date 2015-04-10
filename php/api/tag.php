@@ -80,13 +80,30 @@ if (isset($_GET["format"]) and $_GET["format"]) {
   }
 }
 else {
+  $output = "";
   switch ($type) {
     case "full":
-      print convertLaTeX($_GET["tag"], $tag["file"], $tag["value"]);
+      $output .= convertLaTeX($_GET["tag"], $tag["file"], $tag["value"]);
       break;
     case "statement":
-      print convertLaTeX($_GET["tag"], $tag["file"], removeProofs($tag["value"]));
+      $output .= convertLaTeX($_GET["tag"], $tag["file"], removeProofs($tag["value"]));
       break;
   }
+
+  // handle footnotes
+  global $footnotes;
+  if (sizeof($footnotes) > 0) {
+    $output .= "<div class='footnotes'>";
+    $output .= "<ol class='footnotes'>";
+    foreach ($footnotes as $i => $footnote) {
+      // only print the footnote if it is actually contained in the output we are providing (because it might be in the proof which is not requested)
+      if (strpos($output, "fnref:" . $i) !== false)
+        $output .= "<li class='footnote' id='fn:" . $i . "'>" . $footnote . "<a href='#fnref:" . $i . "' title='return to main text'> &uarr;</a>";
+    }
+    $output .= "</ol>";
+    $output .= "</div>";
+  }
+
+  print $output;
 }
 ?>
