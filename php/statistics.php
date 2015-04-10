@@ -67,6 +67,20 @@ function getTagCount($db) {
     return $sql->fetchColumn() - getChapterCount($db);
 }
 
+function getSubmittedSloganCount($db) {
+  $sql = $db->prepare("SELECT COUNT(*) FROM slogans");
+
+  if ($sql->execute())
+    return $sql->fetchColumn();
+}
+
+function getActiveSloganCount($db) {
+  $sql = $db->prepare("SELECT COUNT(*) FROM tags WHERE slogan != ''");
+
+  if ($sql->execute())
+    return $sql->fetchColumn();
+}
+
 function getStatisticsSidebar($db) {
   $value = "";
 
@@ -78,6 +92,7 @@ function getStatisticsSidebar($db) {
   $value .= "<li>" . getSectionCount($db) . " sections";
   $value .= "<li>" . getChapterCount($db) . " chapters";
   $value .= "<li>" . getPageCount($db, "book") . " pages";
+  $value .= "<li>" . getActiveSloganCount($db) . " slogans"; // . " slogans (" . getSubmittedSloganCount($db) . " submitted)";
   $value .= "</ul>";
 
   return $value;
