@@ -212,7 +212,6 @@ class TagViewPage extends Page {
     $value .= "<div id='comments'>";
     if (count($comments) == 0) {
       $value .= "<p>There are no comments yet for this tag.</p>";
-      $value .= "<script type='text/javascript'>\$(document).ready(toggleComments());</script>";
     }
     else {
       foreach($comments as $comment)
