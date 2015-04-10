@@ -52,7 +52,7 @@ class SearchPage extends Page {
     $output .= "<form id='search' method='get' action='" . href('search') . "'>
       <fieldset>
         <legend>Query</legend>
-        <label for='keywords'>Keywords: <input type='text' id='keywords' size='35' name='keywords' value='" . $keywords . "'></label>
+        <label for='keywords'>Keywords: <input type='text' id='keywords' size='35' name='keywords' value=\"" . $keywords . "\"></label>
         <label><input type='submit' id='submit' value='Search' /></label>
       </fieldset>
 
