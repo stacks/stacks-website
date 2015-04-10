@@ -28,11 +28,6 @@ class TodoPage extends Page {
     $output .= "<li>Read a random section and find small mathematical errors, such as arrows pointing the wrong way, wrong font, sign errors, etc. If they are small enough you can simply correct them. Otherwise, just email what's wrong.";
     $output .= "<li>Provide counterexamples for silly statements. For example, find a Noetherian ring which is not of finite type over a field, namely $\mathbb{Z}$. (Just to give you an idea.)";
     $output .= "<li>Basic notions. Write something basic about algebra, topology, fields, etc. which goes in an early part (and hasn't been written yet).";
-    $output .= "<li>Find ocurrences of <code>\coprod</code> and <code>\amalg</code> and consistently have the following";
-    $output .= "<pre><code>A \\amalg B\n";
-    $output .= "\\coprod_{i\in I} A_i\n";
-    $output .= "A \\amalg \\coprod_{i\in I} B_i</code></pre>";
-    $output .= "i.e., use <code>\\amalg</code> if there are only two and <code>\coprod</code> if there are more. The last one doesn't look good, but <code>\coprod \coprod_i</code> is even worse!";
     $output .= "</ol>";
     $output .= "<p>For many of these tasks the commenting system available on the website suffices. Just look up the tag and post a comment, we will deal with the actual change in the Stacks project.</p>";
 
