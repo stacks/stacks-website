@@ -37,6 +37,7 @@ function parseAccents($text) {
   $text = str_replace("``", "''", $text);
   $text = str_replace("''", "''", $text);
   $text = str_replace("\\ ", "&nbsp;", $text);
+  $text = str_replace("~", "&nbsp;", $text);
   // this is to remedy a bug in import_titles
   $text = str_replace("\\v C}", "&#268;", $text);
 
