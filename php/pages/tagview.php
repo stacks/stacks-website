@@ -115,6 +115,62 @@ function parseReferences($string) {
   return $string;
 }
 
+function getCommentsForTag($tag) {
+  global $database;
+
+  $comments = array();
+
+  $sql = $database->prepare("SELECT id, tag, author, date, comment, site FROM comments WHERE tag = :tag ORDER BY date");
+  $sql->bindParam(':tag', $tag);
+
+  if ($sql->execute()) {
+    while ($row = $sql->fetch())
+      array_push($comments, $row);
+  }
+
+  return $comments;
+}
+
+function printIsAreComments($count) {
+  if ($count == 1)
+    return "is also 1 comment";
+  else
+    return "are also " . $count . " comments";
+}
+
+function printEnclosingComments($tag, $position, $type) {
+  $output = "";
+
+  // handle enclosing chapter
+  if (in_array($type, array("section", "theorem", "lemma", "definition", "equation", "example", "remark", "proposition", "item", "exercise", "situation", "subsection", "remarks"))) {
+    $chapter = getEnclosingChapter($position);
+    $chapterComments = getCommentsForTag($chapter["tag"]);
+
+    if (sizeof($chapterComments) > 0)
+      $output .= "<p>There " . printIsAreComments(sizeof($chapterComments)) . " on <a href='" . href("tag/" . $chapter["tag"]) . "'>Chapter " . $chapter["book_id"] . ": " . parseAccents($chapter["name"]) . "</a>.";
+  }
+
+  // handle enclosing section
+  if (in_array($type, array("theorem", "lemma", "definition", "equation", "example", "remark", "proposition", "item", "exercise", "situation", "subsection", "remarks"))) {
+    $section = getEnclosingSection($position);
+    $sectionComments = getCommentsForTag($section["tag"]);
+
+    if (sizeof($sectionComments) > 0)
+      $output .= "<p>There " . printIsAreComments(sizeof($sectionComments)) . " on <a href='" . href("tag/" . $section["tag"]) . "'>Section " . $section["book_id"] . ": " . parseAccents($chapter["name"]) . "</a>.";
+  }
+
+  // handle enclosing tag
+  if (in_array($type, array("item", "equation"))) {
+    $enclosingTag = getEnclosingTag($position);
+    $enclosingTagComments = getCommentsForTag($enclosingTag["tag"]);
+
+    if (sizeof($enclosingTagComments) > 0)
+      $output .= "<p>There " . printIsAreComments(sizeof($enclosingTagComments)) . " on <a href='" . href("tag/" . $enclosingTag["tag"]) . "'> " . ucfirst($enclosingTag["type"]) . "&nbsp;" . $enclosingTag["book_id"] . "</a>.";
+  }
+  
+  return $output;
+}
+
 function stripChapter($id) {
   $pieces = explode(".", $id);
   return implode(array_splice($pieces, 1), ".");
@@ -217,6 +273,7 @@ class TagViewPage extends Page {
       foreach($comments as $comment)
         $value .= $this->printComment($comment);
     }
+    $value .= printEnclosingComments($this->tag["tag"], $this->tag["position"], $this->tag["type"]);
     $value .= "</div>";
 
     $value .= "<h2 id='comment-input-header'>Add a comment on tag <var>" . $this->tag["tag"] . "</var></h2>";
