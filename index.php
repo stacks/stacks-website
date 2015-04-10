@@ -116,7 +116,8 @@ try {
       else {
         // TODO set options in new form
         $options = array();
-        $options["keywords"] = $_GET["keywords"];
+        // based on SO1017599...
+        $options["keywords"] = strtr(utf8_decode($_GET["keywords"]), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
         if (isset($_GET["limit"]))
           $options["limit"] = $_GET["limit"];
         else
