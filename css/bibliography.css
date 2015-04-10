@@ -18,7 +18,7 @@ ul.bibliography li {
   margin-bottom: 3px;
 }
 
-ol#index {
+div#sidebar ol#index {
   list-style-type: none;
   padding-left: 5px;
 }
