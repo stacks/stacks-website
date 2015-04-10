@@ -52,7 +52,7 @@ class TagsPage extends Page {
     $value .= printTagLookup(10);
     $value .= "<p style='clear: both'>";
     $value .= "<h2>Search</h2>";
-    $value .= getSimpleSearchForm(10);
+    $value .= getSimpleSearchForm(false, 10);
 
     return $value;
   }

@@ -37,7 +37,7 @@ class MissingTagPage extends Page {
 
     $output .= "<h2><a href='" . href("search") . "'>Search</a></h2>";
     $output .= "<p>Are you instead looking for the search functionality?</p>";
-    $output .= getSimpleSearchForm();
+    $output .= getSimpleSearchForm(false);
 
     return $output;
   }

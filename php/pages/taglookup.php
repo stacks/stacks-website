@@ -40,7 +40,7 @@ class TagLookupPage extends Page {
 
     $value .= "<h2><a href='" . href("search") . "'>Search</a></h2>";
     $value .= "<p>Are you instead looking for the search functionality?</p>";
-    $value .= getSimpleSearchForm();
+    $value .= getSimpleSearchForm(false);
 
     return $value;
   }

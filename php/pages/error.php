@@ -55,7 +55,7 @@ class NotFoundPage extends Page {
     $output .= printTagLookup(10);
     $output .= "<p style='clear: both'>";
     $output .= "<h2>Search</h2>";
-    $output .= getSimpleSearchForm(10);
+    $output .= getSimpleSearchForm(false, 10);
 
     return $output;
   }
