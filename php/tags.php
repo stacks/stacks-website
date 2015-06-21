@@ -4,7 +4,7 @@ require_once("bibliography.php");
 require_once("general.php");
 
 // this is the regex for all (sufficiently nice) text that can occur in things like \emph
-$regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$]+";
+$regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$\{\}\"<>\=\/]+";
 
 function parseBrackets($string, $split, $callback, $start = 0) {
   $parts = explode($split, $string);
