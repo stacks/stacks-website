@@ -99,6 +99,17 @@ class HistoryPage extends Page {
     if ($sql->execute())
       $this->changes = $sql->fetchAll();
 
+    // remove the ghost "change in proof" that occurs after tag assignment
+    $index = -1;
+
+    for ($i = 0; $i < sizeof($this->changes); $i++) {
+      if ($this->changes[$i]["type"] == "tag")
+        $index = $i;
+    }
+
+    if ($index != -1)
+      array_splice($this->changes, $index + 1, 1);
+
     // phantom is actually a chapter
     if (isPhantom($this->tag["label"]))
       $this->tag["type"] = "chapter";
