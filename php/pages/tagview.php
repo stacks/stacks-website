@@ -30,6 +30,26 @@ function isPhantom($label) {
   return substr_compare($label, "section-phantom", -15, 15) == 0;
 }
 
+function getPart($id) {
+  global $parts, $database;
+
+  $sql = $database->prepare("SELECT title FROM sections WHERE number NOT LIKE '%.%' ORDER BY CAST(number AS INTEGER)");
+
+  $part = "Preliminaries";
+
+  if ($sql->execute()) {
+    $chapters = $sql->fetchAll();
+
+    for ($i = 0; $i < sizeof($chapters); $i++) {
+      if ($i == $id)
+        return $part;
+      
+      if (in_array($chapters[$i]["title"], array_keys($parts)))
+        $part = $parts[$chapters[$i]["title"]];
+    }
+  }
+}
+
 function parseComment($comment) {
   // parse \ref{}, but only when the line is not inside a code fragment
   $lines = explode("\n", $comment);
@@ -527,8 +547,10 @@ class TagViewPage extends Page {
   private function printView() {
     $value = "";
     if ($this->tag["type"] == "chapter") {
+      $part = getPart($this->tag["book_id"]);
+
       $value .= "<h3>Chapter " . $this->tag["book_id"] . ": " . $this->tag["name"] . "</h3>";
-      $value .= "<p>This tag corresponds to <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a>, and contains no further text. To view the contents of the first section in this chapter, go to the next tag.</p>";
+      $value .= "<p>This tag corresponds to <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a> of <a href='" . href("browse#" . partToIdentifier($part)) . "'>" . parseAccents($part) . "</a>, and contains no further text. To view the contents of the first section in this chapter, go to the next tag.</p>";
       $value .= "<p>This chapter contains the following tags</p>";
       $value .= "<div id='control'>";
       $value .= "<p><a href='#'><img src='" . href("js/jquery-treeview/images/minus.gif") . "'> Collapse all</a>";

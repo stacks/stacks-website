@@ -12,18 +12,11 @@ class BrowsePage extends Page {
   private $parts;
 
   public function __construct($database) {
+    global $parts;
+
     $this->db = $database;
 
-    // mapping the first chapter of each part to the title of the part
-    $this->parts = array(
-      "Introduction"                    => "Preliminaries",
-      "Schemes"                         => "Schemes",
-      "Chow Homology and Chern Classes" => "Topics in Scheme Theory",
-      "Algebraic Spaces"                => "Algebraic Spaces",
-      "Quotients of Groupoids"		=> "Topics in Geometry",
-      "Formal Deformation Theory"       => "Deformation Theory",
-      "Algebraic Stacks"                => "Algebraic Stacks",
-      "Examples"                        => "Miscellany");
+    $this->parts = $parts;
   }
 
   public function getHead() {

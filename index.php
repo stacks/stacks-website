@@ -30,6 +30,17 @@ require_once("php/pages/tags.php");
 require_once("php/pages/tagview.php");
 require_once("php/pages/todo.php");
 
+// mapping the first chapter of each part to the title of the part
+$parts = array(
+  "Introduction"                    => "Preliminaries",
+  "Schemes"                         => "Schemes",
+  "Chow Homology and Chern Classes" => "Topics in Scheme Theory",
+  "Algebraic Spaces"                => "Algebraic Spaces",
+  "Quotients of Groupoids"		      => "Topics in Geometry",
+  "Formal Deformation Theory"       => "Deformation Theory",
+  "Algebraic Stacks"                => "Algebraic Stacks",
+  "Examples"                        => "Miscellany");
+
 // we try to construct the page object
 try {
   // initialize the global database object
