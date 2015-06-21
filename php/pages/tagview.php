@@ -240,6 +240,11 @@ class TagViewPage extends Page {
     $value .= "<h2>Extras</h2>";
     $value .= "<ul id='extras'>";
     $value .= "<li><a href='" . href("tag/" . $this->tag["tag"] . "/statistics") . "'>statistics</a></li>";
+
+    // only print this when it makes sense
+    if (!in_array($this->tag["type"], array("item", "equation", "section", "subsection", "chapter")))
+      $value .= "<li><a href='" . href("tag/" . $this->tag["tag"] . "/history") . "'>history</a></li>";
+
     if (in_array($this->tag["type"], array("section", "subsection", "chapter"))) {
       $value .= "<li id='dependency-graphs'><p>dependency graphs:<p>The dependency graphs of a " . $this->tag["type"] . " are not interesting, to see the dependency graphs of a tag in this section click on the identifier of a lemma, definition, etc.";
     }
