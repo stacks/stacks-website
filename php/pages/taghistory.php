@@ -87,7 +87,7 @@ class HistoryPage extends Page {
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    $sql = $this->db->prepare("SELECT tag, creation_date, creation_commit, modification_date, modification_commit, label, position FROM tags WHERE tag = :tag");
+    $sql = $this->db->prepare("SELECT tag, creation_date, creation_commit, modification_date, modification_commit, label, position, type FROM tags WHERE tag = :tag");
     $sql->bindParam(":tag", $tag);
 
     if ($sql->execute())
@@ -135,36 +135,39 @@ class HistoryPage extends Page {
     $output .= "<h2>Tag <var>" . $this->tag["tag"] . "</var></h2>";
     $output .= "<p>Go to the <a href='" . href("tag/" . $this->tag["tag"]) . "'>corresponding tag page</a>.</p>";
 
-    $output .= "<table class='alternating history' id='numbers'>";
-    $output .= "<thead>";
-    $output .= "<tr>";
-    $output .= "<th style='width: 40%'>type";
-    $output .= "<th style='width: 35%'>";
-    $output .= "<th style='width: 25%'>time";
-    $output .= "<th style='width: 10%'>link";
-    $output .= "</tr>";
-    $output .= "</thead>";
+    if (in_array($this->tag["type"], array("item", "equation", "section", "subsection", "chapter")))
+      $output .= "<p>For this type of tag (<var>" . $this->tag["type"] . "</var>) there is no historical data available.";
+    else {
+      $output .= "<table class='alternating history' id='numbers'>";
+      $output .= "<thead>";
+      $output .= "<tr>";
+      $output .= "<th style='width: 40%'>type";
+      $output .= "<th style='width: 35%'>";
+      $output .= "<th style='width: 25%'>time";
+      $output .= "<th style='width: 10%'>link";
+      $output .= "</tr>";
+      $output .= "</thead>";
+      $output .= "<tbody>";
   
-    for ($i = 0; $i < sizeof($this->changes); $i++) {
-      if ($i+1 < sizeof($this->changes) && $this->changes[$i]["hash"] == $this->changes[$i+1]["hash"] && $this->changes[$i]["type"] == "statement" && $this->changes[$i+1]["type"] == "statement") {
-        $this->changes[$i]["type"] = "statement and proof";
-        $output .= printChange($this->tag["tag"], $this->changes[$i]);
+      for ($i = 0; $i < sizeof($this->changes); $i++) {
+        if ($i+1 < sizeof($this->changes) && $this->changes[$i]["hash"] == $this->changes[$i+1]["hash"] && $this->changes[$i]["type"] == "statement" && $this->changes[$i+1]["type"] == "statement") {
+          $this->changes[$i]["type"] = "statement and proof";
+          $output .= printChange($this->tag["tag"], $this->changes[$i]);
 
-        $i++;
+          $i++;
+        }
+        else
+          $output .= printChange($this->tag["tag"], $this->changes[$i]);
       }
-      else
-        $output .= printChange($this->tag["tag"], $this->changes[$i]);
-    }
 
-    $output .= "</table>";
+      $output .= "</tbody>";
+      $output .= "</table>";
+    }
 
     return $output;
   }
   public function getSidebar() {
     $output = "";
-
-    // TODO some go to tag link
-    // TODO navigate this page too
 
     $output .= "<h2>Navigating history</h2>";
     $siblingTags = getSiblingTags($this->tag["position"]);
