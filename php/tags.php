@@ -354,6 +354,9 @@ function convertLaTeX($tag, $file, $code) {
   $macros = getMacros();
   $code = preg_replace(array_keys($macros), array_values($macros), $code);
 
+  // whitespace in LaTeX
+  $code = str_replace("~", "&nbsp;", $code);
+
   return $code;
 }
 
