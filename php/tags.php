@@ -4,7 +4,7 @@ require_once("bibliography.php");
 require_once("general.php");
 
 // this is the regex for all (sufficiently nice) text that can occur in things like \emph
-$regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$\{\}\"<>\=\/]+";
+$regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$\"<>\=\/]+";
 
 function parseBrackets($string, $split, $callback, $start = 0) {
   $parts = explode($split, $string);
@@ -188,7 +188,8 @@ function convertLaTeX($tag, $file, $code) {
     }
 
     // do the same for named environments
-    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regex . ")\]\n\\\label\{([\w\-]*)\}/u", $code, $matches);
+    $regexForNamed = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$\"\{\}<>\=\/]+";
+    $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regexForNamed . ")\]\n\\\label\{([\w\-]*)\}/u", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
       
