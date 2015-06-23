@@ -332,6 +332,7 @@ function convertLaTeX($tag, $file, $code) {
       $line = str_replace('&gt;', '>', $line);
       $line = str_replace('&lt;', '<', $line);
       $line = str_replace('&amp;', '&', $line);
+      $line = str_replace('&nbsp;', '~', $line);
      
       // we replace links in math mode by plain text as mathjax cannot handle <a href=""></a>
       $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $line, $matches);
