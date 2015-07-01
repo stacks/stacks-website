@@ -165,3 +165,25 @@ div#main p#slogan:before {
   margin-right: .3em;
   /*background-color: #edece6;*/
 }
+
+table.history {
+  counter-reset: row;
+}
+
+table.history tr td {
+  padding: .2em;
+}
+
+table.history tbody tr {
+  counter-increment: row;
+}
+
+table.history tbody tr td:first-child::before {
+  content: counter(row) ". ";
+  margin-right: .2em;
+}
+
+table.history thead th {
+  background-color: white;
+  text-align: center;
+}
