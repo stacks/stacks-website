@@ -32,7 +32,7 @@ function print_comment_item($tag, $id, $author, $date, $comment) {
   $output .= $domain . href('tag/' . $tag . '#comment-' . $id);
   $output .= "</link>\n";
   $output .= "    <description>A new comment by ";
-  $output .= $author;
+  $output .= htmlentities($author);
   $output .= " on tag ";
   $output .= $tag;
   $output .= ".";
