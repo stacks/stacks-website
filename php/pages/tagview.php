@@ -262,7 +262,7 @@ class TagViewPage extends Page {
       $value .= printBreadcrumb($this->tag);
 
     if ($this->tag["slogan"] != "")
-      $value .= "<p id='slogan'><strong>" . $this->tag["slogan"] . "</strong>";
+      $value .= "<p id='slogan'><strong>" . parseAccents($this->tag["slogan"]) . "</strong>"; // maybe there will be more advanced LaTeX in slogans at some point?
 
     $value .= $this->printView();
 
