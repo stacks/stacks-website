@@ -187,3 +187,7 @@ table.history thead th {
   background-color: white;
   text-align: center;
 }
+
+var.tag {
+  font-family: "Inconsolata", monospace;
+}

@@ -4,7 +4,7 @@ require_once("php/page.php");
 require_once("php/general.php");
 require_once("php/tags.php");
 
-/** 
+/**
  * The list of possible types:
  * - definition
  * - equation
@@ -43,7 +43,7 @@ function getPart($id) {
     for ($i = 0; $i < sizeof($chapters); $i++) {
       if ($i == $id)
         return $part;
-      
+
       if (in_array($chapters[$i]["title"], array_keys($parts)))
         $part = $parts[$chapters[$i]["title"]];
     }
@@ -102,12 +102,12 @@ function parseComment($comment) {
 function parseReferences($string) {
   // look for \ref before MathJax can and see if they point to existing tags
   $references = array();
-  
+
   preg_match_all('/\\\ref{[\w-]*}/', $string, $references);
   foreach ($references[0] as $reference) {
     // get the label or tag we're referring to, nothing more
     $target = substr($reference, 5, -1);
-  
+
     // we're referring to a tag
     if (isValidTag($target)) {
       // regardless of whether the tag exists we insert the link, the user is responsible for meaningful content
@@ -122,7 +122,7 @@ function parseReferences($string) {
         // let's try it with the current chapter in front of the label
         $target = $tag["file"] . '-' . $target;
       }
-  
+
       // the label (potentially modified) exists in the database (and it is active), so the user is probably referring to it
       // if he declared a \label{} in his string with this particular label value he's out of luck
       if (labelExists($target)) {
@@ -131,7 +131,7 @@ function parseReferences($string) {
       }
     }
   }
-  
+
   return $string;
 }
 
@@ -187,7 +187,7 @@ function printEnclosingComments($tag, $position, $type) {
     if (sizeof($enclosingTagComments) > 0)
       $output .= "<p>There " . printIsAreComments(sizeof($enclosingTagComments)) . " on <a href='" . href("tag/" . $enclosingTag["tag"]) . "'> " . ucfirst($enclosingTag["type"]) . "&nbsp;" . $enclosingTag["book_id"] . "</a>.";
   }
-  
+
   return $output;
 }
 
@@ -256,7 +256,7 @@ class TagViewPage extends Page {
 
   public function getMain() {
     $value = "";
-    $value .= "<h2>Tag <var>" . $this->tag["tag"] . "</var></h2>";
+    $value .= "<h2>Tag <var class='tag'>" . $this->tag["tag"] . "</var></h2>";
 
     if ($this->tag["type"] != "section" and $this->tag["type"] != "chapter")
       $value .= $this->printBreadcrumb();
@@ -283,7 +283,7 @@ class TagViewPage extends Page {
       $value .= "</div>";
     }
 
-    $comments = $this->getComments(); 
+    $comments = $this->getComments();
     $value .= "<h2 id='comments-header'>Comments (" . count($comments) . ")</h2>";
     $value .= "<div id='comments'>";
     if (count($comments) == 0) {
@@ -296,7 +296,7 @@ class TagViewPage extends Page {
     $value .= printEnclosingComments($this->tag["tag"], $this->tag["position"], $this->tag["type"]);
     $value .= "</div>";
 
-    $value .= "<h2 id='comment-input-header'>Add a comment on tag <var>" . $this->tag["tag"] . "</var></h2>";
+    $value .= "<h2 id='comment-input-header'>Add a comment on tag <var class='tag'>" . $this->tag["tag"] . "</var></h2>";
     $value .= $this->printCommentInput();
 
     return $value;
@@ -402,7 +402,7 @@ class TagViewPage extends Page {
     $value .= "<div class='comment' id='comment-" . $comment["id"] . "'>";
     $value .= "<a href='#comment-" . $comment["id"] . "'>Comment #" . $comment["id"] . "</a> ";
     $value .= "by <cite class='comment-author'>" . htmlspecialchars($comment["author"]) . "</cite> ";
-    if (!empty($comment["site"])) 
+    if (!empty($comment["site"]))
       $value .=  "(<a href='" . htmlspecialchars($comment['site']) . "'>site</a>) ";
     $date = date_create($comment['date'], timezone_open('GMT'));
     $value .= "on " . date_format($date, "F j, Y \a\t g:i a e") . "\n";
@@ -432,7 +432,8 @@ class TagViewPage extends Page {
     $value .= "<div id='epiceditor'></div>";
     $value .= "<script type='text/javascript' src='" . href("js/editor.js") . "'></script>";
 
-    $value .= "<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this is tag&nbsp;<var>0321</var> you just have to write&nbsp;<var>0321</var>. This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>";
+    $value .= "<p>In order to prevent bots from posting comments, we would like you to prove that you are human. You can do this by <em>filling in the name of the current tag</em> in the following box. So in case this where tag&nbsp;<var class='tag'>0321</var> you just have to write&nbsp;<var class='tag'>0321</var>. Beware of the difference between the letter&nbsp;'<var class='tag'>O</var>' and the digit&nbsp;<var class='tag'>0</var>.";
+    $value .= "<p>This <abbr title='Completely Automated Public Turing test to tell Computers and Humans Apart'>captcha</abbr> seems more appropriate than the usual illegible gibberish, right?</p>";
     $value .= "<label for='check'>Tag:</label>";
     $value .= "<input type='text' name='check' id='check'><br>";
     $value .= "<input type='hidden' name='tag' value='" . $this->tag["tag"] . "'>";
@@ -477,7 +478,7 @@ class TagViewPage extends Page {
         $value .= "<li>" . ucfirst($this->tag["type"]) . "&nbsp;" . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["book_page"] . "</a> of the book";
         break;
     }
-    
+
     if ($this->tag["type"] != "chapter")
       $value .= "<li><a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex#L" . $this->tag["begin"] . "-" . $this->tag["end"] . "'>lines " . $this->tag["begin"] . "&ndash;" . $this->tag["end"] . "</a> of <a href='https://github.com/stacks/stacks-project/blob/master/" . $chapter["filename"] . ".tex'><var>" . $chapter["filename"] . ".tex</var></a>";
     else
@@ -563,7 +564,7 @@ class TagViewPage extends Page {
       $value .= "<a href='#'><img src='" . href("js/jquery-treeview/images/plus.gif") . "'> Expand all</a>";
       $value .= "</div>";
       $value .= "<div id='treeview'>";
-      $value .= "<a href='" . href("tag/" . $this->tag["tag"]) . "'>Tag " . $this->tag["tag"] . "</a> points to Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]);
+      $value .= "<a href='" . href("tag/" . $this->tag["tag"]) . "'>Tag <var class='tag'>" . $this->tag["tag"] . "</var></a> points to Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]);
       $value .= printToC($this->tag["book_id"]);
       $value .= "</div>";
       $value .= "<script type='text/javascript' src='" . href("js/chapter.js") . "'></script>";
@@ -603,7 +604,7 @@ class TagViewPage extends Page {
       $count = preg_match_all('/\\\label{([\w-\*]+)}/', $code, $references);
       for ($i = 0; $i < $count; ++$i)
         $code = str_replace($references[0][$i], "\\label{<a href='" . href("tag/" . getTagWithLabel($this->tag["file"] . "-" . $references[1][$i])) . "'>" . $references[1][$i] . "</a>}", $code);
-      
+
       $value .= $code;
       $value .= "</code></pre>";
       $value .= "</div>";
