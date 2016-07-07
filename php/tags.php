@@ -8,7 +8,7 @@ $regex = "[\p{L}\p{Nd}\?@\s$,.:()'N&#;\-\\\\$\"<>\=\/]+";
 
 function parseBrackets($string, $split, $callback, $start = 0) {
   $parts = explode($split, $string);
-  
+
   $result = $parts[0];
 
   // each of these strings contains a $split at the beginning
@@ -179,7 +179,7 @@ function convertLaTeX($tag, $file, $code) {
     $count = preg_match_all("/\\\begin\{" . $environment . "\}\n\\\label\{([\w\*\-]*)\}/", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[1][$i];
-      
+
       // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
       if (labelExists($label))
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . href("tag/" . getTagWithLabel($label)) . "'>" . $information["name"] . " " . getIDWithLabel($label) . ".</a>", $code);
@@ -192,7 +192,7 @@ function convertLaTeX($tag, $file, $code) {
     $count = preg_match_all("/\\\begin\{" . $environment . "\}\[(" . $regexForNamed . ")\]\n\\\label\{([\w\-]*)\}/u", $code, $matches);
     for ($i = 0; $i < $count; $i++) {
       $label = $file . '-' . $matches[2][$i];
-      
+
       // check whether the label exists in the database, if not we cannot supply either a link or a number unfortunately
       if (labelExists($label))
         $code = str_replace($matches[0][$i], "<div class='" . $information["type"] . "'><p><a class='environment-identification' href='" . href("tag/" . getTagWithLabel($label)) . "'>" . $information["name"] . " " . getIDWithLabel($label) . " <span class='named'>(" . $matches[1][$i] . ")</span>.</a>", $code);
@@ -235,17 +235,32 @@ function convertLaTeX($tag, $file, $code) {
 
   // remove remaining labels
   $code = preg_replace("/\\\label\{[\w\-]+\}\n?/", "", $code);
-  
+
   // remove \linebreak commands
   $code = preg_replace("/\\\linebreak(\[\d?\])?/", "", $code);
 
   // lines starting with % (tag 03NV for instance) should be removed
-  $code = preg_replace("/\%[\w.]+/", "", $code);
+  // observe: comments that start halfway through are ignored (!)
+  $lines = explode("\n", $code);
+  foreach ($lines as &$line) {
+    if (strlen($line) > 0 and $line[0] == "%")
+      $line = "";
+  }
+  $code = implode("\n", $lines);
+
+  // there is as of now (2016-07-07) 1 tag that uses \%
+  $code = str_replace("\\%", "%", $code);
+
+  // en-dash
+  $code = str_replace("--", "&ndash;", $code);
+
+  // em-dash
+  $code = str_replace("---", "&mdash;", $code);
 
   // these do not fit into the system above
   $code = str_replace("\\begin{center}", "<center>", $code);
   $code = str_replace("\\end{center}", "</center>", $code);
-  
+
   $code = str_replace("\\begin{quote}", "<blockquote>", $code);
   $code = str_replace("\\end{quote}", "</blockquote>", $code);
 
@@ -333,7 +348,7 @@ function convertLaTeX($tag, $file, $code) {
       $line = str_replace('&lt;', '<', $line);
       $line = str_replace('&amp;', '&', $line);
       $line = str_replace('&nbsp;', '~', $line);
-     
+
       // we replace links in math mode by plain text as mathjax cannot handle <a href=""></a>
       $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $line, $matches);
       for ($j = 0; $j < $count; $j++) {
@@ -342,7 +357,7 @@ function convertLaTeX($tag, $file, $code) {
     }
   }
   $code = implode("\n", $lines);
- 
+
   // we replace the text in a link (definition-strict) by its ID (Definition 11.13.3)
   $count = preg_match_all('/\\\ref{<a href=\"([\w\/]+)\">([\w-\*]+)<\/a>}/', $code, $references);
   for ($i = 0; $i < $count; ++$i) {
@@ -365,7 +380,7 @@ function convertLaTeX($tag, $file, $code) {
 // get the enclosing section for every type of item (even the ones without a book_id)
 function getEnclosingSection($position) {
   global $database;
-  
+
   $sql = $database->prepare("SELECT tag, book_id, name, type FROM tags WHERE position <= :position AND type = 'section' ORDER BY position DESC LIMIT 1");
   $sql->bindParam(":position", $position);
 
@@ -375,7 +390,7 @@ function getEnclosingSection($position) {
 
 function getEnclosingChapter($position) {
   global $database;
-  
+
   $sql = $database->prepare("SELECT tag, book_id, name, type FROM tags WHERE position <= :position AND type = 'section' AND label LIKE '%phantom' ORDER BY position DESC LIMIT 1");
   $sql->bindParam(":position", $position);
 
