@@ -47,7 +47,7 @@ class StatisticsPage extends Page {
   public function __construct($database, $tag) {
     $this->db = $database;
 
-    $sql = $this->db->prepare("SELECT tag, creation_date, creation_commit, modification_date, modification_commit, label, position FROM tags WHERE tag = :tag");
+    $sql = $this->db->prepare("SELECT tag, creation_date, creation_commit, modification_date, modification_commit, label, position, type FROM tags WHERE tag = :tag");
     $sql->bindParam(":tag", $tag);
 
     if ($sql->execute())
@@ -76,9 +76,14 @@ class StatisticsPage extends Page {
     $output = "";
 
     $output .= "<h2>Tag <var>" . $this->tag["tag"] . "</var></h2>";
+
+    if ($this->tag["type"] != "section" and $this->tag["type"] != "chapter")
+      $output .= printBreadcrumb($this->tag);
+
     $output .= "<p>Go to the <a href='" . href("tag/" . $this->tag["tag"]) . "'>corresponding tag page</a>.</p>";
 
     $output .= "<h3>Information on the label</h3>";
+
     $output .= "<p>This tag currently has the label <var>" . $this->tag["label"] . "</var>.";
     $output .= "<dl>";
     $output .= "<dt>Part of the Stacks project since</dt>";
@@ -119,7 +124,7 @@ class StatisticsPage extends Page {
           $output .= "<li><a href='" . href("tag/" . $referencingTag["source"]) . "'>" . ucfirst($referencingTag["type"]) . " " . $referencingTag["book_id"] . ": " . parseAccents($referencingTag["name"]) . "</a>";
         else
           $output .= "<li><a href='" . href("tag/" . $referencingTag["source"]) . "'>" . ucfirst($referencingTag["type"]) . " " . $referencingTag["book_id"] . "</a>";
-        
+
         $section = getEnclosingSection($referencingTag["position"]);
         $chapter = getEnclosingChapter($referencingTag["position"]);
         $output .= ", in " . parseAccents($section["name"]);

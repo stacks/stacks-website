@@ -259,7 +259,7 @@ class TagViewPage extends Page {
     $value .= "<h2>Tag <var class='tag'>" . $this->tag["tag"] . "</var></h2>";
 
     if ($this->tag["type"] != "section" and $this->tag["type"] != "chapter")
-      $value .= $this->printBreadcrumb();
+      $value .= printBreadcrumb($this->tag);
 
     if ($this->tag["slogan"] != "")
       $value .= "<p id='slogan'><strong>" . $this->tag["slogan"] . "</strong>";
@@ -533,21 +533,6 @@ class TagViewPage extends Page {
     }
 
     return $value;
-  }
-
-  private function printBreadcrumb() {
-    $output = "";
-
-    $chapter = getEnclosingChapter($this->tag["position"]);
-    $section = getEnclosingSection($this->tag["position"]);
-    $output .= "<p style='font-size: .9em'><a href='" . href("tag/" . $chapter["tag"]) . "'>Chapter " . $chapter["book_id"] . ": " . parseAccents($chapter["name"]) . "</a> &gt;&ensp;";
-    $output .= "<a href='" . href("tag/" . $section["tag"]) . "'>Section " . $section["book_id"] . ": " . parseAccents($section["name"]) . "</a>";
-    if ($this->tag["type"] == "item" or $this->tag["type"] == "equation") {
-      $enclosingTag = getEnclosingTag($this->tag["position"]);
-      $output .= " &gt;&ensp;<a href='" . href("tag/" . $enclosingTag["tag"]) . "'>" . ucfirst($enclosingTag["type"]) . "&nbsp;" . $enclosingTag["book_id"] . "</a>";
-    }
-
-    return $output;
   }
 
   private function printView() {

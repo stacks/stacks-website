@@ -546,5 +546,19 @@ function getSiblingTags($position) {
   return $siblingTags;
 }
 
+function printBreadcrumb($tag) {
+  $output = "";
+
+  $chapter = getEnclosingChapter($tag["position"]);
+  $section = getEnclosingSection($tag["position"]);
+  $output .= "<p style='font-size: .9em'><a href='" . href("tag/" . $chapter["tag"]) . "'>Chapter " . $chapter["book_id"] . ": " . parseAccents($chapter["name"]) . "</a> &gt;&ensp;";
+  $output .= "<a href='" . href("tag/" . $section["tag"]) . "'>Section " . $section["book_id"] . ": " . parseAccents($section["name"]) . "</a>";
+  if ($tag["type"] == "item" or $tag["type"] == "equation") {
+    $enclosingTag = getEnclosingTag($tag["position"]);
+    $output .= " &gt;&ensp;<a href='" . href("tag/" . $enclosingTag["tag"]) . "'>" . ucfirst($enclosingTag["type"]) . "&nbsp;" . $enclosingTag["book_id"] . "</a>";
+  }
+
+  return $output;
+}
 
 ?>
