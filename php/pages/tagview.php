@@ -462,7 +462,7 @@ class TagViewPage extends Page {
 
       case "chapter":
         $chapter = getChapter(getChapterFromID($this->tag["book_id"]));
-        $value .= "<li>Chapter&nbsp;" . $this->tag["book_id"] . " on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["book_page"] . "</a> of the book";
+        $value .= "<li><a href='" . href("download/" . $chapter["filename"] . ".pdf") . "'>Chapter&nbsp;" . $this->tag["book_id"] . "</a> on <a href='" . href("download/book.pdf#nameddest=" . $this->tag["tag"]) . "'>page&nbsp;" . $this->tag["book_page"] . "</a> of the book";
         break;
 
       case "equation":

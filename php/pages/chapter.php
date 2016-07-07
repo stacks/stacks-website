@@ -21,7 +21,7 @@ function printToC($chapter) {
   global $database;
 
   $sql = $database->prepare("SELECT tag, label, book_id, type, book_page, file, name FROM tags WHERE active = 'TRUE' AND book_id LIKE '" . $chapter . ".%' ORDER BY position");
-  
+
   if ($sql->execute())
     $tags = $sql->fetchAll();
 
@@ -34,7 +34,7 @@ function printToC($chapter) {
   $equationMode = false;
   // have we just issued a new sub(section)?
   $sectionIssued = false;
-  
+
   foreach ($tags as $tag) {
     // we have finished a list of equations not directly contained in a (sub)section
     if ($tag["type"] != "equation" and !$sectionIssued and $equationMode) {
@@ -83,7 +83,7 @@ function printToC($chapter) {
     $equationMode = ($tag["type"] == "equation");
   }
 
-  // end all pending lists, 
+  // end all pending lists,
   $value .= str_repeat("</ul>", $depth);
 
   return $value;
@@ -149,8 +149,8 @@ class ChapterPage extends Page {
     $value .= "</ul>";
 
     $value .= "<h2>Permalink</h2>";
-    $value .= "<p>The number of chapters in the Stacks project is likely to change. So this URL is <em>not stable</em>.</p>";
-    $value .= "<p>To provide a truly stable link, use the <a href='" . href("tag/" . $this->chapter["tag"]) . "'>corresponding tag lookup page for tag " . $this->chapter["tag"] . "</a>. This identifier will never change.</p>";
+    $value .= "<p>The number of chapters in the Stacks project is likely to change. So this URL is <strong>not stable</strong>.</p>";
+    $value .= "<p>To provide a truly <em>stable link</em>, use the <a href='" . href("tag/" . $this->chapter["tag"]) . "'>corresponding tag lookup page for tag " . $this->chapter["tag"] . "</a>. This identifier will never change.</p>";
     $value .= "<p>When referring to this chapter of the Stacks project, it is better to say<blockquote>Tag " . $this->chapter["tag"] . "<br>Chapter " . $this->chapter["tag"] . "</blockquote> or refer to the full name of the chapter.</p>";
 
     $value .= "<h2>Statistics</h2>";
@@ -196,7 +196,7 @@ class ChapterPage extends Page {
         $value .= "<span class='right'><a href='" . href("chapter/" . (intval($this->chapter["number"]) + 1)) . "' title='Chapter " . $nextChapter["number"] . ": " . parseAccents($nextChapter["title"]) . "'>";
         $value .= "Next chapter &gt;&gt;";
       }
-      $value .= "</a></span>"; 
+      $value .= "</a></span>";
     }
     $value .= "</p>";
 
