@@ -541,7 +541,7 @@ class TagViewPage extends Page {
       $part = getPart($this->tag["book_id"]);
 
       $value .= "<h3>Chapter " . $this->tag["book_id"] . ": " . $this->tag["name"] . "</h3>";
-      $value .= "<p>This tag corresponds to <a href='" . href("chapter/" . $this->tag["book_id"]) . "'>Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . "</a> of <a href='" . href("browse#" . partToIdentifier($part)) . "'>" . parseAccents($part) . "</a>, and contains no further text. To view the contents of the first section in this chapter, go to the next tag.</p>";
+      $value .= "<p>This tag corresponds to Chapter " . $this->tag["book_id"] . ": " . parseAccents($this->tag["name"]) . " of <a href='" . href("browse#" . partToIdentifier($part)) . "'>" . parseAccents($part) . "</a>, and contains no further text. To view the contents of the first section in this chapter, go to the next tag.</p>";
       $value .= "<p>This chapter contains the following tags</p>";
       $value .= "<div id='control'>";
       $value .= "<p><a href='#'><img src='" . href("js/jquery-treeview/images/minus.gif") . "'> Collapse all</a>";
