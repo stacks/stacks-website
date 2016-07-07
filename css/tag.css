@@ -75,20 +75,28 @@ blockquote.rendered span.qed {
 }
 
 blockquote.rendered ol {
-  counter-reset: list;
   list-style-type: none;
   margin-left: 0;
   padding-left: 20px;
 }
 
-blockquote.rendered ol li:before {
-  counter-increment: list;
-  content: "(" counter(list) ") ";
+blockquote.rendered ol {
+  counter-reset: firstList;
+}
+
+blockquote.rendered ol ol {
+  counter-reset: secondList;
+}
+
+blockquote.rendered ol > li:before {
+  counter-increment: firstList;
+  content: "(" counter(firstList) ") ";
   margin-right: 15px;
 }
 
-blockquote.rendered ol ol li:before {
-  content: "(" counter(list, lower-alpha) ") ";
+blockquote.rendered ol ol > li:before {
+  counter-increment: secondList;
+  content: "(" counter(secondList, lower-alpha) ") ";
 }
 
 blockquote.rendered li.custom:before {
