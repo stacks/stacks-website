@@ -251,12 +251,6 @@ function convertLaTeX($tag, $file, $code) {
   // there is as of now (2016-07-07) 1 tag that uses \%
   $code = str_replace("\\%", "%", $code);
 
-  // en-dash
-  $code = str_replace("--", "&ndash;", $code);
-
-  // em-dash
-  $code = str_replace("---", "&mdash;", $code);
-
   // these do not fit into the system above
   $code = str_replace("\\begin{center}", "<center>", $code);
   $code = str_replace("\\end{center}", "</center>", $code);
@@ -341,6 +335,14 @@ function convertLaTeX($tag, $file, $code) {
         $math_mode = true;
       if (startsWith('\end{' . $environment . '}', $line))
         $math_mode = false;
+    }
+
+    if (!$math_mode) {
+      // en-dash
+      $line = str_replace("--", "&ndash;", $line);
+
+      // em-dash
+      $line = str_replace("---", "&mdash;", $line);
     }
 
     if ($math_mode) {
