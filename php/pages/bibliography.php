@@ -24,6 +24,10 @@ function printKeyValue($key, $value) {
     case "url":
       $output .= "<tr><td><i>" . $key . "</i></td><td><a href='" . $value . "'>" . $value . "</a></td></tr>";
       break;
+    case "eprint":
+      // we assume that any eprint is actually arXiv
+      $output .= "<tr><td><i>" . $key . "</i></td><td><a href='http://arxiv.org/abs/" . $value . "'>" . $value . "</a></td></tr>";
+
     case "name":
       // this should be ignored
       break;
