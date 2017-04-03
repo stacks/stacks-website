@@ -69,20 +69,21 @@ function parseTeX($value) {
 }
 
 function printMathJax() {
-    $value = "";
+  global $config;
+  $value = "";
 
-    $value .= "<script type='text/x-mathjax-config'>";
-    $value .= "  MathJax.Hub.Config({";
-    $value .= "    extensions: ['tex2jax.js'],";
-    $value .= "    jax: ['input/TeX','output/HTML-CSS'],";
-    $value .= "    TeX: {extensions: ['" . href("js/XyJax/extensions/TeX/xypic.js") . "', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},";
-    $value .= "    tex2jax: {inlineMath: [['$','$']]},";
-    $value .= "    'HTML-CSS': { scale: 85 }";
-    $value .= "  });";
-    $value .= "</script>";
-    $value .= "<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js'></script>";
+  $value .= "<script type='text/x-mathjax-config'>";
+  $value .= "  MathJax.Hub.Config({";
+  $value .= "    extensions: ['tex2jax.js'],";
+  $value .= "    jax: ['input/TeX','output/HTML-CSS'],";
+  $value .= "    TeX: {extensions: ['" . href("js/XyJax/extensions/TeX/xypic.js") . "', 'AMSmath.js', 'AMSsymbols.js'], TagSide: 'left'},";
+  $value .= "    tex2jax: {inlineMath: [['$','$']]},";
+  $value .= "    'HTML-CSS': { scale: 85 }";
+  $value .= "  });";
+  $value .= "</script>";
+  $value .= "<script type='text/javascript' src='" . $config["MathJax"] . "'></script>";
 
-    return $value;
+  return $value;
 }
 
 function printGraphLink($tag, $type, $text) {
