@@ -37,9 +37,10 @@ $parts = array(
   "Schemes"                         => "Schemes",
   "Chow Homology and Chern Classes" => "Topics in Scheme Theory",
   "Algebraic Spaces"                => "Algebraic Spaces",
-  "Quotients of Groupoids"		      => "Topics in Geometry",
+  "Quotients of Groupoids"          => "Topics in Geometry",
   "Formal Deformation Theory"       => "Deformation Theory",
   "Algebraic Stacks"                => "Algebraic Stacks",
+  "Moduli Stacks"                   => "Topics in Moduli Theory",
   "Examples"                        => "Miscellany");
 
 // we try to construct the page object
