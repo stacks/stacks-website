@@ -23,7 +23,7 @@ class TagsPage extends Page {
     $value .= "<pre><code>@misc{stacks-project,\n";
     $value .= "  shorthand    = {Stacks},\n";
     $value .= "  author       = {The {Stacks Project Authors}},\n";
-    $value .= "  title        = {\itshape Stacks Project},\n";
+    $value .= "  title        = {{\itshape Stacks Project}},\n";
     $value .= "  howpublished = {\url{http://stacks.math.columbia.edu}},\n";
     $value .= "  year         = {" . date('Y'). "},\n";
     $value .= "}</code></pre>";
