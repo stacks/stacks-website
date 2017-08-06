@@ -150,7 +150,7 @@ class HistoryPage extends Page {
       $output .= "<tbody>";
   
       for ($i = 0; $i < sizeof($this->changes); $i++) {
-        if ($i+1 < sizeof($this->changes) && $this->changes[$i]["hash"] == $this->changes[$i+1]["hash"] && $this->changes[$i]["type"] == "statement" && $this->changes[$i+1]["type"] == "statement") {
+        if ($i+1 < sizeof($this->changes) && $this->changes[$i]["hash"] == $this->changes[$i+1]["hash"] && $this->changes[$i]["type"] == "statement" && $this->changes[$i+1]["type"] == "proof") {
           $this->changes[$i]["type"] = "statement and proof";
           $output .= printChange($this->tag["tag"], $this->changes[$i]);
 
