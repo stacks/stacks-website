@@ -17,11 +17,6 @@ class IndexPage extends Page {
     $value .= "<h2><a href='" . href("about") . "'>About</a></h2>";
     $value .= "<p>This is the home page of the Stacks project. It is an open source textbook and reference work on algebraic stacks and the algebraic geometry needed to define them. For more general information see our extensive <a href='" . href("about") . "'>about page</a>.</p>";
 
-    $value .= "<h2><a href='http://stacks.github.io'>Stacks project workshop</a></h2>";
-    $value .= "<p>We are organizing a workshop in algebraic geometry, where the Stacks project will play an important role. ";
-    $value .= "The workshop will be at the <em>University of Michigan</em> in <em>Ann Arbor</em>, from <em>July 31 to August 4 2017</em>. ";
-    $value .= "For more information and the option to pre-register, check the <a href='http://stacks.github.io'>workshop's webpage</a>.";
-
     $value .= "<h2><a href='" . href("contribute") . "'>How to contribute?</a></h2>";
 
     $value .= "<p>The Stacks project is a collaborative effort. There is a <a href='https://github.com/stacks/stacks-project/blob/master/CONTRIBUTORS'>list of people who have contributed so far</a>. While browsing the Stacks project please provide feedback by leaving a comment. Another option is to suggest slogans for results. For more details please visit the <a href='/contribute'>contribute page</a>.</p>";
