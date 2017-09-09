@@ -28,7 +28,7 @@ if (!isset($_GET["tag"])) {
 
 function getSlogans($tag) {
   global $database;
-  
+
   $sql = $database->prepare("SELECT slogan, author FROM slogans WHERE tag = :tag ORDER BY id DESC");
   $sql->bindParam(":tag", $tag);
 
@@ -100,7 +100,7 @@ function printSlogans($slogans, $existing) {
     print "<p>There is already a slogan in use for this tag in the Stacks project:";
     print "<blockquote>" . $existing;
   }
-  
+
   print "<ol id='slogans'>";
 
   foreach ($slogans as $slogan)
@@ -115,7 +115,7 @@ function printStatement($tag) {
 
   // request the HTML for this tag
   $statement = file_get_contents("http://" . $_SERVER["HTTP_HOST"] . href("data/tag/" . $tag . "/content/statement"));
-  
+
   print "<blockquote id='statement' class='rendered'>";
   print $statement;
   print "</blockquote>";
@@ -139,8 +139,8 @@ function printStatement($tag) {
       'HTML-CSS': { scale: 85 }
     });
   </script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 </head>
 
 <body>
@@ -163,13 +163,13 @@ else {
   $meta = json_decode(file_get_contents("http://" . $_SERVER["HTTP_HOST"] . href("data/tag/" . $tag . "/meta")));
   if (in_array($meta->type, array("lemma", "proposition", "remark", "remarks", "theorem"))) {
     print "<p>You can suggest a slogan for <a href='" . href("tag/" . $tag) . "'>tag <code>" . $tag . "</code></a> (label: <code style='font-size: .9em'>" . $meta->label . "</code>), located in<br>";
-  
+
     $id = explode(".", $meta->book_id);
     print "&nbsp&nbsp;Chapter " . $id[0] . ": " . parseAccents($meta->chapter_name) . "<br>";
     print "&nbsp&nbsp;Section " . $id[1] . ": " . parseAccents($meta->section_name);
     printStatement($tag);
     printForm($tag);
-  
+
     $slogans = getSlogans($tag);
     if (!empty($slogans) or $meta->slogan != "")
       printSlogans($slogans, $meta->slogan);

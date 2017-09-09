@@ -88,7 +88,7 @@ elseif (isset($_POST["submit"])) {
   if (!empty($site)) {
     // incorrect url, probably missing http:// we prepend it and try again
     if (!filter_var($site, FILTER_VALIDATE_URL)) {
-      $site = 'http://' . $site;
+      $site = 'https://' . $site;
     // nonempty site, but the format is wrong
       if (!filter_var($site, FILTER_VALIDATE_URL)) {
         print('You supplied a site but the format is wrong. Your current input is ' . $_POST['site']);
@@ -100,7 +100,7 @@ elseif (isset($_POST["submit"])) {
 
 
   // from here on it's safe to ignore the fact that it's user input
- 
+
   /**
    * post slogan to slogans database
    */
