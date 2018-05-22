@@ -1,6 +1,8 @@
 Description
 -----------
-This is a new version of the website for the [Stacks project](http://stacks.math.columbia.edu), enabling a comment system, improved tag lookup and a full-powered online view of its contents.
+This is the old version of the website for the [Stacks project](http://stacks.math.columbia.edu). It enabled a comment system, an improved tag lookup, and a full-powered online view of its contents. This project is no longer maintained.
+
+Please visit the [Gerby project](https://gerby-project.github.io/) to read about the current version.
 
 
 Configuration
